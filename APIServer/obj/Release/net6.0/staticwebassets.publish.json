@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "cTrKRZbUGCSeHN6E2CK7foauCvlmyYVtvQd8dkWnedw=",
+  "Source": "AccountServer",
+  "BasePath": "_content/AccountServer",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

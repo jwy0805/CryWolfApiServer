@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIServer", "APIServer\APIServer.csproj", "{51C10F07-38A9-4FFE-BEC9-231D795D7685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMakingServer", "MatchMakingServer\MatchMakingServer.csproj", "{F81B35FA-BD93-43E2-9384-271D5FCC423A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51C10F07-38A9-4FFE-BEC9-231D795D7685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C10F07-38A9-4FFE-BEC9-231D795D7685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C10F07-38A9-4FFE-BEC9-231D795D7685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C10F07-38A9-4FFE-BEC9-231D795D7685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F81B35FA-BD93-43E2-9384-271D5FCC423A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F81B35FA-BD93-43E2-9384-271D5FCC423A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F81B35FA-BD93-43E2-9384-271D5FCC423A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F81B35FA-BD93-43E2-9384-271D5FCC423A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

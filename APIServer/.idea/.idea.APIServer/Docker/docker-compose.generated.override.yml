@@ -1,0 +1,26 @@
+# 생성된 파일입니다. 수동 편집용이 아닙니다.
+services:
+  api:
+    build:
+      context: "/Users/jwy/Documents/Dev/Docker/Dev_CryWolfCompose/CryWolfAPI"
+      dockerfile: "Dockerfile"
+      args:
+        BUILD_CONFIGURATION: "Debug"
+    entrypoint:
+    - "/opt/rider-debugger/linux-arm64/JetBrains.Debugger.Worker"
+    - "--runtimeconfig"
+    - "/opt/rider-debugger/JetBrains.Debugger.Worker.runtimeconfig.json"
+    - "--mode=server"
+    - "--frontend-port=57100"
+    - "--backend-port=57300"
+    - "--timeout=60"
+    environment:
+      RIDER_DEBUGGER_LOG_DIR: "/var/opt/rider-debugger"
+      RESHARPER_LOG_CONF: "/etc/opt/rider-debugger/backend-log.xml"
+    ports:
+    - "127.0.0.1:57000:57100"
+    - "127.0.0.1:57200:57300"
+    volumes:
+    - "/Users/jwy/.local/share/JetBrains/RiderRemoteDebugger/2024.1/LinuxArm64:/opt/rider-debugger"
+    - "/Users/jwy/Applications/Rider.app/Contents/bin:/etc/opt/rider-debugger/backend-log.xml"
+    - "/Users/jwy/Library/Logs/JetBrains/Rider2024.1/DebuggerWorker/JetBrains.Debugger.Worker.2024_5_20_21_07_22:/var/opt/rider-debugger:rw"

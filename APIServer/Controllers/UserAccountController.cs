@@ -109,7 +109,7 @@ public class UserAccountController : ControllerBase
         
         foreach (var enchantId in enchantIds)
         {
-            _context.UserEnchants.Add(new UserEnchant { UserId = userId, EnchantId = enchantId, Count = 1});
+            _context.UserEnchant.Add(new UserEnchant { UserId = userId, EnchantId = enchantId, Count = 1});
         }
     }
     

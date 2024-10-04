@@ -981,3 +981,4 @@
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/staticwebassets/msbuild.buildTransitive.APIServer.props
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/staticwebassets.pack.json
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.csproj.Up2Date
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json

@@ -15,7 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Character> Character { get; set; }
     public DbSet<Material> Material { get; set; }
     public DbSet<UserSheep> UserSheep { get; set; }
-    public DbSet<UserEnchant> UserEnchants { get; set; }
+    public DbSet<UserEnchant> UserEnchant { get; set; }
     public DbSet<UserCharacter> UserCharacter { get; set; }
     public DbSet<UnitMaterial> UnitMaterial { get; set; }
     public DbSet<UserMaterial> UserMaterial { get; set; }

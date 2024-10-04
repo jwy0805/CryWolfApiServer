@@ -22,6 +22,57 @@ public class CollectionController : ControllerBase
         _tokenService = tokenService;
         _tokenValidator = tokenValidator;
     }
+
+    [HttpPost]
+    [Route("LoadInfo")]
+    public IActionResult LoadInfo([FromBody] LoadInfoPacketRequired required)
+    {
+        var unitList = _context.Unit.AsNoTracking().ToList();
+        var sheepList = _context.Sheep.AsNoTracking().ToList();
+        var enchantList = _context.Enchant.AsNoTracking().ToList();
+        var characterList = _context.Character.AsNoTracking().ToList();
+        var materialList = _context.Material.AsNoTracking().ToList();
+        var res = new LoadInfoPacketResponse
+        {
+            UnitInfos = unitList.Select(unit => new UnitInfo
+            {
+                Id = (int)unit.UnitId,
+                Class = unit.Class,
+                Level = unit.Level,
+                Species = (int)unit.Species,
+                Role = unit.Role,
+                Faction = unit.Faction,
+                Region = unit.Region
+            }).ToList(),
+            
+            SheepInfos = sheepList.Select(sheep => new SheepInfo
+            {
+                Id = (int)sheep.SheepId,
+                Class = sheep.Class
+            }).ToList(),
+            
+            EnchantInfos = enchantList.Select(enchant => new EnchantInfo
+            {
+                Id = (int)enchant.EnchantId,
+                Class = enchant.Class
+            }).ToList(),
+            
+            CharacterInfos = characterList.Select(character => new CharacterInfo
+            {
+                Id = (int)character.CharacterId,
+                Class = character.Class
+            }).ToList(),
+            
+            MaterialInfos = materialList.Select(material => new MaterialInfo
+            {
+                Id = (int)material.MaterialId,
+                Class = material.Class,
+            }).ToList(),
+            LoadInfoOk = true
+        };
+
+        return Ok(res);
+    }
     
     [HttpPost]
     [Route("InitCards")]
@@ -121,36 +172,30 @@ public class CollectionController : ControllerBase
 
         if (userId != null)
         {
-            var manySheep = _context.Sheep.AsNoTracking().ToList();
-            var userSheepIds = _context.UserSheep.AsNoTracking()
+            res.OwnedSheepList = _context.UserSheep.AsNoTracking()
                 .Where(userSheep => userSheep.UserId == userId)
-                .Select(userSheep => userSheep.SheepId)
-                .ToList();
-            var ownedSheepList = new List<SheepInfo>();
-            var notOwnedSheepList = new List<SheepInfo>();
-            
-            foreach (var sheep in manySheep)
-            {
-                if (userSheepIds.Contains(sheep.SheepId))
-                {
-                    ownedSheepList.Add(new SheepInfo
+                .Join(_context.Sheep.AsNoTracking(),
+                    userSheep => userSheep.SheepId,
+                    sheep => sheep.SheepId,
+                    (userSheep, sheep) => new OwnedSheepInfo
                     {
-                        Id = (int)sheep.SheepId,
-                        Class = sheep.Class
-                    });
-                }
-                else
-                {
-                    notOwnedSheepList.Add(new SheepInfo
-                    {
-                        Id = (int)sheep.SheepId,
-                        Class = sheep.Class
-                    });
-                }
-            }
+                        SheepInfo = new SheepInfo
+                        {
+                            Id = (int)sheep.SheepId,
+                            Class = sheep.Class
+                        },
+                        Count = userSheep.Count
+                    }).ToList();
             
-            res.OwnedSheepList = ownedSheepList;
-            res.NotOwnedSheepList = notOwnedSheepList;
+            var ownedSheepIds = res.OwnedSheepList.Select(info => info.SheepInfo.Id).ToList();
+            res.NotOwnedSheepList = _context.Sheep.AsNoTracking()
+                .Where(sheep => !ownedSheepIds.Contains((int)sheep.SheepId))
+                .Select(sheep => new SheepInfo
+                {
+                    Id = (int)sheep.SheepId,
+                    Class = sheep.Class
+                }).ToList();
+            
             res.GetSheepOk = true;
         }
         else
@@ -181,36 +226,30 @@ public class CollectionController : ControllerBase
         
         if (userId != null)
         {
-            var manyEnchant = _context.Enchant.AsNoTracking().ToList();
-            var userEnchantIds = _context.UserEnchants.AsNoTracking()
+            res.OwnedEnchantList = _context.UserEnchant.AsNoTracking()
                 .Where(userEnchant => userEnchant.UserId == userId)
-                .Select(userEnchant => userEnchant.EnchantId)
-                .ToList();
-            var ownedEnchantList = new List<EnchantInfo>();
-            var notOwnedEnchantList = new List<EnchantInfo>();
-            
-            foreach (var enchant in manyEnchant)
-            {
-                if (userEnchantIds.Contains(enchant.EnchantId))
-                {
-                    ownedEnchantList.Add(new EnchantInfo
+                .Join(_context.Enchant.AsNoTracking(),
+                    userEnchant => userEnchant.EnchantId,
+                    enchant => enchant.EnchantId,
+                    (userEnchant, enchant) => new OwnedEnchantInfo
                     {
-                        Id = (int)enchant.EnchantId,
-                        Class = enchant.Class
-                    });
-                }
-                else
-                {
-                    notOwnedEnchantList.Add(new EnchantInfo
-                    {
-                        Id = (int)enchant.EnchantId,
-                        Class = enchant.Class
-                    });
-                }
-            }
+                        EnchantInfo = new EnchantInfo
+                        {
+                            Id = (int)enchant.EnchantId,
+                            Class = enchant.Class
+                        },
+                        Count = userEnchant.Count
+                    }).ToList();
             
-            res.OwnedEnchantList = ownedEnchantList;
-            res.NotOwnedEnchantList = notOwnedEnchantList;
+            var ownedEnchantIds = res.OwnedEnchantList.Select(info => info.EnchantInfo.Id).ToList();
+            res.NotOwnedEnchantList = _context.Enchant.AsNoTracking()
+                .Where(enchant => !ownedEnchantIds.Contains((int)enchant.EnchantId))
+                .Select(enchant => new EnchantInfo
+                {
+                    Id = (int)enchant.EnchantId,
+                    Class = enchant.Class
+                }).ToList();
+            
             res.GetEnchantOk = true;
         }
         else
@@ -241,36 +280,30 @@ public class CollectionController : ControllerBase
         
         if (userId != null)
         {
-            var manyCharacter = _context.Character.AsNoTracking().ToList();
-            var userCharacterIds = _context.UserCharacter.AsNoTracking()
+            res.OwnedCharacterList = _context.UserCharacter.AsNoTracking()
                 .Where(userCharacter => userCharacter.UserId == userId)
-                .Select(userCharacter => userCharacter.CharacterId)
-                .ToList();
-            var ownedCharacterList = new List<CharacterInfo>();
-            var notOwnedCharacterList = new List<CharacterInfo>();
-            
-            foreach (var character in manyCharacter)
-            {
-                if (userCharacterIds.Contains(character.CharacterId))
-                {
-                    ownedCharacterList.Add(new CharacterInfo
+                .Join(_context.Character.AsNoTracking(),
+                    userCharacter => userCharacter.CharacterId,
+                    character => character.CharacterId,
+                    (userCharacter, character) => new OwnedCharacterInfo
                     {
-                        Id = (int)character.CharacterId,
-                        Class = character.Class
-                    });
-                }
-                else
-                {
-                    notOwnedCharacterList.Add(new CharacterInfo
-                    {
-                        Id = (int)character.CharacterId,
-                        Class = character.Class
-                    });
-                }
-            }
+                        CharacterInfo = new CharacterInfo
+                        {
+                            Id = (int)character.CharacterId,
+                            Class = character.Class
+                        },
+                        Count = userCharacter.Count
+                    }).ToList();
             
-            res.OwnedCharacterList = ownedCharacterList;
-            res.NotOwnedCharacterList = notOwnedCharacterList;
+            var ownedCharacterIds = res.OwnedCharacterList.Select(info => info.CharacterInfo.Id).ToList();
+            res.NotOwnedCharacterList = _context.Character.AsNoTracking()
+                .Where(character => !ownedCharacterIds.Contains((int)character.CharacterId))
+                .Select(character => new CharacterInfo
+                {
+                    Id = (int)character.CharacterId,
+                    Class = character.Class
+                }).ToList();
+            
             res.GetCharacterOk = true;
         }
         else
@@ -306,10 +339,13 @@ public class CollectionController : ControllerBase
                 .Join(_context.Material.AsNoTracking(),
                     userMaterial => userMaterial.MaterialId,
                     material => material.MaterialId,
-                    (userMaterial, material) => new MaterialInfo
+                    (userMaterial, material) => new OwnedMaterialInfo
                     {
-                        Id = (int)userMaterial.MaterialId,
-                        Class = material.Class,
+                        MaterialInfo = new MaterialInfo
+                        {
+                            Id = (int)userMaterial.MaterialId,
+                            Class = material.Class
+                        },
                         Count = userMaterial.Count
                     }).ToList();
 

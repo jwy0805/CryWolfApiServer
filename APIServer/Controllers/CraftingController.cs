@@ -37,10 +37,13 @@ public class CraftingController : ControllerBase
                 .Join(_context.Material,
                     unitMaterial => unitMaterial.MaterialId,
                     material => material.MaterialId,
-                    (unitMaterial, material) => new MaterialInfo
+                    (unitMaterial, material) => new OwnedMaterialInfo
                     {
-                        Id = (int)unitMaterial.MaterialId,
-                        Class = material.Class,
+                        MaterialInfo = new MaterialInfo
+                        {
+                            Id = (int)unitMaterial.MaterialId,
+                            Class = material.Class
+                        },
                         Count = unitMaterial.Count
                     }).ToList();
             
@@ -70,8 +73,62 @@ public class CraftingController : ControllerBase
             var materialsToBeDeleted = required.Materials;
             var unitToBeCrafted = required.UnitId;
             var unitCount = required.Count;
+            var userMaterials = _context.UserMaterial
+                .Where(um => um.UserId == userId)
+                .Where(um => materialsToBeDeleted
+                    .Select(info => info.MaterialInfo.Id).ToList().Contains((int)um.MaterialId))
+                .ToList();
+            var userUnit = _context.UserUnit
+                .Where(uu => uu.UserId == userId)
+                .FirstOrDefault(uu => uu.UnitId == unitToBeCrafted);
+
+            using var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                foreach (var material in materialsToBeDeleted)
+                {
+                    var userMaterial = userMaterials.FirstOrDefault(um => (int)um.MaterialId == material.MaterialInfo.Id);
+                    if (userMaterial != null && userMaterial.Count >= material.Count)
+                    {
+                        userMaterial.Count -= material.Count;
+                        if (userMaterial.Count == 0)
+                        {
+                            _context.UserMaterial.Remove(userMaterial);
+                        }
+                    }
+                    else
+                    {
+                        res.CraftCardOk = false;
+                        res.Error = 1;
+                        transaction.Rollback();
+                        return Ok(res);
+                    }
+                }
             
-            res.CraftCardOk = true;
+                if (userUnit == null)
+                {
+                    _context.UserUnit.Add(new UserUnit
+                    {
+                        UserId = (int)userId,
+                        UnitId = unitToBeCrafted,
+                        Count = unitCount
+                    });
+                }
+                else
+                {
+                    userUnit.Count += unitCount;
+                }
+                    
+                _context.SaveChangesExtended();
+                transaction.Commit();
+                res.CraftCardOk = true;
+            }
+            catch (Exception e)
+            {
+                res.CraftCardOk = false;
+                transaction.Rollback();
+                return Ok(res);
+            }
         }
         else
         {

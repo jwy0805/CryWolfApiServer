@@ -32,6 +32,9 @@ public class CollectionController : ControllerBase
         var enchantList = _context.Enchant.AsNoTracking().ToList();
         var characterList = _context.Character.AsNoTracking().ToList();
         var materialList = _context.Material.AsNoTracking().ToList();
+        var reinforcePointList = _context.ReinforcePoint.AsNoTracking().ToList();
+        var unitMaterialList = _context.UnitMaterial.AsNoTracking().ToList();
+        
         var res = new LoadInfoPacketResponse
         {
             UnitInfos = unitList.Select(unit => new UnitInfo
@@ -68,6 +71,29 @@ public class CollectionController : ControllerBase
                 Id = (int)material.MaterialId,
                 Class = material.Class,
             }).ToList(),
+            
+            ReinforcePoints = reinforcePointList.Select(reinforcePoint => new ReinforcePointInfo
+            {
+                Class = reinforcePoint.Class,
+                Level = reinforcePoint.Level,
+                Point = reinforcePoint.Constant
+            }).ToList(),
+            
+            CraftingMaterials = unitMaterialList.GroupBy(um => um.UnitId)
+                .Select(group => new UnitMaterialInfo
+                {
+                    UnitId = (int)group.Key,
+                    Materials = group.Select(um => new OwnedMaterialInfo
+                    {
+                        MaterialInfo = new MaterialInfo
+                        {
+                            Id = (int)um.MaterialId,
+                            Class = materialList.First(material => material.MaterialId == um.MaterialId).Class
+                        },
+                        Count = um.Count
+                    }).ToList()
+                }).ToList(),
+            
             LoadInfoOk = true
         };
 
@@ -107,25 +133,31 @@ public class CollectionController : ControllerBase
                 .Where(userUnit => userUnit.UserId == userId && userUnit.Count > 0)
                 .Select(userUnit => userUnit.UnitId)
                 .ToList();
-            var ownedCardList = new List<UnitInfo>();
+            var ownedCardList = new List<OwnedUnitInfo>();
             var notOwnedCardList = new List<UnitInfo>();
             
             foreach (var unit in units)
             {
                 if (userUnitIds.Contains(unit.UnitId))
                 {
-                    ownedCardList.Add(new UnitInfo
+                    ownedCardList.Add(new OwnedUnitInfo
                     {
-                        Id = (int)unit.UnitId,
-                        Class = unit.Class,
-                        Level = unit.Level,
-                        Species = (int)unit.Species,
-                        Role = unit.Role,
-                        Faction = unit.Faction,
-                        Region = unit.Region
+                        UnitInfo = new UnitInfo
+                        {
+                            Id = (int)unit.UnitId,
+                            Class = unit.Class,
+                            Level = unit.Level,
+                            Species = (int)unit.Species,
+                            Role = unit.Role,
+                            Faction = unit.Faction,
+                            Region = unit.Region
+                        },
+                        Count = _context.UserUnit.AsNoTracking()
+                            .FirstOrDefault(userUnit => 
+                                userUnit.UserId == userId && userUnit.UnitId == unit.UnitId)?.Count ?? 0
                     });
                 }
-                else if (ownedCardList.All(unitInfo => unitInfo.Species != (int)unit.Species) && unit.Level == 3)
+                else if (ownedCardList.All(info => info.UnitInfo.Species != (int)unit.Species) && unit.Level == 3)
                 {
                     notOwnedCardList.Add(new UnitInfo
                     {

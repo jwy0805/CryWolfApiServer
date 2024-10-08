@@ -20,6 +20,7 @@ public class AppDbContext : DbContext
     public DbSet<UnitMaterial> UnitMaterial { get; set; }
     public DbSet<UserMaterial> UserMaterial { get; set; }
     public DbSet<BattleSetting> BattleSetting { get; set; }
+    public DbSet<ReinforcePoint> ReinforcePoint { get; set; }
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -107,5 +108,7 @@ public class AppDbContext : DbContext
         
         builder.Entity<ExpTable>().HasKey(e => e.Level);
         builder.Entity<ExpTable>().Property(e => e.Level).ValueGeneratedNever();
+        
+        builder.Entity<ReinforcePoint>().HasKey(rr => new { rr.Class, rr.Level });
     }
 }

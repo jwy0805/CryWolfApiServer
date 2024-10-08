@@ -37,7 +37,13 @@ public class MaterialInfo
 {
     public int Id { get; set; }
     public UnitClass Class { get; set; }
-    // public int Count { get; set; }
+}
+
+public class ReinforcePointInfo
+{
+    public UnitClass Class { get; set; }
+    public int Level { get; set; }
+    public int Point { get; set; }
 }
 
 public class OwnedUnitInfo
@@ -84,6 +90,12 @@ public class BattleSettingInfo
     public SheepInfo SheepInfo { get; set; }
     public EnchantInfo EnchantInfo { get; set; }
     public CharacterInfo CharacterInfo { get; set; }
+}
+
+public class UnitMaterialInfo
+{
+    public int UnitId { get; set; }
+    public List<OwnedMaterialInfo> Materials { get; set; }
 }
 
 public class CreateUserAccountPacketRequired
@@ -137,6 +149,8 @@ public class LoadInfoPacketResponse
     public List<EnchantInfo> EnchantInfos { get; set; }
     public List<CharacterInfo> CharacterInfos { get; set; }
     public List<MaterialInfo> MaterialInfos { get; set; }
+    public List<ReinforcePointInfo> ReinforcePoints { get; set; }
+    public List<UnitMaterialInfo> CraftingMaterials { get; set; }
 }
 
 public class RefreshTokenRequired
@@ -159,7 +173,7 @@ public class InitCardsPacketRequired
 public class InitCardsPacketResponse
 {
     public bool GetCardsOk { get; set; }
-    public List<UnitInfo> OwnedCardList { get; set; }
+    public List<OwnedUnitInfo> OwnedCardList { get; set; }
     public List<UnitInfo> NotOwnedCardList { get; set; }
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
@@ -311,6 +325,21 @@ public class CraftCardPacketResponse
 {
     // Error: 0 - Success, 1 - Not enough materials
     public bool CraftCardOk { get; set; }
+    public int Error { get; set; }
+}
+
+public class ReinforceResultPacketRequired
+{
+    public string AccessToken { get; set; }
+    public UnitInfo UnitInfo { get; set; }
+    public List<UnitInfo> UnitList { get; set; }
+}
+
+public class ReinforceResultPacketResponse
+{
+    public bool ReinforceResultOk { get; set; }
+    public bool IsSuccess { get; set; }
+    public List<OwnedUnitInfo> UnitList { get; set; }
     public int Error { get; set; }
 }
 

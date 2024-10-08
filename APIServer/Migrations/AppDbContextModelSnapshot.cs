@@ -159,6 +159,24 @@ namespace AccountServer.Migrations
                     b.ToTable("RefreshToken");
                 });
 
+            modelBuilder.Entity("AccountServer.DB.ReinforceRate", b =>
+                {
+                    b.Property<int>("Class")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("Constant")
+                        .HasColumnType("int");
+
+                    b.HasKey("Class", "Level");
+
+                    b.ToTable("ReinforceRate");
+                });
+
             modelBuilder.Entity("AccountServer.DB.Sheep", b =>
                 {
                     b.Property<int>("SheepId")

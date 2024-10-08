@@ -149,11 +149,21 @@ public class UserMaterial
     public int Count { get; set; }
 }
 
-[Table("Battle_Setting")]
+[Table("BattleSetting")]
 public class BattleSetting
 {
     public int UserId { get; set; }
     public int SheepId { get; set; }
     public int EnchantId { get; set; }
     public int CharacterId { get; set; }
+}
+
+[Table("ReinforcePoint")]
+public class ReinforcePoint
+{
+    [Key, Column(Order = 1)]
+    public UnitClass Class { get; set; }
+    [Key, Column(Order = 2)]
+    public int Level { get; set; }
+    public int Constant { get; set; }
 }

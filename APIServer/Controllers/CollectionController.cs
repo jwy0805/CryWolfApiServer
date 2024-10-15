@@ -157,7 +157,7 @@ public class CollectionController : ControllerBase
                                 userUnit.UserId == userId && userUnit.UnitId == unit.UnitId)?.Count ?? 0
                     });
                 }
-                else if (ownedCardList.All(info => info.UnitInfo.Species != (int)unit.Species) && unit.Level == 3)
+                else
                 {
                     notOwnedCardList.Add(new UnitInfo
                     {

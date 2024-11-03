@@ -15,11 +15,39 @@ public class User
     public UserAct Act { get; set; }
     public UserState State { get; set; }
     public DateTime CreatedAt { get; set; }
+}
+
+[Table("UserStats")]
+public class UserStats
+{
+    public int UserId { get; set; }
     public int UserLevel { get; set; }
-    public int Exp { get; set; }
     public int RankPoint { get; set; }
+    public int Exp { get; set; }
     public int Gold { get; set; }
-    public int Gem { get; set; }
+    public int Spinel { get; set; }
+}
+
+[Table("UserMatch")]
+public class UserMatch
+{
+    [Key]
+    public int UserId { get; set; }
+    public int WinRankMatch { get; set; }
+    public int LoseRankMatch { get; set; }
+    public int DrawRankMatch { get; set; }
+    public int WinFriendlyMatch { get; set; }
+    public int LoseFriendlyMatch { get; set; }
+    public int DrawFriendlyMatch { get; set; }
+}
+
+[Table("Friends")]
+public class Friends
+{
+    public int UserId { get; set; }
+    public int FriendId { get; set; }
+    public FriendStatus Status { get; set; }
+    public DateTime CreatedAt { get; set; }
 }
 
 [Table("RefreshToken")]
@@ -109,6 +137,47 @@ public class Material
     public UnitClass Class { get; set; }
 }
 
+[Table("Product")]
+public class Product
+{
+    public int ProductId { get; set; }
+    [MaxLength(50)]
+    public string ProductName { get; set; }
+    public int Price { get; set; }
+    public CurrencyType Currency { get; set; }
+    public ProductCategory Category { get; set; }
+    public bool IsFixed { get; set; }
+}
+
+[Table("ProductComposition")]
+public class ProductComposition
+{
+    public int ProductId { get; set; }
+    public int CompositionId { get; set; }
+    public ProductType Type { get; set; }
+    public int Count { get; set; }
+    public bool Guaranteed { get; set; }
+    public bool IsSelectable { get; set; }
+}
+
+[Table("CompositionProbability")]
+public class CompositionProbability
+{
+    public int ProductId { get; set; }
+    public int CompositionId { get; set; }
+    public int GroupId { get; set; }
+    public int Count { get; set; }
+    public double Probability { get; set; }
+}
+
+[Table("User_Product")]
+public class UserProduct
+{
+    public int UserId { get; set; }
+    public int ProductId { get; set; }
+    public int Count { get; set; }
+}
+
 [Table("User_Sheep")]
 public class UserSheep
 {
@@ -147,6 +216,36 @@ public class UserMaterial
     public int UserId { get; set; }
     public MaterialId MaterialId { get; set; }
     public int Count { get; set; }
+}
+
+[Table("Transaction")]
+public class Transaction
+{
+    [Key]
+    public long TransactionTimestamp { get; set; }
+    [Key]
+    public int UserId { get; set; }
+    public int ProductId { get; set; }
+    public int Count { get; set; }
+    public DateTime PurchaseAt { get; set; }
+    public CurrencyType Currency { get; set; }
+    public TransactionStatus Status { get; set; }
+    public CashCurrencyType CashCurrency { get; set; }
+
+    public Transaction(int userId, int productId, int count)
+    {
+        UserId = userId;
+        ProductId = productId;
+        Count = count;
+        PurchaseAt = DateTime.UtcNow;
+        SetTimestamp();
+    }
+
+    private void SetTimestamp()
+    {
+        var timestampString = $"{PurchaseAt:yyyyMMddHHmmssfff}";
+        TransactionTimestamp = long.Parse(timestampString);
+    }
 }
 
 [Table("BattleSetting")]

@@ -5,6 +5,9 @@ namespace AccountServer.DB;
 public class AppDbContext : DbContext
 {
     public DbSet<User> User { get; set; }
+    public DbSet<UserStats> UserStats { get; set; }
+    public DbSet<UserMatch> UserMatch { get; set; }
+    public DbSet<Friends> Friends { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Unit> Unit { get; set; }
     public DbSet<UserUnit> UserUnit { get; set; }
@@ -14,6 +17,11 @@ public class AppDbContext : DbContext
     public DbSet<Enchant> Enchant { get; set; }
     public DbSet<Character> Character { get; set; }
     public DbSet<Material> Material { get; set; }
+    public DbSet<Product> Product { get; set; }
+    public DbSet<Transaction> Transaction { get; set; }
+    public DbSet<ProductComposition> ProductComposition { get; set; }
+    public DbSet<CompositionProbability> CompositionProbability { get; set; }
+    public DbSet<UserProduct> UserProduct { get; set; }
     public DbSet<UserSheep> UserSheep { get; set; }
     public DbSet<UserEnchant> UserEnchant { get; set; }
     public DbSet<UserCharacter> UserCharacter { get; set; }
@@ -27,6 +35,9 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>().HasIndex(user => user.UserAccount).IsUnique();
+        builder.Entity<UserStats>().HasKey(t => new { t.UserId, t.UserLevel });
+        builder.Entity<UserMatch>().HasOne<User>().WithOne().HasForeignKey<UserMatch>(um => um.UserId);
+        builder.Entity<Friends>().HasKey(t => new { t.UserId, t.FriendId });
         
         builder.Entity<Unit>(entity =>
         {
@@ -62,6 +73,28 @@ public class AppDbContext : DbContext
             entity.Property(material => material.MaterialId).HasConversion(v => (int)v, v => (MaterialId)v);
             entity.Property(material => material.Class).HasConversion(v => (int)v, v => (UnitClass)v);
         });
+
+        builder.Entity<Product>(entity =>
+        {
+            entity.Property(product => product.Currency).HasConversion(v => (int)v, v => (CurrencyType)v);
+        });
+
+        builder.Entity<Transaction>().HasKey(t => new { t.TransactionTimestamp, t.UserId });
+        builder.Entity<Transaction>(entity =>
+        {
+            entity.Property(t => t.Currency)
+                .HasConversion(v => (int)v, v => (CurrencyType)v);
+            entity.Property(t => t.Status)
+                .HasConversion(v => (int)v, v => (TransactionStatus)v);
+            entity.Property(t => t.CashCurrency)
+                .HasConversion(v => (int)v, v => (CashCurrencyType)v);
+        });
+        
+        builder.Entity<ProductComposition>().HasKey(pc => new { pc.ProductId, pc.CompositionId });
+        
+        builder.Entity<CompositionProbability>().HasKey(cp => new { cp.ProductId, cp.CompositionId, cp.Count });
+        
+        builder.Entity<UserProduct>().HasKey(up => new { up.UserId, up.ProductId });
         
         builder.Entity<DeckUnit>().HasKey(deckUnit => new { deckUnit.DeckId, deckUnit.UnitId });
         builder.Entity<DeckUnit>(entity =>
@@ -102,9 +135,8 @@ public class AppDbContext : DbContext
         
         builder.Entity<UserMaterial>().HasKey(userMaterial => new { userMaterial.UserId, userMaterial.MaterialId });
         
-        builder.Entity<BattleSetting>().HasNoKey();
-        builder.Entity<BattleSetting>()
-            .HasIndex(b => new { b.UserId, b.SheepId, b.EnchantId, b.CharacterId }).IsUnique();
+
+        builder.Entity<BattleSetting>().HasKey(b => new { b.UserId, b.SheepId, b.EnchantId, b.CharacterId });
         
         builder.Entity<ExpTable>().HasKey(e => e.Level);
         builder.Entity<ExpTable>().Property(e => e.Level).ValueGeneratedNever();

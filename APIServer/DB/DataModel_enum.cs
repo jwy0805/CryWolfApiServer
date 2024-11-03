@@ -10,6 +10,12 @@ public enum Env
     Prod
 }
 
+public enum MatchType
+{
+    Friendly,
+    Rank,
+}
+
 public enum UserRole
 {
     Admin,
@@ -34,6 +40,13 @@ public enum UserAct
     InCustomGame,
     InTutorial,
     InLobby
+}
+
+public enum FriendStatus
+{
+    Pending,
+    Accepted,
+    Blocked
 }
 
 public enum UnitClass
@@ -108,6 +121,14 @@ public enum MaterialId
     SoulPowderSandibreeze = 33,
     SoulPowderVoltenar = 34,
     SoulPowderZumarigloom = 35,
+    RainbowEgg = 36,
+}
+
+public enum CurrencyId
+{
+    None,
+    Gold = 4001,
+    Spinel = 4002
 }
 
 public enum Faction
@@ -160,7 +181,7 @@ public enum UnitId
     Wolf = 511,
     Werewolf = 512,
     Bomb = 513,
-    SnowBomb = 514,
+    SnowBomb = 514, 
     PoisonBomb = 515,
     Cacti = 516,
     Cactus = 517,
@@ -193,6 +214,78 @@ public enum EnchantId
 public enum CharacterId
 {
     PlayerCharacter = 2001,
+}
+
+public enum ProductType
+{
+    None = 0, // Other Product
+    Unit = 1,
+    Material = 2,
+    Enchant = 3,
+    Sheep = 4,
+    Character = 5,
+    Gold = 6,
+    Spinel = 7,
+}
+
+public enum ProductCategory
+{
+    None = 0,
+    SpecialPackage = 1,
+    BeginnerPackage = 2,
+    GoldPackage = 3,
+    SpinelPackage = 4,
+    GoldItem = 5,
+    SpinelItem = 6,
+    ReservedSale = 7,
+    DailyDeal = 8,
+    Other = 9,
+}   
+
+public enum CurrencyType
+{
+    None,
+    Cash,
+    Gold,
+    Spinel
+}
+
+public enum CashCurrencyType
+{
+    None,
+    KRW,
+    USD,
+    JPY,
+    CNY,
+    EUR,
+    GBP, // Great Britain Pound
+    CAD, // Canadian Dollar
+    AUD, // Australian Dollar
+    NZD, // New Zealand Dollar
+    CHF, // Swiss Franc
+    SEK, // Swedish Krona
+    DKK, // Danish Krone
+    NOK, // Norwegian Krone
+    ZAR, // South African Rand
+    RUB, // Russian Ruble
+    BRZ, // Brazilian Real
+    MXN, // Mexican Peso
+    INR, // Indian Rupee
+    IDR, // Indonesian Rupiah
+    VNĐ, // Vietnamese Dong
+    THB, // Thai Baht
+}
+
+public enum TransactionStatus
+{
+    None,
+    Completed,
+    Refunded,
+    Cancelled,
+    Failed,
+    Pending,
+    Expired,
+    PartiallyRefunded,
 }
 
 #endregion

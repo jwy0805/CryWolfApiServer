@@ -2,7 +2,62 @@ namespace AccountServer.DB;
 
 #pragma warning disable CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
 
+#region API Test
+
+public class TestRequired
+{
+    public int UnitId { get; set; }
+}
+
+public class TestResponse
+{
+    public bool TestOk { get; set; }
+    public string UnitName { get; set; }
+}
+
+#endregion
+
 #region For Client
+
+public class UserInfo
+{
+    public string UserName { get; set; }
+    public int Level { get; set; }
+    public int Exp { get; set; }
+    public int RankPoint { get; set; }
+    public int Gold { get; set; }
+    public int Spinel { get; set; }
+}
+
+public class ProductInfo
+{
+    public int Id { get; set; }
+    public List<CompositionInfo> Compositions { get; set; }
+    public int Price { get; set; }
+    public CurrencyType CurrencyType { get; set; }
+    public ProductCategory Category { get; set; }
+}
+
+public class CompositionInfo
+{
+    public int Id { get; set; }
+    public int ProductId { get; set; }
+    public ProductType Type { get; set; }
+    public int Count { get; set; }
+    public int MinCount { get; set; }
+    public int MaxCount { get; set; }
+    public bool Guaranteed { get; set; }
+    public bool IsSelectable { get; set; }
+}
+
+public class DailyProductInfo
+{
+    public int Id { get; set; }
+    public int Price { get; set; }
+    public CurrencyType CurrencyType { get; set; }
+    public ProductCategory Category { get; set; }
+    public bool AlreadyBought { get; set; }
+}
 
 public class UnitInfo
 {
@@ -73,6 +128,12 @@ public class OwnedCharacterInfo
 public class OwnedMaterialInfo
 {
     public MaterialInfo MaterialInfo { get; set; }
+    public int Count { get; set; }
+}
+
+public class OwnedProductInfo
+{
+    public int ProductId { get; set; }
     public int Count { get; set; }
 }
 
@@ -151,6 +212,28 @@ public class LoadInfoPacketResponse
     public List<MaterialInfo> MaterialInfos { get; set; }
     public List<ReinforcePointInfo> ReinforcePoints { get; set; }
     public List<UnitMaterialInfo> CraftingMaterials { get; set; }
+}
+
+public class LoadUserInfoPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class LoadUserInfoPacketResponse
+{
+    public bool LoadUserInfoOk { get; set; }
+    public UserInfo UserInfo { get; set; }
+}
+
+public class UpdateUserInfoPacketRequired
+{
+    public string AccessToken { get; set; }
+    public UserInfo UserInfo { get; set; }
+}
+
+public class UpdateUserInfoPacketResponse
+{
+    public bool UpdateUserInfoOk { get; set; }
 }
 
 public class RefreshTokenRequired
@@ -343,8 +426,25 @@ public class ReinforceResultPacketResponse
     public int Error { get; set; }
 }
 
-#endregion
+public class InitProductPacketRequired
+{
+    public string AccessToken { get; set; }
+}
 
+public class InitProductPacketResponse
+{
+    public bool GetProductOk { get; set; }
+    public List<ProductInfo> SpecialPackages { get; set; }
+    public List<ProductInfo> BeginnerPackages { get; set; }
+    public List<ProductInfo> GoldPackages { get; set; }
+    public List<ProductInfo> SpinelPackages { get; set; }
+    public List<ProductInfo> GoldItems { get; set; }
+    public List<ProductInfo> SpinelItems { get; set; }
+    public List<ProductInfo> ReservedSales { get; set; }
+    public List<DailyProductInfo> DailyDeals { get; set; }
+}
+
+#endregion
 
 #region For Match Making Server
 

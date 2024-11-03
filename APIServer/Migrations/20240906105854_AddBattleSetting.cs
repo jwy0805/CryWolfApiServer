@@ -11,7 +11,7 @@ namespace AccountServer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Battle_Setting",
+                name: "BattleSetting",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
@@ -53,7 +53,7 @@ namespace AccountServer.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Battle_Setting_UserId_SheepId_EnchantId_CharacterId",
-                table: "Battle_Setting",
+                table: "BattleSetting",
                 columns: new[] { "UserId", "SheepId", "EnchantId", "CharacterId" },
                 unique: true);
         }
@@ -62,7 +62,7 @@ namespace AccountServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Battle_Setting");
+                name: "BattleSetting");
 
             migrationBuilder.DropTable(
                 name: "Character");

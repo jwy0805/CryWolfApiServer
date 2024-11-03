@@ -21,22 +21,21 @@ namespace AccountServer.Migrations
 
             modelBuilder.Entity("AccountServer.DB.BattleSetting", b =>
                 {
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EnchantId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int>("SheepId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("EnchantId")
                         .HasColumnType("int");
 
-                    b.HasIndex("UserId", "SheepId", "EnchantId", "CharacterId")
-                        .IsUnique();
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
 
-                    b.ToTable("Battle_Setting");
+                    b.HasKey("UserId", "SheepId", "EnchantId", "CharacterId");
+
+                    b.ToTable("BattleSetting");
                 });
 
             modelBuilder.Entity("AccountServer.DB.Character", b =>
@@ -50,6 +49,28 @@ namespace AccountServer.Migrations
                     b.HasKey("CharacterId");
 
                     b.ToTable("Character");
+                });
+
+            modelBuilder.Entity("AccountServer.DB.CompositionProbability", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Probability")
+                        .HasColumnType("double");
+
+                    b.HasKey("ProductId", "CompositionId", "Count");
+
+                    b.ToTable("CompositionProbability");
                 });
 
             modelBuilder.Entity("AccountServer.DB.Deck", b =>
@@ -114,6 +135,25 @@ namespace AccountServer.Migrations
                     b.ToTable("ExpTable");
                 });
 
+            modelBuilder.Entity("AccountServer.DB.Friends", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FriendId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "FriendId");
+
+                    b.ToTable("Friends");
+                });
+
             modelBuilder.Entity("AccountServer.DB.Material", b =>
                 {
                     b.Property<int>("MaterialId")
@@ -130,6 +170,59 @@ namespace AccountServer.Migrations
                     b.HasKey("MaterialId");
 
                     b.ToTable("Material");
+                });
+
+            modelBuilder.Entity("AccountServer.DB.Product", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsFixed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("AccountServer.DB.ProductComposition", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompositionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Guaranteed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsSelectable")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "CompositionId");
+
+                    b.ToTable("ProductComposition");
                 });
 
             modelBuilder.Entity("AccountServer.DB.RefreshToken", b =>
@@ -159,7 +252,7 @@ namespace AccountServer.Migrations
                     b.ToTable("RefreshToken");
                 });
 
-            modelBuilder.Entity("AccountServer.DB.ReinforceRate", b =>
+            modelBuilder.Entity("AccountServer.DB.ReinforcePoint", b =>
                 {
                     b.Property<int>("Class")
                         .HasColumnType("int")
@@ -174,7 +267,7 @@ namespace AccountServer.Migrations
 
                     b.HasKey("Class", "Level");
 
-                    b.ToTable("ReinforceRate");
+                    b.ToTable("ReinforcePoint");
                 });
 
             modelBuilder.Entity("AccountServer.DB.Sheep", b =>
@@ -188,6 +281,37 @@ namespace AccountServer.Migrations
                     b.HasKey("SheepId");
 
                     b.ToTable("Sheep");
+                });
+
+            modelBuilder.Entity("AccountServer.DB.Transaction", b =>
+                {
+                    b.Property<long>("TransactionTimestamp")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CashCurrency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PurchaseAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransactionTimestamp", "UserId");
+
+                    b.ToTable("Transaction");
                 });
 
             modelBuilder.Entity("AccountServer.DB.Unit", b =>
@@ -251,21 +375,9 @@ namespace AccountServer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("Exp")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Gem")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Gold")
-                        .HasColumnType("int");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("RankPoint")
-                        .HasColumnType("int");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -276,9 +388,6 @@ namespace AccountServer.Migrations
                     b.Property<string>("UserAccount")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
-
-                    b.Property<int>("UserLevel")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -324,6 +433,34 @@ namespace AccountServer.Migrations
                     b.ToTable("User_Enchant");
                 });
 
+            modelBuilder.Entity("AccountServer.DB.UserMatch", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DrawFriendlyMatch")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DrawRankMatch")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LoseFriendlyMatch")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LoseRankMatch")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WinFriendlyMatch")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WinRankMatch")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserMatch");
+                });
+
             modelBuilder.Entity("AccountServer.DB.UserMaterial", b =>
                 {
                     b.Property<int>("UserId")
@@ -338,6 +475,22 @@ namespace AccountServer.Migrations
                     b.HasKey("UserId", "MaterialId");
 
                     b.ToTable("User_Material");
+                });
+
+            modelBuilder.Entity("AccountServer.DB.UserProduct", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ProductId");
+
+                    b.ToTable("User_Product");
                 });
 
             modelBuilder.Entity("AccountServer.DB.UserSheep", b =>
@@ -356,6 +509,31 @@ namespace AccountServer.Migrations
                     b.ToTable("User_Sheep");
                 });
 
+            modelBuilder.Entity("AccountServer.DB.UserStats", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Exp")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Gold")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RankPoint")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Spinel")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "UserLevel");
+
+                    b.ToTable("UserStats");
+                });
+
             modelBuilder.Entity("AccountServer.DB.UserUnit", b =>
                 {
                     b.Property<int>("UserId")
@@ -370,6 +548,15 @@ namespace AccountServer.Migrations
                     b.HasKey("UserId", "UnitId");
 
                     b.ToTable("User_Unit");
+                });
+
+            modelBuilder.Entity("AccountServer.DB.UserMatch", b =>
+                {
+                    b.HasOne("AccountServer.DB.User", null)
+                        .WithOne()
+                        .HasForeignKey("AccountServer.DB.UserMatch", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

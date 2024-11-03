@@ -39,7 +39,7 @@ namespace AccountServer.Migrations
                     b.HasIndex("UserId", "SheepId", "EnchantId", "CharacterId")
                         .IsUnique();
 
-                    b.ToTable("Battle_Setting");
+                    b.ToTable("BattleSetting");
                 });
 
             modelBuilder.Entity("AccountServer.DB.Character", b =>

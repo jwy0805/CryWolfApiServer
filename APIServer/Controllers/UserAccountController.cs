@@ -3,6 +3,7 @@ using AccountServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace AccountServer.Controllers;
 
@@ -42,15 +43,36 @@ public class UserAccountController : ControllerBase
                 Role = UserRole.User,
                 State = UserState.Deactivate,
                 CreatedAt = DateTime.UtcNow,
-                RankPoint = 0,
-                Gold = 500,
-                Gem = 0
             };
             
             _context.User.Add(newUser);
-            var success = _context.SaveChangesExtended(); // 이 때 UserId가 생성
+            _context.SaveChangesExtended(); // 이 때 UserId가 생성
+
+            var newUserStat = new UserStats
+            {
+                UserId = newUser.UserId,
+                UserLevel = 1,
+                RankPoint = 500,
+                Exp = 0,
+                Gold = 0,
+                Spinel = 0
+            };
+            
+            var newUserMatch = new UserMatch
+            {
+                UserId = newUser.UserId,
+                WinRankMatch = 0,
+                LoseRankMatch = 0,
+                DrawRankMatch = 0,
+                WinFriendlyMatch = 0,
+                LoseFriendlyMatch = 0,
+                DrawFriendlyMatch = 0
+            };
+            
+            _context.UserStats.Add(newUserStat);
+            _context.UserMatch.Add(newUserMatch);
             newUser.UserName = $"Player{newUser.UserId}";
-            res.CreateOk = success;
+            res.CreateOk = _context.SaveChangesExtended();
             
             // Create Initial Deck and Collection
             CreateInitDeckAndCollection(newUser.UserId, new [] {
@@ -210,7 +232,9 @@ public class UserAccountController : ControllerBase
 
         var user = _context.User
             .FirstOrDefault(user => user.UserId == userId);
-        if (user == null) return NotFound();
+        var userStat = _context.UserStats
+            .FirstOrDefault(userStat => userStat.UserId == userId);
+        if (user == null || userStat == null) return NotFound();
 
         user.Act = required.Act;
         res.ChangeOk = true;
@@ -223,7 +247,7 @@ public class UserAccountController : ControllerBase
             {
                 UserId = user.UserId,
                 Faction = required.Faction,
-                RankPoint = user.RankPoint,
+                RankPoint = userStat.RankPoint,
                 RequestTime = DateTime.Now,
                 MapId = required.MapId
             };
@@ -236,6 +260,78 @@ public class UserAccountController : ControllerBase
             var cancelPacket = new MatchCancelPacketRequired { UserId = user.UserId };
             await _apiService.SendRequestAsync<MatchCancelPacketRequired>(
                 "MatchMaking/CancelMatch", cancelPacket, HttpMethod.Post);
+        }
+        
+        return Ok(res);
+    }
+
+    [HttpPost]
+    [Route("LoadUserInfo")]
+    public IActionResult LoadUserInfo([FromBody] LoadUserInfoPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var res = new LoadUserInfoPacketResponse();
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null) return Unauthorized();
+        
+        var user = _context.User
+            .AsNoTracking()
+            .FirstOrDefault(user => user.UserId == userId);
+        var userStat = _context.UserStats
+            .AsNoTracking()
+            .FirstOrDefault(userStat => userStat.UserId == userId);
+        if (user == null || userStat == null) return NotFound();
+
+        res.UserInfo = new UserInfo
+        {
+            UserName = user.UserName,
+            Level = userStat.UserLevel,
+            Exp = userStat.Exp,
+            Gold = userStat.Gold,
+            Spinel = userStat.Spinel,
+            RankPoint = userStat.RankPoint,
+        };
+        
+        res.LoadUserInfoOk = true;
+        
+        return Ok(res);
+    }
+    
+    [HttpPost]
+    [Route("UpdateUserInfo")]
+    public IActionResult UpdateUserInfo([FromBody] UpdateUserInfoPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var res = new UpdateUserInfoPacketResponse();
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null) return Unauthorized();
+        
+        var userInfo = required.UserInfo;
+        var userStat = _context.UserStats
+            .AsNoTracking()
+            .FirstOrDefault(userStat => userStat.UserId == userId);
+        if (userStat == null) return NotFound();
+        
+        using var transaction = _context.Database.BeginTransaction();
+        try
+        {
+            userStat.UserLevel = userInfo.Level;
+            userStat.Exp = userInfo.Exp;
+            userStat.Gold = userInfo.Gold;
+            userStat.Spinel = userInfo.Spinel;
+            userStat.RankPoint = userInfo.RankPoint;
+            res.UpdateUserInfoOk = _context.SaveChangesExtended();
+            transaction.Commit();
+        }
+        catch (Exception e)
+        {
+            res.UpdateUserInfoOk = false;
+            transaction.Rollback();
+            return Ok(res);
         }
         
         return Ok(res);

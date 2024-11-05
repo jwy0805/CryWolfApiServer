@@ -481,6 +481,7 @@ public class CollectionController : ControllerBase
         }
         else
         {
+            Console.WriteLine("GetDeckResponse: userId is null");
             res.GetDeckOk = false;
         }
 

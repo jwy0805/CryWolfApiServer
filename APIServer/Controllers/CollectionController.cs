@@ -399,7 +399,7 @@ public class CollectionController : ControllerBase
         if (required.Environment == Env.Local) return GetDeckResponse();
         
         var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
-        return principal == null ? Unauthorized() : InitCardsResponse(principal);
+        return principal == null ? Unauthorized() : GetDeckResponse(principal);
     }
     
     private IActionResult GetDeckResponse(ClaimsPrincipal? principal = null)

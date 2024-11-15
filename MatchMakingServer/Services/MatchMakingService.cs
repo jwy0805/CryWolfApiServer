@@ -86,36 +86,109 @@ public class MatchMakingService : BackgroundService
         }
     }
     
-    private async void ProcessMatchRequest(MatchMakingPacketRequired sheepRequest, MatchMakingPacketRequired wolfRequest)
+    private async void ProcessMatchRequest(MatchMakingPacketRequired sheepRequired, MatchMakingPacketRequired wolfRequired)
     {   
         _logger.LogInformation(
-            $"Matched User {sheepRequest.UserId} (Faction {sheepRequest.Faction}, RankPoint {sheepRequest.RankPoint}) " +
-            $"with User {wolfRequest.UserId} (Faction {wolfRequest.Faction}, RankPoint {wolfRequest.RankPoint})");
+            $"Matched User {sheepRequired.UserId} (Faction {sheepRequired.Faction}, RankPoint {sheepRequired.RankPoint}) " +
+            $"with User {wolfRequired.UserId} (Faction {wolfRequired.Faction}, RankPoint {wolfRequired.RankPoint})");
+        
+        var getRankPointPacket = new GetRankPointPacketRequired
+        {
+            SheepUserId = sheepRequired.UserId,
+            WolfUserId = wolfRequired.UserId
+        };
+        
+        var rankPointResponse = await _apiService
+            .SendRequestToApiAsync<GetRankPointPacketResponse>("Match/GetRankPoint", getRankPointPacket, HttpMethod.Post);
+       
+        if (rankPointResponse == null)
+        {
+            _logger.LogError("Failed to get rank point.");
+            return;
+        }
         
         // Http Transfer of Socket Server
         var matchSuccessPacket = new MatchSuccessPacketRequired
         {
-            SheepUserId = sheepRequest.UserId,
-            WolfUserId = wolfRequest.UserId,
-            MapId = sheepRequest.MapId
+            SheepUserId = sheepRequired.UserId,
+            SheepSessionId = sheepRequired.SessionId,
+            SheepUserName = sheepRequired.UserName,
+            WolfUserId = wolfRequired.UserId,
+            WolfSessionId = wolfRequired.SessionId,
+            WolfUserName = wolfRequired.UserName,
+            MapId = sheepRequired.MapId,
+            SheepRankPoint = sheepRequired.RankPoint,
+            WolfRankPoint = wolfRequired.RankPoint,
+            WinPointSheep = rankPointResponse.WinPointSheep,
+            WinPointWolf = rankPointResponse.WinPointWolf,
+            LosePointSheep = rankPointResponse.LosePointSheep,
+            LosePointWolf = rankPointResponse.LosePointWolf,
+            SheepCharacterId = sheepRequired.CharacterId,
+            WolfCharacterId = wolfRequired.CharacterId,
+            SheepId = (SheepId)sheepRequired.AssetId,
+            EnchantId = (EnchantId)wolfRequired.AssetId,
+            SheepUnitIds = sheepRequired.UnitIds,
+            WolfUnitIds = wolfRequired.UnitIds,
+            SheepAchievements = sheepRequired.Achievements,
+            WolfAchievements = wolfRequired.Achievements
+        };
+
+        await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
+    }
+
+    private async void ProcessTestMatchRequest(MatchMakingPacketRequired required)
+    {
+        _logger.LogInformation($"Test Match Requested User {required.UserId} (Faction {required.Faction}, RankPoint {required.RankPoint})");
+        
+        var getRankPointPacket = new GetRankPointPacketRequired
+        {
+            SheepUserId = required.UserId,
+            WolfUserId = required.UserId
+        };
+        
+        var rankPointResponse = await _apiService
+            .SendRequestToApiAsync<GetRankPointPacketResponse>("Match/GetRankPoint", getRankPointPacket, HttpMethod.Post);
+               
+        if (rankPointResponse == null)
+        {
+            _logger.LogError("Failed to get rank point.");
+            return;
+        }
+        
+        var matchSuccessPacket = new MatchSuccessPacketRequired
+        {
+            SheepUserId = required.UserId,
+            SheepSessionId = required.SessionId,
+            SheepUserName = required.Faction == Faction.Sheep ? required.UserName : "Test",
+            WolfUserId = required.UserId,
+            WolfSessionId = required.SessionId,
+            WolfUserName = required.Faction == Faction.Wolf ? required.UserName : "Test",
+            MapId = required.MapId,
+            SheepRankPoint = required.RankPoint,
+            WolfRankPoint = required.RankPoint,
+            WinPointSheep = rankPointResponse.WinPointSheep,
+            WinPointWolf = rankPointResponse.WinPointWolf,
+            LosePointSheep = rankPointResponse.LosePointSheep,
+            LosePointWolf = rankPointResponse.LosePointWolf,
+            SheepCharacterId = required.CharacterId,
+            WolfCharacterId = required.CharacterId,
+            SheepId = (SheepId)required.AssetId,
+            EnchantId = (EnchantId)required.AssetId,
+            SheepUnitIds = required.UnitIds,
+            WolfUnitIds = required.UnitIds,
+            SheepAchievements = required.Achievements,
+            WolfAchievements = required.Achievements
         };
 
         await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
     }
     
-    public async void AddMatchRequest(MatchMakingPacketRequired packet, bool test = false)
+    public void AddMatchRequest(MatchMakingPacketRequired packet, bool test = false)
     {
         if (test)
         {
-            var sheepUserId = packet.Faction == Faction.Sheep ? packet.UserId : 0;
-            var wolfUserId = packet.Faction == Faction.Wolf ? packet.UserId : 0;
-            var matchSuccessPacket = new MatchSuccessPacketRequired
-            {
-                SheepUserId = sheepUserId,
-                WolfUserId = wolfUserId
-            };
-            
-            await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
+            Console.WriteLine($"user {packet.UserId} : session {packet.SessionId} test match");
+            ProcessTestMatchRequest(packet);
         }
         else
         {

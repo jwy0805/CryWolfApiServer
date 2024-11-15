@@ -9,7 +9,47 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="1105" />
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Services/MatchService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/ApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/ApiService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/DB/Enums.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/DB/Enums.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/ApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/ApiService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.csproj.CopyComplete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/apphost" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/apphost" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,6 +76,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ClientPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ServerPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/134622bcf8ad016d3faf7776eb0457b76a5798c537458aa82651ab2cee6e1/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3b526121ad76ddf1f0a6cdbb4d412db36f3927d17f728af567a7e54b2f416a/EntityGraphAttacher.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/621526284d3e4868b98948aff942206525763e57e194a27623b66c384466/ServiceProviderServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7fe79a50e72b83d86bcb87e6e177c55c4e64595e94e8591a17f6ec586ffc9f71/Interop.IOErrors.cs" root0="SKIP_HIGHLIGHTING" />
@@ -44,6 +85,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/de1dc94e26de2eb8cdb9b19e9451c6a0738025b875978dc863de7ba87ee78c4/ServiceCollectionServiceExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eac217589439673846d1695b6e3ca1dba9490abb03c35edb0f189479c7e77af/JwtSecurityTokenHandler.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="Toolset" />
@@ -82,7 +127,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
+  <component name="RunManager" selected="다중 시작.BothServers">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -300,7 +345,15 @@
       <workItem from="1730512164798" duration="8376000" />
       <workItem from="1730634580324" duration="5273000" />
       <workItem from="1730683068642" duration="26897000" />
-      <workItem from="1730771419729" duration="10903000" />
+      <workItem from="1730771419729" duration="22109000" />
+      <workItem from="1730815385158" duration="17590000" />
+      <workItem from="1731121390634" duration="17715000" />
+      <workItem from="1731286290213" duration="11414000" />
+      <workItem from="1731380345434" duration="9123000" />
+      <workItem from="1731462354964" duration="20758000" />
+      <workItem from="1731548341301" duration="19826000" />
+      <workItem from="1731637108811" duration="9506000" />
+      <workItem from="1731664455619" duration="2048000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -358,7 +411,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730795167711</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary=".">
+      <option name="closed" value="true" />
+      <created>1730795533506</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1730795533506</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -376,6 +437,7 @@
     <MESSAGE value="kestrel port setting has been deleted. Use nginx reverse-proxy instead." />
     <MESSAGE value="Get Deck methods about ec2 environment modified." />
     <MESSAGE value="1105" />
-    <option name="LAST_COMMIT_MESSAGE" value="1105" />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
 </project>

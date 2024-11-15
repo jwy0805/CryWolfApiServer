@@ -19,7 +19,6 @@
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/staticwebassets.build.json
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/staticwebassets.development.json
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/scopedcss/bundle/MatchMakingServer.styles.css
-/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.csproj.CopyComplete
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb
@@ -27,3 +26,10 @@
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/bin/Debug/net6.0/Newtonsoft.Json.dll
 /Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/bin/Debug/net6.0/Google.Protobuf.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json
+/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/staticwebassets/msbuild.MatchMakingServer.Microsoft.AspNetCore.StaticWebAssets.props
+/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/staticwebassets/msbuild.build.MatchMakingServer.props
+/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/staticwebassets/msbuild.buildMultiTargeting.MatchMakingServer.props
+/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/staticwebassets/msbuild.buildTransitive.MatchMakingServer.props
+/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/staticwebassets.pack.json
+/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/Debug/net6.0/MatchMak.44996357.Up2Date

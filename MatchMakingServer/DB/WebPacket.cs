@@ -1,14 +1,31 @@
 namespace MatchMakingServer.DB;
 
+public class TestPacketRequired
+{
+    private bool Test { get; set; }
+}
+
+public class TestPacketResponse
+{
+    private bool Test { get; set; }
+}
+
 #region For API Server
 
 public class MatchMakingPacketRequired
 {
+    public bool Test { get; set; } = false;
     public int UserId { get; set; }
+    public int SessionId { get; set; }
+    public string UserName { get; set; }
     public Faction Faction { get; set; }
-    public int RankPoint { get; set; } 
+    public int RankPoint { get; set; }
     public DateTime RequestTime { get; set; }
     public int MapId { get; set; }
+    public int CharacterId { get; set; }
+    public int AssetId { get; set; }
+    public UnitId[] UnitIds { get; set; }
+    public List<int> Achievements { get; set; }
 }
 
 public class MatchMakingPacketResponse
@@ -26,6 +43,20 @@ public class MatchCancelPacketResponse
     public int UserId { get; set; }
 }
 
+public class GetRankPointPacketRequired
+{
+    public int SheepUserId { get; set; }
+    public int WolfUserId { get; set; }
+}
+
+public class GetRankPointPacketResponse
+{
+    public int WinPointSheep { get; set; }
+    public int WinPointWolf { get; set; }
+    public int LosePointSheep { get; set; }
+    public int LosePointWolf { get; set; }
+}
+
 #endregion
 
 #region For Socket Server
@@ -33,8 +64,26 @@ public class MatchCancelPacketResponse
 public class MatchSuccessPacketRequired
 {
     public int SheepUserId { get; set; }
+    public int SheepSessionId { get; set; }
+    public string SheepUserName { get; set; }
     public int WolfUserId { get; set; }
+    public int WolfSessionId { get; set; }
+    public string WolfUserName { get; set; }
     public int MapId { get; set; }
+    public int SheepRankPoint { get; set; }
+    public int WolfRankPoint { get; set; }
+    public int WinPointSheep { get; set; }
+    public int WinPointWolf { get; set; }
+    public int LosePointSheep { get; set; }
+    public int LosePointWolf { get; set; }
+    public int SheepCharacterId { get; set; }
+    public int WolfCharacterId { get; set; }
+    public SheepId SheepId { get; set; }
+    public EnchantId EnchantId { get; set; }
+    public UnitId[] SheepUnitIds { get; set; }
+    public UnitId[] WolfUnitIds { get; set; }
+    public List<int> SheepAchievements { get; set; }
+    public List<int> WolfAchievements { get; set; }
 }
 
 public class MatchSuccessPacketResponse

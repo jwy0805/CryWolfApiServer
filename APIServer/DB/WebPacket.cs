@@ -159,6 +159,13 @@ public class UnitMaterialInfo
     public List<OwnedMaterialInfo> Materials { get; set; }
 }
 
+public class RewardInfo
+{
+    public int ItemId { get; set; }
+    public ProductType ProductType { get; set; }
+    public int Count { get; set; }
+}
+
 public class CreateUserAccountPacketRequired
 {
     public string UserAccount { get; set; }
@@ -187,14 +194,47 @@ public class LoginUserAccountPacketResponse
 public class ChangeActPacketRequired
 {
     public string AccessToken { get; set; }
-    public UserAct Act { get; set; }
+    public int SessionId { get; set; }
     public Faction Faction { get; set; }
     public int MapId { get; set; }
 }
 
-public class ChangeActPackerResponse
+public class ChangeActPacketResponse
 {
     public bool ChangeOk { get; set; }
+}
+
+public class ChangeActTestPacketRequired
+{
+    public string AccessToken { get; set; }
+    public int SessionId { get; set; }
+    public Faction Faction { get; set; }
+    public int MapId { get; set; }
+}
+
+public class ChangeActTestPacketResponse
+{
+    public bool ChangeOk { get; set; }
+}
+
+public class CancelMatchPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class CancelMatchPacketResponse
+{
+    public bool CancelOk { get; set; }
+}
+
+public class SurrenderPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class SurrenderPacketResponse
+{
+    public bool SurrenderOk { get; set; }
 }
 
 public class LoadInfoPacketRequired
@@ -450,11 +490,18 @@ public class InitProductPacketResponse
 
 public class MatchMakingPacketRequired
 {
+    public bool Test { get; set; } = false;
     public int UserId { get; set; }
+    public int SessionId { get; set; }
+    public string UserName { get; set; }
     public Faction Faction { get; set; }
     public int RankPoint { get; set; }
     public DateTime RequestTime { get; set; }
     public int MapId { get; set; }
+    public int CharacterId { get; set; }
+    public int AssetId { get; set; }
+    public UnitId[] UnitIds { get; set; }
+    public List<int> Achievements { get; set; }
 }
 
 public class MatchMakingPacketResponse
@@ -472,18 +519,72 @@ public class MatchCancelPacketResponse
     public int UserId { get; set; }
 }
 
+public class GetRankPointPacketRequired
+{
+    public int SheepUserId { get; set; }
+    public int WolfUserId { get; set; }
+}
+
+public class GetRankPointPacketResponse
+{
+    public int WinPointSheep { get; set; }
+    public int WinPointWolf { get; set; }
+    public int LosePointSheep { get; set; }
+    public int LosePointWolf { get; set; }
+}
+
 #endregion
 
 #region For Socket Server
 
-public class GetUserIdPacketRequired
+public class SendMatchInfoPacketRequired
 {
-    public string UserAccount { get; set; }
+    public int SheepUserId { get; set; }
+    public int SheepSessionId { get; set; }
+    public int WolfUserId { get; set; }
+    public int WolfSessionId { get; set; }
 }
 
-public class GetUserIdPacketResponse
+public class SendMatchInfoPacketResponse
+{
+    public bool SendMatchInfoOk { get; set; }
+}
+
+public class GameResultPacketRequired
 {
     public int UserId { get; set; }
+    public bool IsWin { get; set; }
+}
+
+public class GameResultPacketResponse
+{
+    public bool GetGameResultOk { get; set; }
+}
+
+public class GameRewardPacketRequired
+{
+    public int WinUserId { get; set; }
+    public int WinRankPoint { get; set; }
+    public int LoseUserId { get; set; }
+    public int LoseRankPoint { get; set; }
+}
+
+public class GameRewardPacketResponse
+{
+    public bool GetGameRewardOk { get; set; }
+    public List<RewardInfo> WinnerRewards { get; set; }
+    public List<RewardInfo> LoserRewards { get; set; }
+}
+
+public class SessionDisconnectPacketRequired
+{
+    public int UserId { get; set; }
+    public int SessionId { get; set; }
+}
+
+public class SessionDisconnectPacketResponse
+{
+    public bool SessionDisconnectOk { get; set; }
 }
 
 #endregion

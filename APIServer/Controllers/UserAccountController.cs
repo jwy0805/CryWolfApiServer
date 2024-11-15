@@ -12,14 +12,12 @@ namespace AccountServer.Controllers;
 public class UserAccountController : ControllerBase
 {
     private readonly AppDbContext _context;
-    private readonly ApiService _apiService;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
     
-    public UserAccountController(AppDbContext context, ApiService apiService, TokenService tokenService, TokenValidator validator)
+    public UserAccountController(AppDbContext context, TokenService tokenService, TokenValidator validator)
     {
         _context = context;
-        _apiService = apiService;
         _tokenService = tokenService;
         _tokenValidator = validator;
     }
@@ -177,27 +175,6 @@ public class UserAccountController : ControllerBase
         
         return res;
     }
-
-    [HttpPost]
-    [Route("GetUserIdByAccount")]
-    public GetUserIdPacketResponse GetUserIdByAccount([FromBody] GetUserIdPacketRequired required)
-    {
-        var res = new GetUserIdPacketResponse();
-        var account = _context.User
-            .AsNoTracking()
-            .FirstOrDefault(user => user.UserAccount == required.UserAccount);
-
-        if (account == null)
-        {
-            res.UserId = -1;
-        }
-        else
-        {
-            res.UserId = account.UserId;
-        }
-        
-        return res;
-    }
     
     [HttpPost]
     [Route("RefreshToken")]
@@ -217,52 +194,6 @@ public class UserAccountController : ControllerBase
         {
             return Unauthorized(new { message = exception.Message });
         }
-    }
-    
-    [HttpPut]
-    [Route("ChangeActByMatchMaking")]
-    public async Task<IActionResult> ChangeActByMatchMaking([FromBody] ChangeActPacketRequired required)
-    {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
-        if (principal == null) return Unauthorized();
-
-        var res = new ChangeActPackerResponse();
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userId == null) return Unauthorized();
-
-        var user = _context.User
-            .FirstOrDefault(user => user.UserId == userId);
-        var userStat = _context.UserStats
-            .FirstOrDefault(userStat => userStat.UserId == userId);
-        if (user == null || userStat == null) return NotFound();
-
-        user.Act = required.Act;
-        res.ChangeOk = true;
-        _context.SaveChangesExtended();
-
-        if (required.Act == UserAct.MatchMaking)
-        {   
-            // MatchMakingServer에 유저 정보 전달
-            var matchPacket = new MatchMakingPacketRequired
-            {
-                UserId = user.UserId,
-                Faction = required.Faction,
-                RankPoint = userStat.RankPoint,
-                RequestTime = DateTime.Now,
-                MapId = required.MapId
-            };
-            await _apiService.SendRequestAsync<MatchMakingPacketRequired>(
-                "MatchMaking/Match", matchPacket, HttpMethod.Post);
-        }
-        else
-        {   
-            // 매치 큐에서 해당 유저 제거
-            var cancelPacket = new MatchCancelPacketRequired { UserId = user.UserId };
-            await _apiService.SendRequestAsync<MatchCancelPacketRequired>(
-                "MatchMaking/CancelMatch", cancelPacket, HttpMethod.Post);
-        }
-        
-        return Ok(res);
     }
 
     [HttpPost]

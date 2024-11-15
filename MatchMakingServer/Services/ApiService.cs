@@ -7,11 +7,11 @@ namespace AccountServer.Services;
 public class ApiService
 {
     private readonly HttpClient _client;
-    private const string MatchMakingPortLocal= "7003";
+    private const string ApiPortLocal= "5281";
     private const string MatchMakingPortDev = "495";
     private const string SocketPortLocal = "8081";
     private const string SocketPortDev = "8001";
-    private string BaseUrl => $"https://localhost:{MatchMakingPortLocal}/api";
+    private string BaseUrl => $"http://localhost:{ApiPortLocal}/api";
     private string BaseUrlSocket => $"http://localhost:{SocketPortLocal}";
 
     public ApiService(HttpClient client)

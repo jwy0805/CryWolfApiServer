@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MatchMakingServer.Controllers;
 
-[Route("api/[controller]")]
+[Route("match/[controller]")]
 [ApiController]
 public class MatchMakingController : ControllerBase
 {
@@ -19,7 +19,7 @@ public class MatchMakingController : ControllerBase
     [Route("Match")]
     public MatchMakingPacketResponse MatchMaking([FromBody] MatchMakingPacketRequired required)
     {
-        _matchMakingService.AddMatchRequest(required);
+        _matchMakingService.AddMatchRequest(required, required.Test);
         return new MatchMakingPacketResponse();
     }
     

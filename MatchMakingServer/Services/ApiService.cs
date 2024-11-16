@@ -7,13 +7,26 @@ namespace AccountServer.Services;
 public class ApiService
 {
     private readonly HttpClient _client;
+    private readonly string _env = Environment.GetEnvironmentVariable("ENVIRONMENT") ?? "Local";
     private const string ApiPortLocal= "5281";
     private const string MatchMakingPortDev = "495";
     private const string SocketPortLocal = "8081";
     private const string SocketPortDev = "8001";
-    private string BaseUrl => $"http://localhost:{ApiPortLocal}/api";
-    private string BaseUrlSocket => $"http://localhost:{SocketPortLocal}";
+    
+    private string BaseUrl => _env switch
+    {
+        "Local" => $"http://localhost:{ApiPortLocal}/api",
+        "Dev" => $"http://crywolf-api/api",
+        _ => throw new Exception("Invalid Environment")
+    };
 
+    private string BaseUrlSocket => _env switch
+    {
+        "Local" => $"http://localhost:{SocketPortLocal}",
+        "Dev" => $"http://crywolf-socket",
+        _ => throw new Exception("Invalid Environment")
+    };
+    
     public ApiService(HttpClient client)
     {
         _client = client;

@@ -76,8 +76,8 @@ public class MatchSuccessPacketRequired
     public int WinPointWolf { get; set; }
     public int LosePointSheep { get; set; }
     public int LosePointWolf { get; set; }
-    public int SheepCharacterId { get; set; }
-    public int WolfCharacterId { get; set; }
+    public CharacterId SheepCharacterId { get; set; }
+    public CharacterId WolfCharacterId { get; set; }
     public SheepId SheepId { get; set; }
     public EnchantId EnchantId { get; set; }
     public UnitId[] SheepUnitIds { get; set; }

@@ -1,13 +1,13 @@
 namespace MatchMakingServer.DB;
 
-public class TestPacketRequired
+public class TestApiToMatchRequired
 {
-    private bool Test { get; set; }
+    public bool Test { get; set; }
 }
 
-public class TestPacketResponse
+public class TestApiToMatchResponse
 {
-    private bool Test { get; set; }
+    public bool TestOk { get; set; }
 }
 
 #region For API Server

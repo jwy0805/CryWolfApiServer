@@ -15,6 +15,37 @@ public class TestResponse
     public string UnitName { get; set; }
 }
 
+public class ServerTestRequired
+{
+    public bool Test { get; set; }
+}
+
+public class ServerTestResponse
+{
+    public bool MatchTestOk { get; set; }
+    public bool SocketTestOk { get; set; }
+}
+
+public class TestApiToMatchRequired
+{
+    public bool Test { get; set; }
+}
+
+public class TestApiToMatchResponse
+{
+    public bool TestOk { get; set; }
+}
+
+public class TestApiToSocketRequired
+{
+    public bool Test { get; set; }
+}
+
+public class TestApiToSocketResponse
+{
+    public bool TestOk { get; set; }
+}
+
 #endregion
 
 #region For Client

@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using AccountServer.DB;
 using Newtonsoft.Json;
 
 namespace AccountServer.Services;
@@ -9,10 +10,31 @@ public class ApiService
     private readonly HttpClient _client;
     private const string MatchMakingPortLocal= "5083";
     private const string MatchMakingPortDev = "495";
-    private const string SocketPortLocal = "8081";
-    private string BaseUrlMatchMaking => $"http://localhost:{MatchMakingPortLocal}/match";
-    private string BaseUrlSocket => $"http://localhost:{SocketPortLocal}";
+    private const string SocketPort = "8081";
+    
+    private Env Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT") switch
+    {
+        "Local" => Env.Local,
+        "Dev" => Env.Dev,
+        "Stage" => Env.Stage,
+        "Prod" => Env.Prod,
+        _ => Env.Local
+    };
 
+    private string BaseUrlMatchMaking => Environment switch
+    {
+        Env.Local => $"http://localhost:{MatchMakingPortLocal}/match",
+        Env.Dev => $"http://crywolf-matchmaking/match",
+        _ => throw new Exception("Invalid Environment")
+    };
+    
+    private string BaseUrlSocket => Environment switch
+    {
+        Env.Local => $"http://localhost:{SocketPort}",
+        Env.Dev => $"http://crywolf-socket:{SocketPort}",
+        _ => throw new Exception("Invalid Environment")
+    };
+    
     public ApiService(HttpClient client)
     {
         _client = client;

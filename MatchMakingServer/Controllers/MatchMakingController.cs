@@ -31,4 +31,11 @@ public class MatchMakingController : ControllerBase
         var response = new MatchCancelPacketResponse { UserId = cancelUserId };
         return response;
     }
+    
+    [HttpPost]
+    [Route("Test")]
+    public TestApiToMatchResponse Test([FromBody] TestApiToMatchRequired required)
+    {
+        return new TestApiToMatchResponse { TestOk = required.Test };
+    }
 }

@@ -9,18 +9,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="241118 Url has been modified to use in docker network.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Controllers/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/TestController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/ApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/ApiService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/ApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/ApiService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -329,7 +336,7 @@
       <workItem from="1731685853354" duration="500000" />
       <workItem from="1731718665259" duration="7217000" />
       <workItem from="1731842362221" duration="8895000" />
-      <workItem from="1731890897990" duration="5299000" />
+      <workItem from="1731890897990" duration="8064000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -419,7 +426,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731849041299</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="241118 Url has been modified to use in docker network.">
+      <option name="closed" value="true" />
+      <created>1731896495688</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1731896495688</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -441,6 +456,7 @@
     <MESSAGE value="241116&#10;&#10;Give Match Reward &#10; - Match reward will be given according to result of match." />
     <MESSAGE value="BaseUrl Modification" />
     <MESSAGE value="241117 for docker" />
-    <option name="LAST_COMMIT_MESSAGE" value="241117 for docker" />
+    <MESSAGE value="241118 Url has been modified to use in docker network." />
+    <option name="LAST_COMMIT_MESSAGE" value="241118 Url has been modified to use in docker network." />
   </component>
 </project>

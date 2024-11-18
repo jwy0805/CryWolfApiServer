@@ -43,8 +43,10 @@ public class TestController : ControllerBase
     {
         var apiToMatch = new TestApiToMatchRequired { Test = required.Test };
         var apiToSocket = new TestApiToSocketRequired { Test = required.Test };
-        var taskMatch = _apiService.SendRequestAsync<TestApiToMatchResponse>("Test", apiToMatch, HttpMethod.Post);
-        var taskSocket = _apiService.SendRequestToSocketAsync<TestApiToSocketResponse>("Test", apiToSocket, HttpMethod.Post);
+        var taskMatch = _apiService
+            .SendRequestAsync<TestApiToMatchResponse>("MatchMaking/Test", apiToMatch, HttpMethod.Post);
+        var taskSocket = _apiService
+            .SendRequestToSocketAsync<TestApiToSocketResponse>("test", apiToSocket, HttpMethod.Post);
         
         await Task.WhenAll(taskMatch, taskSocket);
         

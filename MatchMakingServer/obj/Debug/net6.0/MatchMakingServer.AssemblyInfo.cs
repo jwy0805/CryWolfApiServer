@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MatchMakingServer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c32b50ef852e93963bad5b955c581e008ea9f8e1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4384df18337ff5f0629b0ffa70268ef5aab41c8c")]
 [assembly: System.Reflection.AssemblyProductAttribute("MatchMakingServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MatchMakingServer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -29,9 +29,10 @@ public class UserService
         var smtpClient = new SmtpClient
         {
             Host = _configuration["Email:Smtp:Server"] ?? "smtp.gmail.com",
-            Port = int.Parse(_configuration["Email:Smtp:Port"] ?? "587"),
+            Port = int.Parse(Environment.GetEnvironmentVariable("GOOGLE_MAIL_PORT") ?? "587"),
             Credentials = new NetworkCredential(
-                _configuration["Email:Smtp:Username"], _configuration["Email:Smtp:Password"]),
+                _configuration["Email:Smtp:Username"],
+                Environment.GetEnvironmentVariable("GOOGLE_APP_PASSWORD")),
             EnableSsl = true,
         };
         

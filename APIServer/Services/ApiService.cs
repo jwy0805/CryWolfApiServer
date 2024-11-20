@@ -1,9 +1,9 @@
 using System.Net.Http.Headers;
 using System.Text;
-using AccountServer.DB;
+using ApiServer.DB;
 using Newtonsoft.Json;
 
-namespace AccountServer.Services;
+namespace ApiServer.Services;
 
 public class ApiService
 {

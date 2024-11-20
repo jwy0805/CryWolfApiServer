@@ -1,4 +1,4 @@
-namespace AccountServer.Services;
+namespace ApiServer.Services;
 
 public struct MatchInfo
 {

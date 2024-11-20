@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace AccountServer.DB;
+namespace ApiServer.DB;
 
 public class AppDbContext : DbContext
 {
+    public DbSet<TempUser> TempUser { get; set; }
     public DbSet<User> User { get; set; }
     public DbSet<UserStats> UserStats { get; set; }
     public DbSet<UserMatch> UserMatch { get; set; }
@@ -34,6 +35,7 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.Entity<TempUser>().HasKey(user => new { user.TempUserAccount, user.CreatedAt });
         builder.Entity<User>().HasIndex(user => user.UserAccount).IsUnique();
         builder.Entity<UserStats>().HasKey(t => new { t.UserId, t.UserLevel });
         builder.Entity<UserMatch>().HasOne<User>().WithOne().HasForeignKey<UserMatch>(um => um.UserId);

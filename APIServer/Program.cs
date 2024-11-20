@@ -1,7 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
-using AccountServer;
-using AccountServer.DB;
-using AccountServer.Services;
+using ApiServer.Services;
+using ApiServer;
+using ApiServer.DB;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,11 +48,16 @@ builder.Services.AddHttpClient<ApiService>();
 builder.Services.AddSingleton<ApiService>();
 builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<RewardService>();
+builder.Services.AddTransient<UserService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseMySql(defaultConnectionString, new MariaDbServerVersion(new Version(11, 3, 2)));
 });
+
+builder.Services.AddRazorPages();
+
+builder.Logging.AddConsole();
 
 // -- StartUp.cs - Configure
 if (isLocal == false)
@@ -87,6 +92,10 @@ using (var scope = app.Services.CreateScope())
         throw new Exception($"DB Connection failed: {e.Message}");
     }
 }
+
+app.UseStaticFiles();
+app.UseRouting();
+app.MapRazorPages();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

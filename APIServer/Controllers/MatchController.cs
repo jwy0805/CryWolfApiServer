@@ -1,8 +1,8 @@
-using AccountServer.DB;
-using AccountServer.Services;
+using ApiServer.DB;
+using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccountServer.Controllers;
+namespace ApiServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -35,7 +35,7 @@ public class MatchController : ControllerBase
     [Route("TestMatchMaking")]
     public async Task<IActionResult> TestMatchMaking([FromBody] ChangeActTestPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
         var res = new ChangeActPacketResponse();
@@ -111,7 +111,7 @@ public class MatchController : ControllerBase
     [Route("ChangeActByMatchMaking")]
     public async Task<IActionResult> ChangeActByMatchMaking([FromBody] ChangeActPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
         var res = new ChangeActPacketResponse();
@@ -261,7 +261,7 @@ public class MatchController : ControllerBase
     [Route("CancelMatchMaking")]
     public async Task<IActionResult> CancelMatchMaking([FromBody] CancelMatchPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
         var res = new CancelMatchPacketResponse();
@@ -303,7 +303,7 @@ public class MatchController : ControllerBase
     [Route("Surrender")]
     public async Task<IActionResult> GameEndedBySurrender([FromBody] SurrenderPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
         var userMatchDb = _context.UserMatch;

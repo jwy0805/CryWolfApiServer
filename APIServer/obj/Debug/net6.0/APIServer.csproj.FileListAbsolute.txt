@@ -982,3 +982,6 @@
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/staticwebassets.pack.json
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.csproj.Up2Date
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.RazorAssemblyInfo.cache
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.RazorAssemblyInfo.cs
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/BCrypt.Net.dll

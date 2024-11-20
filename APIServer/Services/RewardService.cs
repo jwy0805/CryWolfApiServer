@@ -1,6 +1,6 @@
-using AccountServer.DB;
+using ApiServer.DB;
 
-namespace AccountServer.Services;
+namespace ApiServer.Services;
 
 public class RewardService
 {

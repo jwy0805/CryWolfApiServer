@@ -1,8 +1,8 @@
-using AccountServer.DB;
-using AccountServer.Services;
+using ApiServer.DB;
+using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccountServer.Controllers;
+namespace ApiServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -23,7 +23,7 @@ public class PaymentController : Controller
     [Route("InitProducts")]
     public IActionResult InitProducts([FromBody] InitProductPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
         var productGroups = _context.Product

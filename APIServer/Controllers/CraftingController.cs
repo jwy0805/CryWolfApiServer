@@ -1,9 +1,9 @@
-using AccountServer.DB;
-using AccountServer.Services;
+using ApiServer.DB;
+using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AccountServer.Controllers;
+namespace ApiServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -24,7 +24,7 @@ public class CraftingController : ControllerBase
     [Route("LoadMaterials")]
     public IActionResult LoadMaterials([FromBody] LoadMaterialsPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
         var res = new LoadMaterialsPacketResponse();
@@ -62,7 +62,7 @@ public class CraftingController : ControllerBase
     [Route("CraftCard")]
     public IActionResult CraftCard([FromBody] CraftCardPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
         var res = new CraftCardPacketResponse();
@@ -142,7 +142,7 @@ public class CraftingController : ControllerBase
     [Route("ReinforceCard")]
     public IActionResult ReinforceCard([FromBody] ReinforceResultPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
         var res = new ReinforceResultPacketResponse();

@@ -1,10 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AccountServer.DB;
+using ApiServer.DB;
+using ApiServer.Services;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AccountServer.Services;
+namespace ApiServer.Services;
 
 public class TokenValidator
 {
@@ -21,16 +22,22 @@ public class TokenValidator
 
     public int? GetUserIdFromAccessToken(ClaimsPrincipal principal)
     {
-        foreach (var claim in principal.Claims)
-        {
-            Console.WriteLine($"GetUserId / Type: {claim.Type}, Value: {claim.Value}");
-        }
+        // foreach (var claim in principal.Claims)
+        // {
+        //     Console.WriteLine($"GetUserId / Type: {claim.Type}, Value: {claim.Value}");
+        // }
         var userIdClaim = principal.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
         if (userIdClaim == null) return null;
         return int.Parse(userIdClaim.Value);
     }
     
-    public ClaimsPrincipal? ValidateAccessToken(string token)
+    public string GetEmailFromToken(ClaimsPrincipal principal)
+    {
+        var emailClaim = principal.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email);
+        return emailClaim?.Value ?? string.Empty;
+    }
+    
+    public ClaimsPrincipal? ValidateToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_secret);
@@ -70,7 +77,7 @@ public class TokenValidator
             return null;
         }
     }
-
+    
     public int? ValidateRefreshToken(string refreshToken)
     {
         var hashedToken = _tokenService.HashToken(refreshToken);
@@ -89,5 +96,10 @@ public class TokenValidator
         }
 
         return _tokenService.GenerateTokens(userId.Value);
+    }
+    
+    public bool VerifyPassword(string password, string hashedPassword)
+    {
+        return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
     }
 }

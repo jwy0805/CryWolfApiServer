@@ -1,152 +1,84 @@
-using AccountServer.DB;
-using AccountServer.Services;
+using ApiServer.DB;
+using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
-namespace AccountServer.Controllers;
+namespace ApiServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class UserAccountController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly UserService _emailService;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
     
-    public UserAccountController(AppDbContext context, TokenService tokenService, TokenValidator validator)
+    public UserAccountController(AppDbContext context, UserService emailService, TokenService tokenService, TokenValidator validator)
     {
         _context = context;
+        _emailService = emailService;
         _tokenService = tokenService;
         _tokenValidator = validator;
     }
     
     [HttpPost]
-    [Route("CreateAccount")]
-    public CreateUserAccountPacketResponse CreateAccount([FromBody] CreateUserAccountPacketRequired required)
+    [Route("ValidateNewAccount")]
+    public async Task<IActionResult> ValidateNewAccount([FromBody] ValidateNewAccountPacketRequired required)
     {
-        var res = new CreateUserAccountPacketResponse();
+        const string allowedSpecialCharacters = "!@#$%^&*()-_=+[]{};:,.?";
+        var approved = false;
+        var res = new ValidateNewAccountPacketResponse();
+        var tempUserDb = _context.TempUser;
         var account = _context.User
             .AsNoTracking()
             .FirstOrDefault(user => user.UserAccount == required.UserAccount);
-
-        if (account == null)
+        
+        if (required.Password.Any(char.IsDigit) && required.Password.Any(char.IsLetter) &&
+            required.Password.Any(allowedSpecialCharacters.Contains) && required.Password.Length >= 8 && account == null)
         {
-            var newUser = new User
-            {
-                UserAccount = required.UserAccount,
-                UserName = "",
-                Password = required.Password,
-                Role = UserRole.User,
-                State = UserState.Deactivate,
-                CreatedAt = DateTime.UtcNow,
-            };
-            
-            _context.User.Add(newUser);
-            _context.SaveChangesExtended(); // 이 때 UserId가 생성
-
-            var newUserStat = new UserStats
-            {
-                UserId = newUser.UserId,
-                UserLevel = 1,
-                RankPoint = 500,
-                Exp = 0,
-                Gold = 0,
-                Spinel = 0
-            };
-            
-            var newUserMatch = new UserMatch
-            {
-                UserId = newUser.UserId,
-                WinRankMatch = 0,
-                LoseRankMatch = 0,
-                DrawRankMatch = 0,
-                WinFriendlyMatch = 0,
-                LoseFriendlyMatch = 0,
-                DrawFriendlyMatch = 0
-            };
-            
-            _context.UserStats.Add(newUserStat);
-            _context.UserMatch.Add(newUserMatch);
-            newUser.UserName = $"Player{newUser.UserId}";
-            res.CreateOk = _context.SaveChangesExtended();
-            
-            // Create Initial Deck and Collection
-            CreateInitDeckAndCollection(newUser.UserId, new [] {
-                UnitId.Hare, UnitId.Toadstool, UnitId.FlowerPot, 
-                UnitId.Blossom, UnitId.TrainingDummy, UnitId.SunfloraPixie
-            }, Faction.Sheep);
-            
-            CreateInitDeckAndCollection(newUser.UserId, new [] {
-                UnitId.DogBowwow, UnitId.MoleRatKing, UnitId.MosquitoStinger, 
-                UnitId.Werewolf, UnitId.CactusBoss, UnitId.SnakeNaga
-            }, Faction.Wolf);
-            
-            // Create Initial Sheep and Enchant
-            CreateInitSheepAndEnchant(
-                newUser.UserId, new [] { SheepId.PrimeSheepWhite }, new [] { EnchantId.Wind });
-            CreateInitCharacter(newUser.UserId, new [] { CharacterId.PlayerCharacter });
-            CreateInitBattleSetting(newUser.UserId);
-            
-            _context.SaveChangesExtended();
+            res.ValidateOk = true;
+            res.ErrorCode = 0;
+            approved = true;
         }
         else
         {
-            res.CreateOk = false;
-            res.Message = "Duplicate ID";
-        }
-        
-        return res;
-    }
-
-    private void CreateInitDeckAndCollection(int userId, UnitId[] unitIds, Faction faction)
-    {
-        foreach (var unitId in unitIds)
-        {
-            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = unitId, Count = 1});
-        }
-
-        for (int i = 0; i < 3; i++)
-        {
-            var deck = new Deck { UserId = userId, Faction = faction, DeckNumber = i + 1};
-            _context.Deck.Add(deck);
-            _context.SaveChangesExtended();
-        
-            foreach (var unitId in unitIds)
+            if (account != null)
             {
-                _context.DeckUnit.Add(new DeckUnit { DeckId = deck.DeckId, UnitId = unitId });
+                res.ValidateOk = false;
+                res.ErrorCode = 1;
+            }
+            else
+            {
+                res.ValidateOk = false;
+                res.ErrorCode = 2;
             }
         }
-    }
-    
-    private void CreateInitSheepAndEnchant(int userId, SheepId[] sheepIds, EnchantId[] enchantIds)
-    {
-        foreach (var sheepId in sheepIds)
+
+        if (approved)
         {
-            _context.UserSheep.Add(new UserSheep { UserId = userId, SheepId = sheepId, Count = 1});
+            var token = _tokenService.GenerateEmailVerificationToken(required.UserAccount);
+            // var verificationLink = $"https://hamonstudio.net/verify/{token}";
+            var verificationLink = $"https://localhost:7270/verify/{token}";
+            var hashedPassword = _tokenService.HashPassword(required.Password);
+            
+            tempUserDb.Add(new TempUser
+            {
+                TempUserAccount = required.UserAccount,
+                TempPassword = hashedPassword,
+                IsVerified = false,
+                CreatedAt = DateTime.UtcNow
+            });
+
+            var dbTask = _context.SaveChangesExtendedAsync();
+            var emailTask = _emailService.SendVerificationEmail(required.UserAccount, verificationLink);
+            
+            await Task.WhenAll(dbTask, emailTask);
         }
         
-        foreach (var enchantId in enchantIds)
-        {
-            _context.UserEnchant.Add(new UserEnchant { UserId = userId, EnchantId = enchantId, Count = 1});
-        }
-    }
-    
-    private void CreateInitCharacter(int userId, CharacterId[] characterIds)
-    {
-        foreach (var characterId in characterIds)
-        {
-            _context.UserCharacter.Add(new UserCharacter { UserId = userId, CharacterId = characterId, Count = 1});
-        }
-    }
-
-    private void CreateInitBattleSetting(int userId)
-    {
-        _context.BattleSetting.Add(new BattleSetting
-        {
-            UserId = userId, SheepId = 901, EnchantId = 1001, CharacterId = 2001
-        });
+        return Ok(res);
     }
     
     [HttpPost]
@@ -154,22 +86,28 @@ public class UserAccountController : ControllerBase
     public LoginUserAccountPacketResponse Login([FromBody] LoginUserAccountPacketRequired required)
     {
         var res = new LoginUserAccountPacketResponse();
-        var account = _context.User
+        var user = _context.User
             .AsNoTracking()
-            .FirstOrDefault(user => user.UserAccount == required.UserAccount && user.Password == required.Password);
+            .FirstOrDefault(u => u.UserAccount == required.UserAccount);
 
-        if (account == null)
+        if (user == null)
         {
             res.LoginOk = false;
         }
         else
         {
-            var tokens = _tokenService.GenerateTokens(account.UserId);
+            if (_tokenValidator.VerifyPassword(required.Password, user.Password) == false)
+            {
+                res.LoginOk = false;
+                return res;
+            }
+            
+            var tokens = _tokenService.GenerateTokens(user.UserId);
             res.AccessToken = tokens.AccessToken;
             res.RefreshToken = tokens.RefreshToken;
             res.LoginOk = true;
-            account.State = UserState.Activate;
-            account.Act = UserAct.InLobby;
+            user.State = UserState.Activate;
+            user.Act = UserAct.InLobby;
             _context.SaveChangesExtended();
         }
         
@@ -200,7 +138,7 @@ public class UserAccountController : ControllerBase
     [Route("LoadUserInfo")]
     public IActionResult LoadUserInfo([FromBody] LoadUserInfoPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
         var res = new LoadUserInfoPacketResponse();
@@ -234,7 +172,7 @@ public class UserAccountController : ControllerBase
     [Route("UpdateUserInfo")]
     public IActionResult UpdateUserInfo([FromBody] UpdateUserInfoPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
         var res = new UpdateUserInfoPacketResponse();

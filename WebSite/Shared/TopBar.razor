@@ -1,0 +1,40 @@
+@code {
+private bool _isMobileMenuVisible = false;
+
+    void ToggleMobileMenu()
+    {
+        _isMobileMenuVisible = !_isMobileMenuVisible;
+    }
+}
+
+<nav class="top-bar">
+    <div class="logo">Cry Wolf</div>
+    <ul class="menu">
+        <li><a href="/main" class="active">메 인</a></li>
+        <li><a href="/rewards">예약보상</a></li>
+        <li><a href="/characters">캐릭터</a></li>
+        <li><a href="/settings">설 정</a></li>
+    </ul>
+    <div class="social-icons">
+        <a href="#"><i class="icon-apple"></i></a>
+        <a href="#"><i class="icon-twitter"></i></a>
+        <a href="#"><i class="icon-youtube"></i></a>
+        <a href="#"><i class="icon-facebook"></i></a>
+        <a href="#"><i class="icon-discord"></i></a>
+    </div>
+    <button class="mobile-menu-button" @onclick="ToggleMobileMenu">
+        ☰
+    </button>
+</nav>
+
+@if (_isMobileMenuVisible)
+{
+    <div class="mobile-menu">
+        <ul>
+            <li><a href="/main">메 인</a></li>
+            <li><a href="/rewards">예약보상</a></li>
+            <li><a href="/characters">캐릭터</a></li>
+            <li><a href="/settings" class="active">설 정</a></li>
+        </ul>
+    </div>
+}

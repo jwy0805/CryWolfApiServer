@@ -1,4 +1,4 @@
-namespace AccountServer.DB;
+namespace ApiServer.DB;
 
 #pragma warning disable CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
 
@@ -195,6 +195,18 @@ public class RewardInfo
     public int ItemId { get; set; }
     public ProductType ProductType { get; set; }
     public int Count { get; set; }
+}
+
+public class ValidateNewAccountPacketRequired
+{
+    public string UserAccount { get; set; }
+    public string Password { get; set; }
+}
+
+public class ValidateNewAccountPacketResponse
+{
+    public bool ValidateOk { get; set; }
+    public int ErrorCode { get; set; }
 }
 
 public class CreateUserAccountPacketRequired

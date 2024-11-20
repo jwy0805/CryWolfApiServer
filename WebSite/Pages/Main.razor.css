@@ -1,0 +1,65 @@
+/* 전체 페이지를 중앙 정렬 */
+.page-container {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: flex-start; /* 세로 중앙 정렬 */
+    height: 100vh; /* 화면 높이 전체 사용 */
+    background-color: #000; /* 배경색 설정 (예: 검정색) */
+    overflow: auto;
+    color: #fff; /* 기본 텍스트 색상 */
+}
+
+.image-container {
+    display: inline-block;
+    position: relative;
+    width: auto; /* 가로는 이미지의 원본 크기 */
+    height: auto; /* 세로는 이미지의 원본 크기 */
+}
+
+.image-container img {
+    display: block;
+    width: auto; /* 원본 비율 유지 */
+    height: auto; /* 원본 비율 유지 */
+    max-width: 100%; /* 부모 너비를 초과하지 않도록 제한 */
+    max-height: 100%; /* 높이 제한 제거 */
+    object-fit: cover; /* 이미지 비율 유지 */
+}
+
+/* 이미지 위에 텍스트를 배치하는 오버레이 */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* 이미지 크기에 맞게 */
+    height: 100%; /* 이미지 크기에 맞게 */
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    justify-content: space-between; /* 상단과 하단에 텍스트 배치 */
+    align-items: center; /* 텍스트 가로 중앙 정렬 */
+    pointer-events: none; /* 이미지 클릭 가능하도록 텍스트는 클릭 비활성화 */
+}
+
+
+.text-middle {
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4vw;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    text-align: center;
+}
+
+.text-bottom {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 5vw;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    text-align: center;
+}

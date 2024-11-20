@@ -17,3 +17,7 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer
 build_property._RazorSourceGeneratorDebug = 
+
+[/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/Pages/Verify.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmVyaWZ5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 

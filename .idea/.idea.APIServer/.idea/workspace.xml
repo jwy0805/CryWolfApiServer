@@ -4,22 +4,112 @@
     <projectFile profileName="AccountServer">APIServer/APIServer.csproj</projectFile>
     <projectFile profileName="MatchMakingServer">MatchMakingServer/MatchMakingServer.csproj</projectFile>
     <projectFile>PacketGenerator/PacketGenerator.csproj</projectFile>
+    <projectFile profileName="WebSite">WebSite/WebSite.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="241118 Url has been modified to use in docker network.">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Services/EmailService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Templates/EmailTemplate.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Main.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Main.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Shared/TopBar.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Shared/TopBar.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Shared/TopBar.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/images/CryWolfMobile.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/APIServer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/APIServer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Config/Configs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Config/Configs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/CollectionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/CollectionController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/CraftingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/CraftingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Controllers/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/TestController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240114122828_Init.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240114122828_Init.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240227004504_CryWolf0.1.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240227004504_CryWolf0.1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240320010614_TableUpdate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240320010614_TableUpdate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240322012028_UnitTableUpdated.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240322012028_UnitTableUpdated.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240322065113_DeckUnitTableUpdated.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240322065113_DeckUnitTableUpdated.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326014113_UpdateTableCol0326.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326014113_UpdateTableCol0326.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326054032_SchemaChanges.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326054032_SchemaChanges.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326073101_SchemaUpdate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326073101_SchemaUpdate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326073407_SchemaUpdate2.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326073407_SchemaUpdate2.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326080132_CryWolf0.2.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240326080132_CryWolf0.2.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240522103008_token_0.1.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240522103008_token_0.1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240712013653_AddUserAct.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240712013653_AddUserAct.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240906041617_AddSheepEnchantTables.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240906041617_AddSheepEnchantTables.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240906065945_ConversionToEnum.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240906065945_ConversionToEnum.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240906105854_AddBattleSetting.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240906105854_AddBattleSetting.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240911084544_AddUnitRegionColumnToUnit.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240911084544_AddUnitRegionColumnToUnit.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240924070335_ColumnNameChanged_Camp_Faction.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240924070335_ColumnNameChanged_Camp_Faction.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240930135541_MaterialTableUpdate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240930135541_MaterialTableUpdate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240930140722_AddUnitUserMaterialTable.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240930140722_AddUnitUserMaterialTable.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240930141548_240930.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20240930141548_240930.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20241001020232_MaterialClassColumnUpdate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20241001020232_MaterialClassColumnUpdate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/ApiService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/ApiService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/ConfigService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/ConfigService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/ExpiredTokenCleanupService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/ExpiredTokenCleanupService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/MatchService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/MatchService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/TokenService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/TokenService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/TokenValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/TokenValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.deps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/APIServer.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/APIServer.csproj.nuget.dgspec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
@@ -28,6 +118,8 @@
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +128,13 @@
   </component>
   <component name="DpaMonitoringSettings">
     <option name="autoShow" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,14 +154,19 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ClientPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ServerPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fb89205e8aea414c9666c6d48c26e0e67290/83/0fde8049/IConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/0a588667d4982a931eac28c74bdbfaa7ee5868ed8bc644e4f418acc71f1ee6/JwtRegisteredClaimNames.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/134622bcf8ad016d3faf7776eb0457b76a5798c537458aa82651ab2cee6e1/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3b526121ad76ddf1f0a6cdbb4d412db36f3927d17f728af567a7e54b2f416a/EntityGraphAttacher.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/621526284d3e4868b98948aff942206525763e57e194a27623b66c384466/ServiceProviderServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7fe79a50e72b83d86bcb87e6e177c55c4e64595e94e8591a17f6ec586ffc9f71/Interop.IOErrors.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8f2ba51d4c579e65ff5ba9d5807aefaa39879cab8ec9a0307b6c90e75c37f/SmtpClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bebd253e21dcf766929bfdfd74615bfe46e6e1693b289273dbdb82152893/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c99c5e6e596f2669e8f5e609a7f88fd43814c0965d9c6eae44efafb31e5d/NameValueConfigurationCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c9e6ebf51a89e6989486513df713e9efcb20f423a98b12ccfab69966d4bf4/Int32.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/de1dc94e26de2eb8cdb9b19e9451c6a0738025b875978dc863de7ba87ee78c4/ServiceCollectionServiceExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eac217589439673846d1695b6e3ca1dba9490abb03c35edb0f189479c7e77af/JwtSecurityTokenHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9daeeaab8409865442b5e80e634dc64dae9a14892fe81e0f17b46f51b2c48f8/DbSet.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -70,7 +174,7 @@
 }</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Toolset" />
+    <option name="selectedTabId" value="SWEA" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -83,30 +187,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Run&quot;,
-    &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Run&quot;,
-    &quot;.NET 프로젝트.PacketGenerator.executor&quot;: &quot;Debug&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;SolutionBuilderGeneralOptionsPage&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET 실행 설정 프로파일.APIServer: AccountServer.executor": "Debug",
+    ".NET 실행 설정 프로파일.MatchMakingServer.executor": "Run",
+    ".NET 실행 설정 프로파일.WebSite.executor": "Run",
+    ".NET 프로젝트.PacketGenerator.executor": "Debug",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "SolutionBuilderGeneralOptionsPage",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mariadb&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
     ]
   }
-}</component>
-  <component name="RunManager" selected="다중 시작.BothServers">
+}]]></component>
+  <component name="RunManager" selected=".NET 실행 설정 프로파일.WebSite">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -192,6 +298,21 @@
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/MatchMakingServer/MatchMakingServer.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
       <option name="LAUNCH_PROFILE_NAME" value="MatchMakingServer" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="WebSite" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebSite/WebSite.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="WebSite" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
@@ -262,6 +383,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue=".NET 실행 설정 프로파일.WebSite" />
       <item itemvalue=".NET 실행 설정 프로파일.APIServer: AccountServer" />
       <item itemvalue=".NET 실행 설정 프로파일.MatchMakingServer" />
       <item itemvalue=".NET 프로젝트.PacketGenerator" />
@@ -336,7 +458,10 @@
       <workItem from="1731685853354" duration="500000" />
       <workItem from="1731718665259" duration="7217000" />
       <workItem from="1731842362221" duration="8895000" />
-      <workItem from="1731890897990" duration="8064000" />
+      <workItem from="1731890897990" duration="22426000" />
+      <workItem from="1731993306177" duration="20377000" />
+      <workItem from="1732064105997" duration="21017000" />
+      <workItem from="1732102849758" duration="9210000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -434,7 +559,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731896495688</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="241118 docker 2">
+      <option name="closed" value="true" />
+      <created>1731905409359</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1731905409359</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -457,6 +590,7 @@
     <MESSAGE value="BaseUrl Modification" />
     <MESSAGE value="241117 for docker" />
     <MESSAGE value="241118 Url has been modified to use in docker network." />
-    <option name="LAST_COMMIT_MESSAGE" value="241118 Url has been modified to use in docker network." />
+    <MESSAGE value="241118 docker 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="241118 docker 2" />
   </component>
 </project>

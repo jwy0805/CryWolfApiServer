@@ -1,13 +1,12 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using AccountServer.DB;
-using AccountServer.Services;
+using ApiServer.DB;
+using ApiServer.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+
 #pragma warning disable CS0472 // 이 형식의 값은 'null'과 같을 수 없으므로 식의 결과가 항상 동일합니다.
 
-namespace AccountServer.Controllers;
+namespace ApiServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -110,7 +109,7 @@ public class CollectionController : ControllerBase
             return InitCardsResponse();
         }
         
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitCardsResponse(principal);
     }
 
@@ -194,7 +193,7 @@ public class CollectionController : ControllerBase
             return InitSheepResponse();
         }
         
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitSheepResponse(principal);
     }
     
@@ -248,7 +247,7 @@ public class CollectionController : ControllerBase
             return InitEnchantsResponse();
         }
         
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitEnchantsResponse(principal);
     }
 
@@ -302,7 +301,7 @@ public class CollectionController : ControllerBase
             return InitCharactersResponse();
         }
         
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitCharactersResponse(principal);   
     }
 
@@ -356,7 +355,7 @@ public class CollectionController : ControllerBase
             return InitMaterialsResponse();
         }
         
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitMaterialsResponse(principal);
     }
 
@@ -398,7 +397,7 @@ public class CollectionController : ControllerBase
     {
         if (required.Environment == Env.Local) return GetDeckResponse();
         
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : GetDeckResponse(principal);
     }
     
@@ -492,7 +491,7 @@ public class CollectionController : ControllerBase
     [Route("GetSelectedDeck")]
     public IActionResult GetSelectedDeck([FromBody] GetSelectedDeckRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
         var res = new GetSelectedDeckResponse();
@@ -549,7 +548,7 @@ public class CollectionController : ControllerBase
     [Route("UpdateDeck")]
     public IActionResult UpdateDeck([FromBody] UpdateDeckPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
         var res = new UpdateDeckPacketResponse();
@@ -595,7 +594,7 @@ public class CollectionController : ControllerBase
     [Route("UpdateLastDeck")]
     public IActionResult UpdateLastDeck([FromBody] UpdateLastDeckPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
         var res = new UpdateLastDeckPacketResponse();
@@ -623,7 +622,7 @@ public class CollectionController : ControllerBase
     [Route("UpdateBattleSetting")]
     public IActionResult UpdateBattleSetting([FromBody] UpdateBattleSettingPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateAccessToken(required.AccessToken);
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
         var res = new UpdateBattleSettingPacketResponse();

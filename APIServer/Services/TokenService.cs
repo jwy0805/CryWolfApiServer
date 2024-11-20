@@ -2,10 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using AccountServer.DB;
+using ApiServer.DB;
+using ApiServer.DB;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AccountServer.Services;
+namespace ApiServer.Services;
 
 public class TokenService
 {
@@ -57,6 +58,27 @@ public class TokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    public string GenerateEmailVerificationToken(string email)
+    {
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Email, email),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+        
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        
+        var token = new JwtSecurityToken(
+            issuer: "CryWolf",
+            audience: "CryWolf",
+            claims: claims,
+            expires: DateTime.UtcNow.Add(_accessTokenLifetime),
+            signingCredentials: credentials);
+        
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+    
     private string GenerateRefreshToken()
     {
         var randomBytes = new byte[32];
@@ -86,5 +108,10 @@ public class TokenService
         using var sha256 = SHA256.Create();
         var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(token));
         return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+    }
+    
+    public string HashPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.HashPassword(password);
     }
 }

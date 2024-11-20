@@ -1,6 +1,6 @@
-using AccountServer.DB;
+using ApiServer.DB;
 
-namespace AccountServer.Services;
+namespace ApiServer.Services;
 
 public class ExpiredTokenCleanupService : IHostedService, IDisposable
 {
@@ -15,6 +15,7 @@ public class ExpiredTokenCleanupService : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _timer = new Timer(CleanUpExpiredTokens, null, TimeSpan.Zero, TimeSpan.FromHours(2));
+        _timer = new Timer(CleanUpExpiredTempUsers, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
         return Task.CompletedTask;
     }
 
@@ -26,6 +27,17 @@ public class ExpiredTokenCleanupService : IHostedService, IDisposable
         var expiredTokens = dbContext.RefreshTokens.Where(token => token.ExpiresAt < now).ToList();
         if (expiredTokens.Any() == false) return;
         dbContext.RefreshTokens.RemoveRange(expiredTokens);
+        dbContext.SaveChanges();
+    }
+    
+    private void CleanUpExpiredTempUsers(object? state)
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var now = DateTime.UtcNow + TimeSpan.FromMinutes(10);
+        var expiredUsers = dbContext.TempUser.Where(user => user.CreatedAt < now || user.IsVerified).ToList();
+        if (expiredUsers.Any() == false) return;
+        dbContext.TempUser.RemoveRange(expiredUsers);
         dbContext.SaveChanges();
     }
     

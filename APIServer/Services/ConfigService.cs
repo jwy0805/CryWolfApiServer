@@ -1,4 +1,4 @@
-namespace AccountServer;
+namespace ApiServer;
 
 public class ConfigService
 {

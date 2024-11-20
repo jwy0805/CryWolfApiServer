@@ -1,4 +1,4 @@
-namespace AccountServer.DB;
+namespace ApiServer.DB;
 
 #region Enum
 

@@ -1,6 +1,6 @@
-using AccountServer.DB;
+using ApiServer.DB;
 
-namespace AccountServer;
+namespace ApiServer;
 
 public static class Extensions
 {
@@ -9,6 +9,20 @@ public static class Extensions
         try
         {
             dbContext.SaveChanges();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error: {e.Message}");
+            return false;
+        }
+    }
+    
+    public static async Task<bool> SaveChangesExtendedAsync(this AppDbContext dbContext)
+    {
+        try
+        {
+            await dbContext.SaveChangesAsync();
             return true;
         }
         catch (Exception e)

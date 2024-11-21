@@ -45,4 +45,4 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.Run("http://localhost:80");
+app.Run();

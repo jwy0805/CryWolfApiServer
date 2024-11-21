@@ -52,7 +52,16 @@ builder.Services.AddTransient<UserService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseMySql(defaultConnectionString, new MariaDbServerVersion(new Version(11, 3, 2)));
+    options.UseMySql(defaultConnectionString
+        , new MariaDbServerVersion(new Version(11, 3, 2)),
+        mysqlOptions =>
+        {
+            mysqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,      // max retry count
+                maxRetryDelay: TimeSpan.FromSeconds(5), // delay between retries
+                errorNumbersToAdd: null 
+            );
+        });
 });
 
 builder.Services.AddRazorPages();

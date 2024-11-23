@@ -169,6 +169,23 @@ public class UserAccountController : ControllerBase
     }
     
     [HttpPost]
+    [Route("LoadTestUser")]
+    public IActionResult LoadTestUser([FromBody] LoadTestUserPacketRequired required)
+    {
+        var res = new LoadTestUserPacketResponse();
+        var user = _context.User
+            .AsNoTracking()
+            .FirstOrDefault(user => user.UserId == required.UserId);
+        if (user == null) return NotFound();
+        
+        var tokens = _tokenService.GenerateTokens(user.UserId);
+        res.AccessToken = tokens.AccessToken;
+        res.RefreshToken = tokens.RefreshToken;
+        
+        return Ok(res);
+    }
+    
+    [HttpPost]
     [Route("UpdateUserInfo")]
     public IActionResult UpdateUserInfo([FromBody] UpdateUserInfoPacketRequired required)
     {

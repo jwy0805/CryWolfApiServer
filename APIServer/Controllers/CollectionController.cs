@@ -104,21 +104,15 @@ public class CollectionController : ControllerBase
     [Route("InitCards")]
     public IActionResult InitCards([FromBody] InitCardsPacketRequired required)
     {
-        if (required.Environment == Env.Local)
-        {
-            return InitCardsResponse();
-        }
-        
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitCardsResponse(principal);
     }
 
-    private IActionResult InitCardsResponse(ClaimsPrincipal? principal = null)
+    private IActionResult InitCardsResponse(ClaimsPrincipal principal)
     {
         var res = new InitCardsPacketResponse();
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         
-        // Assume the user ID is 1 if the environment is local
-        var userId = principal == null ? 1 : _tokenValidator.GetUserIdFromAccessToken(principal);
         if (principal == null)
         {
             var tokens = _tokenService.GenerateTokens((int)userId!);
@@ -188,19 +182,14 @@ public class CollectionController : ControllerBase
     [Route("InitSheep")]
     public IActionResult InitSheep([FromBody] InitSheepPacketRequired required)
     {
-        if (required.Environment == Env.Local)
-        {
-            return InitSheepResponse();
-        }
-        
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitSheepResponse(principal);
     }
     
-    public IActionResult InitSheepResponse(ClaimsPrincipal? principal = null)
+    public IActionResult InitSheepResponse(ClaimsPrincipal principal)
     {
         var res = new InitSheepPacketResponse();
-        var userId = principal == null ? 1 : _tokenValidator.GetUserIdFromAccessToken(principal);
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
 
         if (userId != null)
         {
@@ -242,11 +231,6 @@ public class CollectionController : ControllerBase
     [Route("InitEnchants")]
     public IActionResult InitEnchants([FromBody] InitEnchantPacketRequired required)
     {
-        if (required.Environment == Env.Local)
-        {
-            return InitEnchantsResponse();
-        }
-        
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitEnchantsResponse(principal);
     }
@@ -254,7 +238,7 @@ public class CollectionController : ControllerBase
     public IActionResult InitEnchantsResponse(ClaimsPrincipal? principal = null)
     {
         var res = new InitEnchantPacketResponse();
-        var userId = principal == null ? 1 : _tokenValidator.GetUserIdFromAccessToken(principal);
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         
         if (userId != null)
         {
@@ -295,20 +279,15 @@ public class CollectionController : ControllerBase
     [HttpPost]
     [Route("InitCharacters")]
     public IActionResult InitCharacters([FromBody] InitCharacterPacketRequired required)
-    {
-        if (required.Environment == Env.Local)
-        {
-            return InitCharactersResponse();
-        }
-        
+    { 
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitCharactersResponse(principal);   
     }
 
-    public IActionResult InitCharactersResponse(ClaimsPrincipal? principal = null)
+    public IActionResult InitCharactersResponse(ClaimsPrincipal principal)
     {
         var res = new InitCharacterPacketResponse();
-        var userId = principal == null ? 1 : _tokenValidator.GetUserIdFromAccessToken(principal);
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         
         if (userId != null)
         {
@@ -349,20 +328,15 @@ public class CollectionController : ControllerBase
     [HttpPost]
     [Route("InitMaterials")]
     public IActionResult InitMaterials([FromBody] InitMaterialPacketRequired required)
-    {
-        if (required.Environment == Env.Local)
-        {
-            return InitMaterialsResponse();
-        }
-        
+    { 
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : InitMaterialsResponse(principal);
     }
 
-    public IActionResult InitMaterialsResponse(ClaimsPrincipal? principal = null)
+    public IActionResult InitMaterialsResponse(ClaimsPrincipal principal)
     {
         var res = new InitMaterialPacketResponse();
-        var userId = principal == null ? 1 : _tokenValidator.GetUserIdFromAccessToken(principal);
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
 
         if (userId != null)
         {
@@ -395,16 +369,14 @@ public class CollectionController : ControllerBase
     [Route("GetDecks")]
     public IActionResult GetDeck([FromBody] GetInitDeckPacketRequired required)
     {
-        if (required.Environment == Env.Local) return GetDeckResponse();
-        
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         return principal == null ? Unauthorized() : GetDeckResponse(principal);
     }
     
-    private IActionResult GetDeckResponse(ClaimsPrincipal? principal = null)
+    private IActionResult GetDeckResponse(ClaimsPrincipal principal)
     {
         var res = new GetInitDeckPacketResponse();
-        var userId = principal == null ? 1 : _tokenValidator.GetUserIdFromAccessToken(principal);
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         
         if (userId != null)
         {

@@ -196,41 +196,83 @@ public class MatchController : ControllerBase
     [Route("RankGameReward")]
     public IActionResult RankGamReward([FromBody] GameRewardPacketRequired required)
     {
-        var winUserId = required.WinUserId == -1 ? required.LoseUserId : required.WinUserId;
-        var loseUserId = required.LoseUserId == -1 ? required.WinUserId : required.LoseUserId;
-        var winUser = _context.User.FirstOrDefault(u => u.UserId == winUserId);
-        var loseUser = _context.User.FirstOrDefault(u => u.UserId == loseUserId);
-        var winUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == winUserId);
-        var loseUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == loseUserId);
-        
-        if (winUserStats == null || loseUserStats == null || winUser == null || loseUser == null)
-        {
-            return NotFound();
-        }
-        
-        winUserStats.RankPoint += required.WinRankPoint;
-        loseUserStats.RankPoint -= required.LoseRankPoint;
+        var winUser = _context.User.FirstOrDefault(u => u.UserId == required.WinUserId);
+        var loseUser = _context.User.FirstOrDefault(u => u.UserId == required.LoseUserId);
+        var winUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.WinUserId);
+        var loseUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.LoseUserId);
 
-        var winnerRewardsList = _rewardService
-            .GetRankRewards(required.WinUserId, winUserStats.RankPoint, required.WinRankPoint, true);
-        var loserRewardsList = _rewardService
-            .GetRankRewards(required.LoseUserId, loseUserStats.RankPoint, required.LoseRankPoint, false);
-        var res = new GameRewardPacketResponse
+        if (winUser == null || winUserStats == null)
         {
-            GetGameRewardOk = true,
-            WinnerRewards = winnerRewardsList,
-            LoserRewards = loserRewardsList
-        };
+            // Lose at single mode
+            if (loseUser != null && loseUserStats != null)
+            {
+                loseUserStats.RankPoint -= required.LoseRankPoint;
+                var loserRewardsList = GetLoserRewards(required.LoseUserId, loseUserStats.RankPoint, required.LoseRankPoint);
+                var res = new GameRewardPacketResponse
+                {
+                    GetGameRewardOk = true,
+                    WinnerRewards = new List<RewardInfo>(),
+                    LoserRewards = loserRewardsList
+                };
+                loseUserStats.Gold += loserRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
+                AddMaterialRewards(loseUser.UserId, loserRewardsList);
+                _context.SaveChangesExtended();
+                return Ok(res);   
+            }
+        }
+        else if (loseUser == null || loseUserStats == null)
+        {
+            // Win at single mode
+            winUserStats.RankPoint += required.WinRankPoint;
+            var winnerRewardsList = GetWinnerRewards(required.WinUserId, winUserStats.RankPoint, required.WinRankPoint);
+            var res = new GameRewardPacketResponse
+            {
+                GetGameRewardOk = true,
+                WinnerRewards = winnerRewardsList,
+                LoserRewards = new List<RewardInfo>()
+            };
+            winUserStats.Gold += winnerRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
+            AddMaterialRewards(winUser.UserId, winnerRewardsList);
+            _context.SaveChangesExtended();
+            return Ok(res);
+        }
+        else
+        {
+            // Rank Game
+            winUserStats.RankPoint += required.WinRankPoint;
+            loseUserStats.RankPoint -= required.LoseRankPoint;
+
+            var winnerRewardsList = GetWinnerRewards(required.WinUserId, winUserStats.RankPoint, required.WinRankPoint);
+            var loserRewardsList = GetLoserRewards(required.LoseUserId, loseUserStats.RankPoint, required.LoseRankPoint);
+            var res = new GameRewardPacketResponse
+            {
+                GetGameRewardOk = true,
+                WinnerRewards = winnerRewardsList,
+                LoserRewards = loserRewardsList 
+            };
         
-        winUserStats.Gold += winnerRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
-        loseUserStats.Gold += loserRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
+            winUserStats.Gold += winnerRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
+            loseUserStats.Gold += loserRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
         
-        AddMaterialRewards(winUser.UserId, winnerRewardsList);
-        AddMaterialRewards(loseUser.UserId, loserRewardsList);
+            AddMaterialRewards(winUser.UserId, winnerRewardsList);
+            AddMaterialRewards(loseUser.UserId, loserRewardsList);
         
-        _context.SaveChangesExtended();
+            _context.SaveChangesExtended();
         
-        return Ok(res);
+            return Ok(res);
+        }
+
+        return NotFound();
+    }
+
+    public List<RewardInfo> GetWinnerRewards(int userId, int rankPoint, int rankPointBefore)
+    {
+        return _rewardService.GetRankRewards(userId, rankPoint, rankPointBefore, true);
+    }
+    
+    public List<RewardInfo> GetLoserRewards(int userId, int rankPoint, int rankPointBefore)
+    {
+        return _rewardService.GetRankRewards(userId, rankPoint, rankPointBefore, false);
     }
 
     private void AddMaterialRewards(int userId, List<RewardInfo> rewards)

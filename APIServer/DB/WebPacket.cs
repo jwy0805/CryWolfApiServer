@@ -308,6 +308,18 @@ public class LoadUserInfoPacketResponse
     public UserInfo UserInfo { get; set; }
 }
 
+public class LoadTestUserPacketRequired
+{
+    public int UserId { get; set; }
+}
+
+public class LoadTestUserPacketResponse
+{
+    public bool LoadTestUserOk { get; set; }
+    public string AccessToken { get; set; }
+    public string RefreshToken { get; set; }
+}
+
 public class UpdateUserInfoPacketRequired
 {
     public string AccessToken { get; set; }

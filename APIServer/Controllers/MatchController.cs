@@ -80,7 +80,7 @@ public class MatchController : ControllerBase
         // 사용자 액션 업데이트
         userInfo.User.Act = UserAct.MatchMaking;
         res.ChangeOk = true;
-        _context.SaveChangesExtended();
+        await _context.SaveChangesExtendedAsync();
         
         // MatchMakingServer에 유저 정보 전달
         var matchPacket = new MatchMakingPacketRequired
@@ -156,7 +156,7 @@ public class MatchController : ControllerBase
         // 사용자 액션 업데이트
         userInfo.User.Act = UserAct.MatchMaking;
         res.ChangeOk = true;
-        _context.SaveChangesExtended();
+        await _context.SaveChangesExtendedAsync();
         
         // MatchMakingServer에 유저 정보 전달
         var matchPacket = new MatchMakingPacketRequired
@@ -316,12 +316,13 @@ public class MatchController : ControllerBase
         user.Act = UserAct.InLobby;
         
         // Remove user from match making queue
+        Console.WriteLine("cancel");
         var cancelPacket = new MatchCancelPacketRequired { UserId = user.UserId };
         await _apiService
             .SendRequestAsync<MatchCancelPacketResponse>("MatchMaking/CancelMatch", cancelPacket, HttpMethod.Post);
         
-        res.CancelOk = _context.SaveChangesExtended();
-
+        res.CancelOk = await _context.SaveChangesExtendedAsync();
+        Console.WriteLine("cancel ok");
         return Ok(res);
     }
 
@@ -369,7 +370,8 @@ public class MatchController : ControllerBase
         user.Act = UserAct.InLobby;
         // Change user match info
         
-        var res = new SurrenderPacketResponse { SurrenderOk = _context.SaveChangesExtended() };
+        var res = new SurrenderPacketResponse { SurrenderOk = await _context.SaveChangesExtendedAsync() };
+        Console.WriteLine("surrender ok");
         return Ok(res);
     }
 

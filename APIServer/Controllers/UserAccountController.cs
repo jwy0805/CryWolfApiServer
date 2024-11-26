@@ -222,4 +222,67 @@ public class UserAccountController : ControllerBase
         
         return Ok(res);
     }
+    
+    [HttpPost]
+    [Route("SearchUsername")]
+    public IActionResult SearchUsername([FromBody] SearchUsernamePacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+        
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        var res = new SearchUsernamePacketResponse();
+        var friendUser = _context.User
+            .AsNoTracking()
+            .FirstOrDefault(user => user.UserName == required.Username);
+        
+        if (friendUser == null)
+        {
+            res.UserInfo = new UserInfo { UserName = string.Empty };
+            res.SearchUsernameOk = false;
+            return Ok(res);
+        }
+        
+        var userStat = _context.UserStats
+            .AsNoTracking()
+            .FirstOrDefault(userStat => userStat.UserId == friendUser.UserId);
+        if (userStat == null) return NotFound();
+
+        res.UserInfo = new UserInfo
+        {
+            UserName = friendUser.UserName,
+            Level = userStat.UserLevel,
+            Exp = userStat.Exp,
+            Gold = userStat.Gold,
+            Spinel = userStat.Spinel,
+            RankPoint = userStat.RankPoint,
+        };
+        
+        var relation = _context.Friends
+            .AsNoTracking()
+            .FirstOrDefault(friend => friend.UserId == userId && friend.FriendId == friendUser.UserId);
+
+        if (relation == null)
+        {
+            res.FriendStatus = FriendStatus.None;
+            res.SearchUsernameOk = true;
+
+            return Ok(res);
+        }
+        
+        switch (relation.Status)
+        {
+            case FriendStatus.Pending:
+                res.FriendStatus = FriendStatus.Pending;
+                break;
+            case FriendStatus.Accepted:
+                res.FriendStatus = FriendStatus.Accepted;
+                break;
+            case FriendStatus.Blocked:
+                res.FriendStatus = FriendStatus.Blocked;
+                break;
+        }
+        
+        return Ok(res);
+    }
 }

@@ -49,26 +49,29 @@ public class Verify : PageModel
                 IsVerified = false;
                 return Page();
             }
-            
-            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
-            tempUser.IsVerified = IsVerified;
-            
-            await _dbContext.SaveChangesAsync();
-            
-            var created = await _userService.CreateAccount(tempUser.TempUserAccount, tempUser.TempPassword);
-            if (created == false)
+            var strategy = _dbContext.Database.CreateExecutionStrategy();
+
+            await strategy.ExecuteAsync(async () =>
             {
-                await transaction.RollbackAsync();
-                
-                Message = "Error: Account Creation Failed";
-                IsVerified = false;
-                
-                return Page();
-            }
-            
-            await _dbContext.SaveChangesAsync();
-            await transaction.CommitAsync();
+                await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
+                tempUser.IsVerified = IsVerified;
+
+                await _dbContext.SaveChangesAsync();
+
+                var created = await _userService.CreateAccount(tempUser.TempUserAccount, tempUser.TempPassword);
+                if (created == false)
+                {
+                    await transaction.RollbackAsync();
+
+                    Message = "Error: Account Creation Failed";
+                    IsVerified = false;
+                }
+
+                await _dbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+            });
             
             IsVerified = true;
             Message = "Email Verified.\nLogin with your new account.";

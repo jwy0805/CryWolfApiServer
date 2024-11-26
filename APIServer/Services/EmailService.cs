@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Mail;
+using System.Reflection;
 using ApiServer.DB;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,34 +20,41 @@ public class UserService
     public async Task SendVerificationEmail(string recipientEmail, string verificationLink)
     {
         // Load Html Template
-        var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "EmailTemplate.html");
-        var emailBody = await File.ReadAllTextAsync(templatePath);
-        emailBody = emailBody
-            .Replace("{{UserName}}", recipientEmail)
-            .Replace("{{VerificationLink}}", verificationLink);
+        var assembly = Assembly.GetExecutingAssembly();
+        const string resourceName = "ApiServer.Templates.EmailTemplate.html";
         
-        // Send Email
-        var smtpClient = new SmtpClient
+        await using var stream = assembly.GetManifestResourceStream(resourceName);
+        if (stream != null)
         {
-            Host = _configuration["Email:Smtp:Server"] ?? "smtp.gmail.com",
-            Port = int.Parse(Environment.GetEnvironmentVariable("GOOGLE_MAIL_PORT") ?? "587"),
-            Credentials = new NetworkCredential(
-                _configuration["Email:Smtp:Username"],
-                Environment.GetEnvironmentVariable("GOOGLE_APP_PASSWORD")),
-            EnableSsl = true,
-        };
+            using var reader = new StreamReader(stream);
+            var emailBody = await reader.ReadToEndAsync();
+            emailBody = emailBody
+                .Replace("{{UserName}}", recipientEmail)
+                .Replace("{{VerificationLink}}", verificationLink);
+            
+            // Send Email
+            var smtpClient = new SmtpClient
+            {
+                Host = _configuration["Email:Smtp:Server"] ?? "smtp.gmail.com",
+                Port = int.Parse(Environment.GetEnvironmentVariable("GOOGLE_MAIL_PORT") ?? "587"),
+                Credentials = new NetworkCredential(
+                    _configuration["Email:Smtp:Username"],
+                    Environment.GetEnvironmentVariable("GOOGLE_APP_PASSWORD")),
+                EnableSsl = true,
+            };
         
-        var mailMessage = new MailMessage
-        {
-            From = new MailAddress(_configuration["Email:Smtp:Username"] ?? string.Empty),
-            Subject = "Cry Wolf Email Verification",
-            Body = emailBody,
-            IsBodyHtml = true,
-        };
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(_configuration["Email:Smtp:Username"] ?? string.Empty),
+                Subject = "Cry Wolf Email Verification",
+                Body = emailBody,
+                IsBodyHtml = true,
+            };
         
-        mailMessage.To.Add(recipientEmail);
+            mailMessage.To.Add(recipientEmail);
         
-        await smtpClient.SendMailAsync(mailMessage);
+            await smtpClient.SendMailAsync(mailMessage);
+        }
     }
 
     public async Task<bool> CreateAccount(string userAccount, string password)

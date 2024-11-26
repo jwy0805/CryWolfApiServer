@@ -44,6 +44,7 @@ public enum UserAct
 
 public enum FriendStatus
 {
+    None,
     Pending,
     Accepted,
     Blocked

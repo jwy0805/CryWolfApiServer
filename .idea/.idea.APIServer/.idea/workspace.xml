@@ -10,9 +10,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="docker test">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/APIServer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/APIServer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/EmailService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Main.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Main.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +76,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7fe79a50e72b83d86bcb87e6e177c55c4e64595e94e8591a17f6ec586ffc9f71/Interop.IOErrors.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8f2ba51d4c579e65ff5ba9d5807aefaa39879cab8ec9a0307b6c90e75c37f/SmtpClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bebd253e21dcf766929bfdfd74615bfe46e6e1693b289273dbdb82152893/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c2ea553f90a3e592edd923521ab8d4062601b81539ab589f5419dde26e251/Assembly.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c99c5e6e596f2669e8f5e609a7f88fd43814c0965d9c6eae44efafb31e5d/NameValueConfigurationCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c9e6ebf51a89e6989486513df713e9efcb20f423a98b12ccfab69966d4bf4/Int32.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/de1dc94e26de2eb8cdb9b19e9451c6a0738025b875978dc863de7ba87ee78c4/ServiceCollectionServiceExtensions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -80,31 +102,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Run&quot;,
-    &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Run&quot;,
-    &quot;.NET 실행 설정 프로파일.WebSite.executor&quot;: &quot;Run&quot;,
-    &quot;.NET 프로젝트.PacketGenerator.executor&quot;: &quot;Debug&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;SolutionBuilderGeneralOptionsPage&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET 실행 설정 프로파일.APIServer: AccountServer.executor": "Run",
+    ".NET 실행 설정 프로파일.MatchMakingServer.executor": "Run",
+    ".NET 실행 설정 프로파일.WebSite.executor": "Run",
+    ".NET 프로젝트.PacketGenerator.executor": "Debug",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "SolutionBuilderGeneralOptionsPage",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mariadb&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
     ]
   }
-}</component>
-  <component name="RunManager" selected="다중 시작.BothServers">
+}]]></component>
+  <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -360,7 +382,8 @@
       <workItem from="1732241665973" duration="18222000" />
       <workItem from="1732354107749" duration="3013000" />
       <workItem from="1732450929090" duration="2407000" />
-      <workItem from="1732496436628" duration="17692000" />
+      <workItem from="1732496436628" duration="20253000" />
+      <workItem from="1732534211237" duration="16709000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -578,7 +601,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732525132940</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="docker test">
+      <option name="closed" value="true" />
+      <created>1732526743961</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1732526743961</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

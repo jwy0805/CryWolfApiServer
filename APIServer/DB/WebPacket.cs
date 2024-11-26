@@ -539,6 +539,19 @@ public class InitProductPacketResponse
     public List<DailyProductInfo> DailyDeals { get; set; }
 }
 
+public class SearchUsernamePacketRequired
+{
+    public string AccessToken { get; set; }
+    public string Username { get; set; }
+}
+
+public class SearchUsernamePacketResponse
+{
+    public bool SearchUsernameOk { get; set; }
+    public UserInfo UserInfo { get; set; }
+    public FriendStatus FriendStatus { get; set; }
+}
+
 #endregion
 
 #region For Match Making Server

@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>AccountServer</RootNamespace>
+        <RootNamespace>ApiServer</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,6 +20,11 @@
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Templates\EmailTemplate.html" />
+      <EmbeddedResource Include="Templates\EmailTemplate.html" />
     </ItemGroup>
 
 </Project>

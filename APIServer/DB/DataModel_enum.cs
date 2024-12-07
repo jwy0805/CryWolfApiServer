@@ -240,7 +240,8 @@ public enum ProductCategory
     SpinelItem = 6,
     ReservedSale = 7,
     DailyDeal = 8,
-    Other = 9,
+    Pass = 9,
+    Other = 100,
 }   
 
 public enum CurrencyType

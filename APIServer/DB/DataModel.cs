@@ -32,6 +32,7 @@ public class UserStats
     public int UserId { get; set; }
     public int UserLevel { get; set; }
     public int RankPoint { get; set; }
+    public int HighestRankPoint { get; set; }
     public int Exp { get; set; }
     public int Gold { get; set; }
     public int Spinel { get; set; }
@@ -44,10 +45,8 @@ public class UserMatch
     public int UserId { get; set; }
     public int WinRankMatch { get; set; }
     public int LoseRankMatch { get; set; }
-    public int DrawRankMatch { get; set; }
     public int WinFriendlyMatch { get; set; }
     public int LoseFriendlyMatch { get; set; }
-    public int DrawFriendlyMatch { get; set; }
 }
 
 [Table("Friends")]
@@ -57,6 +56,19 @@ public class Friends
     public int FriendId { get; set; }
     public FriendStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }
+}
+
+[Table("Mail")]
+public class Mail
+{
+    public int MailId { get; set; }
+    public int UserId { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime ExpiresAt { get; set; }
+    public int ProductId { get; set; }
+    public string ProductCode { get; set; }
+    public bool Claimed { get; set; }
+    public string Message { get; set; }
 }
 
 [Table("RefreshToken")]
@@ -152,6 +164,7 @@ public class Product
     public int ProductId { get; set; }
     [MaxLength(50)]
     public string ProductName { get; set; }
+    public string ProductCode { get; set; }
     public int Price { get; set; }
     public CurrencyType Currency { get; set; }
     public ProductCategory Category { get; set; }

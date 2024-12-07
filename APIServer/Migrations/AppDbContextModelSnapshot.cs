@@ -190,6 +190,10 @@ namespace AccountServer.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProductCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -458,12 +462,6 @@ namespace AccountServer.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DrawFriendlyMatch")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DrawRankMatch")
-                        .HasColumnType("int");
-
                     b.Property<int>("LoseFriendlyMatch")
                         .HasColumnType("int");
 
@@ -541,6 +539,9 @@ namespace AccountServer.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Gold")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HighestRankPoint")
                         .HasColumnType("int");
 
                     b.Property<int>("RankPoint")

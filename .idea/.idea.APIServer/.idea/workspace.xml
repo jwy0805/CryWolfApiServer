@@ -11,27 +11,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/RelationController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/dataSources/3548a708-6c28-4897-bcad-f956f52904e4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/dataSources/3548a708-6c28-4897-bcad-f956f52904e4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/APIServer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/APIServer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/EmailService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Main.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Main.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
@@ -74,6 +87,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3b526121ad76ddf1f0a6cdbb4d412db36f3927d17f728af567a7e54b2f416a/EntityGraphAttacher.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/621526284d3e4868b98948aff942206525763e57e194a27623b66c384466/ServiceProviderServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7fe79a50e72b83d86bcb87e6e177c55c4e64595e94e8591a17f6ec586ffc9f71/Interop.IOErrors.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8ea21ac773d9dbb35bda81e94336d7efbd03459b6fc241fcdb64737e5c1/NavigationExpandingExpressionVisitor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8f2ba51d4c579e65ff5ba9d5807aefaa39879cab8ec9a0307b6c90e75c37f/SmtpClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bebd253e21dcf766929bfdfd74615bfe46e6e1693b289273dbdb82152893/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c2ea553f90a3e592edd923521ab8d4062601b81539ab589f5419dde26e251/Assembly.cs" root0="FORCE_HIGHLIGHTING" />
@@ -102,31 +116,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET 실행 설정 프로파일.APIServer: AccountServer.executor": "Run",
-    ".NET 실행 설정 프로파일.MatchMakingServer.executor": "Run",
-    ".NET 실행 설정 프로파일.WebSite.executor": "Run",
-    ".NET 프로젝트.PacketGenerator.executor": "Debug",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "SolutionBuilderGeneralOptionsPage",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Run&quot;,
+    &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Run&quot;,
+    &quot;.NET 실행 설정 프로파일.WebSite.executor&quot;: &quot;Run&quot;,
+    &quot;.NET 프로젝트.PacketGenerator.executor&quot;: &quot;Debug&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.86694825&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;SolutionBuilderGeneralOptionsPage&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mariadb"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mariadb&quot;
     ]
   }
-}]]></component>
-  <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
+}</component>
+  <component name="RunManager" selected="다중 시작.BothServers">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -383,7 +398,19 @@
       <workItem from="1732354107749" duration="3013000" />
       <workItem from="1732450929090" duration="2407000" />
       <workItem from="1732496436628" duration="20253000" />
-      <workItem from="1732534211237" duration="16709000" />
+      <workItem from="1732534211237" duration="22701000" />
+      <workItem from="1732700072965" duration="6444000" />
+      <workItem from="1732754009668" duration="2600000" />
+      <workItem from="1732776263754" duration="9482000" />
+      <workItem from="1732792351282" duration="8257000" />
+      <workItem from="1732842141923" duration="3847000" />
+      <workItem from="1732884717662" duration="7019000" />
+      <workItem from="1732955900689" duration="10474000" />
+      <workItem from="1733017513813" duration="3515000" />
+      <workItem from="1733103539992" duration="4110000" />
+      <workItem from="1733116486060" duration="10103000" />
+      <workItem from="1733137463842" duration="3967000" />
+      <workItem from="1733302386587" duration="11766000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -609,7 +636,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732526743961</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="241126&#10;&#10;Email Service error has been fixed.&#10; - Db context error when using link that verify user email has been fixed.">
+      <option name="closed" value="true" />
+      <created>1732628227078</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1732628227078</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -620,7 +655,6 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo." />
     <MESSAGE value="Summary - 241008&#10;&#10;Unit Reinforce System has been created.&#10;&#10;It needs to update the number of materials and units immediately after reinforcing unit." />
     <MESSAGE value="Summary - 241015&#10;&#10;Reinforce point has been changed.&#10;&#10;Business Model and product packages has been created." />
     <MESSAGE value="241103" />
@@ -645,6 +679,7 @@
     <MESSAGE value="241125&#10;docker commit" />
     <MESSAGE value="docker commit" />
     <MESSAGE value="docker test" />
-    <option name="LAST_COMMIT_MESSAGE" value="docker test" />
+    <MESSAGE value="241126&#10;&#10;Email Service error has been fixed.&#10; - Db context error when using link that verify user email has been fixed." />
+    <option name="LAST_COMMIT_MESSAGE" value="241126&#10;&#10;Email Service error has been fixed.&#10; - Db context error when using link that verify user email has been fixed." />
   </component>
 </project>

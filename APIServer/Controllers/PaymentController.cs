@@ -1,12 +1,13 @@
 using ApiServer.DB;
 using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PaymentController : Controller
+public class PaymentController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly TokenService _tokenService;
@@ -47,8 +48,11 @@ public class PaymentController : Controller
         return Ok(res);
     }
     
-    private List<ProductInfo> GetProductInfoList(ProductCategory category, Dictionary<ProductCategory,
-        List<Product>> productGroups, List<ProductComposition> compositions, List<CompositionProbability> probabilities)
+    private List<ProductInfo> GetProductInfoList(
+        ProductCategory category,
+        Dictionary<ProductCategory, List<Product>> productGroups,
+        List<ProductComposition> compositions,
+        List<CompositionProbability> probabilities)
     {
         return productGroups.TryGetValue(category, out var products)
             ? products.Select(product => new ProductInfo
@@ -58,7 +62,7 @@ public class PaymentController : Controller
                     .Select(pc => new CompositionInfo
                     {
                         Id = pc.ProductId,
-                        ProductId = pc.CompositionId,
+                        CompositionId = pc.CompositionId,
                         Type = pc.Type,
                         Count = pc.Count,
                         MinCount = pc is { Count: 0, Guaranteed: false } ? probabilities

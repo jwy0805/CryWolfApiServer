@@ -90,10 +90,8 @@ public class UserService
             UserId = newUser.UserId,
             WinRankMatch = 0,
             LoseRankMatch = 0,
-            DrawRankMatch = 0,
             WinFriendlyMatch = 0,
             LoseFriendlyMatch = 0,
-            DrawFriendlyMatch = 0
         };
             
         _context.UserStats.Add(newUserStat);

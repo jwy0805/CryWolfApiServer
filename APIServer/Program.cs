@@ -2,6 +2,7 @@ using System.Security.Cryptography.X509Certificates;
 using ApiServer.Services;
 using ApiServer;
 using ApiServer.DB;
+using ApiServer.SignalRHub;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
     options.JsonSerializerOptions.DictionaryKeyPolicy = null;
 });
+builder.Services.AddSignalR();
 
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
@@ -110,5 +112,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapHub<SignalRHub>("/signalRHub");
 
 app.Run();

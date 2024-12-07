@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
     public DbSet<UserStats> UserStats { get; set; }
     public DbSet<UserMatch> UserMatch { get; set; }
     public DbSet<Friends> Friends { get; set; }
+    public DbSet<Mail> Mail { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Unit> Unit { get; set; }
     public DbSet<UserUnit> UserUnit { get; set; }
@@ -30,6 +31,7 @@ public class AppDbContext : DbContext
     public DbSet<UserMaterial> UserMaterial { get; set; }
     public DbSet<BattleSetting> BattleSetting { get; set; }
     public DbSet<ReinforcePoint> ReinforcePoint { get; set; }
+    public DbSet<ExpTable> Exp { get; set; }
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -144,5 +146,7 @@ public class AppDbContext : DbContext
         builder.Entity<ExpTable>().Property(e => e.Level).ValueGeneratedNever();
         
         builder.Entity<ReinforcePoint>().HasKey(rr => new { rr.Class, rr.Level });
+
+        builder.Entity<ExpTable>().HasKey(et => new { et.Level });
     }
 }

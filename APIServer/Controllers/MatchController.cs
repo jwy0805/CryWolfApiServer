@@ -200,7 +200,15 @@ public class MatchController : ControllerBase
         var loseUser = _context.User.FirstOrDefault(u => u.UserId == required.LoseUserId);
         var winUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.WinUserId);
         var loseUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.LoseUserId);
+        var winUserMatchInfo = _context.UserMatch.FirstOrDefault(um => um.UserId == required.WinUserId);
+        var loseUserMatchInfo = _context.UserMatch.FirstOrDefault(um => um.UserId == required.LoseUserId);
 
+        if (winUserMatchInfo == null || loseUserMatchInfo == null)
+        {
+            Console.WriteLine("Can't find match info");
+            return NotFound();
+        }
+        
         if (winUser == null || winUserStats == null)
         {
             // Lose at single mode
@@ -238,9 +246,17 @@ public class MatchController : ControllerBase
         }
         else
         {
-            // Rank Game
+            // Rank Game, change user match info, stat
             winUserStats.RankPoint += required.WinRankPoint;
             loseUserStats.RankPoint -= required.LoseRankPoint;
+
+            if (winUserStats.RankPoint > winUserStats.HighestRankPoint)
+            {
+                winUserStats.HighestRankPoint = winUserStats.RankPoint;
+            }
+
+            winUserMatchInfo.WinRankMatch += 1;
+            loseUserMatchInfo.LoseRankMatch += 1;
 
             var winnerRewardsList = GetWinnerRewards(required.WinUserId, winUserStats.RankPoint, required.WinRankPoint);
             var loserRewardsList = GetLoserRewards(required.LoseUserId, loseUserStats.RankPoint, required.LoseRankPoint);
@@ -368,7 +384,6 @@ public class MatchController : ControllerBase
         
         await _apiService.SendRequestToSocketAsync<GameResultPacketResponse>("surrender", resultPacket, HttpMethod.Post);
         user.Act = UserAct.InLobby;
-        // Change user match info
         
         var res = new SurrenderPacketResponse { SurrenderOk = await _context.SaveChangesExtendedAsync() };
         Console.WriteLine("surrender ok");

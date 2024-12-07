@@ -15,13 +15,20 @@ public class UserAccountController : ControllerBase
     private readonly UserService _emailService;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
+    private readonly ILogger<UserAccountController> _logger;
     
-    public UserAccountController(AppDbContext context, UserService emailService, TokenService tokenService, TokenValidator validator)
+    public UserAccountController(
+        AppDbContext context, 
+        UserService emailService, 
+        TokenService tokenService, 
+        TokenValidator validator,
+        ILogger<UserAccountController> logger)
     {
         _context = context;
         _emailService = emailService;
         _tokenService = tokenService;
         _tokenValidator = validator;
+        _logger = logger;
     }
     
     [HttpPost]
@@ -60,9 +67,12 @@ public class UserAccountController : ControllerBase
         if (approved)
         {
             var token = _tokenService.GenerateEmailVerificationToken(required.UserAccount);
-            // var verificationLink = $"https://hamonstudio.net/verify/{token}";
-            var verificationLink = $"https://localhost:7270/verify/{token}";
             var hashedPassword = _tokenService.HashPassword(required.Password);
+            var verificationLink = Environment.GetEnvironmentVariable("ENVIRONMENT") switch
+            {
+                "Dev" => $"https://hamonstudio.net/verify/{token}",
+                _ => $"https://localhost:7270/verify/{token}"
+            };
             
             tempUserDb.Add(new TempUser
             {
@@ -145,22 +155,40 @@ public class UserAccountController : ControllerBase
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         if (userId == null) return Unauthorized();
         
-        var user = _context.User
-            .AsNoTracking()
+        var user = _context.User.AsNoTracking()
             .FirstOrDefault(user => user.UserId == userId);
-        var userStat = _context.UserStats
-            .AsNoTracking()
+        var userStat = _context.UserStats.AsNoTracking()
             .FirstOrDefault(userStat => userStat.UserId == userId);
-        if (user == null || userStat == null) return NotFound();
-
+        var userMatch = _context.UserMatch.AsNoTracking()
+            .FirstOrDefault(um => um.UserId == userId);
+        if (user == null || userStat == null || userMatch == null)
+        {
+            Console.WriteLine("LoadUserInfo Null Error");
+            return NotFound();
+        }
+        
+        var exp = _context.Exp.AsNoTracking()
+            .FirstOrDefault(exp => exp.Level == userStat.UserLevel);
+        var winRate = userMatch.WinRankMatch + userMatch.LoseRankMatch > 0
+            ? (int)(userMatch.WinRankMatch / (float)(userMatch.WinRankMatch + userMatch.LoseRankMatch) * 100) : 0;
+        if (exp == null)
+        {
+            Console.WriteLine("Load Exp Error");
+            return NotFound();
+        }
+            
         res.UserInfo = new UserInfo
         {
             UserName = user.UserName,
             Level = userStat.UserLevel,
             Exp = userStat.Exp,
+            ExpToLevelUp = exp.Exp,
+            RankPoint = userStat.RankPoint,
+            HighestRankPoint = userStat.HighestRankPoint,
+            Victories = userMatch.WinRankMatch,
+            WinRate = winRate,
             Gold = userStat.Gold,
             Spinel = userStat.Spinel,
-            RankPoint = userStat.RankPoint,
         };
         
         res.LoadUserInfoOk = true;
@@ -185,7 +213,7 @@ public class UserAccountController : ControllerBase
         return Ok(res);
     }
     
-    [HttpPost]
+    [HttpPut]
     [Route("UpdateUserInfo")]
     public IActionResult UpdateUserInfo([FromBody] UpdateUserInfoPacketRequired required)
     {
@@ -218,69 +246,6 @@ public class UserAccountController : ControllerBase
             res.UpdateUserInfoOk = false;
             transaction.Rollback();
             return Ok(res);
-        }
-        
-        return Ok(res);
-    }
-    
-    [HttpPost]
-    [Route("SearchUsername")]
-    public IActionResult SearchUsername([FromBody] SearchUsernamePacketRequired required)
-    {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null) return Unauthorized();
-        
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        var res = new SearchUsernamePacketResponse();
-        var friendUser = _context.User
-            .AsNoTracking()
-            .FirstOrDefault(user => user.UserName == required.Username);
-        
-        if (friendUser == null)
-        {
-            res.UserInfo = new UserInfo { UserName = string.Empty };
-            res.SearchUsernameOk = false;
-            return Ok(res);
-        }
-        
-        var userStat = _context.UserStats
-            .AsNoTracking()
-            .FirstOrDefault(userStat => userStat.UserId == friendUser.UserId);
-        if (userStat == null) return NotFound();
-
-        res.UserInfo = new UserInfo
-        {
-            UserName = friendUser.UserName,
-            Level = userStat.UserLevel,
-            Exp = userStat.Exp,
-            Gold = userStat.Gold,
-            Spinel = userStat.Spinel,
-            RankPoint = userStat.RankPoint,
-        };
-        
-        var relation = _context.Friends
-            .AsNoTracking()
-            .FirstOrDefault(friend => friend.UserId == userId && friend.FriendId == friendUser.UserId);
-
-        if (relation == null)
-        {
-            res.FriendStatus = FriendStatus.None;
-            res.SearchUsernameOk = true;
-
-            return Ok(res);
-        }
-        
-        switch (relation.Status)
-        {
-            case FriendStatus.Pending:
-                res.FriendStatus = FriendStatus.Pending;
-                break;
-            case FriendStatus.Accepted:
-                res.FriendStatus = FriendStatus.Accepted;
-                break;
-            case FriendStatus.Blocked:
-                res.FriendStatus = FriendStatus.Blocked;
-                break;
         }
         
         return Ok(res);

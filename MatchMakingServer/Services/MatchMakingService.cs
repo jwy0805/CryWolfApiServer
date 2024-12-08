@@ -157,6 +157,7 @@ public class MatchMakingService : BackgroundService
         
         var matchSuccessPacket = new MatchSuccessPacketRequired
         {
+            IsTestGame = true,
             SheepUserId = required.UserId,
             SheepSessionId = required.SessionId,
             SheepUserName = required.Faction == Faction.Sheep ? required.UserName : "Test",

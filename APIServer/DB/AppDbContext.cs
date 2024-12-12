@@ -139,7 +139,6 @@ public class AppDbContext : DbContext
         
         builder.Entity<UserMaterial>().HasKey(userMaterial => new { userMaterial.UserId, userMaterial.MaterialId });
         
-
         builder.Entity<BattleSetting>().HasKey(b => new { b.UserId, b.SheepId, b.EnchantId, b.CharacterId });
         
         builder.Entity<ExpTable>().HasKey(e => e.Level);

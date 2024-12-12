@@ -11,19 +11,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/MailController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Services/TaskQueueService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/dataSources/3548a708-6c28-4897-bcad-f956f52904e4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/dataSources/3548a708-6c28-4897-bcad-f956f52904e4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/CollectionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/CollectionController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/TokenValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/TokenValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
@@ -106,7 +119,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Run&quot;,
     &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Run&quot;,
     &quot;.NET 실행 설정 프로파일.WebSite.executor&quot;: &quot;Run&quot;,
     &quot;.NET 프로젝트.PacketGenerator.executor&quot;: &quot;Debug&quot;,
@@ -129,7 +142,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET 실행 설정 프로파일.MatchMakingServer">
+  <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -401,7 +414,13 @@
       <workItem from="1733302386587" duration="11766000" />
       <workItem from="1733542605967" duration="2512000" />
       <workItem from="1733628525011" duration="5166000" />
-      <workItem from="1733665871083" duration="1781000" />
+      <workItem from="1733665871083" duration="2882000" />
+      <workItem from="1733674068173" duration="1826000" />
+      <workItem from="1733727438394" duration="11790000" />
+      <workItem from="1733790405330" duration="27241000" />
+      <workItem from="1733880082083" duration="16059000" />
+      <workItem from="1733924392416" duration="1415000" />
+      <workItem from="1733972065889" duration="4847000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -651,7 +670,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733629628029</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="1208&#10;docker">
+      <option name="closed" value="true" />
+      <created>1733667671119</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1733667671119</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -662,7 +689,6 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="241103" />
     <MESSAGE value="kestrel port setting has been deleted. Use nginx reverse-proxy instead." />
     <MESSAGE value="Get Deck methods about ec2 environment modified." />
     <MESSAGE value="1105" />
@@ -687,6 +713,7 @@
     <MESSAGE value="241126&#10;&#10;Email Service error has been fixed.&#10; - Db context error when using link that verify user email has been fixed." />
     <MESSAGE value="241207&#10;&#10;Measuring server delay in Vietnam" />
     <MESSAGE value="1208 docker" />
-    <option name="LAST_COMMIT_MESSAGE" value="1208 docker" />
+    <MESSAGE value="1208&#10;docker" />
+    <option name="LAST_COMMIT_MESSAGE" value="1208&#10;docker" />
   </component>
 </project>

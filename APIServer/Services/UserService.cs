@@ -56,7 +56,7 @@ public class UserService
             await smtpClient.SendMailAsync(mailMessage);
         }
     }
-
+    
     public async Task<bool> CreateAccount(string userAccount, string password)
     {
         var account = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == userAccount);

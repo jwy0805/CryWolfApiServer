@@ -22,10 +22,6 @@ public class TokenValidator
 
     public int? GetUserIdFromAccessToken(ClaimsPrincipal principal)
     {
-        // foreach (var claim in principal.Claims)
-        // {
-        //     Console.WriteLine($"GetUserId / Type: {claim.Type}, Value: {claim.Value}");
-        // }
         var userIdClaim = principal.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
         if (userIdClaim == null) return null;
         return int.Parse(userIdClaim.Value);

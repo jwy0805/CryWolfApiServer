@@ -72,6 +72,17 @@ public class FriendUserInfo
     public FriendStatus FriendStatus { get; set; }
 }
 
+public class MailInfo
+{
+    public int MailId { get; set; }
+    public DateTime SentAt { get; set; }
+    public DateTime ExpiresAt { get; set; }
+    public int ProductId { get; set; }
+    public ProductCategory ProductCategory { get; set; }
+    public bool Claimed { get; set; }
+    public string Message { get; set; }
+}
+
 public class ProductInfo
 {
     public int Id { get; set; }
@@ -79,6 +90,7 @@ public class ProductInfo
     public int Price { get; set; }
     public CurrencyType CurrencyType { get; set; }
     public ProductCategory Category { get; set; }
+    public string ProductCode { get; set; }
 }
 
 public class CompositionInfo
@@ -328,6 +340,7 @@ public class LoadTestUserPacketRequired
 public class LoadTestUserPacketResponse
 {
     public bool LoadTestUserOk { get; set; }
+    public UserInfo UserInfo { get; set; }
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
 }
@@ -609,6 +622,51 @@ public class AcceptFriendPacketResponse
 {
     public bool AcceptFriendOk { get; set; }
     public bool Accept { get; set; }
+}
+
+public class LoadPendingMailPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class LoadPendingMailPacketResponse
+{
+    public bool LoadPendingMailOk { get; set; }
+    public List<MailInfo> PendingMailList { get; set; }
+}
+
+public class ClaimMailPacketRequired
+{
+    public string AccessToken { get; set; }
+    public int MailId { get; set; }
+}
+
+public class ClaimMailPacketResponse
+{
+    public bool ClaimMailOk { get; set; }
+}
+
+public class VirtualPaymentPacketRequired
+{
+    public string AccessToken { get; set; }
+    public string ProductCode { get; set; }
+}
+
+public class VirtualPaymentPacketResponse
+{
+    public bool PaymentOk { get; set; }
+}
+
+public class CashPaymentPacketRequired
+{
+    public string AccessToken { get; set; }
+    public string Receipt { get; set; }
+    public string ProductCode { get; set; }
+}
+
+public class CashPaymentPacketResponse
+{
+    public bool PaymentOk { get; set; }
 }
 
 #endregion

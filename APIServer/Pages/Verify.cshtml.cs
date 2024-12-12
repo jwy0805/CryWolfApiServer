@@ -9,13 +9,13 @@ namespace ApiServer.Pages;
 public class Verify : PageModel
 {
     private readonly AppDbContext _dbContext;
-    private readonly UserService _userService;
+    private readonly UserService _emailService;
     private readonly TokenValidator _tokenValidator;
     
-    public Verify(AppDbContext dbContext, UserService userService, TokenValidator tokenValidator)
+    public Verify(AppDbContext dbContext, UserService emailService, TokenValidator tokenValidator)
     {
         _dbContext = dbContext;
-        _userService = userService;
+        _emailService = emailService;
         _tokenValidator = tokenValidator;
     }
     
@@ -60,7 +60,7 @@ public class Verify : PageModel
 
                 await _dbContext.SaveChangesAsync();
 
-                var created = await _userService.CreateAccount(tempUser.TempUserAccount, tempUser.TempPassword);
+                var created = await _emailService.CreateAccount(tempUser.TempUserAccount, tempUser.TempPassword);
                 if (created == false)
                 {
                     await transaction.RollbackAsync();

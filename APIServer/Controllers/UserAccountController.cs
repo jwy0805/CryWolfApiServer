@@ -12,20 +12,20 @@ namespace ApiServer.Controllers;
 public class UserAccountController : ControllerBase
 {
     private readonly AppDbContext _context;
-    private readonly UserService _emailService;
+    private readonly UserService _userService;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
     private readonly ILogger<UserAccountController> _logger;
     
     public UserAccountController(
         AppDbContext context, 
-        UserService emailService, 
+        UserService userService, 
         TokenService tokenService, 
         TokenValidator validator,
         ILogger<UserAccountController> logger)
     {
         _context = context;
-        _emailService = emailService;
+        _userService = userService;
         _tokenService = tokenService;
         _tokenValidator = validator;
         _logger = logger;
@@ -83,7 +83,7 @@ public class UserAccountController : ControllerBase
             });
 
             var dbTask = _context.SaveChangesExtendedAsync();
-            var emailTask = _emailService.SendVerificationEmail(required.UserAccount, verificationLink);
+            var emailTask = _userService.SendVerificationEmail(required.UserAccount, verificationLink);
             
             await Task.WhenAll(dbTask, emailTask);
         }
@@ -206,9 +206,44 @@ public class UserAccountController : ControllerBase
             .FirstOrDefault(user => user.UserId == required.UserId);
         if (user == null) return NotFound();
         
+        var userStat = _context.UserStats.AsNoTracking()
+            .FirstOrDefault(userStat => userStat.UserId == required.UserId);
+        var userMatch = _context.UserMatch.AsNoTracking()
+            .FirstOrDefault(um => um.UserId == required.UserId);
+        if (userStat == null || userMatch == null)
+        {
+            Console.WriteLine("LoadUserInfo Null Error");
+            return NotFound();
+        }
+        
+        var exp = _context.Exp.AsNoTracking()
+            .FirstOrDefault(exp => exp.Level == userStat.UserLevel);
+        var winRate = userMatch.WinRankMatch + userMatch.LoseRankMatch > 0
+            ? (int)(userMatch.WinRankMatch / (float)(userMatch.WinRankMatch + userMatch.LoseRankMatch) * 100) : 0;
+        if (exp == null)
+        {
+            Console.WriteLine("Load Exp Error");
+            return NotFound();
+        }
+            
+        res.UserInfo = new UserInfo
+        {
+            UserName = user.UserName,
+            Level = userStat.UserLevel,
+            Exp = userStat.Exp,
+            ExpToLevelUp = exp.Exp,
+            RankPoint = userStat.RankPoint,
+            HighestRankPoint = userStat.HighestRankPoint,
+            Victories = userMatch.WinRankMatch,
+            WinRate = winRate,
+            Gold = userStat.Gold,
+            Spinel = userStat.Spinel,
+        };
+        
         var tokens = _tokenService.GenerateTokens(user.UserId);
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
+        res.LoadTestUserOk = true;
         
         return Ok(res);
     }

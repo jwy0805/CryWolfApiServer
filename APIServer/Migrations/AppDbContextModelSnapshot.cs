@@ -154,6 +154,40 @@ namespace AccountServer.Migrations
                     b.ToTable("Friends");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.Mail", b =>
+                {
+                    b.Property<int>("MailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Claimed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ProductCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MailId");
+
+                    b.ToTable("Mail");
+                });
+
             modelBuilder.Entity("ApiServer.DB.Material", b =>
                 {
                     b.Property<int>("MaterialId")

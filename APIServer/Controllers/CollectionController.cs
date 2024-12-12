@@ -112,13 +112,6 @@ public class CollectionController : ControllerBase
     {
         var res = new InitCardsPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        
-        if (principal == null)
-        {
-            var tokens = _tokenService.GenerateTokens((int)userId!);
-            res.AccessToken = tokens.AccessToken;
-            res.RefreshToken = tokens.RefreshToken;
-        }
 
         if (userId != null)
         {

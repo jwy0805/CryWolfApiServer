@@ -49,7 +49,8 @@ builder.Services.AddHostedService<ExpiredTokenCleanupService>();
 builder.Services.AddHttpClient<ApiService>();
 builder.Services.AddSingleton<ApiService>();
 builder.Services.AddSingleton<MatchService>();
-builder.Services.AddSingleton<RewardService>();
+builder.Services.AddSingleton<TaskQueueService>();
+builder.Services.AddScoped<RewardService>();
 builder.Services.AddTransient<UserService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>

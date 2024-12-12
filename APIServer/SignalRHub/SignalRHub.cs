@@ -20,7 +20,6 @@ public class SignalRHub: Hub
         _logger = logger;
         _context = context;
         _tokenValidator = tokenValidator;
-        Console.WriteLine("SignalRHub Created");
     }
 
     public async Task JoinLobby(string userName)

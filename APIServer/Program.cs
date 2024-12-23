@@ -46,6 +46,7 @@ builder.Services.AddScoped<TokenValidator>(provider => new TokenValidator(jwtSec
         provider.GetRequiredService<TokenService>()));
 
 builder.Services.AddHostedService<ExpiredTokenCleanupService>();
+builder.Services.AddHostedService<UserManagementService>();
 builder.Services.AddHttpClient<ApiService>();
 builder.Services.AddSingleton<ApiService>();
 builder.Services.AddSingleton<MatchService>();

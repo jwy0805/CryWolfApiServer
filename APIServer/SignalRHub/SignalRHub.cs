@@ -13,7 +13,10 @@ public class SignalRHub: Hub
     private readonly AppDbContext _context;
     private readonly TokenValidator _tokenValidator;
 
-    private static readonly ConcurrentDictionary<string, string> LobbyUsers = new();
+    private static readonly ConcurrentDictionary<string, string> LobbyConnectionUsers = new();
+    private static readonly ConcurrentDictionary<string, string> LobbyUserConnections = new();
+    
+    private static ConcurrentDictionary<string, List<int>> _gameWaitingRoom = new();
     
     public SignalRHub(ILogger<SignalRHub> logger, AppDbContext context, TokenValidator tokenValidator)
     {
@@ -22,16 +25,115 @@ public class SignalRHub: Hub
         _tokenValidator = tokenValidator;
     }
 
-    public async Task JoinLobby(string userName)
+    public async Task JoinLobby(string username)
     {
-        LobbyUsers.TryAdd(Context.ConnectionId, userName);
+        LobbyConnectionUsers.TryAdd(Context.ConnectionId, username);
+        LobbyUserConnections.TryAdd(username, Context.ConnectionId);
         await Groups.AddToGroupAsync(Context.ConnectionId, "Lobby");
     }
     
     public async Task LeaveLobby()
     {
-        LobbyUsers.TryRemove(Context.ConnectionId, out _);
+        LobbyConnectionUsers.TryRemove(Context.ConnectionId, out var username);
+        if (username != null)
+        {
+            LobbyUserConnections.TryRemove(username, out _);
+        }
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, "Lobby");
+    }
+    
+    public async Task HeartBeat(string username)
+    {
+        var user = _context.User.FirstOrDefault(u => u.UserName == username);
+        if (user == null) return;
+        user.LastPingTime = DateTime.UtcNow;
+        await _context.SaveChangesExtendedAsync();
+    }
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        if (LobbyConnectionUsers.TryRemove(Context.ConnectionId, out var username))
+        {
+            var user = _context.User.FirstOrDefault(u => u.UserName == username);
+            if (user != null)
+            {
+                user.Act = UserAct.Offline;
+                user.LastPingTime = DateTime.UtcNow;
+                LobbyUserConnections.TryRemove(username, out _);
+                
+                await _context.SaveChangesExtendedAsync();
+            }
+            
+            _logger.LogInformation($"User {username} disconnected. Conn={Context.ConnectionId}");
+        }
+
+        await base.OnDisconnectedAsync(exception);
+    }
+
+    public async Task SendGameInvite(string friendName)
+    {
+        if (LobbyConnectionUsers.TryGetValue(Context.ConnectionId, out var myName) == false) return;
+        if (LobbyUserConnections.TryGetValue(friendName, out var friendConnectId))
+        {
+            // Invitee 에게 메일 보내고, 메일 알림
+            var userId = _context.User.FirstOrDefault(u => u.UserName == friendName)?.UserId;
+            if (userId == null)
+            {
+                _logger.LogError($"User {friendName} not found.");
+                return;
+            }
+
+            var mail = new Mail
+            {
+                UserId = userId.Value,
+                Type = MailType.Invite,
+                CreatedAt = DateTime.Now,
+                ExpiresAt = DateTime.Now.AddMinutes(5),
+                Claimed = false,
+                Message = $"{myName} sent you a game invite.",
+                Sender = myName
+            };
+            
+            _context.Mail.Add(mail);
+            await _context.SaveChangesExtendedAsync();
+            
+            var mailTask = Clients.Client(friendConnectId).SendAsync("RefreshMailAlert", myName);
+            // Inviter 에게 toast 알림
+            var notifyTask = Clients.Client(Context.ConnectionId).SendAsync("ToastNotification");
+            await Task.WhenAll(mailTask, notifyTask);
+        }
+    }
+
+    public async Task HandleAcceptInvitation(string inviterName)
+    {
+        if (LobbyConnectionUsers.TryGetValue(Context.ConnectionId, out var myName) == false) return;
+        var gameRoomId = Guid.NewGuid().ToString();
+        _gameWaitingRoom.TryAdd(
+            gameRoomId,
+            new List<int> {int.Parse(Context.ConnectionId), int.Parse(LobbyUserConnections[inviterName])});
+        
+        await Groups.AddToGroupAsync(Context.ConnectionId, gameRoomId);
+        
+        if (LobbyUserConnections.TryGetValue(inviterName, out var inviterConnectId))
+        {
+            await Groups.AddToGroupAsync(inviterConnectId, gameRoomId);
+        }
+
+        var res = new AcceptInvitationPacketResponse
+        {
+            AcceptInvitationOk = true,
+            
+        };
+        
+        await Clients.Group(gameRoomId).SendAsync("GameRoomJoined", res);
+    }
+
+    public async Task StartFriendlyMatch(string gameRoomId)
+    {
+        if (_gameWaitingRoom.TryGetValue(gameRoomId, out var players))
+        {
+            await Clients.Group(gameRoomId).SendAsync("StartGame");
+        }
     }
     
     public async Task<FriendRequestPacketResponse> HandleFriendRequest(FriendRequestPacketRequired required)
@@ -115,7 +217,7 @@ public class SignalRHub: Hub
             }
         });
         
-        if (LobbyUsers.TryGetValue(required.FriendUsername, out var connectId))
+        if (LobbyConnectionUsers.TryGetValue(required.FriendUsername, out var connectId))
         {
             await Clients.Client(connectId).SendAsync("FriendRequestNotification", res);
         }

@@ -55,11 +55,13 @@ public class MailController : ControllerBase
         res.PendingMailList = mails.Select(mail => new MailInfo
         {
             MailId = mail.MailId,
+            Type = mail.Type,
             SentAt = mail.CreatedAt,
             ExpiresAt = mail.ExpiresAt,
-            ProductId = mail.ProductId,
+            ProductId = mail.ProductId ?? 0,
             Claimed = mail.Claimed,
-            Message = mail.Message
+            Message = mail.Message ?? "",
+            Sender = mail.Sender ?? "Cry Wolf"
         }).ToList();
 
         foreach (var mailInfo in res.PendingMailList)

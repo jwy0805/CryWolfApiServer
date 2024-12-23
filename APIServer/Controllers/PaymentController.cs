@@ -175,12 +175,14 @@ public class PaymentController : ControllerBase
         var mail = new Mail
         {
             UserId = userId,
+            Type = MailType.Product,
             CreatedAt = DateTime.UtcNow,
             ExpiresAt = DateTime.UtcNow.AddDays(30),
             ProductId = product.ProductId,
             ProductCode = product.ProductCode,
             Claimed = false,
-            Message = "Product Purchased"
+            Message = "Product Purchased",
+            Sender = "Cry Wolf"
         };
         
         _context.Mail.Add(mail);

@@ -205,6 +205,7 @@ public class MatchController : ControllerBase
 
             if (loseUser == null || loseUserStats == null || loseUserMatchInfo == null) return NotFound();
             
+            loseUser.Act = UserAct.InLobby;
             loseUserStats.RankPoint -= required.LoseRankPoint;
             var loserRewardsList = GetLoserRewards(required.LoseUserId, loseUserStats.RankPoint, required.LoseRankPoint);
             var res = new GameRewardPacketResponse
@@ -230,6 +231,7 @@ public class MatchController : ControllerBase
 
             if (winUser == null || winUserStats == null || winUserMatchInfo == null) return NotFound();
             
+            winUser.Act = UserAct.InLobby;
             winUserStats.RankPoint += required.WinRankPoint;
             var winnerRewardsList = GetWinnerRewards(required.WinUserId, winUserStats.RankPoint, required.WinRankPoint);
             var res = new GameRewardPacketResponse
@@ -258,7 +260,9 @@ public class MatchController : ControllerBase
             if (loseUser == null || loseUserStats == null || loseUserMatchInfo == null) return NotFound();
             if (winUser == null || winUserStats == null || winUserMatchInfo == null) return NotFound();
 
+            winUser.Act = UserAct.InLobby;
             winUserStats.RankPoint += required.WinRankPoint;
+            loseUser.Act = UserAct.InLobby;
             loseUserStats.RankPoint -= required.LoseRankPoint;
 
             if (winUserStats.RankPoint > winUserStats.HighestRankPoint)

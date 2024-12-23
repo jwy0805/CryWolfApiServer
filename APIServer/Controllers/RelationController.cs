@@ -32,7 +32,7 @@ public class RelationController : ControllerBase
 
         if (userId == null)
         {
-            res.FriendList = new List<UserInfo>();
+            res.FriendList = new List<FriendUserInfo>();
             res.FriendListOk = false;
             return Ok(res);
         }
@@ -46,13 +46,11 @@ public class RelationController : ControllerBase
             .Join(_context.UserStats,
                 combined => combined.user.UserId,
                 userStat => userStat.UserId,
-                (combined, userStat) => new UserInfo
+                (combined, userStat) => new FriendUserInfo
                 {
                     UserName = combined.user.UserName,
                     Level = userStat.UserLevel,
-                    Exp = userStat.Exp,
-                    Gold = userStat.Gold,
-                    Spinel = userStat.Spinel,
+                    Act = combined.user.Act,
                     RankPoint = userStat.RankPoint,
                 })
             .ToList();

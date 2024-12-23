@@ -17,13 +17,17 @@ public class TempUser
 public class User
 {
     public int UserId { get; set; }
+    [MaxLength(60)]
     public string UserAccount { get; set; }
+    [MaxLength(120)]
     public string Password { get; set; }
+    [MaxLength(30)]
     public string UserName { get; set; }
     public UserRole Role { get; set; }
     public UserAct Act { get; set; }
     public UserState State { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime? LastPingTime { get; set; }
 }
 
 [Table("UserStats")]
@@ -63,12 +67,17 @@ public class Mail
 {
     public int MailId { get; set; }
     public int UserId { get; set; }
+    public MailType Type { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime ExpiresAt { get; set; }
-    public int ProductId { get; set; }
-    public string ProductCode { get; set; }
+    public int? ProductId { get; set; }
+    [MaxLength(120)]
+    public string? ProductCode { get; set; }
     public bool Claimed { get; set; }
-    public string Message { get; set; }
+    [MaxLength(120)]
+    public string? Message { get; set; }
+    [MaxLength(30)]
+    public string? Sender { get; set; }
 }
 
 [Table("RefreshToken")]
@@ -76,6 +85,7 @@ public class RefreshToken
 {
     public int Id { get; set; }
     public int UserId { get; set; }
+    [MaxLength(120)]
     public string Token { get; set; }
     public DateTime ExpiresAt { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -93,7 +103,7 @@ public class ExpTable
 public class Unit
 {
     public UnitId UnitId { get; set; }
-    [MaxLength(50)]
+    [MaxLength(30)]
     public string UnitName { get; set; }
     public UnitClass Class { get; set; }
     public int Level { get; set; }
@@ -162,8 +172,9 @@ public class Material
 public class Product
 {
     public int ProductId { get; set; }
-    [MaxLength(50)]
+    [MaxLength(60)]
     public string ProductName { get; set; }
+    [MaxLength(120)]
     public string ProductCode { get; set; }
     public int Price { get; set; }
     public CurrencyType Currency { get; set; }

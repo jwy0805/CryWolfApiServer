@@ -39,7 +39,8 @@ public enum UserAct
     InRankGame,
     InCustomGame,
     InTutorial,
-    InLobby
+    InLobby,
+    Offline,
 }
 
 public enum FriendStatus
@@ -48,6 +49,14 @@ public enum FriendStatus
     Pending,
     Accepted,
     Blocked
+}
+
+public enum MailType
+{
+    None,
+    Notice,
+    Invite,
+    Product,
 }
 
 public enum UnitClass

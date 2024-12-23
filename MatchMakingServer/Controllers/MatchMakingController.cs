@@ -20,6 +20,7 @@ public class MatchMakingController : ControllerBase
     public MatchMakingPacketResponse MatchMaking([FromBody] MatchMakingPacketRequired required)
     {
         _matchMakingService.AddMatchRequest(required, required.Test);
+        Console.WriteLine($"Match Requested : {required.SessionId}, {required.Test}");
         return new MatchMakingPacketResponse();
     }
     

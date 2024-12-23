@@ -69,18 +69,21 @@ public class FriendUserInfo
     public string UserName { get; set; }
     public int Level { get; set; }
     public int RankPoint { get; set; }
+    public UserAct Act { get; set; }
     public FriendStatus FriendStatus { get; set; }
 }
 
 public class MailInfo
 {
     public int MailId { get; set; }
+    public MailType Type { get; set; }
     public DateTime SentAt { get; set; }
     public DateTime ExpiresAt { get; set; }
     public int ProductId { get; set; }
     public ProductCategory ProductCategory { get; set; }
     public bool Claimed { get; set; }
     public string Message { get; set; }
+    public string Sender { get; set; }
 }
 
 public class ProductInfo
@@ -572,7 +575,7 @@ public class FriendListPacketRequired
 public class FriendListPacketResponse
 {
     public bool FriendListOk { get; set; }
-    public List<UserInfo> FriendList { get; set; }
+    public List<FriendUserInfo> FriendList { get; set; }
 }
 
 public class SearchUsernamePacketRequired
@@ -644,6 +647,21 @@ public class ClaimMailPacketRequired
 public class ClaimMailPacketResponse
 {
     public bool ClaimMailOk { get; set; }
+}
+
+public class AcceptInvitationPacketRequired
+{
+    public string AccessToken { get; set; }
+    public string InviterName { get; set; }
+}
+
+public class AcceptInvitationPacketResponse
+{
+    public bool AcceptInvitationOk { get; set; }
+    public UserInfo MyInfo { get; set; }
+    public UserInfo EnemyInfo { get; set; }
+    public DeckInfo MyDeck { get; set; }
+    public DeckInfo EnemyDeck { get; set; }
 }
 
 public class VirtualPaymentPacketRequired

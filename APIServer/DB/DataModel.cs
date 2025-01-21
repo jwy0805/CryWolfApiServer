@@ -53,6 +53,15 @@ public class UserMatch
     public int LoseFriendlyMatch { get; set; }
 }
 
+[Table("UserTutorial")]
+public class UserTutorial
+{
+    public int UserId { get; set; }
+    public TutorialType TutorialType { get; set; }
+    public int TutorialStep { get; set; }
+    public bool Done { get; set; }
+}
+
 [Table("Friends")]
 public class Friends
 {
@@ -201,6 +210,42 @@ public class CompositionProbability
     public int GroupId { get; set; }
     public int Count { get; set; }
     public double Probability { get; set; }
+}
+
+[Table("Stage")]
+public class Stage
+{
+    public int StageId { get; set; }
+    public int StageLevel { get; set; }
+    public Faction UserFaction { get; set; }
+}
+
+[Table("Stage_Enemy")]
+public class StageEnemy
+{
+    public int StageId { get; set; }
+    public UnitId UnitId { get; set; }
+}
+
+[Table("Stage_Reward")]
+public class StageReward
+{
+    public int StageId { get; set; }
+    public int ProductId { get; set; }
+    public ProductType ProductType { get; set; }
+    public int Count { get; set; }
+    public int Star { get; set; }
+}
+
+[Table("User_Stage")]
+public class UserStage
+{
+    public int UserId { get; set; }
+    public int StageId { get; set; }
+    public int StageLevel { get; set; }
+    public int StageStar { get; set; }
+    public bool IsCleared { get; set; }
+    public bool IsAvailable { get; set; }
 }
 
 [Table("User_Product")]

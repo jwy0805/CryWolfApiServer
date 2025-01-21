@@ -62,6 +62,9 @@ public class UserInfo
     public int WinRate { get; set; }
     public int Gold { get; set; }
     public int Spinel { get; set; }
+    public bool BattleTutorialDone { get; set; }
+    public bool CollectionTutorialDone { get; set; }
+    public bool ReinforceTutorialDone { get; set; }
 }
 
 public class FriendUserInfo
@@ -116,6 +119,7 @@ public class DailyProductInfo
     public ProductCategory Category { get; set; }
     public bool AlreadyBought { get; set; }
 }
+
 
 public class UnitInfo
 {
@@ -217,6 +221,36 @@ public class UnitMaterialInfo
     public List<OwnedMaterialInfo> Materials { get; set; }
 }
 
+public class UserStageInfo
+{
+    public int UserId { get; set; }
+    public int StageId { get; set; }
+    public int StageLevel { get; set; }
+    public int StageStar { get; set; }
+    public bool IsCleared { get; set; }
+    public bool IsAvailable { get; set; }
+}
+
+public class StageEnemyInfo
+{
+    public int StageId { get; set; }
+    public List<UnitId> UnitIds { get; set; }
+}
+
+public class StageRewardInfo
+{
+    public int StageId { get; set; }
+    public List<SingleRewardInfo> RewardProducts { get; set; }
+}
+
+public class SingleRewardInfo
+{
+    public int ItemId { get; set; }
+    public ProductType ProductType { get; set; }
+    public int Count { get; set; }
+    public int Star { get; set; }
+}
+
 public class RewardInfo
 {
     public int ItemId { get; set; }
@@ -270,6 +304,19 @@ public class ChangeActPacketRequired
 }
 
 public class ChangeActPacketResponse
+{
+    public bool ChangeOk { get; set; }
+}
+
+public class ChangeActPacketSingleRequired
+{
+    public string AccessToken { get; set; }
+    public int SessionId { get; set; }
+    public int StageId { get; set; }
+    public Faction Faction { get; set; }
+}
+
+public class ChangeActPacketSingleResponse
 {
     public bool ChangeOk { get; set; }
 }
@@ -649,19 +696,34 @@ public class ClaimMailPacketResponse
     public bool ClaimMailOk { get; set; }
 }
 
+public class InviteFriendlyMatchPacketRequired
+{
+    public string AccessToken { get; set; }
+    public string InviterName { get; set; }
+    public string InviteeName { get; set; }
+    public Faction InviterFaction { get; set; }
+    public Faction InviteeFaction { get; set; }
+}
+
+public class InviteFriendlyMatchPacketResponse
+{
+    public bool InviteOk { get; set; }
+}
+
 public class AcceptInvitationPacketRequired
 {
     public string AccessToken { get; set; }
+    public bool Accept { get; set; }
     public string InviterName { get; set; }
 }
 
 public class AcceptInvitationPacketResponse
 {
     public bool AcceptInvitationOk { get; set; }
-    public UserInfo MyInfo { get; set; }
+    public Faction MyFaction { get; set; }
     public UserInfo EnemyInfo { get; set; }
-    public DeckInfo MyDeck { get; set; }
-    public DeckInfo EnemyDeck { get; set; }
+    public DeckInfo EnemyDeckSheep { get; set; }
+    public DeckInfo EnemyDeckWolf { get; set; }
 }
 
 public class VirtualPaymentPacketRequired
@@ -685,6 +747,19 @@ public class CashPaymentPacketRequired
 public class CashPaymentPacketResponse
 {
     public bool PaymentOk { get; set; }
+}
+
+public class LoadStageInfoPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class LoadStageInfoPacketResponse
+{
+    public bool LoadStageInfoOk { get; set; }
+    public List<UserStageInfo> UserStageInfos { get; set; }
+    public List<StageEnemyInfo> StageEnemyInfos { get; set; }
+    public List<StageRewardInfo> StageRewardInfos { get; set; }
 }
 
 #endregion
@@ -751,6 +826,23 @@ public class SendMatchInfoPacketRequired
 public class SendMatchInfoPacketResponse
 {
     public bool SendMatchInfoOk { get; set; }
+}
+
+public class SinglePlayStartPacketRequired
+{
+    public int UserId { get; set; }
+    public Faction Faction { get; set; }
+    public UnitId[] UnitIds { get; set; }
+    public int CharacterId { get; set; }
+    public int AssetId { get; set; }
+    public int MapId { get; set; }
+    public int SessionId { get; set; }
+    public int StageId { get; set; }
+}
+
+public class SinglePlayStartPacketResponse
+{
+    public bool SinglePlayStartOk { get; set; }
 }
 
 public class GameResultPacketRequired

@@ -11,12 +11,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/APIServer/Services/UserManagementService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/SinglePlayController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Services/SinglePlayService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/dataSources/3548a708-6c28-4897-bcad-f956f52904e4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/dataSources/3548a708-6c28-4897-bcad-f956f52904e4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MailController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MailController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/CollectionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/CollectionController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/RelationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/RelationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
@@ -33,7 +35,6 @@
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
@@ -77,6 +78,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/Controllers/PaymentController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ClientPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ServerPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fb89205e8aea414c9666c6d48c26e0e67290/83/0fde8049/IConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
@@ -427,6 +429,24 @@
       <workItem from="1734757173627" duration="4744000" />
       <workItem from="1734831699431" duration="10201000" />
       <workItem from="1734922883607" duration="10051000" />
+      <workItem from="1734955142094" duration="260000" />
+      <workItem from="1735007428104" duration="16527000" />
+      <workItem from="1735092847465" duration="3722000" />
+      <workItem from="1735200932503" duration="8537000" />
+      <workItem from="1735258554463" duration="15079000" />
+      <workItem from="1735446272351" duration="10561000" />
+      <workItem from="1735563458965" duration="3018000" />
+      <workItem from="1735634745379" duration="23233000" />
+      <workItem from="1736009813538" duration="1746000" />
+      <workItem from="1736038796470" duration="12848000" />
+      <workItem from="1736130840531" duration="5057000" />
+      <workItem from="1736214637593" duration="14923000" />
+      <workItem from="1736605264643" duration="2443000" />
+      <workItem from="1736684622688" duration="20051000" />
+      <workItem from="1736830678909" duration="16864000" />
+      <workItem from="1736992979949" duration="13005000" />
+      <workItem from="1737077850096" duration="23461000" />
+      <workItem from="1737417006932" duration="13389000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -692,7 +712,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733981813507</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="241223&#10;User Management Logic Added.&#10;&#10;Friendly Match Service Added.">
+      <option name="closed" value="true" />
+      <created>1734955201767</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1734955201767</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -703,7 +731,6 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Get Deck methods about ec2 environment modified." />
     <MESSAGE value="1105" />
     <MESSAGE value="." />
     <MESSAGE value="241116&#10;&#10;Give Match Reward &#10; - Match reward will be given according to result of match." />
@@ -728,6 +755,7 @@
     <MESSAGE value="1208 docker" />
     <MESSAGE value="1208&#10;docker" />
     <MESSAGE value="241212&#10;&#10;Payment and mail logic updated.&#10; - Atomicity of DB query is guaranteed when it comes to paying products.&#10; - Mail controller and Task queue service has been added.&#10; - Algorithms when used to products in packages are added." />
-    <option name="LAST_COMMIT_MESSAGE" value="241212&#10;&#10;Payment and mail logic updated.&#10; - Atomicity of DB query is guaranteed when it comes to paying products.&#10; - Mail controller and Task queue service has been added.&#10; - Algorithms when used to products in packages are added." />
+    <MESSAGE value="241223&#10;User Management Logic Added.&#10;&#10;Friendly Match Service Added." />
+    <option name="LAST_COMMIT_MESSAGE" value="241223&#10;User Management Logic Added.&#10;&#10;Friendly Match Service Added." />
   </component>
 </project>

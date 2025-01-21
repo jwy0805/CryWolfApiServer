@@ -8,6 +8,7 @@ public class AppDbContext : DbContext
     public DbSet<User> User { get; set; }
     public DbSet<UserStats> UserStats { get; set; }
     public DbSet<UserMatch> UserMatch { get; set; }
+    public DbSet<UserTutorial> UserTutorial { get; set; }
     public DbSet<Friends> Friends { get; set; }
     public DbSet<Mail> Mail { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
@@ -23,6 +24,10 @@ public class AppDbContext : DbContext
     public DbSet<Transaction> Transaction { get; set; }
     public DbSet<ProductComposition> ProductComposition { get; set; }
     public DbSet<CompositionProbability> CompositionProbability { get; set; }
+    public DbSet<Stage> Stage { get; set; }
+    public DbSet<StageEnemy> StageEnemy { get; set; }
+    public DbSet<StageReward> StageReward { get; set; }
+    public DbSet<UserStage> UserStage { get; set; }
     public DbSet<UserProduct> UserProduct { get; set; }
     public DbSet<UserSheep> UserSheep { get; set; }
     public DbSet<UserEnchant> UserEnchant { get; set; }
@@ -41,6 +46,12 @@ public class AppDbContext : DbContext
         builder.Entity<User>().HasIndex(user => user.UserAccount).IsUnique();
         builder.Entity<UserStats>().HasKey(t => new { t.UserId, t.UserLevel });
         builder.Entity<UserMatch>().HasOne<User>().WithOne().HasForeignKey<UserMatch>(um => um.UserId);
+        builder.Entity<UserTutorial>().HasKey(ut => new { ut.UserId, ut.TutorialType });
+        builder.Entity<UserTutorial>(entity =>
+        {
+            entity.Property(ut => ut.TutorialType).HasConversion(v => (int)v, v => (TutorialType)v);
+        });
+        
         builder.Entity<Friends>().HasKey(t => new { t.UserId, t.FriendId });
         
         builder.Entity<Unit>(entity =>
@@ -97,6 +108,10 @@ public class AppDbContext : DbContext
         builder.Entity<ProductComposition>().HasKey(pc => new { pc.ProductId, pc.CompositionId });
         
         builder.Entity<CompositionProbability>().HasKey(cp => new { cp.ProductId, cp.CompositionId, cp.Count });
+        
+        builder.Entity<StageEnemy>().HasKey(se => new { se.StageId, se.UnitId });
+        builder.Entity<StageReward>().HasKey(sr => new { sr.StageId, sr.ProductId, sr.ProductType });
+        builder.Entity<UserStage>().HasKey(us => new { us.UserId, us.StageId });
         
         builder.Entity<UserProduct>().HasKey(up => new { up.UserId, up.ProductId });
         

@@ -49,10 +49,10 @@ public class PaymentController : ControllerBase
             GetProductOk = true,
             SpecialPackages = GetProductInfoList(ProductCategory.SpecialPackage, productGroups, compositions, probabilities),
             BeginnerPackages = GetProductInfoList(ProductCategory.BeginnerPackage, productGroups, compositions, probabilities),
-            GoldPackages = GetProductInfoList(ProductCategory.GoldPackage, productGroups, compositions, probabilities),
-            SpinelPackages = GetProductInfoList(ProductCategory.SpinelPackage, productGroups, compositions, probabilities),
-            GoldItems = GetProductInfoList(ProductCategory.GoldItem, productGroups, compositions, probabilities),
-            SpinelItems = GetProductInfoList(ProductCategory.SpinelItem, productGroups, compositions, probabilities),
+            GoldPackages = GetProductInfoList(ProductCategory.GoldStore, productGroups, compositions, probabilities),
+            SpinelPackages = GetProductInfoList(ProductCategory.SpinelStore, productGroups, compositions, probabilities),
+            GoldItems = GetProductInfoList(ProductCategory.GoldPackage, productGroups, compositions, probabilities),
+            SpinelItems = GetProductInfoList(ProductCategory.SpinelPackage, productGroups, compositions, probabilities),
             ReservedSales = GetProductInfoList(ProductCategory.ReservedSale, productGroups, compositions, probabilities),
         };
         

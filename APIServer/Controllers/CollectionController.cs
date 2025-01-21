@@ -464,8 +464,7 @@ public class CollectionController : ControllerBase
 
         if (userId != null)
         {
-            var deck = _context.Deck
-                .AsNoTracking()
+            var deck = _context.Deck.AsNoTracking()
                 .Where(deck =>
                     deck.UserId == userId && deck.Faction == (Faction)required.Faction && deck.DeckNumber == required.DeckNumber)
                 .Select(deck => new DeckInfo

@@ -30,6 +30,14 @@ public enum UserState
     Ban
 }
 
+public enum TutorialType
+{
+    None,
+    Battle,
+    Collection,
+    Reinforce,
+}
+
 public enum UserAct
 {
     Pending,
@@ -228,7 +236,7 @@ public enum CharacterId
 
 public enum ProductType
 {
-    None = 0, // Other Product
+    None = 0, // Other Product e.g. packages
     Unit = 1,
     Material = 2,
     Enchant = 3,
@@ -243,10 +251,10 @@ public enum ProductCategory
     None = 0,
     SpecialPackage = 1,
     BeginnerPackage = 2,
-    GoldPackage = 3,
-    SpinelPackage = 4,
-    GoldItem = 5,
-    SpinelItem = 6,
+    GoldStore = 3,
+    SpinelStore = 4,
+    GoldPackage = 5,
+    SpinelPackage = 6,
     ReservedSale = 7,
     DailyDeal = 8,
     Pass = 9,

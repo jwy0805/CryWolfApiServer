@@ -161,6 +161,8 @@ public class UserAccountController : ControllerBase
             .FirstOrDefault(userStat => userStat.UserId == userId);
         var userMatch = _context.UserMatch.AsNoTracking()
             .FirstOrDefault(um => um.UserId == userId);
+        var userTutorial = _context.UserTutorial.AsNoTracking()
+            .Where(ut => ut.UserId == userId).ToList();
         if (user == null || userStat == null || userMatch == null)
         {
             Console.WriteLine("LoadUserInfo Null Error");
@@ -189,6 +191,9 @@ public class UserAccountController : ControllerBase
             WinRate = winRate,
             Gold = userStat.Gold,
             Spinel = userStat.Spinel,
+            BattleTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Battle).Done,
+            CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
+            ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };
         
         res.LoadUserInfoOk = true;
@@ -210,6 +215,8 @@ public class UserAccountController : ControllerBase
             .FirstOrDefault(userStat => userStat.UserId == required.UserId);
         var userMatch = _context.UserMatch.AsNoTracking()
             .FirstOrDefault(um => um.UserId == required.UserId);
+        var userTutorial = _context.UserTutorial.AsNoTracking()
+            .Where(ut => ut.UserId == required.UserId).ToList();
         if (userStat == null || userMatch == null)
         {
             Console.WriteLine("LoadUserInfo Null Error");
@@ -238,6 +245,9 @@ public class UserAccountController : ControllerBase
             WinRate = winRate,
             Gold = userStat.Gold,
             Spinel = userStat.Spinel,
+            BattleTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Battle).Done,
+            CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
+            ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };
         
         var tokens = _tokenService.GenerateTokens(user.UserId);

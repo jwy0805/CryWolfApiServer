@@ -330,6 +330,58 @@ namespace AccountServer.Migrations
                     b.ToTable("Sheep");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.Stage", b =>
+                {
+                    b.Property<int>("StageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("StageLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserFaction")
+                        .HasColumnType("int");
+
+                    b.HasKey("StageId");
+
+                    b.ToTable("Stage");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.StageEnemy", b =>
+                {
+                    b.Property<int>("StageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StageId", "UnitId");
+
+                    b.ToTable("Stage_Enemy");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.StageReward", b =>
+                {
+                    b.Property<int>("StageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Star")
+                        .HasColumnType("int");
+
+                    b.HasKey("StageId", "ProductId", "ProductType");
+
+                    b.ToTable("Stage_Reward");
+                });
+
             modelBuilder.Entity("ApiServer.DB.TempUser", b =>
                 {
                     b.Property<string>("TempUserAccount")
@@ -576,6 +628,31 @@ namespace AccountServer.Migrations
                     b.ToTable("User_Sheep");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.UserStage", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StageId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsCleared")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("StageLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StageStar")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "StageId");
+
+                    b.ToTable("User_Stage");
+                });
+
             modelBuilder.Entity("ApiServer.DB.UserStats", b =>
                 {
                     b.Property<int>("UserId")
@@ -602,6 +679,25 @@ namespace AccountServer.Migrations
                     b.HasKey("UserId", "UserLevel");
 
                     b.ToTable("UserStats");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserTutorial", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TutorialType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Done")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("TutorialStep")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "TutorialType");
+
+                    b.ToTable("UserTutorial");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserUnit", b =>

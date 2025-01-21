@@ -16,7 +16,8 @@ public class SignalRHub: Hub
     private static readonly ConcurrentDictionary<string, string> LobbyConnectionUsers = new();
     private static readonly ConcurrentDictionary<string, string> LobbyUserConnections = new();
     
-    private static ConcurrentDictionary<string, List<int>> _gameWaitingRoom = new();
+    private static readonly ConcurrentDictionary<string, List<int>> GameWaitingRoom = new();
+    private static readonly ConcurrentDictionary<string, Faction> HostFaction = new();
     
     public SignalRHub(ILogger<SignalRHub> logger, AppDbContext context, TokenValidator tokenValidator)
     {
@@ -70,16 +71,17 @@ public class SignalRHub: Hub
         await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task SendGameInvite(string friendName)
+    public async Task HandleInviteFriendlyMatch(InviteFriendlyMatchPacketRequired required)
     {
         if (LobbyConnectionUsers.TryGetValue(Context.ConnectionId, out var myName) == false) return;
-        if (LobbyUserConnections.TryGetValue(friendName, out var friendConnectId))
+        if (LobbyUserConnections.TryGetValue(required.InviteeName, out var friendConnectId))
         {
+            HostFaction.TryAdd(Context.ConnectionId, required.InviterFaction);
             // Invitee 에게 메일 보내고, 메일 알림
-            var userId = _context.User.FirstOrDefault(u => u.UserName == friendName)?.UserId;
+            var userId = _context.User.FirstOrDefault(u => u.UserName == required.InviteeName)?.UserId;
             if (userId == null)
             {
-                _logger.LogError($"User {friendName} not found.");
+                _logger.LogError($"User {required.InviteeName} not found.");
                 return;
             }
 
@@ -97,40 +99,121 @@ public class SignalRHub: Hub
             _context.Mail.Add(mail);
             await _context.SaveChangesExtendedAsync();
             
-            var mailTask = Clients.Client(friendConnectId).SendAsync("RefreshMailAlert", myName);
+            var mailTask = Clients.Client(friendConnectId).SendAsync("RefreshMailAlert");
             // Inviter 에게 toast 알림
             var notifyTask = Clients.Client(Context.ConnectionId).SendAsync("ToastNotification");
             await Task.WhenAll(mailTask, notifyTask);
         }
     }
 
-    public async Task HandleAcceptInvitation(string inviterName)
+    public async Task HandleAcceptInvitation(AcceptInvitationPacketRequired required)
     {
         if (LobbyConnectionUsers.TryGetValue(Context.ConnectionId, out var myName) == false) return;
         var gameRoomId = Guid.NewGuid().ToString();
-        _gameWaitingRoom.TryAdd(
+        GameWaitingRoom.TryAdd(
             gameRoomId,
-            new List<int> {int.Parse(Context.ConnectionId), int.Parse(LobbyUserConnections[inviterName])});
+            new List<int> {int.Parse(Context.ConnectionId), int.Parse(LobbyUserConnections[required.InviterName])});
         
         await Groups.AddToGroupAsync(Context.ConnectionId, gameRoomId);
         
-        if (LobbyUserConnections.TryGetValue(inviterName, out var inviterConnectId))
+        if (LobbyUserConnections.TryGetValue(required.InviterName, out var inviterConnectId))
         {
+            var inviteeConnectId = Context.ConnectionId;
             await Groups.AddToGroupAsync(inviterConnectId, gameRoomId);
-        }
-
-        var res = new AcceptInvitationPacketResponse
-        {
-            AcceptInvitationOk = true,
             
-        };
-        
-        await Clients.Group(gameRoomId).SendAsync("GameRoomJoined", res);
+            // 상대의 덱 정보를 보내야 하므로 상대의 이름을 인자로 넘겨준다.
+            if (HostFaction.TryRemove(inviterConnectId, out var hostFaction))
+            {
+                var inviteeFaction = hostFaction == Faction.Sheep ? Faction.Wolf : Faction.Sheep;
+                var responseInviter = CreateAcceptInvitationPacket(myName, hostFaction);
+                var responseInvitee = CreateAcceptInvitationPacket(required.InviterName, inviteeFaction);
+                var inviterTask = Clients.Client(inviterConnectId).SendAsync("GameRoomJoined", responseInviter);
+                var inviteeTask = Clients.Client(inviteeConnectId).SendAsync("GameRoomJoined", responseInvitee);
+            
+                await Task.WhenAll(inviterTask, inviteeTask);
+            }
+        }
     }
 
+    public async Task HandleRejectInvitation(AcceptInvitationPacketRequired required)
+    {
+        if (LobbyUserConnections.TryGetValue(required.InviterName, out var inviterConnectId))
+        {
+            var res = new AcceptInvitationPacketResponse { AcceptInvitationOk = false };
+            await Clients.Client(inviterConnectId).SendAsync("RejectInvitation", res);
+        }
+    }
+
+    private AcceptInvitationPacketResponse CreateAcceptInvitationPacket(string username, Faction myFaction)
+    {
+        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserName == username);
+        if (user == null)
+        {
+            _logger.LogError($"User {username} not found.");
+            return new AcceptInvitationPacketResponse { AcceptInvitationOk = false };
+        }
+        
+        var userStats = _context.UserStats.AsNoTracking().FirstOrDefault(s => s.UserId == user.UserId);
+        if (userStats == null)
+        {
+            _logger.LogError($"UserStats {username} not found.");
+            return new AcceptInvitationPacketResponse { AcceptInvitationOk = false };
+        }
+
+        var userInfo = new UserInfo
+        {
+            UserName = username,
+            RankPoint = userStats.RankPoint,
+        };
+        
+        var deckInfoSheep = GetDeckInfo(user.UserId, Faction.Sheep);
+        var deckInfoWolf = GetDeckInfo(user.UserId, Faction.Wolf);
+        if (deckInfoSheep != null && deckInfoWolf != null)
+        {
+            return new AcceptInvitationPacketResponse
+            {
+                AcceptInvitationOk = true,
+                MyFaction = myFaction,
+                EnemyInfo = userInfo,
+                EnemyDeckSheep = deckInfoSheep,
+                EnemyDeckWolf = deckInfoWolf
+            };
+        }
+        
+        _logger.LogError($"DeckInfo {username} not found.");
+        return new AcceptInvitationPacketResponse { AcceptInvitationOk = false };
+    }
+    
+    private DeckInfo? GetDeckInfo(int userId, Faction faction)
+    {
+        return _context.Deck.AsNoTracking()
+            .Where(d => d.UserId == userId && d.Faction == faction && d.LastPicked)
+            .Select(d => new DeckInfo
+            {
+                DeckId = d.DeckId,
+                UnitInfo = _context.DeckUnit.AsNoTracking()
+                    .Where(du => du.DeckId == d.DeckId)
+                    .Select(du => _context.Unit.AsNoTracking().FirstOrDefault(u => u.UnitId == du.UnitId))
+                    .Where(u => u != null)
+                    .Select(unit => new UnitInfo
+                    {
+                        Id = (int)unit!.UnitId,
+                        Class = unit.Class,
+                        Level = unit.Level,
+                        Species = (int)unit.Species,
+                        Role = unit.Role,
+                        Faction = unit.Faction,
+                        Region = unit.Region
+                    }).ToArray(),
+                DeckNumber = d.DeckNumber,
+                Faction = (int)d.Faction,
+                LastPicked = d.LastPicked
+            }).FirstOrDefault();
+    }
+    
     public async Task StartFriendlyMatch(string gameRoomId)
     {
-        if (_gameWaitingRoom.TryGetValue(gameRoomId, out var players))
+        if (GameWaitingRoom.TryGetValue(gameRoomId, out var players))
         {
             await Clients.Group(gameRoomId).SendAsync("StartGame");
         }

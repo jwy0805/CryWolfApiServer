@@ -100,7 +100,7 @@ using (var scope = app.Services.CreateScope())
     {
         dbContext.Database.OpenConnection();
         dbContext.Database.CloseConnection();
-        Console.WriteLine($"DB Connection Success / commit 1125.6");
+        Console.WriteLine($"DB Connection Success / commit 0211");
     }
     catch (Exception e)
     {

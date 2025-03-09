@@ -231,7 +231,11 @@ public enum EnchantId
 
 public enum CharacterId
 {
-    PlayerCharacter = 2001,
+    PlayerCharacterBasic = 2001,
+    PlayerCharacter2 = 2002,
+    PlayerCharacter3 = 2003,
+    PlayerCharacter4 = 2004,
+    PlayerCharacter5 = 2005,
 }
 
 public enum ProductType

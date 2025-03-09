@@ -5,15 +5,30 @@ namespace ApiServer.Services;
 public class SinglePlayService
 {
     private readonly AppDbContext _context;
-    
-    public List<StageEnemy> StageEnemies { get; set; }
-    public List<StageReward> StageRewards { get; set; }
+
+    public List<StageInfo> StageInfos { get; set; } = new();
     
     public SinglePlayService(AppDbContext context)
     {
         _context = context;
         
-        StageEnemies = _context.StageEnemy.ToList();
-        StageRewards = _context.StageReward.ToList();
+        List<StageEnemy> stageEnemies = _context.StageEnemy.ToList();
+        List<StageReward> stageRewards = _context.StageReward.ToList();
+        
+        foreach (var stage in _context.Stage)
+        {
+            var stageInfo = new StageInfo
+            {
+                StageId = stage.StageId,
+                StageLevel = stage.StageLevel,
+                UserFaction = stage.UserFaction,
+                AssetId = stage.AssetId,
+                CharacterId = stage.CharacterId,
+                MapId = stage.MapId,
+                StageEnemy = stageEnemies.FindAll(se => se.StageId == stage.StageId),
+                StageReward = stageRewards.FindAll(sr => sr.StageId == stage.StageId)
+            };
+            StageInfos.Add(stageInfo);
+        }
     }
 }

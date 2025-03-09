@@ -9,12 +9,18 @@ namespace ApiServer.Controllers;
 [ApiController]
 public class CraftingController : ControllerBase
 {
+    private readonly ILogger<CraftingController> _logger;
     private readonly AppDbContext _context;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
     
-    public CraftingController(AppDbContext context, TokenService tokenService, TokenValidator validator)
+    public CraftingController(
+        ILogger<CraftingController> logger,
+        AppDbContext context,
+        TokenService tokenService,
+        TokenValidator validator)
     {
+        _logger = logger;
         _context = context;
         _tokenService = tokenService;
         _tokenValidator = validator;
@@ -60,7 +66,7 @@ public class CraftingController : ControllerBase
 
     [HttpPut]
     [Route("CraftCard")]
-    public IActionResult CraftCard([FromBody] CraftCardPacketRequired required)
+    public async Task<IActionResult> CraftCard([FromBody] CraftCardPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
@@ -82,53 +88,58 @@ public class CraftingController : ControllerBase
                 .Where(uu => uu.UserId == userId)
                 .FirstOrDefault(uu => uu.UnitId == unitToBeCrafted);
 
-            using var transaction = _context.Database.BeginTransaction();
-            try
+            var strategy = _context.Database.CreateExecutionStrategy();
+            
+            await strategy.ExecuteAsync(async () =>
             {
-                foreach (var material in materialsToBeDeleted)
+                await using var transaction = await _context.Database.BeginTransactionAsync();
+                try
                 {
-                    var userMaterial = userMaterials.FirstOrDefault(um => (int)um.MaterialId == material.MaterialInfo.Id);
-                    if (userMaterial != null && userMaterial.Count >= material.Count)
+                    foreach (var material in materialsToBeDeleted)
                     {
-                        userMaterial.Count -= material.Count;
-                        if (userMaterial.Count == 0)
+                        var userMaterial = userMaterials
+                            .FirstOrDefault(um => (int)um.MaterialId == material.MaterialInfo.Id);
+                        if (userMaterial != null && userMaterial.Count >= material.Count)
                         {
-                            _context.UserMaterial.Remove(userMaterial);
+                            userMaterial.Count -= material.Count;
+                            if (userMaterial.Count == 0)
+                            {
+                                _context.UserMaterial.Remove(userMaterial);
+                            }
                         }
+                        else
+                        {
+                            res.CraftCardOk = false;
+                            res.Error = 1;
+                            await transaction.RollbackAsync();
+                        }
+                    }
+
+                    if (userUnit == null)
+                    {
+                        _context.UserUnit.Add(new UserUnit
+                        {
+                            UserId = (int)userId,
+                            UnitId = unitToBeCrafted,
+                            Count = unitCount
+                        });
                     }
                     else
                     {
-                        res.CraftCardOk = false;
-                        res.Error = 1;
-                        transaction.Rollback();
-                        return Ok(res);
+                        userUnit.Count += unitCount;
                     }
+
+                    await _context.SaveChangesExtendedAsync();
+                    await transaction.CommitAsync();
+                    res.CraftCardOk = true;
                 }
-            
-                if (userUnit == null)
+                catch (Exception exception)
                 {
-                    _context.UserUnit.Add(new UserUnit
-                    {
-                        UserId = (int)userId,
-                        UnitId = unitToBeCrafted,
-                        Count = unitCount
-                    });
+                    _logger.LogError(exception.Message);
+                    res.CraftCardOk = false;
+                    await transaction.RollbackAsync();
                 }
-                else
-                {
-                    userUnit.Count += unitCount;
-                }
-                    
-                _context.SaveChangesExtended();
-                transaction.Commit();
-                res.CraftCardOk = true;
-            }
-            catch (Exception e)
-            {
-                res.CraftCardOk = false;
-                transaction.Rollback();
-                return Ok(res);
-            }
+            });
         }
         else
         {
@@ -140,7 +151,7 @@ public class CraftingController : ControllerBase
 
     [HttpPut]
     [Route("ReinforceCard")]
-    public IActionResult ReinforceCard([FromBody] ReinforceResultPacketRequired required)
+    public async Task<IActionResult> ReinforceCard([FromBody] ReinforceResultPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
@@ -168,105 +179,109 @@ public class CraftingController : ControllerBase
                         Count = um.Count
                     }).ToList();
             
-            using var transaction = _context.Database.BeginTransaction();
-            try
+            var strategy = _context.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
             {
-                // Verity if the user has enough materials and units
-                foreach (var material in materialsToBeDeleted)
+                await using var transaction = await _context.Database.BeginTransactionAsync();
+                try
                 {
-                    var userMaterial = _context.UserMaterial
-                        .FirstOrDefault(um => 
-                            um.UserId == userId && um.MaterialId == (MaterialId)material.MaterialInfo.Id);
-                    
-                    if (userMaterial != null && userMaterial.Count >= material.Count)
+                    // Verity if the user has enough materials and units
+                    foreach (var material in materialsToBeDeleted)
                     {
-                        userMaterial.Count -= material.Count;
-                        if (userMaterial.Count == 0)
+                        var userMaterial = _context.UserMaterial
+                            .FirstOrDefault(um => 
+                                um.UserId == userId && um.MaterialId == (MaterialId)material.MaterialInfo.Id);
+                        
+                        if (userMaterial != null && userMaterial.Count >= material.Count)
                         {
-                            _context.UserMaterial.Remove(userMaterial);
+                            userMaterial.Count -= material.Count;
+                            if (userMaterial.Count == 0)
+                            {
+                                _context.UserMaterial.Remove(userMaterial);
+                            }
+                        }
+                        else
+                        {
+                            res.ReinforceResultOk = false;
+                            res.Error = 1;
+                            await transaction.RollbackAsync();
                         }
                     }
-                    else
-                    {
-                        res.ReinforceResultOk = false;
-                        res.Error = 1;
-                        transaction.Rollback();
-                        return Ok(res);
-                    }
-                }
 
-                foreach (var unitInfo in unitsToBeDeleted)
-                {
-                    var userUnit = userUnits.FirstOrDefault(uu => uu.UnitId == (UnitId)unitInfo.Id);
-                    
-                    if (userUnit != null)
+                    foreach (var unitInfo in unitsToBeDeleted)
                     {
-                        userUnit.Count--;
-                        if (userUnit.Count == 0)
+                        var userUnit = userUnits.FirstOrDefault(uu => uu.UnitId == (UnitId)unitInfo.Id);
+                        
+                        if (userUnit != null)
                         {
-                            _context.UserUnit.Remove(userUnit);
+                            userUnit.Count--;
+                            if (userUnit.Count == 0)
+                            {
+                                _context.UserUnit.Remove(userUnit);
+                            }
                         }
+                        else
+                        {
+                            res.ReinforceResultOk = false;
+                            res.Error = 1;
+                            await transaction.RollbackAsync();
+                        }
+                    }
+                    
+                    // Reinforce Card if the user has enough materials and units
+                    var reinforcePointDb = _context.ReinforcePoint.AsNoTracking();
+                    var reinforcePoint = reinforcePointDb
+                        .FirstOrDefault(rp => rp.Class == required.UnitInfo.Class && rp.Level == required.UnitInfo.Level + 1);
+                    
+                    if (reinforcePoint == null)
+                    {
+                        res.ReinforceResultOk = false;
+                        res.Error = 2;
+                        await transaction.RollbackAsync();
                     }
                     else
                     {
-                        res.ReinforceResultOk = false;
-                        res.Error = 1;
-                        transaction.Rollback();
-                        return Ok(res);
+                        var denominator = reinforcePoint.Constant;
+                        var numerator = unitsToBeDeleted
+                            .Where(info => reinforcePointDb
+                                .Any(rp => rp.Class == info.Class && rp.Level == info.Level))
+                            .Sum(info => reinforcePointDb
+                                .First(rp => rp.Class == info.Class && rp.Level == info.Level).Constant);
+                        var random = new Random();
+                    
+                        if (numerator / (float)denominator > random.NextDouble())
+                        {
+                            var newUnitId = (UnitId)required.UnitInfo.Id + 1;
+                            var userUnit = userUnits.FirstOrDefault(uu => uu.UnitId == newUnitId);
+                        
+                            if (userUnit != null)
+                            {
+                                userUnit.Count++;
+                            }
+                            else
+                            {
+                                _context.UserUnit.Add(new UserUnit
+                                {
+                                    UserId = (int)userId,
+                                    UnitId = newUnitId,
+                                    Count = 1
+                                });
+                            }
+
+                            res.IsSuccess = true;
+                        }
+                    
+                        await _context.SaveChangesExtendedAsync();
+                        await transaction.CommitAsync();
+                        res.ReinforceResultOk = true;
                     }
                 }
-                
-                // Reinforce Card if the user has enough materials and units
-                var reinforcePointDb = _context.ReinforcePoint.AsNoTracking();
-                var reinforcePoint = reinforcePointDb
-                    .FirstOrDefault(rp => rp.Class == required.UnitInfo.Class && rp.Level == required.UnitInfo.Level + 1);
-                
-                if (reinforcePoint == null)
+                catch (Exception e)
                 {
                     res.ReinforceResultOk = false;
-                    res.Error = 2;
-                    transaction.Rollback();
-                    return Ok(res);
+                    await transaction.RollbackAsync();
                 }
-                
-                var denominator = reinforcePoint.Constant;
-                var numerator = unitsToBeDeleted
-                    .Where(info => reinforcePointDb.Any(rp => rp.Class == info.Class && rp.Level == info.Level))
-                    .Sum(info => reinforcePointDb.First(rp => rp.Class == info.Class && rp.Level == info.Level).Constant);
-                var random = new Random();
-                
-                if (numerator / (float)denominator > random.NextDouble())
-                {
-                    var newUnitId = (UnitId)required.UnitInfo.Id + 1;
-                    var userUnit = userUnits.FirstOrDefault(uu => uu.UnitId == newUnitId);
-                    
-                    if (userUnit != null)
-                    {
-                        userUnit.Count++;
-                    }
-                    else
-                    {
-                        _context.UserUnit.Add(new UserUnit
-                        {
-                            UserId = (int)userId,
-                            UnitId = newUnitId,
-                            Count = 1
-                        });
-                    }
-
-                    res.IsSuccess = true;
-                }
-                
-                _context.SaveChangesExtended();
-                transaction.Commit();
-                res.ReinforceResultOk = true;
-            }
-            catch (Exception e)
-            {
-                res.ReinforceResultOk = false;
-                transaction.Rollback();
-                return Ok(res);
-            }
+            });
         }
         else
         {

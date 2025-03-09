@@ -1,6 +1,7 @@
 using ApiServer.DB;
 using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiServer.Controllers;
 
@@ -39,9 +40,9 @@ public class SinglePlayController: ControllerBase
         if (userIdInAccessToken == null) return Unauthorized();
         
         var userId = userIdInAccessToken.Value;
-        var userStage = _context.UserStage.Where(userStage => userStage.UserId == userId).ToList();
-        var stageEnemies = _singlePlayService.StageEnemies;
-        var stageRewards = _singlePlayService.StageRewards;
+        var stageInfoList = _singlePlayService.StageInfos;
+        var userStage = _context.UserStage.AsNoTracking()
+            .Where(userStage => userStage.UserId == userId).ToList();
 
         List<UserStageInfo> userStageInfo = new();
         if (userStage.Count != 0)
@@ -57,32 +58,27 @@ public class SinglePlayController: ControllerBase
                 IsAvailable = us.IsAvailable
             }).ToList();
         }
-        
-        var stageEnemyInfo = stageEnemies
-            .GroupBy(se => se.StageId)
-            .Select(group => new StageEnemyInfo
-            {
-                StageId = group.Key,
-                UnitIds = group.Select(se => se.UnitId).ToList()
-            }).ToList();
-     
-        var stageRewardInfo = stageRewards
-            .GroupBy(sr => sr.StageId)
-            .Select(group => new StageRewardInfo
-            {
-                StageId = group.Key,
-                RewardProducts = group.Select(sr => new SingleRewardInfo
-                {
-                    ItemId = sr.ProductId,
-                    ProductType = sr.ProductType,
-                    Star = sr.Star,
-                    Count = sr.Count,
-                }).ToList()
-            }).ToList();
-        
+
         res.UserStageInfos = userStageInfo;
-        res.StageEnemyInfos = stageEnemyInfo;
-        res.StageRewardInfos = stageRewardInfo;
+        
+        res.StageEnemyInfos = stageInfoList.Select(si => new StageEnemyInfo
+        {
+            StageId = si.StageId,
+            UnitIds = si.StageEnemy.Select(se => se.UnitId).ToList()
+        }).ToList();
+        
+        res.StageRewardInfos = stageInfoList.Select(si => new StageRewardInfo
+        {
+            StageId = si.StageId,
+            RewardProducts = si.StageReward.Select(sr => new SingleRewardInfo
+            {
+                ItemId = sr.ProductId,
+                ProductType = sr.ProductType,
+                Star = sr.Star,
+                Count = sr.Count,
+            }).ToList()
+        }).ToList();
+        
         res.LoadStageInfoOk = true;
         
         return Ok(res);
@@ -100,10 +96,10 @@ public class SinglePlayController: ControllerBase
         var res = new ChangeActPacketSingleResponse();
         var userId = userIdInAccessToken.Value;
         var user = _context.User.FirstOrDefault(u => u.UserId == userId);
-        var battleSetting = _context.BattleSetting.FirstOrDefault(bs => bs.UserId == userId);
-        var deck = _context.Deck
+        var battleSetting = _context.BattleSetting.AsNoTracking().FirstOrDefault(bs => bs.UserId == userId);
+        var deck = _context.Deck.AsNoTracking()
             .FirstOrDefault(d => d.UserId == userId && d.Faction == required.Faction && d.LastPicked);
-        var userStage = _context.UserStage
+        var userStage = _context.UserStage.AsNoTracking()
             .FirstOrDefault(userStage => userStage.UserId == userId && userStage.StageId == required.StageId);
 
         if (user == null || battleSetting == null || deck == null || userStage == null)
@@ -111,27 +107,41 @@ public class SinglePlayController: ControllerBase
             res.ChangeOk = false;
             return NotFound();
         }
-        
-        var userInfo = new
-        {
-            User = user,
-            BattleSetting = battleSetting,
-            Deck = deck
-        };
-        
+
+        user.Act = UserAct.InSingleGame;
         await _context.SaveChangesExtendedAsync();
 
+        var deckUnits = _context.DeckUnit.AsNoTracking()
+            .Where(du => du.DeckId == deck.DeckId)
+            .Select(du => du.UnitId).ToArray();
+        var stageInfo = _singlePlayService.StageInfos.FirstOrDefault(si => si.StageId == required.StageId);
+        
+        if (stageInfo == null)
+        {
+            res.ChangeOk = false;
+            return NotFound();
+        }
+        
         var singlePlayPacket = new SinglePlayStartPacketRequired
         {
             UserId = userId,
-            Faction = required.Faction,
-            MapId = 1, // Modify this when the game has multiple maps
+            UserFaction = required.Faction,
+            UnitIds = deckUnits,
+            CharacterId = battleSetting.CharacterId,
+            AssetId = required.Faction == Faction.Sheep ? battleSetting.SheepId : battleSetting.EnchantId,
+            EnemyUnitIds = stageInfo.StageEnemy.Select(se => se.UnitId).ToArray(),
+            EnemyCharacterId = stageInfo.CharacterId,
+            EnemyAssetId = stageInfo.AssetId,
+            MapId = _singlePlayService.StageInfos.First(si => si.StageId == required.StageId).MapId,
             SessionId = required.SessionId,
             StageId = required.StageId
         };
 
+        Console.WriteLine(required.SessionId);
         await _apiService.SendRequestToSocketAsync<SinglePlayStartPacketRequired>(
             "singlePlay", singlePlayPacket, HttpMethod.Post);
+        
+        res.ChangeOk = true;
         
         return Ok(res);
     }

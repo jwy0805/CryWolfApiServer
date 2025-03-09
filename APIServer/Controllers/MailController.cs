@@ -97,7 +97,8 @@ public class MailController : ControllerBase
             {
                 // Lock the mail row 'for update', other transactions will wait until this transaction is committed
                 var mail = _context.Mail
-                    .FromSqlRaw("SELECT * FROM Mail WHERE MailId = {0} FOR UPDATE", required.MailId)
+                    .FromSqlRaw("SELECT * FROM Mail WHERE MailId = {0} AND UserId = {1} FOR UPDATE"
+                        , required.MailId, userId)
                     .FirstOrDefault();
                 
                 if (mail == null || mail.Claimed)
@@ -105,7 +106,7 @@ public class MailController : ControllerBase
                     res.ClaimMailOk = false;
                     return;
                 }
-                
+
                 var compositions = _context.ProductComposition
                     .Where(pc => pc.ProductId == mail.ProductId)
                     .ToList();

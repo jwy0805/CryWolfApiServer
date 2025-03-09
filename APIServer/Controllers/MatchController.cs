@@ -1,6 +1,7 @@
 using ApiServer.DB;
 using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiServer.Controllers;
 
@@ -82,7 +83,7 @@ public class MatchController : ControllerBase
         res.ChangeOk = true;
         await _context.SaveChangesExtendedAsync();
         
-        // MatchMakingServer에 유저 정보 전달
+        // MatchMakingServer에 Test NPC 정보 전달
         var matchPacket = new MatchMakingPacketRequired
         {
             Test = true,
@@ -178,7 +179,76 @@ public class MatchController : ControllerBase
         
         await _apiService
             .SendRequestAsync<MatchMakingPacketResponse>("MatchMaking/Match", matchPacket, HttpMethod.Post);
+        
+        return Ok(res);
+    }
 
+    [HttpPut]
+    [Route("ChangeActByTutorial")]
+    public async Task<IActionResult> ChangeActByTutorial([FromBody] ChangeActPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var res = new ChangeActPacketResponse();
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        var faction = required.Faction;
+        if (userId == null) return Unauthorized();
+        
+        var user = _context.User.FirstOrDefault(u => u.UserId == userId);
+        var battleSetting = _context.BattleSetting.FirstOrDefault(bs => bs.UserId == userId);
+        var deck = _context.Deck
+            .FirstOrDefault(d => d.UserId == userId && d.Faction == faction && d.LastPicked);
+        
+        var deckUnits = Array.Empty<UnitId>();
+        if (deck != null)
+        {
+            deckUnits = _context.DeckUnit
+                .Where(du => du.DeckId == deck.DeckId)
+                .Select(du => du.UnitId)
+                .ToArray();
+        }
+
+        var userInfo = new
+        {
+            User = user,
+            BattleSetting = battleSetting,
+            Deck = deck,
+            DeckUnits = deckUnits
+        };
+
+        if (userInfo.User == null 
+            || userInfo.BattleSetting == null 
+            || userInfo.Deck == null
+            || userInfo.DeckUnits.Length != 6)
+        {
+            res.ChangeOk = false;
+            return NotFound();
+        }
+
+        // 사용자 액션 업데이트
+        userInfo.User.Act = UserAct.InTutorial;
+        res.ChangeOk = true;
+        await _context.SaveChangesExtendedAsync();
+
+        var tutorialPacket = new TutorialStartPacketRequired
+        {
+            UserId = userInfo.User.UserId,
+            SessionId = required.SessionId,
+            UserFaction = required.Faction,
+            MapId = required.MapId,
+            CharacterId = userInfo.BattleSetting.CharacterId,
+            AssetId = required.Faction == Faction.Sheep 
+                ? userInfo.BattleSetting.SheepId 
+                : userInfo.BattleSetting.EnchantId,
+            EnemyCharacterId = 2001,
+            EnemyAssetId = required.Faction == Faction.Sheep ? 1001 : 901,
+            UnitIds = userInfo.DeckUnits
+        };
+        
+        await _apiService
+            .SendRequestToSocketAsync<TutorialStartPacketResponse>("tutorial", tutorialPacket, HttpMethod.Post);
+        
         return Ok(res);
     }
 
@@ -194,104 +264,134 @@ public class MatchController : ControllerBase
 
     [HttpPut]
     [Route("RankGameReward")]
-    public IActionResult RankGamReward([FromBody] GameRewardPacketRequired required)
+    public IActionResult RankGamReward([FromBody] RankGameRewardPacketRequired required)
     {
-        if (required.WinUserId == -1)
+        if (required.WinUserId == -1 || required.LoseUserId == -1) return Ok();
+        
+        // Rank Game, change user match info, stat
+        var winUser = _context.User.FirstOrDefault(u => u.UserId == required.WinUserId);
+        var loseUser = _context.User.FirstOrDefault(u => u.UserId == required.LoseUserId);
+        var winUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.WinUserId);
+        var loseUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.LoseUserId);
+        var winUserMatchInfo = _context.UserMatch.FirstOrDefault(um => um.UserId == required.WinUserId);
+        var loseUserMatchInfo = _context.UserMatch.FirstOrDefault(um => um.UserId == required.LoseUserId);
+        
+        if (loseUser == null || loseUserStats == null || loseUserMatchInfo == null) return NotFound();
+        if (winUser == null || winUserStats == null || winUserMatchInfo == null) return NotFound();
+
+        winUser.Act = UserAct.InLobby;
+        winUserStats.RankPoint += required.WinRankPoint;
+        loseUser.Act = UserAct.InLobby;
+        loseUserStats.RankPoint -= required.LoseRankPoint;
+
+        if (winUserStats.RankPoint > winUserStats.HighestRankPoint)
         {
-            // Lose at single mode
-            var loseUser = _context.User.FirstOrDefault(u => u.UserId == required.LoseUserId);
-            var loseUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.LoseUserId);
-            var loseUserMatchInfo = _context.UserMatch.FirstOrDefault(um => um.UserId == required.LoseUserId);
-
-            if (loseUser == null || loseUserStats == null || loseUserMatchInfo == null) return NotFound();
-            
-            loseUser.Act = UserAct.InLobby;
-            loseUserStats.RankPoint -= required.LoseRankPoint;
-            var loserRewardsList = GetLoserRewards(required.LoseUserId, loseUserStats.RankPoint, required.LoseRankPoint);
-            var res = new GameRewardPacketResponse
-            {
-                GetGameRewardOk = true,
-                WinnerRewards = new List<RewardInfo>(),
-                LoserRewards = loserRewardsList
-            };
-
-            loseUserStats.Gold += loserRewardsList
-                .FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
-            AddMaterialRewards(loseUser.UserId, loserRewardsList);
-            _context.SaveChangesExtended();
-
-            return Ok(res);
+            winUserStats.HighestRankPoint = winUserStats.RankPoint;
         }
-        else if (required.LoseUserId == -1)
+
+        winUserMatchInfo.WinRankMatch += 1;
+        loseUserMatchInfo.LoseRankMatch += 1;
+
+        var winnerRewardsList = GetWinnerRewards(required.WinUserId, winUserStats.RankPoint, required.WinRankPoint);
+        var loserRewardsList = GetLoserRewards(required.LoseUserId, loseUserStats.RankPoint, required.LoseRankPoint);
+        var res = new RankGameRewardPacketResponse
         {
-            // Win at single mode
-            var winUser = _context.User.FirstOrDefault(u => u.UserId == required.WinUserId);
-            var winUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.WinUserId);
-            var winUserMatchInfo = _context.UserMatch.FirstOrDefault(um => um.UserId == required.WinUserId);
+            GetGameRewardOk = true,
+            WinnerRewards = winnerRewardsList,
+            LoserRewards = loserRewardsList 
+        };
+    
+        winUserStats.Gold += winnerRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
+        loseUserStats.Gold += loserRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
+    
+        AddMaterialRewards(winUser.UserId, winnerRewardsList);
+        AddMaterialRewards(loseUser.UserId, loserRewardsList);
+    
+        _context.SaveChangesExtended();
+    
+        return Ok(res);  
+    }
 
-            if (winUser == null || winUserStats == null || winUserMatchInfo == null) return NotFound();
-            
-            winUser.Act = UserAct.InLobby;
-            winUserStats.RankPoint += required.WinRankPoint;
-            var winnerRewardsList = GetWinnerRewards(required.WinUserId, winUserStats.RankPoint, required.WinRankPoint);
-            var res = new GameRewardPacketResponse
+    [HttpPut]
+    [Route("SingleGameReward")]
+    public IActionResult GetSingleGameReward([FromBody] SingleGameRewardPacketRequired required)
+    {
+        var user = _context.User.FirstOrDefault(u => u.UserId == required.UserId);
+        var userStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.UserId);
+        var userStage = _context.UserStage
+            .FirstOrDefault(us => us.UserId == required.UserId && us.StageId == required.StageId);
+
+        if (user == null || userStats == null || userStage == null) return NotFound();
+        
+        user.Act = UserAct.InLobby;
+        var res = new SingleGameRewardPacketResponse();
+
+        if (required.Star > 0)
+        {
+            // win
+            var prevStar = userStage.StageStar;
+            var prevRewards = _rewardService.GetSingleRewards(required.StageId, prevStar);
+            var newStar = required.Star;
+            var newRewards = _rewardService.GetSingleRewards(required.StageId, newStar);
+            var rewards = newRewards.Except(prevRewards).ToList();
+            var rewardInfo = rewards.Select(reward => new RewardInfo
             {
-                GetGameRewardOk = true,
-                WinnerRewards = winnerRewardsList,
-                LoserRewards = new List<RewardInfo>(),
-            };
-
-            winUserStats.Gold += winnerRewardsList
-                .FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
-            AddMaterialRewards(winUser.UserId, winnerRewardsList);
+                ItemId = reward.ItemId,
+                ProductType = reward.ProductType,
+                Count = reward.Count
+            }).ToList();
+            
+            res.Rewards = rewards;
+            userStage.StageStar = newStar;
+            userStats.Gold += rewards.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
+            userStats.Spinel += rewards.FirstOrDefault(reward => reward.ProductType == ProductType.Spinel)?.Count ?? 0;
+            AddMaterialRewards(user.UserId, rewardInfo);
+            
+            // Add Next Stage on DB
+            if (required.StageId != 1009 || required.StageId != 5009)
+            {
+                var nextStage = new UserStage
+                {
+                    UserId = user.UserId,
+                    StageId = required.StageId + 1,
+                    StageLevel = _context.Stage.AsNoTracking()
+                        .FirstOrDefault(s => s.StageId == required.StageId + 1)!.StageLevel,
+                    StageStar = 0,
+                    IsCleared = false,
+                    IsAvailable = true
+                };
+                
+                _context.UserStage.Add(nextStage);
+            }
+            
             _context.SaveChangesExtended();
-            return Ok(res);
+        }
+        
+        res.GetGameRewardOk = true;
+        
+        return Ok(res);
+    }
+
+    [HttpPut]
+    [Route("TutorialGameReward")]
+    public IActionResult GetTutorialGameReward([FromBody] TutorialRewardPacketRequired required)
+    {
+        var user = _context.User.FirstOrDefault(u => u.UserId == required.UserId);
+        if (user == null) return NotFound();
+        
+        user.Act = UserAct.InLobby;
+        var res = new TutorialRewardPacketResponse();
+
+        if (required.Faction == Faction.Wolf)
+        {
+            
         }
         else
         {
-            // Rank Game, change user match info, stat
-            var winUser = _context.User.FirstOrDefault(u => u.UserId == required.WinUserId);
-            var loseUser = _context.User.FirstOrDefault(u => u.UserId == required.LoseUserId);
-            var winUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.WinUserId);
-            var loseUserStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.LoseUserId);
-            var winUserMatchInfo = _context.UserMatch.FirstOrDefault(um => um.UserId == required.WinUserId);
-            var loseUserMatchInfo = _context.UserMatch.FirstOrDefault(um => um.UserId == required.LoseUserId);
             
-            if (loseUser == null || loseUserStats == null || loseUserMatchInfo == null) return NotFound();
-            if (winUser == null || winUserStats == null || winUserMatchInfo == null) return NotFound();
-
-            winUser.Act = UserAct.InLobby;
-            winUserStats.RankPoint += required.WinRankPoint;
-            loseUser.Act = UserAct.InLobby;
-            loseUserStats.RankPoint -= required.LoseRankPoint;
-
-            if (winUserStats.RankPoint > winUserStats.HighestRankPoint)
-            {
-                winUserStats.HighestRankPoint = winUserStats.RankPoint;
-            }
-
-            winUserMatchInfo.WinRankMatch += 1;
-            loseUserMatchInfo.LoseRankMatch += 1;
-
-            var winnerRewardsList = GetWinnerRewards(required.WinUserId, winUserStats.RankPoint, required.WinRankPoint);
-            var loserRewardsList = GetLoserRewards(required.LoseUserId, loseUserStats.RankPoint, required.LoseRankPoint);
-            var res = new GameRewardPacketResponse
-            {
-                GetGameRewardOk = true,
-                WinnerRewards = winnerRewardsList,
-                LoserRewards = loserRewardsList 
-            };
-        
-            winUserStats.Gold += winnerRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
-            loseUserStats.Gold += loserRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
-        
-            AddMaterialRewards(winUser.UserId, winnerRewardsList);
-            AddMaterialRewards(loseUser.UserId, loserRewardsList);
-        
-            _context.SaveChangesExtended();
-        
-            return Ok(res);        
         }
+
+        return Ok(res);
     }
 
     public List<RewardInfo> GetWinnerRewards(int userId, int rankPoint, int rankPointBefore)

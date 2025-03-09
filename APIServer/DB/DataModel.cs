@@ -218,6 +218,9 @@ public class Stage
     public int StageId { get; set; }
     public int StageLevel { get; set; }
     public Faction UserFaction { get; set; }
+    public int AssetId { get; set; }
+    public int CharacterId { get; set; }
+    public int MapId { get; set; }
 }
 
 [Table("Stage_Enemy")]

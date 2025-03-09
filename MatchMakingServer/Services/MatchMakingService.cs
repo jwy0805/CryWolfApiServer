@@ -106,7 +106,7 @@ public class MatchMakingService : BackgroundService
             _logger.LogError("Failed to get rank point.");
             return;
         }
-        
+            
         // Http Transfer of Socket Server
         var matchSuccessPacket = new MatchSuccessPacketRequired
         {
@@ -154,33 +154,69 @@ public class MatchMakingService : BackgroundService
             _logger.LogError("Failed to get rank point.");
             return;
         }
-        
-        var matchSuccessPacket = new MatchSuccessPacketRequired
-        {
-            IsTestGame = true,
-            SheepUserId = required.UserId,
-            SheepSessionId = required.SessionId,
-            SheepUserName = required.Faction == Faction.Sheep ? required.UserName : "Test",
-            WolfUserId = required.UserId,
-            WolfSessionId = required.SessionId,
-            WolfUserName = required.Faction == Faction.Wolf ? required.UserName : "Test",
-            MapId = required.MapId,
-            SheepRankPoint = required.RankPoint,
-            WolfRankPoint = required.RankPoint,
-            WinPointSheep = rankPointResponse.WinPointSheep,
-            WinPointWolf = rankPointResponse.WinPointWolf,
-            LosePointSheep = rankPointResponse.LosePointSheep,
-            LosePointWolf = rankPointResponse.LosePointWolf,
-            SheepCharacterId = (CharacterId)required.CharacterId,
-            WolfCharacterId = (CharacterId)required.CharacterId,
-            SheepId = (SheepId)required.AssetId,
-            EnchantId = (EnchantId)required.AssetId,
-            SheepUnitIds = required.UnitIds,
-            WolfUnitIds = required.UnitIds,
-            SheepAchievements = required.Achievements,
-            WolfAchievements = required.Achievements
-        };
 
+        MatchMakingPacketRequired userPacket;
+        MatchSuccessPacketRequired matchSuccessPacket;
+        // required = temp test packet
+        if (required.Faction == Faction.Wolf)
+        {
+            userPacket = _sheepUserQueues[required.MapId].Dequeue();
+            matchSuccessPacket = new MatchSuccessPacketRequired
+            {
+                IsTestGame = true,
+                SheepUserId = userPacket.UserId,
+                SheepSessionId = userPacket.SessionId,
+                SheepUserName = userPacket.UserName,
+                WolfUserId = required.UserId,
+                WolfSessionId = required.SessionId,
+                WolfUserName = "Test",
+                MapId = required.MapId,
+                SheepRankPoint = userPacket.RankPoint,
+                WolfRankPoint = required.RankPoint,
+                WinPointSheep = rankPointResponse.WinPointSheep,
+                WinPointWolf = rankPointResponse.WinPointWolf,
+                LosePointSheep = rankPointResponse.LosePointSheep,
+                LosePointWolf = rankPointResponse.LosePointWolf,
+                SheepCharacterId = (CharacterId)userPacket.CharacterId,
+                WolfCharacterId = (CharacterId)required.CharacterId,
+                SheepId = (SheepId)userPacket.AssetId,
+                EnchantId = (EnchantId)required.AssetId,
+                SheepUnitIds = userPacket.UnitIds,
+                WolfUnitIds = required.UnitIds,
+                SheepAchievements = userPacket.Achievements,
+                WolfAchievements = required.Achievements
+            };
+        }
+        else
+        {
+            userPacket = _wolfUserQueues[required.MapId].Dequeue();
+            matchSuccessPacket = new MatchSuccessPacketRequired
+            {
+                IsTestGame = true,
+                SheepUserId = required.UserId,
+                SheepSessionId = required.SessionId,
+                SheepUserName = "Test",
+                WolfUserId = userPacket.UserId,
+                WolfSessionId = userPacket.SessionId,
+                WolfUserName = userPacket.UserName,
+                MapId = required.MapId,
+                SheepRankPoint = required.RankPoint,
+                WolfRankPoint = userPacket.RankPoint,
+                WinPointSheep = rankPointResponse.WinPointSheep,
+                WinPointWolf = rankPointResponse.WinPointWolf,
+                LosePointSheep = rankPointResponse.LosePointSheep,
+                LosePointWolf = rankPointResponse.LosePointWolf,
+                SheepCharacterId = (CharacterId)required.CharacterId,
+                WolfCharacterId = (CharacterId)userPacket.CharacterId,
+                SheepId = (SheepId)required.AssetId,
+                EnchantId = (EnchantId)userPacket.AssetId,
+                SheepUnitIds = required.UnitIds,
+                WolfUnitIds = userPacket.UnitIds,
+                SheepAchievements = required.Achievements,
+                WolfAchievements = userPacket.Achievements
+            };
+        }
+        
         await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
     }
     

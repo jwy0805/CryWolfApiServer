@@ -120,7 +120,6 @@ public class DailyProductInfo
     public bool AlreadyBought { get; set; }
 }
 
-
 public class UnitInfo
 {
     public int Id { get; set; }
@@ -219,6 +218,18 @@ public class UnitMaterialInfo
 {
     public int UnitId { get; set; }
     public List<OwnedMaterialInfo> Materials { get; set; }
+}
+
+public class StageInfo
+{
+    public int StageId { get; set; }
+    public int StageLevel { get; set; }
+    public Faction UserFaction { get; set; }
+    public int AssetId { get; set; }
+    public int CharacterId { get; set; }
+    public int MapId { get; set; }
+    public List<StageEnemy> StageEnemy { get; set; }
+    public List<StageReward> StageReward { get; set; }
 }
 
 public class UserStageInfo
@@ -831,10 +842,13 @@ public class SendMatchInfoPacketResponse
 public class SinglePlayStartPacketRequired
 {
     public int UserId { get; set; }
-    public Faction Faction { get; set; }
+    public Faction UserFaction { get; set; }
     public UnitId[] UnitIds { get; set; }
     public int CharacterId { get; set; }
     public int AssetId { get; set; }
+    public UnitId[] EnemyUnitIds { get; set; }
+    public int EnemyCharacterId { get; set; }
+    public int EnemyAssetId { get; set; }
     public int MapId { get; set; }
     public int SessionId { get; set; }
     public int StageId { get; set; }
@@ -843,6 +857,24 @@ public class SinglePlayStartPacketRequired
 public class SinglePlayStartPacketResponse
 {
     public bool SinglePlayStartOk { get; set; }
+}
+
+public class TutorialStartPacketRequired
+{
+    public int UserId { get; set; }
+    public Faction UserFaction { get; set; }
+    public UnitId[] UnitIds { get; set; }
+    public int CharacterId { get; set; }
+    public int AssetId { get; set; }
+    public int EnemyCharacterId { get; set; }
+    public int EnemyAssetId { get; set; }
+    public int MapId { get; set; }
+    public int SessionId { get; set; }
+}
+
+public class TutorialStartPacketResponse
+{
+    public bool TutorialStartOk { get; set; }
 }
 
 public class GameResultPacketRequired
@@ -856,7 +888,7 @@ public class GameResultPacketResponse
     public bool GetGameResultOk { get; set; }
 }
 
-public class GameRewardPacketRequired
+public class RankGameRewardPacketRequired
 {
     public int WinUserId { get; set; }
     public int WinRankPoint { get; set; }
@@ -864,11 +896,36 @@ public class GameRewardPacketRequired
     public int LoseRankPoint { get; set; }
 }
 
-public class GameRewardPacketResponse
+public class RankGameRewardPacketResponse
 {
     public bool GetGameRewardOk { get; set; }
     public List<RewardInfo> WinnerRewards { get; set; }
     public List<RewardInfo> LoserRewards { get; set; }
+}
+
+public class SingleGameRewardPacketRequired
+{
+    public int UserId { get; set; }
+    public int StageId { get; set; }
+    public int Star { get; set; }
+}
+
+public class SingleGameRewardPacketResponse
+{
+    public bool GetGameRewardOk { get; set; }
+    public List<SingleRewardInfo> Rewards { get; set; }
+}
+
+public class TutorialRewardPacketRequired
+{
+    public int UserId { get; set; }
+    public Faction Faction { get; set; }
+}
+
+public class TutorialRewardPacketResponse
+{
+    public bool GetGameRewardOk { get; set; }
+    public List<SingleRewardInfo> Rewards { get; set; }
 }
 
 public class SessionDisconnectPacketRequired

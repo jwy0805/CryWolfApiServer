@@ -112,8 +112,9 @@ public class UserService
         // Create Initial Sheep and Enchant
         CreateInitSheepAndEnchant(
             newUser.UserId, new [] { SheepId.PrimeSheepWhite }, new [] { EnchantId.Wind });
-        CreateInitCharacter(newUser.UserId, new [] { CharacterId.PlayerCharacter });
+        CreateInitCharacter(newUser.UserId, new [] { CharacterId.PlayerCharacterBasic });
         CreateInitBattleSetting(newUser.UserId);
+        CreateInitStageInfo(newUser.UserId);
 
         await _context.SaveChangesExtendedAsync();
         return true;
@@ -166,5 +167,22 @@ public class UserService
         {
             UserId = userId, SheepId = 901, EnchantId = 1001, CharacterId = 2001
         });
+    }
+
+    private void CreateInitStageInfo(int userId)
+    {
+        var initStages = new[]
+        {
+            new UserStage
+            {
+                StageId = 1001, UserId = userId, IsAvailable = true, IsCleared = false, StageLevel = 1, StageStar = 0
+            },
+            new UserStage
+            {
+                StageId = 5001, UserId = userId, IsAvailable = false, IsCleared = false, StageLevel = 1, StageStar = 0
+            }
+        };
+        
+        _context.UserStage.AddRange(initStages);
     }
 }

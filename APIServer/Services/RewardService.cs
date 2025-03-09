@@ -26,9 +26,30 @@ public class RewardService
         
     };
     
+    public List<StageInfo> StageInfos { get; set; } = new();
+    
     public RewardService(AppDbContext context)
     {
         _context = context;
+        
+        List<StageEnemy> stageEnemies = _context.StageEnemy.ToList();
+        List<StageReward> stageRewards = _context.StageReward.ToList();
+        
+        foreach (var stage in _context.Stage)
+        {
+            var stageInfo = new StageInfo
+            {
+                StageId = stage.StageId,
+                StageLevel = stage.StageLevel,
+                UserFaction = stage.UserFaction,
+                AssetId = stage.AssetId,
+                CharacterId = stage.CharacterId,
+                MapId = stage.MapId,
+                StageEnemy = stageEnemies.FindAll(se => se.StageId == stage.StageId),
+                StageReward = stageRewards.FindAll(sr => sr.StageId == stage.StageId)
+            };
+            StageInfos.Add(stageInfo);
+        }
     }
     
     public List<RewardInfo> GetRankRewards(int userId, int rankPoint, int rankPointValue, bool win)
@@ -50,6 +71,31 @@ public class RewardService
         }
 
         rewards.AddRange(win ? GetRandomMaterial(3) : GetRandomMaterial(1));
+
+        return rewards;
+    }
+
+    public List<SingleRewardInfo> GetSingleRewards(int stageId, int star)
+    {
+        if (star == 0 ) return new List<SingleRewardInfo>();
+        
+        var rewards = StageInfos
+            .FirstOrDefault(si => si.StageId == stageId)?.StageReward
+            .Where(sr => sr.Star <= star)
+            .Select(sr => new SingleRewardInfo
+            {
+                ItemId = sr.ProductId,
+                ProductType = sr.ProductType,
+                Count = sr.Count,
+                Star = sr.Star
+            }).ToList();
+        
+        if (rewards == null) return new List<SingleRewardInfo>();
+        
+        foreach (var reward in rewards)
+        {
+            Console.WriteLine(reward);
+        }
 
         return rewards;
     }

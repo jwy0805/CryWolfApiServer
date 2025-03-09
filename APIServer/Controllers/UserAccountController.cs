@@ -260,7 +260,7 @@ public class UserAccountController : ControllerBase
     
     [HttpPut]
     [Route("UpdateUserInfo")]
-    public IActionResult UpdateUserInfo([FromBody] UpdateUserInfoPacketRequired required)
+    public async Task<IActionResult> UpdateUserInfo([FromBody] UpdateUserInfoPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
@@ -275,23 +275,28 @@ public class UserAccountController : ControllerBase
             .FirstOrDefault(userStat => userStat.UserId == userId);
         if (userStat == null) return NotFound();
         
-        using var transaction = _context.Database.BeginTransaction();
-        try
+        var strategy = _context.Database.CreateExecutionStrategy();
+
+        await strategy.ExecuteAsync(async () =>
         {
-            userStat.UserLevel = userInfo.Level;
-            userStat.Exp = userInfo.Exp;
-            userStat.Gold = userInfo.Gold;
-            userStat.Spinel = userInfo.Spinel;
-            userStat.RankPoint = userInfo.RankPoint;
-            res.UpdateUserInfoOk = _context.SaveChangesExtended();
-            transaction.Commit();
-        }
-        catch (Exception e)
-        {
-            res.UpdateUserInfoOk = false;
-            transaction.Rollback();
-            return Ok(res);
-        }
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                userStat.UserLevel = userInfo.Level;
+                userStat.Exp = userInfo.Exp;
+                userStat.Gold = userInfo.Gold;
+                userStat.Spinel = userInfo.Spinel;
+                userStat.RankPoint = userInfo.RankPoint;
+                await _context.SaveChangesExtendedAsync();
+                res.UpdateUserInfoOk = true;
+                await transaction.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                res.UpdateUserInfoOk = false;
+                await transaction.RollbackAsync();
+            }
+        });
         
         return Ok(res);
     }

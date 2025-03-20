@@ -306,7 +306,6 @@ public class MatchController : ControllerBase
     
         AddMaterialRewards(winUser.UserId, winnerRewardsList);
         AddMaterialRewards(loseUser.UserId, loserRewardsList);
-    
         _context.SaveChangesExtended();
     
         return Ok(res);  
@@ -373,27 +372,70 @@ public class MatchController : ControllerBase
     }
 
     [HttpPut]
-    [Route("TutorialGameReward")]
+    [Route("TutorialReward")]
     public IActionResult GetTutorialGameReward([FromBody] TutorialRewardPacketRequired required)
     {
-        var user = _context.User.FirstOrDefault(u => u.UserId == required.UserId);
+        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserId == required.UserId);
+        var userUnit = _context.UserUnit;
+        var userUnits = userUnit
+            .Where(u => u.UserId == required.UserId)
+            .Select(u => u.UnitId).ToList();
         if (user == null) return NotFound();
-        
         user.Act = UserAct.InLobby;
+        
         var res = new TutorialRewardPacketResponse();
-
-        if (required.Faction == Faction.Wolf)
-        {
-            
-        }
-        else
-        {
-            
-        }
-
+        var reward = AddTutorialRewardUnit(required.Faction, userUnits, required.UserId);
+        
+        res.GetGameRewardOk = true;
+        res.Rewards = new List<RewardInfo> { reward };
+        _context.SaveChangesExtended();
+        
         return Ok(res);
     }
 
+    private RewardInfo AddTutorialRewardUnit(Faction faction, List<UnitId> userUnits, int userId)
+    {
+        var knightUnits = _context.Unit.AsNoTracking().Where(u => u.Class == UnitClass.Knight).ToList();
+        var rewardUnit = knightUnits
+            .Where(ku => ku.Faction == faction)
+            .Select(ku => ku.UnitId).ToList()
+            .Except(userUnits).FirstOrDefault();
+
+        if (rewardUnit == UnitId.UnknownUnit)
+        {
+            return new RewardInfo
+            {
+                ItemId = faction == Faction.Wolf ? 518 : 112,
+                ProductType = ProductType.Unit,
+                Count = 1
+            };
+        };
+        
+        var newUnit = new UserUnit
+        {
+            UserId = userId,
+            UnitId = rewardUnit
+        };
+        
+        var userUnit = _context.UserUnit.FirstOrDefault(uu => uu.UserId == userId && uu.UnitId == rewardUnit);
+
+        if (userUnit == null)
+        {
+            _context.UserUnit.Add(newUnit);
+        }
+        else
+        {
+            userUnit.Count++;
+        }
+        
+        return new RewardInfo
+        {
+            ItemId = (int)rewardUnit,
+            ProductType = ProductType.Unit,
+            Count = 1
+        };
+    }
+    
     public List<RewardInfo> GetWinnerRewards(int userId, int rankPoint, int rankPointBefore)
     {
         return _rewardService.GetRankRewards(userId, rankPoint, rankPointBefore, true);

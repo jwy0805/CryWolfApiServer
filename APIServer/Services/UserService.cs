@@ -62,7 +62,7 @@ public class UserService
         var account = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == userAccount);
         if (account != null) return false;
         
-        var newUser = new User()
+        var newUser = new User
         {
             UserAccount = userAccount,
             UserName = "",
@@ -99,43 +99,65 @@ public class UserService
         newUser.UserName = $"Player{newUser.UserId}";
         
         // Create Initial Deck and Collection
-        CreateInitDeckAndCollection(newUser.UserId, new [] {
-            UnitId.Hare, UnitId.Toadstool, UnitId.FlowerPot, 
-            UnitId.Blossom, UnitId.TrainingDummy, UnitId.SunfloraPixie
-        }, Faction.Sheep);
-            
-        CreateInitDeckAndCollection(newUser.UserId, new [] {
-            UnitId.DogBowwow, UnitId.MoleRatKing, UnitId.MosquitoStinger, 
-            UnitId.Werewolf, UnitId.CactusBoss, UnitId.SnakeNaga
-        }, Faction.Wolf);
-            
+        CreateInitDeckAndCollection(newUser.UserId);
+        
         // Create Initial Sheep and Enchant
-        CreateInitSheepAndEnchant(
-            newUser.UserId, new [] { SheepId.PrimeSheepWhite }, new [] { EnchantId.Wind });
+        CreateInitSheepAndEnchant(newUser.UserId, new [] { SheepId.PrimeSheepWhite }, new [] { EnchantId.Wind });
         CreateInitCharacter(newUser.UserId, new [] { CharacterId.PlayerCharacterBasic });
         CreateInitBattleSetting(newUser.UserId);
         CreateInitStageInfo(newUser.UserId);
+        CreateInitTutorialInfo(newUser.UserId);
 
         await _context.SaveChangesExtendedAsync();
         return true;
     }
     
-    private void CreateInitDeckAndCollection(int userId, UnitId[] unitIds, Faction faction)
+    private void CreateInitDeckAndCollection(int userId)
     {
-        foreach (var unitId in unitIds)
-        {
-            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = unitId, Count = 1});
-        }
+        var sheepUnitIds = new [] { UnitId.Hare, UnitId.Toadstool, UnitId.FlowerPot };
+        var wolfUnitIds = new [] { UnitId.DogBowwow, UnitId.MoleRatKing, UnitId.MosquitoStinger };
+        var sheepKnightUnitIdsAll = new [] { UnitId.Blossom, UnitId.TrainingDummy, UnitId.Hermit };
+        var wolfKnightUnitIdsAll = new [] { UnitId.PoisonBomb, UnitId.CactusBoss, UnitId.SnakeNaga };
+        var sheepNobleKnightUnitIdsAll = new [] { UnitId.SunfloraPixie, UnitId.MothCelestial };
+        var wolfNobleKnightUnitIdsAll = new [] { UnitId.Werewolf, UnitId.Horror };
+        var sheepKnightUnitIds = Util.Util.ShuffleArray(sheepKnightUnitIdsAll).Take(2).ToArray();
+        var wolfKnightUnitIds = Util.Util.ShuffleArray(wolfKnightUnitIdsAll).Take(2).ToArray();
+        var sheepNobleKnightUnitIds = Util.Util.ShuffleArray(sheepNobleKnightUnitIdsAll).Take(1).ToArray();
+        var wolfNobleKnightUnitIds = Util.Util.ShuffleArray(wolfNobleKnightUnitIdsAll).Take(1).ToArray();
+        var sheepUnits = sheepUnitIds.Concat(sheepNobleKnightUnitIds.Concat(sheepKnightUnitIds)).ToArray();
+        var wolfUnits = wolfUnitIds.Concat(wolfNobleKnightUnitIds.Concat(wolfKnightUnitIds)).ToArray();
 
+        foreach (var sheepUnit in sheepUnits)
+        {
+            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = sheepUnit, Count = 1});
+        }
+        
+        foreach (var wolfUnit in wolfUnits)
+        {
+            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = wolfUnit, Count = 1});
+        }
+        
         for (int i = 0; i < 3; i++)
         {
-            var deck = new Deck { UserId = userId, Faction = faction, DeckNumber = i + 1};
+            var deck = new Deck { UserId = userId, Faction = Faction.Sheep, DeckNumber = i + 1};
             _context.Deck.Add(deck);
             _context.SaveChangesExtended();
-        
-            foreach (var unitId in unitIds)
+
+            foreach (var sheepUnit in sheepUnits)
             {
-                _context.DeckUnit.Add(new DeckUnit { DeckId = deck.DeckId, UnitId = unitId });
+                _context.DeckUnit.Add(new DeckUnit { DeckId = deck.DeckId, UnitId = sheepUnit });
+            }
+        }
+        
+        for (int i = 0; i < 3; i++)
+        {
+            var deck = new Deck { UserId = userId, Faction = Faction.Wolf, DeckNumber = i + 1};
+            _context.Deck.Add(deck);
+            _context.SaveChangesExtended();
+            
+            foreach (var wolfUnit in wolfUnits)
+            {
+                _context.DeckUnit.Add(new DeckUnit { DeckId = deck.DeckId, UnitId = wolfUnit });
             }
         }
     }
@@ -184,5 +206,30 @@ public class UserService
         };
         
         _context.UserStage.AddRange(initStages);
+    }
+
+    private void CreateInitTutorialInfo(int userId)
+    {
+        var initTutorials = new[]
+        {
+            new UserTutorial
+            {
+                UserId = userId, TutorialType = TutorialType.BattleWolf, Done = false
+            },
+            new UserTutorial
+            {
+                UserId = userId, TutorialType = TutorialType.BattleSheep, Done = false
+            },
+            new UserTutorial
+            {
+                UserId = userId, TutorialType = TutorialType.Collection, Done = false
+            },
+            new UserTutorial
+            {
+                UserId = userId, TutorialType = TutorialType.Reinforce, Done = false
+            }
+        };
+        
+        _context.UserTutorial.AddRange(initTutorials);
     }
 }

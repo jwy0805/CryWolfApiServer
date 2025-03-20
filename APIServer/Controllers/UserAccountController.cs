@@ -191,7 +191,8 @@ public class UserAccountController : ControllerBase
             WinRate = winRate,
             Gold = userStat.Gold,
             Spinel = userStat.Spinel,
-            BattleTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Battle).Done,
+            BattleTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done &&
+                                 userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
             CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
             ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };
@@ -245,7 +246,8 @@ public class UserAccountController : ControllerBase
             WinRate = winRate,
             Gold = userStat.Gold,
             Spinel = userStat.Spinel,
-            BattleTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Battle).Done,
+            BattleTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done &&
+                                userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
             CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
             ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };
@@ -298,6 +300,46 @@ public class UserAccountController : ControllerBase
             }
         });
         
+        return Ok(res);
+    }
+
+    [HttpPut]
+    [Route("UpdateTutorial")]
+    public async Task<IActionResult> UpdateTutorial([FromBody] UpdateTutorialRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var res = new UpdateTutorialResponse();
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null) return Unauthorized();
+
+        var userTutorial = _context.UserTutorial.FirstOrDefault(ut => ut.UserId == userId);
+        if (userTutorial == null) return NotFound();
+        
+        var strategy = _context.Database.CreateExecutionStrategy();
+        
+        await strategy.ExecuteAsync(async () =>
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                userTutorial.Done = required.Done;
+                foreach (var tutorialType in required.TutorialTypes)
+                {
+                    userTutorial.TutorialType = tutorialType;
+                }
+                await _context.SaveChangesExtendedAsync();
+                res.UpdateTutorialOk = true;
+                await transaction.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                res.UpdateTutorialOk = false;
+                await transaction.RollbackAsync();
+            }
+        });
+
         return Ok(res);
     }
 }

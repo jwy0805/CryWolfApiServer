@@ -33,7 +33,8 @@ public enum UserState
 public enum TutorialType
 {
     None,
-    Battle,
+    BattleWolf,
+    BattleSheep,
     Collection,
     Reinforce,
 }

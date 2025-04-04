@@ -15,6 +15,7 @@ public class UserAccountController : ControllerBase
     private readonly UserService _userService;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
+    private readonly ConfigService _configService;
     private readonly ILogger<UserAccountController> _logger;
     
     public UserAccountController(
@@ -22,12 +23,14 @@ public class UserAccountController : ControllerBase
         UserService userService, 
         TokenService tokenService, 
         TokenValidator validator,
+        ConfigService configService,
         ILogger<UserAccountController> logger)
     {
         _context = context;
         _userService = userService;
         _tokenService = tokenService;
         _tokenValidator = validator;
+        _configService = configService;
         _logger = logger;
     }
     
@@ -122,6 +125,81 @@ public class UserAccountController : ControllerBase
         }
         
         return res;
+    }
+
+    [HttpPut]
+    [Route("LoginGoogle")]
+    public async Task<IActionResult> LoginGoogle([FromBody] LoginGooglePacketRequired required)
+    {
+        var res = new LoginGooglePacketResponse();
+        var audience = _configService.GetGoogleClientId();
+        if (audience == string.Empty)
+        {
+            Console.WriteLine("Google Client ID is not set.");
+            res.LoginOk = false;
+            return Ok(res);
+        }
+        
+        var sub = await _tokenValidator.ValidateAndExtractAccountFromGoogleToken(required.IdToken, audience);
+        if (sub == string.Empty)
+        {
+            res.LoginOk = false;
+            return Ok(res);
+        }
+        
+        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+
+        // Check if the user exists in the database
+        if (user == null)
+        {
+            await _userService.CreateAccount(sub);
+            user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+            if (user == null)
+            {
+                res.LoginOk = false;
+                return Ok(res);
+            }
+        }
+
+        var tokens = _tokenService.GenerateTokens(user.UserId);
+        res.LoginOk = true;
+        res.AccessToken = tokens.AccessToken;
+        res.RefreshToken = tokens.RefreshToken;
+        
+        return Ok(res);
+    }
+    
+    [HttpPost]
+    [Route("GetAppleCustomToken")]
+    public async Task<IActionResult> GetAppleCustomToken([FromBody] GetAppleTokenPacketRequired required)
+    {
+        const string audience = "com.hamonstudio.crywolf";
+        var idToken = required.IdToken;
+
+        try
+        {
+            await _userService.ValidateAppleIdToken(idToken, audience);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new { error = "Apple ID Token validation failed.", message = e.Message });
+        }
+
+        try
+        {
+            var customToken = await _userService.GetAppleCustomTokenAsync(idToken);
+            if (string.IsNullOrEmpty(customToken))
+            {
+                return BadRequest(new { error = "Custom token generation failed." });
+            }
+            var res = new GetAppleTokenPacketResponse { CustomToken = customToken };
+            
+            return Ok(res);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(new { error = "Custom token generation failed.", message = e.Message });
+        }
     }
     
     [HttpPost]

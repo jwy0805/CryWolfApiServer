@@ -9,13 +9,13 @@ namespace ApiServer.Pages;
 public class Verify : PageModel
 {
     private readonly AppDbContext _dbContext;
-    private readonly UserService _emailService;
+    private readonly UserService _userService;
     private readonly TokenValidator _tokenValidator;
     
-    public Verify(AppDbContext dbContext, UserService emailService, TokenValidator tokenValidator)
+    public Verify(AppDbContext dbContext, UserService userService, TokenValidator tokenValidator)
     {
         _dbContext = dbContext;
-        _emailService = emailService;
+        _userService = userService;
         _tokenValidator = tokenValidator;
     }
     
@@ -60,21 +60,23 @@ public class Verify : PageModel
 
                 await _dbContext.SaveChangesAsync();
 
-                var created = await _emailService.CreateAccount(tempUser.TempUserAccount, tempUser.TempPassword);
-                if (created == false)
+                var created = await _userService.CreateAccount(tempUser.TempUserAccount, tempUser.TempPassword);
+                if (created)
+                {
+                    await _dbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    
+                    IsVerified = true;
+                    Message = "Email Verified.\nLogin with your new account.";
+                }
+                else
                 {
                     await transaction.RollbackAsync();
 
                     Message = "Error: Account Creation Failed";
                     IsVerified = false;
                 }
-
-                await _dbContext.SaveChangesAsync();
-                await transaction.CommitAsync();
             });
-            
-            IsVerified = true;
-            Message = "Email Verified.\nLogin with your new account.";
             
             return Page();
         }

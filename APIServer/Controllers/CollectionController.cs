@@ -543,6 +543,7 @@ public class CollectionController : ControllerBase
             }
             else
             {
+                // User does not have the unit to be updated, suspecting hacking
                 res.UpdateDeckOk = 1;
             }
         }

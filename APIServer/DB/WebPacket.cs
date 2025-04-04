@@ -306,6 +306,29 @@ public class LoginUserAccountPacketResponse
     public string RefreshToken { get; set; }
 }
 
+public class LoginGooglePacketRequired
+{
+    public string IdToken { get; set; }
+}
+
+public class LoginGooglePacketResponse
+{
+    public bool LoginOk { get; set; }
+    public string AccessToken { get; set; }
+    public string RefreshToken { get; set; }
+}
+
+public class GetAppleTokenPacketRequired
+{
+    public string IdToken { get; set; }
+}
+
+public class GetAppleTokenPacketResponse
+{
+    public string CustomToken { get; set; }
+}
+
+
 public class ChangeActPacketRequired
 {
     public string AccessToken { get; set; }

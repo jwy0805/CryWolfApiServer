@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Text;
 using ApiServer.DB;
 using ApiServer.Services;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ApiServer.Services;
@@ -12,6 +14,11 @@ public class TokenValidator
     private readonly string _secret;
     private readonly AppDbContext _dbContext;
     private readonly TokenService _tokenService;
+    
+    private static readonly ConfigurationManager<OpenIdConnectConfiguration> _configurationManager = 
+        new("https://accounts.google.com/.well-known/openid-configuration", 
+            new OpenIdConnectConfigurationRetriever()
+        );
 
     public TokenValidator(string secret, AppDbContext dbContext, TokenService tokenService)
     {
@@ -31,6 +38,45 @@ public class TokenValidator
     {
         var emailClaim = principal.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email);
         return emailClaim?.Value ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Extract the "sub" claim(user's unique identifier) after validating the Google ID token.
+    /// </summary>
+    /// <param name="tokenId">Google ID Token from client</param>
+    /// <param name="validAudience">Valid Audience Value (typically, Google Client ID)</param>
+    /// <returns>"sub" Value when validated successfully, or null</returns>
+    public async Task<string> ValidateAndExtractAccountFromGoogleToken(string tokenId, string validAudience)
+    {
+        // Get Google's open ID config public keys
+        OpenIdConnectConfiguration openIdConfig = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
+
+        // Set Token Validation Parameters
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            // Possible issuers are "accounts.google.com" or "https://accounts.google.com"
+            ValidIssuers = new[] { "accounts.google.com", "https://accounts.google.com" },
+            ValidateAudience = true,
+            ValidAudience = validAudience, // My Google Client ID
+            ValidateLifetime = true,         // Validate token expiration
+            IssuerSigningKeys = openIdConfig.SigningKeys  // The list of public keys from Google
+        };
+        
+        var handler = new JwtSecurityTokenHandler();
+
+        try
+        {
+            handler.ValidateToken(tokenId, validationParameters, out var validatedToken);
+            var jwtToken = validatedToken as JwtSecurityToken;
+            var subClaim = jwtToken?.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+            return subClaim?.Value ?? string.Empty;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Token validation failed: " + e.Message);
+            return string.Empty;
+        }
     }
     
     public ClaimsPrincipal? ValidateToken(string token)

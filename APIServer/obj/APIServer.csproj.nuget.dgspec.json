@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[0.1.0, )"
             },
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.Google": {
               "target": "Package",
               "version": "[6.0.26, )"
@@ -60,6 +64,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.15, )"
+            },
+            "Microsoft.IdentityModel.Protocols.OpenIdConnect": {
+              "target": "Package",
+              "version": "[7.5.0, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[7.5.0, )"
             },
             "Microsoft.Owin.Security.Google": {
               "target": "Package",

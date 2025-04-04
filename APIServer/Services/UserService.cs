@@ -1,8 +1,15 @@
+using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Mail;
 using System.Reflection;
+using System.Security.Claims;
 using ApiServer.DB;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ApiServer.Services;
 
@@ -15,8 +22,91 @@ public class UserService
     {
         _configuration = configuration;
         _context = context;
+        
+        InitFirebase();
     }
 
+    private void InitFirebase()
+    {
+        FirebaseApp.Create(new AppOptions
+        {
+            Credential = GoogleCredential.FromFile("crywolf-adminsdk.json"),
+        });
+    }
+
+    public async Task ValidateAppleIdToken(string idToken, string expectedAudience)
+    {
+        var keySetTask = await GetApplePublicKeyAsync();
+        var keySet = keySetTask.Keys;
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "https://appleid.apple.com",
+            ValidateAudience = true,
+            ValidAudience = expectedAudience,
+            ValidateLifetime = true,
+            RequireExpirationTime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKeys = keySet,
+            ClockSkew = TimeSpan.FromMinutes(5)
+        };
+
+        try
+        {
+            tokenHandler.ValidateToken(idToken, validationParameters, out _);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Token Validation Failed: " + e.Message);
+            throw;
+        }
+    }
+
+    private async Task<JsonWebKeySet> GetApplePublicKeyAsync()
+    {
+        using var httpClient = new HttpClient();
+        var jsonString = await httpClient.GetStringAsync("https://appleid.apple.com/auth/keys");
+        return new JsonWebKeySet(jsonString);
+    }
+    
+    public async Task<string> GetAppleCustomTokenAsync(string appleIdToken)
+    {
+        var appleUserId = ExtractAppleUserId(appleIdToken);
+        if (string.IsNullOrEmpty(appleUserId))
+        {
+            throw new Exception("Apple Id Validation Failed");
+        }
+
+        try
+        {
+            var customToken = await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(appleUserId);
+            return customToken;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Token Parsing Error: " + e);
+            throw;
+        }
+    }
+
+    private string ExtractAppleUserId(string appleIdToken)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        
+        try
+        {
+            var jwtToken = handler.ReadJwtToken(appleIdToken);
+            var subClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+            return subClaim ?? string.Empty;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Token Parsing Error: " + e);
+            throw;
+        }
+    }
+    
     public async Task SendVerificationEmail(string recipientEmail, string verificationLink)
     {
         // Load Html Template
@@ -57,7 +147,7 @@ public class UserService
         }
     }
     
-    public async Task<bool> CreateAccount(string userAccount, string password)
+    public async Task<bool> CreateAccount(string userAccount, string? password = null)
     {
         var account = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == userAccount);
         if (account != null) return false;
@@ -65,8 +155,8 @@ public class UserService
         var newUser = new User
         {
             UserAccount = userAccount,
-            UserName = "",
-            Password = password,
+            UserName = string.Empty,
+            Password = password ?? string.Empty,
             Role = UserRole.User,
             State = UserState.Deactivate,
             CreatedAt = DateTime.UtcNow,

@@ -11,6 +11,7 @@ public class TempUser
     public string TempPassword { get; set; }
     public bool IsVerified { get; set; }
     public DateTime CreatedAt { get; set; }
+    public UserAct Act { get; set; }
 }
 
 [Table("User")]

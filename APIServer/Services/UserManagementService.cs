@@ -26,20 +26,20 @@ public class UserManagementService : BackgroundService
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 var now = DateTime.UtcNow;
                 var thresholdTime = now - _inactiveThreshold;
-                // var inactiveUsers = dbContext.User
-                //     .Where(u => u.LastPingTime < thresholdTime && u.Act != UserAct.Offline)
-                //     .ToList();
-                //
-                // foreach (var user in inactiveUsers)
-                // {
-                //     user.Act = UserAct.Offline;
-                //     _logger.LogInformation($"[UserManagementService] Set user {user.UserName} to offline (last ping: {user.LastPingTime})");
-                // }
-                //
-                // if (inactiveUsers.Count > 0)
-                // {
-                //     await dbContext.SaveChangesAsync(stoppingToken);
-                // }
+                var inactiveUsers = dbContext.User
+                    .Where(u => u.LastPingTime < thresholdTime && u.Act != UserAct.Offline)
+                    .ToList();
+                
+                foreach (var user in inactiveUsers)
+                {
+                    user.Act = UserAct.Offline;
+                    _logger.LogInformation($"[UserManagementService] Set user {user.UserName} to offline (last ping: {user.LastPingTime})");
+                }
+                
+                if (inactiveUsers.Count > 0)
+                {
+                    await dbContext.SaveChangesAsync(stoppingToken);
+                }
             }
             catch (Exception e)
             {

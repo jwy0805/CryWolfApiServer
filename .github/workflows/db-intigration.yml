@@ -18,6 +18,14 @@ jobs:
         with:
           dotnet-version: '6.0'
 
+      # dotnet-ef 전역 도구 설치
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef
+
+      # 전역 도구 경로를 PATH에 추가합니다.
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+        
       - name: Build
         run: dotnet build APIServer/APIServer.csproj --configuration Release
 

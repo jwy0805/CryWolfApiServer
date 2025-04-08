@@ -14,10 +14,10 @@ var certPwd = Environment.GetEnvironmentVariable("CERT_PASSWORD");
 
 builder.Services.AddSingleton<ConfigService>();
 
-var configService = new ConfigService();
-var path = Environment.GetEnvironmentVariable("CONFIG_PATH") ??
-           "/Users/jwy/Documents/Dev/CryWolf/Config/CryWolfAccountConfig.json";
-var appConfig = configService.LoadGoogleConfigs(path);
+// var configService = new ConfigService();
+// var path = Environment.GetEnvironmentVariable("CONFIG_PATH") ??
+//            "/Users/jwy/Documents/Dev/CryWolf/Config/CryWolfAccountConfig.json";
+// var appConfig = configService.LoadGoogleConfigs(path);
 
 // Add services to the container. -- StartUp.cs
 var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
@@ -31,12 +31,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 builder.Services.AddSignalR();
 
-builder.Services.AddAuthentication()
-    .AddGoogle(options =>
-    {
-        options.ClientId = appConfig.GoogleClientId;
-        options.ClientSecret = appConfig.GoogleClientSecret;
-    });
+// builder.Services.AddAuthentication()
+//     .AddGoogle(options =>
+//     {
+//         options.ClientId = appConfig.GoogleClientId;
+//         options.ClientSecret = appConfig.GoogleClientSecret;
+//     });
 
 builder.Services.AddScoped<TokenService>(provider => new TokenService(jwtSecret, 
     provider.GetRequiredService<AppDbContext>()));

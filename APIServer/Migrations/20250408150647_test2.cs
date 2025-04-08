@@ -2,17 +2,24 @@
 
 #nullable disable
 
-namespace AccountServer.Migrations
+namespace ApiServer.Migrations
 {
     /// <inheritdoc />
-    public partial class stage_reward_new_column_added : Migration
+    public partial class test2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "Star",
-                table: "Stage_Reward",
+                name: "Dummy1",
+                table: "User",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "Dummy2",
+                table: "User",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
@@ -22,8 +29,12 @@ namespace AccountServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Star",
-                table: "Stage_Reward");
+                name: "Dummy1",
+                table: "User");
+
+            migrationBuilder.DropColumn(
+                name: "Dummy2",
+                table: "User");
         }
     }
 }

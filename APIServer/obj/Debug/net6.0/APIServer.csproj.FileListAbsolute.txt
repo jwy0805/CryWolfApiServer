@@ -985,3 +985,15 @@
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.RazorAssemblyInfo.cache
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.RazorAssemblyInfo.cs
 /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/BCrypt.Net.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/crywolf-adminsdk.json
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/FirebaseAdmin.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/Google.Api.Gax.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/Google.Api.Gax.Rest.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/Google.Apis.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/Google.Apis.Auth.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/Google.Apis.Core.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/System.Collections.Immutable.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/System.Management.dll
+/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/bin/Debug/net6.0/runtimes/win/lib/net6.0/System.Management.dll

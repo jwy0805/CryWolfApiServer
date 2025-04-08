@@ -1,28 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AccountServer.Migrations
+namespace ApiServer.Migrations
 {
     /// <inheritdoc />
-    public partial class tutorialdonecolumn_add_on_user_table : Migration
+    public partial class test3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "TutorialDone",
+            migrationBuilder.AddColumn<DateTime>(
+                name: "Dummy3",
                 table: "User",
-                type: "tinyint(1)",
-                nullable: false,
-                defaultValue: false);
+                type: "datetime(6)",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "TutorialDone",
+                name: "Dummy3",
                 table: "User");
         }
     }

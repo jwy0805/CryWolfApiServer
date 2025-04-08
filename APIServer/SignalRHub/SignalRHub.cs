@@ -47,7 +47,7 @@ public class SignalRHub: Hub
     {
         var user = _context.User.FirstOrDefault(u => u.UserName == username);
         if (user == null) return;
-        user.LastPingTime = DateTime.UtcNow;
+        // user.LastPingTime = DateTime.UtcNow;
         await _context.SaveChangesExtendedAsync();
     }
 
@@ -59,7 +59,7 @@ public class SignalRHub: Hub
             if (user != null)
             {
                 user.Act = UserAct.Offline;
-                user.LastPingTime = DateTime.UtcNow;
+                // user.LastPingTime = DateTime.UtcNow;
                 LobbyUserConnections.TryRemove(username, out _);
                 
                 await _context.SaveChangesExtendedAsync();

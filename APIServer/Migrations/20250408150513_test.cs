@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace AccountServer.Migrations
+namespace ApiServer.Migrations
 {
     /// <inheritdoc />
-    public partial class UseExpTable : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

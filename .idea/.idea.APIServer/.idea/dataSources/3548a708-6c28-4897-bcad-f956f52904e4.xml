@@ -2,129 +2,8 @@
 <dataSource name="CryWolfDb_0v1@localhost">
   <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.53">
     <root id="1">
-      <DefaultCasing>mixed/mixed</DefaultCasing>
       <DefaultEngine>InnoDB</DefaultEngine>
-      <Grants>|root||jwy|localhost|ALTER|G
-|root||root|localhost|ALTER|G
-|root||jwy|localhost|ALTER ROUTINE|G
-|root||root|localhost|ALTER ROUTINE|G
-|root||jwy|localhost|BINLOG ADMIN|G
-|root||root|localhost|BINLOG ADMIN|G
-|root||jwy|localhost|BINLOG MONITOR|G
-|root||root|localhost|BINLOG MONITOR|G
-|root||jwy|localhost|BINLOG REPLAY|G
-|root||root|localhost|BINLOG REPLAY|G
-|root||jwy|localhost|CONNECTION ADMIN|G
-|root||root|localhost|CONNECTION ADMIN|G
-|root||jwy|localhost|CREATE|G
-|root||root|localhost|CREATE|G
-|root||jwy|localhost|CREATE ROUTINE|G
-|root||root|localhost|CREATE ROUTINE|G
-|root||jwy|localhost|CREATE TABLESPACE|G
-|root||root|localhost|CREATE TABLESPACE|G
-|root||jwy|localhost|CREATE TEMPORARY TABLES|G
-|root||root|localhost|CREATE TEMPORARY TABLES|G
-|root||jwy|localhost|CREATE USER|G
-|root||root|localhost|CREATE USER|G
-|root||jwy|localhost|CREATE VIEW|G
-|root||root|localhost|CREATE VIEW|G
-|root||jwy|localhost|DELETE|G
-|root||root|localhost|DELETE|G
-|root||jwy|localhost|DELETE HISTORY|G
-|root||root|localhost|DELETE HISTORY|G
-|root||jwy|localhost|DROP|G
-|root||root|localhost|DROP|G
-|root||jwy|localhost|EVENT|G
-|root||root|localhost|EVENT|G
-|root||jwy|localhost|EXECUTE|G
-|root||root|localhost|EXECUTE|G
-|root||jwy|localhost|FEDERATED ADMIN|G
-|root||root|localhost|FEDERATED ADMIN|G
-|root||jwy|localhost|FILE|G
-|root||root|localhost|FILE|G
-|root||jwy|localhost|INDEX|G
-|root||root|localhost|INDEX|G
-|root||jwy|localhost|INSERT|G
-|root||root|localhost|INSERT|G
-|root||jwy|localhost|LOCK TABLES|G
-|root||root|localhost|LOCK TABLES|G
-|root||jwy|localhost|PROCESS|G
-|root||root|localhost|PROCESS|G
-|root||jwy|localhost|READ_ONLY ADMIN|G
-|root||root|localhost|READ_ONLY ADMIN|G
-|root||jwy|localhost|REFERENCES|G
-|root||root|localhost|REFERENCES|G
-|root||jwy|localhost|RELOAD|G
-|root||root|localhost|RELOAD|G
-|root||jwy|localhost|REPLICATION MASTER ADMIN|G
-|root||root|localhost|REPLICATION MASTER ADMIN|G
-|root||jwy|localhost|REPLICATION SLAVE|G
-|root||root|localhost|REPLICATION SLAVE|G
-|root||jwy|localhost|REPLICATION SLAVE ADMIN|G
-|root||root|localhost|REPLICATION SLAVE ADMIN|G
-|root||jwy|localhost|SELECT|G
-|root||root|localhost|SELECT|G
-|root||jwy|localhost|SET USER|G
-|root||root|localhost|SET USER|G
-|root||jwy|localhost|SHOW CREATE ROUTINE|G
-|root||root|localhost|SHOW CREATE ROUTINE|G
-|root||jwy|localhost|SHOW DATABASES|G
-|root||root|localhost|SHOW DATABASES|G
-|root||jwy|localhost|SHOW VIEW|G
-|root||root|localhost|SHOW VIEW|G
-|root||jwy|localhost|SHUTDOWN|G
-|root||root|localhost|SHUTDOWN|G
-|root||jwy|localhost|SLAVE MONITOR|G
-|root||root|localhost|SLAVE MONITOR|G
-|root||jwy|localhost|SUPER|G
-|root||root|localhost|SUPER|G
-|root||jwy|localhost|TRIGGER|G
-|root||root|localhost|TRIGGER|G
-|root||jwy|localhost|UPDATE|G
-|root||root|localhost|UPDATE|G
-|root||jwy|localhost|grant option|G
-|root||root|localhost|grant option|G
-shopdb|schema||jwydb||ALTER|G
-shopdb|schema||jwydb||CREATE|G
-shopdb|schema||jwydb||DELETE|G
-shopdb|schema||jwydb||INSERT|G
-shopdb|schema||jwydb||SELECT|G
-shopdb|schema||jwydb||UPDATE|G
-test|schema||&apos;&apos;||ALTER|G
-test|schema||&apos;&apos;||CREATE|G
-test|schema||&apos;&apos;||CREATE ROUTINE|G
-test|schema||&apos;&apos;||CREATE TEMPORARY TABLES|G
-test|schema||&apos;&apos;||CREATE VIEW|G
-test|schema||&apos;&apos;||DELETE|G
-test|schema||&apos;&apos;||DELETE HISTORY|G
-test|schema||&apos;&apos;||DROP|G
-test|schema||&apos;&apos;||EVENT|G
-test|schema||&apos;&apos;||INDEX|G
-test|schema||&apos;&apos;||INSERT|G
-test|schema||&apos;&apos;||LOCK TABLES|G
-test|schema||&apos;&apos;||REFERENCES|G
-test|schema||&apos;&apos;||SELECT|G
-test|schema||&apos;&apos;||SHOW VIEW|G
-test|schema||&apos;&apos;||TRIGGER|G
-test|schema||&apos;&apos;||UPDATE|G
-test\\_%|schema||&apos;&apos;||ALTER|G
-test\\_%|schema||&apos;&apos;||CREATE|G
-test\\_%|schema||&apos;&apos;||CREATE ROUTINE|G
-test\\_%|schema||&apos;&apos;||CREATE TEMPORARY TABLES|G
-test\\_%|schema||&apos;&apos;||CREATE VIEW|G
-test\\_%|schema||&apos;&apos;||DELETE|G
-test\\_%|schema||&apos;&apos;||DELETE HISTORY|G
-test\\_%|schema||&apos;&apos;||DROP|G
-test\\_%|schema||&apos;&apos;||EVENT|G
-test\\_%|schema||&apos;&apos;||INDEX|G
-test\\_%|schema||&apos;&apos;||INSERT|G
-test\\_%|schema||&apos;&apos;||LOCK TABLES|G
-test\\_%|schema||&apos;&apos;||REFERENCES|G
-test\\_%|schema||&apos;&apos;||SELECT|G
-test\\_%|schema||&apos;&apos;||SHOW VIEW|G
-test\\_%|schema||&apos;&apos;||TRIGGER|G
-test\\_%|schema||&apos;&apos;||UPDATE|G</Grants>
-      <ServerVersion>11.5.2</ServerVersion>
+      <ServerVersion>11.6.2</ServerVersion>
     </root>
     <collation id="2" parent="1" name="armscii8_bin">
       <Charset>armscii8</Charset>
@@ -1391,109 +1270,109 @@ test\\_%|schema||&apos;&apos;||UPDATE|G</Grants>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_general_ci</CollationName>
     </table>
-    <table id="532" parent="511" name="Mail">
+    <table id="532" parent="511" name="Material">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="533" parent="511" name="Product">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="534" parent="511" name="ProductComposition">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="535" parent="511" name="RefreshToken">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="536" parent="511" name="ReinforcePoint">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="537" parent="511" name="Sheep">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="538" parent="511" name="Stage_Enemy">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="533" parent="511" name="Material">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="534" parent="511" name="Product">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="535" parent="511" name="ProductComposition">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="536" parent="511" name="RefreshToken">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="537" parent="511" name="ReinforcePoint">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="538" parent="511" name="Sheep">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="539" parent="511" name="Stage">
+    <table id="539" parent="511" name="Stage_Reward">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="540" parent="511" name="Stage_Enemy">
+    <table id="540" parent="511" name="TempUser">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="541" parent="511" name="Stage_Reward">
+    <table id="541" parent="511" name="Transaction">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="542" parent="511" name="Unit">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="543" parent="511" name="Unit_Material">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="544" parent="511" name="User">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="545" parent="511" name="UserMatch">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="546" parent="511" name="UserStats">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="547" parent="511" name="UserTutorial">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="542" parent="511" name="TempUser">
+    <table id="548" parent="511" name="User_Character">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="549" parent="511" name="User_Enchant">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="550" parent="511" name="User_Material">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="551" parent="511" name="User_Product">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="552" parent="511" name="User_Sheep">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_general_ci</CollationName>
+    </table>
+    <table id="553" parent="511" name="User_Stage">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="543" parent="511" name="Transaction">
+    <table id="554" parent="511" name="User_Unit">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_general_ci</CollationName>
     </table>
-    <table id="544" parent="511" name="Unit">
+    <table id="555" parent="511" name="__EFMigrationsHistory">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_general_ci</CollationName>
     </table>
-    <table id="545" parent="511" name="Unit_Material">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="546" parent="511" name="User">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="547" parent="511" name="UserMatch">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="548" parent="511" name="UserStats">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="549" parent="511" name="UserTutorial">
+    <table id="556" parent="511" name="mail">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="550" parent="511" name="User_Character">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="551" parent="511" name="User_Enchant">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="552" parent="511" name="User_Material">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="553" parent="511" name="User_Product">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="554" parent="511" name="User_Sheep">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="555" parent="511" name="User_Stage">
+    <table id="557" parent="511" name="stage">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
-    </table>
-    <table id="556" parent="511" name="User_Unit">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
-    </table>
-    <table id="557" parent="511" name="__EFMigrationsHistory">
-      <Engine>InnoDB</Engine>
-      <CollationName>utf8mb4_general_ci</CollationName>
     </table>
     <column id="558" parent="524" name="UserId">
       <NotNull>1</NotNull>
@@ -1716,484 +1595,490 @@ FriendId</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="600" parent="532" name="MailId">
-      <AutoIncrement>15</AutoIncrement>
+    <column id="600" parent="532" name="MaterialId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="601" parent="532" name="UserId">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="602" parent="532" name="CreatedAt">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>datetime(6)|0s</StoredType>
-    </column>
-    <column id="603" parent="532" name="ExpiresAt">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>datetime(6)|0s</StoredType>
-    </column>
-    <column id="604" parent="532" name="ProductId">
-      <Position>5</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="605" parent="532" name="ProductCode">
-      <Position>6</Position>
-      <StoredType>varchar(120)|0s</StoredType>
-    </column>
-    <column id="606" parent="532" name="Claimed">
-      <NotNull>1</NotNull>
-      <Position>7</Position>
-      <StoredType>tinyint(1)|0s</StoredType>
-    </column>
-    <column id="607" parent="532" name="Message">
-      <Position>8</Position>
-      <StoredType>varchar(120)|0s</StoredType>
-    </column>
-    <column id="608" parent="532" name="Sender">
-      <Position>9</Position>
-      <StoredType>varchar(30)|0s</StoredType>
-    </column>
-    <column id="609" parent="532" name="Type">
-      <DefaultExpression>0</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>10</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <index id="610" parent="532" name="PRIMARY">
-      <ColNames>MailId</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="611" parent="532" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="612" parent="533" name="MaterialId">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="613" parent="533" name="MaterialName">
+    <column id="601" parent="532" name="MaterialName">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(50)|0s</StoredType>
     </column>
-    <column id="614" parent="533" name="Class">
+    <column id="602" parent="532" name="Class">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="615" parent="533" name="PRIMARY">
+    <index id="603" parent="532" name="PRIMARY">
       <ColNames>MaterialId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="616" parent="533" name="PRIMARY">
+    <key id="604" parent="532" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="617" parent="534" name="ProductId">
+    <column id="605" parent="533" name="ProductId">
       <AutoIncrement>6039</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="618" parent="534" name="ProductName">
+    <column id="606" parent="533" name="ProductName">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(60)|0s</StoredType>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </column>
-    <column id="619" parent="534" name="Price">
+    <column id="607" parent="533" name="Price">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="620" parent="534" name="Currency">
+    <column id="608" parent="533" name="Currency">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="621" parent="534" name="IsFixed">
+    <column id="609" parent="533" name="IsFixed">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="622" parent="534" name="Category">
+    <column id="610" parent="533" name="Category">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="623" parent="534" name="ProductCode">
+    <column id="611" parent="533" name="ProductCode">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>varchar(120)|0s</StoredType>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </column>
-    <index id="624" parent="534" name="PRIMARY">
+    <index id="612" parent="533" name="PRIMARY">
       <ColNames>ProductId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="625" parent="534" name="PRIMARY">
+    <key id="613" parent="533" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="626" parent="535" name="ProductId">
+    <column id="614" parent="534" name="ProductId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="627" parent="535" name="CompositionId">
+    <column id="615" parent="534" name="CompositionId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="628" parent="535" name="Type">
+    <column id="616" parent="534" name="Type">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="629" parent="535" name="Count">
+    <column id="617" parent="534" name="Count">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="630" parent="535" name="Guaranteed">
+    <column id="618" parent="534" name="Guaranteed">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="631" parent="535" name="IsSelectable">
+    <column id="619" parent="534" name="IsSelectable">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <index id="632" parent="535" name="PRIMARY">
+    <index id="620" parent="534" name="PRIMARY">
       <ColNames>ProductId
 CompositionId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="633" parent="535" name="PRIMARY">
+    <key id="621" parent="534" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="634" parent="536" name="Id">
+    <column id="622" parent="535" name="Id">
       <AutoIncrement>4456</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="635" parent="536" name="UserId">
+    <column id="623" parent="535" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="636" parent="536" name="Token">
+    <column id="624" parent="535" name="Token">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(120)|0s</StoredType>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </column>
-    <column id="637" parent="536" name="ExpiresAt">
+    <column id="625" parent="535" name="ExpiresAt">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="638" parent="536" name="CreatedAt">
+    <column id="626" parent="535" name="CreatedAt">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="639" parent="536" name="UpdateAt">
+    <column id="627" parent="535" name="UpdateAt">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <index id="640" parent="536" name="PRIMARY">
+    <index id="628" parent="535" name="PRIMARY">
       <ColNames>Id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="641" parent="536" name="PRIMARY">
+    <key id="629" parent="535" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="642" parent="537" name="Class">
+    <column id="630" parent="536" name="Class">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="643" parent="537" name="Level">
+    <column id="631" parent="536" name="Level">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="644" parent="537" name="Constant">
+    <column id="632" parent="536" name="Constant">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="645" parent="537" name="PRIMARY">
+    <index id="633" parent="536" name="PRIMARY">
       <ColNames>Class
 Level</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="646" parent="537" name="PRIMARY">
+    <key id="634" parent="536" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="647" parent="538" name="SheepId">
+    <column id="635" parent="537" name="SheepId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="648" parent="538" name="Class">
+    <column id="636" parent="537" name="Class">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="649" parent="538" name="PRIMARY">
+    <index id="637" parent="537" name="PRIMARY">
       <ColNames>SheepId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="650" parent="538" name="PRIMARY">
+    <key id="638" parent="537" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="651" parent="539" name="StageId">
-      <AutoIncrement>1</AutoIncrement>
+    <column id="639" parent="538" name="StageId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="652" parent="539" name="StageLevel">
+    <column id="640" parent="538" name="UnitId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="653" parent="539" name="UserFaction">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <index id="654" parent="539" name="PRIMARY">
-      <ColNames>StageId</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="655" parent="539" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="656" parent="540" name="StageId">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="657" parent="540" name="UnitId">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <index id="658" parent="540" name="PRIMARY">
+    <index id="641" parent="538" name="PRIMARY">
       <ColNames>StageId
 UnitId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="659" parent="540" name="PRIMARY">
+    <key id="642" parent="538" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="660" parent="541" name="StageId">
+    <column id="643" parent="539" name="StageId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="661" parent="541" name="ProductId">
+    <column id="644" parent="539" name="ProductId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="662" parent="541" name="ProductType">
+    <column id="645" parent="539" name="ProductType">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="663" parent="541" name="Count">
+    <column id="646" parent="539" name="Count">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="664" parent="541" name="Star">
+    <column id="647" parent="539" name="Star">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="665" parent="541" name="PRIMARY">
+    <index id="648" parent="539" name="PRIMARY">
       <ColNames>StageId
 ProductId
 ProductType</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="666" parent="541" name="PRIMARY">
+    <key id="649" parent="539" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="667" parent="542" name="TempUserAccount">
+    <column id="650" parent="540" name="TempUserAccount">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <column id="668" parent="542" name="TempPassword">
+    <column id="651" parent="540" name="TempPassword">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>longtext|0s</StoredType>
     </column>
-    <column id="669" parent="542" name="IsVerified">
+    <column id="652" parent="540" name="IsVerified">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="670" parent="542" name="CreatedAt">
+    <column id="653" parent="540" name="CreatedAt">
       <DefaultExpression>&apos;0001-01-01 00:00:00.000000&apos;</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <index id="671" parent="542" name="PRIMARY">
+    <index id="654" parent="540" name="PRIMARY">
       <ColNames>TempUserAccount
 CreatedAt</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="672" parent="542" name="PRIMARY">
+    <key id="655" parent="540" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="673" parent="543" name="TransactionTimestamp">
+    <column id="656" parent="541" name="TransactionTimestamp">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>bigint(20)|0s</StoredType>
     </column>
-    <column id="674" parent="543" name="UserId">
+    <column id="657" parent="541" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="675" parent="543" name="ProductId">
+    <column id="658" parent="541" name="ProductId">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="676" parent="543" name="Count">
+    <column id="659" parent="541" name="Count">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="677" parent="543" name="PurchaseAt">
+    <column id="660" parent="541" name="PurchaseAt">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="678" parent="543" name="Currency">
+    <column id="661" parent="541" name="Currency">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="679" parent="543" name="Status">
+    <column id="662" parent="541" name="Status">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="680" parent="543" name="CashCurrency">
+    <column id="663" parent="541" name="CashCurrency">
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="681" parent="543" name="PRIMARY">
+    <index id="664" parent="541" name="PRIMARY">
       <ColNames>TransactionTimestamp
 UserId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="682" parent="543" name="PRIMARY">
+    <key id="665" parent="541" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="683" parent="544" name="UnitId">
+    <column id="666" parent="542" name="UnitId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="684" parent="544" name="Class">
+    <column id="667" parent="542" name="Class">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="685" parent="544" name="Level">
+    <column id="668" parent="542" name="Level">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>smallint(6)|0s</StoredType>
     </column>
-    <column id="686" parent="544" name="Species">
+    <column id="669" parent="542" name="Species">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="687" parent="544" name="Role">
+    <column id="670" parent="542" name="Role">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="688" parent="544" name="Faction">
+    <column id="671" parent="542" name="Faction">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="689" parent="544" name="Region">
+    <column id="672" parent="542" name="Region">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="690" parent="544" name="UnitName">
+    <column id="673" parent="542" name="UnitName">
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>varchar(30)|0s</StoredType>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </column>
-    <index id="691" parent="544" name="PRIMARY">
+    <index id="674" parent="542" name="PRIMARY">
       <ColNames>UnitId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="675" parent="542" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="676" parent="543" name="UnitId">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="677" parent="543" name="MaterialId">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="678" parent="543" name="Count">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <index id="679" parent="543" name="PRIMARY">
+      <ColNames>UnitId
+MaterialId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="680" parent="543" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="681" parent="544" name="UserId">
+      <AutoIncrement>5</AutoIncrement>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="682" parent="544" name="Password">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>varchar(120)|0s</StoredType>
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+    </column>
+    <column id="683" parent="544" name="UserName">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>varchar(30)|0s</StoredType>
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+    </column>
+    <column id="684" parent="544" name="Role">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="685" parent="544" name="State">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="686" parent="544" name="CreatedAt">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="687" parent="544" name="UserAccount">
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StoredType>varchar(60)|0s</StoredType>
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+    </column>
+    <column id="688" parent="544" name="Act">
+      <DefaultExpression>0</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="689" parent="544" name="LastPingTime">
+      <Position>9</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <index id="690" parent="544" name="PRIMARY">
+      <ColNames>UserId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="691" parent="544" name="IX_User_UserAccount">
+      <ColNames>UserAccount</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
@@ -2202,431 +2087,443 @@ UserId</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="693" parent="545" name="UnitId">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="694" parent="545" name="MaterialId">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="695" parent="545" name="Count">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <index id="696" parent="545" name="PRIMARY">
-      <ColNames>UnitId
-MaterialId</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="697" parent="545" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    <key id="693" parent="544" name="IX_User_UserAccount">
+      <UnderlyingIndexName>IX_User_UserAccount</UnderlyingIndexName>
     </key>
-    <column id="698" parent="546" name="UserId">
-      <AutoIncrement>5</AutoIncrement>
+    <column id="694" parent="545" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="699" parent="546" name="Password">
+    <column id="695" parent="545" name="WinRankMatch">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StoredType>varchar(120)|0s</StoredType>
-      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+      <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="700" parent="546" name="UserName">
+    <column id="696" parent="545" name="LoseRankMatch">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StoredType>varchar(30)|0s</StoredType>
-      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+      <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="701" parent="546" name="Role">
+    <column id="697" parent="545" name="WinFriendlyMatch">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="702" parent="546" name="State">
+    <column id="698" parent="545" name="LoseFriendlyMatch">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="703" parent="546" name="CreatedAt">
-      <NotNull>1</NotNull>
-      <Position>6</Position>
-      <StoredType>datetime(6)|0s</StoredType>
-    </column>
-    <column id="704" parent="546" name="UserAccount">
-      <NotNull>1</NotNull>
-      <Position>7</Position>
-      <StoredType>varchar(60)|0s</StoredType>
-      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
-    </column>
-    <column id="705" parent="546" name="Act">
-      <DefaultExpression>0</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>8</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="706" parent="546" name="LastPingTime">
-      <Position>9</Position>
-      <StoredType>datetime(6)|0s</StoredType>
-    </column>
-    <index id="707" parent="546" name="PRIMARY">
+    <foreign-key id="699" parent="545" name="FK_UserMatch_User_UserId">
+      <ColNames>UserId</ColNames>
+      <RefColNames>UserId</RefColNames>
+      <RefTableName>User</RefTableName>
+      <RefTableParentName>crywolfdb_0v1</RefTableParentName>
+    </foreign-key>
+    <index id="700" parent="545" name="PRIMARY">
       <ColNames>UserId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="708" parent="546" name="IX_User_UserAccount">
-      <ColNames>UserAccount</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="709" parent="546" name="PRIMARY">
+    <key id="701" parent="545" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="710" parent="546" name="IX_User_UserAccount">
-      <UnderlyingIndexName>IX_User_UserAccount</UnderlyingIndexName>
+    <column id="702" parent="546" name="UserId">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="703" parent="546" name="UserLevel">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="704" parent="546" name="RankPoint">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="705" parent="546" name="Exp">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="706" parent="546" name="Gold">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="707" parent="546" name="Spinel">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="708" parent="546" name="HighestRankPoint">
+      <DefaultExpression>0</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <index id="709" parent="546" name="PRIMARY">
+      <ColNames>UserId
+UserLevel</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="710" parent="546" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="711" parent="547" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="712" parent="547" name="WinRankMatch">
+    <column id="712" parent="547" name="TutorialType">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="713" parent="547" name="LoseRankMatch">
+    <column id="713" parent="547" name="TutorialStep">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="714" parent="547" name="WinFriendlyMatch">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="715" parent="547" name="LoseFriendlyMatch">
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <foreign-key id="716" parent="547" name="FK_UserMatch_User_UserId">
-      <ColNames>UserId</ColNames>
-      <RefColNames>UserId</RefColNames>
-      <RefTableName>User</RefTableName>
-      <RefTableParentName>crywolfdb_0v1</RefTableParentName>
-    </foreign-key>
-    <index id="717" parent="547" name="PRIMARY">
-      <ColNames>UserId</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="718" parent="547" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="719" parent="548" name="UserId">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="720" parent="548" name="UserLevel">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="721" parent="548" name="RankPoint">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="722" parent="548" name="Exp">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="723" parent="548" name="Gold">
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="724" parent="548" name="Spinel">
-      <NotNull>1</NotNull>
-      <Position>6</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="725" parent="548" name="HighestRankPoint">
-      <DefaultExpression>0</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>7</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <index id="726" parent="548" name="PRIMARY">
-      <ColNames>UserId
-UserLevel</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="727" parent="548" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="728" parent="549" name="UserId">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="729" parent="549" name="TutorialType">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="730" parent="549" name="TutorialStep">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="731" parent="549" name="Done">
+    <column id="714" parent="547" name="Done">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <index id="732" parent="549" name="PRIMARY">
+    <index id="715" parent="547" name="PRIMARY">
       <ColNames>UserId
 TutorialType</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="733" parent="549" name="PRIMARY">
+    <key id="716" parent="547" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="734" parent="550" name="UserId">
+    <column id="717" parent="548" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="735" parent="550" name="CharacterId">
+    <column id="718" parent="548" name="CharacterId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="736" parent="550" name="Count">
+    <column id="719" parent="548" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="737" parent="550" name="PRIMARY">
+    <index id="720" parent="548" name="PRIMARY">
       <ColNames>UserId
 CharacterId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="738" parent="550" name="PRIMARY">
+    <key id="721" parent="548" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="739" parent="551" name="UserId">
+    <column id="722" parent="549" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="740" parent="551" name="EnchantId">
+    <column id="723" parent="549" name="EnchantId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="741" parent="551" name="Count">
+    <column id="724" parent="549" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="742" parent="551" name="PRIMARY">
+    <index id="725" parent="549" name="PRIMARY">
       <ColNames>UserId
 EnchantId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="743" parent="551" name="PRIMARY">
+    <key id="726" parent="549" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="744" parent="552" name="UserId">
+    <column id="727" parent="550" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="745" parent="552" name="MaterialId">
+    <column id="728" parent="550" name="MaterialId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="746" parent="552" name="Count">
+    <column id="729" parent="550" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="747" parent="552" name="PRIMARY">
+    <index id="730" parent="550" name="PRIMARY">
       <ColNames>UserId
 MaterialId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="748" parent="552" name="PRIMARY">
+    <key id="731" parent="550" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="749" parent="553" name="UserId">
+    <column id="732" parent="551" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="750" parent="553" name="ProductId">
+    <column id="733" parent="551" name="ProductId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="751" parent="553" name="Count">
+    <column id="734" parent="551" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="752" parent="553" name="PRIMARY">
+    <index id="735" parent="551" name="PRIMARY">
       <ColNames>UserId
 ProductId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="753" parent="553" name="PRIMARY">
+    <key id="736" parent="551" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="754" parent="554" name="UserId">
+    <column id="737" parent="552" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="755" parent="554" name="SheepId">
+    <column id="738" parent="552" name="SheepId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="756" parent="554" name="Count">
+    <column id="739" parent="552" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="757" parent="554" name="PRIMARY">
+    <index id="740" parent="552" name="PRIMARY">
       <ColNames>UserId
 SheepId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="758" parent="554" name="PRIMARY">
+    <key id="741" parent="552" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="759" parent="555" name="UserId">
+    <column id="742" parent="553" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="760" parent="555" name="StageId">
+    <column id="743" parent="553" name="StageId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="761" parent="555" name="StageLevel">
+    <column id="744" parent="553" name="StageLevel">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="762" parent="555" name="StageStar">
+    <column id="745" parent="553" name="StageStar">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="763" parent="555" name="IsCleared">
+    <column id="746" parent="553" name="IsCleared">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="764" parent="555" name="IsAvailable">
+    <column id="747" parent="553" name="IsAvailable">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <index id="765" parent="555" name="PRIMARY">
+    <index id="748" parent="553" name="PRIMARY">
       <ColNames>UserId
 StageId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="766" parent="555" name="PRIMARY">
+    <key id="749" parent="553" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="767" parent="556" name="UserId">
+    <column id="750" parent="554" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="768" parent="556" name="UnitId">
+    <column id="751" parent="554" name="UnitId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="769" parent="556" name="Count">
+    <column id="752" parent="554" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="770" parent="556" name="PRIMARY">
+    <index id="753" parent="554" name="PRIMARY">
       <ColNames>UserId
 UnitId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="771" parent="556" name="PRIMARY">
+    <key id="754" parent="554" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="772" parent="557" name="MigrationId">
+    <column id="755" parent="555" name="MigrationId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(150)|0s</StoredType>
     </column>
-    <column id="773" parent="557" name="ProductVersion">
+    <column id="756" parent="555" name="ProductVersion">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(32)|0s</StoredType>
     </column>
-    <index id="774" parent="557" name="PRIMARY">
+    <index id="757" parent="555" name="PRIMARY">
       <ColNames>MigrationId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="775" parent="557" name="PRIMARY">
+    <key id="758" parent="555" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="759" parent="556" name="MailId">
+      <AutoIncrement>15</AutoIncrement>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="760" parent="556" name="UserId">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="761" parent="556" name="CreatedAt">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="762" parent="556" name="ExpiresAt">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="763" parent="556" name="ProductId">
+      <Position>5</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="764" parent="556" name="ProductCode">
+      <Position>6</Position>
+      <StoredType>varchar(120)|0s</StoredType>
+    </column>
+    <column id="765" parent="556" name="Claimed">
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
+    </column>
+    <column id="766" parent="556" name="Message">
+      <Position>8</Position>
+      <StoredType>varchar(120)|0s</StoredType>
+    </column>
+    <column id="767" parent="556" name="Sender">
+      <Position>9</Position>
+      <StoredType>varchar(30)|0s</StoredType>
+    </column>
+    <column id="768" parent="556" name="Type">
+      <DefaultExpression>0</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>10</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <index id="769" parent="556" name="PRIMARY">
+      <ColNames>MailId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="770" parent="556" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="771" parent="557" name="StageId">
+      <AutoIncrement>5010</AutoIncrement>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="772" parent="557" name="StageLevel">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="773" parent="557" name="UserFaction">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="774" parent="557" name="AssetId">
+      <DefaultExpression>0</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="775" parent="557" name="CharacterId">
+      <DefaultExpression>0</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="776" parent="557" name="MapId">
+      <DefaultExpression>0</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <index id="777" parent="557" name="PRIMARY">
+      <ColNames>StageId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="778" parent="557" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

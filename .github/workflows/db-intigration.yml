@@ -33,4 +33,4 @@ jobs:
         run: dotnet ef database update --project APIServer/APIServer.csproj
         env:
           # RDS DB 접속 정보는 GitHub Secrets에서 주입
-          ConnectionStrings__DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}

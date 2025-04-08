@@ -20,7 +20,7 @@ jobs:
 
       # dotnet-ef 전역 도구 설치
       - name: Install dotnet-ef tool
-        run: dotnet tool install --global dotnet-ef
+        run: dotnet tool install --global dotnet-ef 6.0.16
 
       # 전역 도구 경로를 PATH에 추가합니다.
       - name: Add dotnet tools to PATH

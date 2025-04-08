@@ -11,11 +11,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="Summary 250409&#10;&#10;Database is back on track.&#10;&#10;And github action testing">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="github action test">
       <change beforePath="$PROJECT_DIR$/.github/workflows/db-intigration.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/db-intigration.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/UserManagementService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserManagementService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -481,7 +479,7 @@
       <workItem from="1743592691461" duration="5554000" />
       <workItem from="1743739014923" duration="12440000" />
       <workItem from="1744070348133" duration="2691000" />
-      <workItem from="1744116283360" duration="7223000" />
+      <workItem from="1744116283360" duration="7632000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -795,7 +793,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744125251394</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="github action test">
+      <option name="closed" value="true" />
+      <created>1744126037109</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1744126037109</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -805,7 +811,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="241118 docker 2" />
     <MESSAGE value="241120&#10;&#10;Main wab page frame created." />
     <MESSAGE value="241120 additional commit" />
     <MESSAGE value="Emergency Modification Commit and Push" />
@@ -830,6 +835,7 @@
     <MESSAGE value="Summary 250404&#10;&#10;Social Login&#10;- Google Login&#10;- New codes will be tested." />
     <MESSAGE value="Summary 250408&#10;&#10;Github Actions&#10;- github workflows created.&#10;- Database scheme will be intigrated automatically by github actions." />
     <MESSAGE value="Summary 250409&#10;&#10;Database is back on track.&#10;&#10;And github action testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Summary 250409&#10;&#10;Database is back on track.&#10;&#10;And github action testing" />
+    <MESSAGE value="github action test" />
+    <option name="LAST_COMMIT_MESSAGE" value="github action test" />
   </component>
 </project>

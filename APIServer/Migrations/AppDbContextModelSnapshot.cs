@@ -399,9 +399,6 @@ namespace ApiServer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("Act")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsVerified")
                         .HasColumnType("tinyint(1)");
 

@@ -11,7 +11,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="github actions test 13" />
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="github actions test 14">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/db-intigration.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/db-intigration.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db-intigration.yml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,6 +48,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
@@ -480,15 +486,7 @@
       <workItem from="1743739014923" duration="12440000" />
       <workItem from="1744070348133" duration="2691000" />
       <workItem from="1744116283360" duration="14682000" />
-      <workItem from="1744167216686" duration="1449000" />
-    </task>
-    <task id="LOCAL-00004" summary="241103">
-      <option name="closed" value="true" />
-      <created>1730644972858</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1730644972858</updated>
+      <workItem from="1744167216686" duration="3595000" />
     </task>
     <task id="LOCAL-00005" summary="kestrel port setting has been deleted. Use nginx reverse-proxy instead.">
       <option name="closed" value="true" />
@@ -874,7 +872,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744168661543</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="github actions test 14">
+      <option name="closed" value="true" />
+      <created>1744168958821</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1744168958821</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -884,7 +890,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="241126&#10;&#10;Email Service error has been fixed.&#10; - Db context error when using link that verify user email has been fixed." />
     <MESSAGE value="241207&#10;&#10;Measuring server delay in Vietnam" />
     <MESSAGE value="1208 docker" />
     <MESSAGE value="1208&#10;docker" />
@@ -909,6 +914,7 @@
     <MESSAGE value="github actions test 11" />
     <MESSAGE value="github actions test 12" />
     <MESSAGE value="github actions test 13" />
-    <option name="LAST_COMMIT_MESSAGE" value="github actions test 13" />
+    <MESSAGE value="github actions test 14" />
+    <option name="LAST_COMMIT_MESSAGE" value="github actions test 14" />
   </component>
 </project>

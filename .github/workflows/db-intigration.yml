@@ -33,4 +33,5 @@ jobs:
         run: dotnet ef database update --project APIServer/APIServer.csproj
         env:
           # RDS DB 접속 정보는 GitHub Secrets에서 주입
-          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+#          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+          DB_CONNECTION_STRING: "Server=crywolfrds.ctasuc4s61ue.ap-northeast-2.rds.amazonaws.com;Port=3306;Database=CryWolfDb;Uid=hamonstd;Pwd=Wy76286688;"

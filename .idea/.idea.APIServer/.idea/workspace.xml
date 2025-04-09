@@ -11,9 +11,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="github actions test 15">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/db-intigration.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/db-integration.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="github actions test 16">
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +45,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
@@ -485,15 +485,7 @@
       <workItem from="1743739014923" duration="12440000" />
       <workItem from="1744070348133" duration="2691000" />
       <workItem from="1744116283360" duration="14682000" />
-      <workItem from="1744167216686" duration="5317000" />
-    </task>
-    <task id="LOCAL-00006" summary="Get Deck methods about ec2 environment modified.">
-      <option name="closed" value="true" />
-      <created>1730791240580</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1730791240580</updated>
+      <workItem from="1744167216686" duration="5670000" />
     </task>
     <task id="LOCAL-00007" summary="1105">
       <option name="closed" value="true" />
@@ -879,7 +871,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744171154521</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="github actions test 16">
+      <option name="closed" value="true" />
+      <created>1744178166463</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1744178166463</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -889,7 +889,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="1208 docker" />
     <MESSAGE value="1208&#10;docker" />
     <MESSAGE value="241212&#10;&#10;Payment and mail logic updated.&#10; - Atomicity of DB query is guaranteed when it comes to paying products.&#10; - Mail controller and Task queue service has been added.&#10; - Algorithms when used to products in packages are added." />
     <MESSAGE value="241223&#10;User Management Logic Added.&#10;&#10;Friendly Match Service Added." />
@@ -914,6 +913,7 @@
     <MESSAGE value="github actions test 13" />
     <MESSAGE value="github actions test 14" />
     <MESSAGE value="github actions test 15" />
-    <option name="LAST_COMMIT_MESSAGE" value="github actions test 15" />
+    <MESSAGE value="github actions test 16" />
+    <option name="LAST_COMMIT_MESSAGE" value="github actions test 16" />
   </component>
 </project>

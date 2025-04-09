@@ -12,7 +12,7 @@ public class TempUser
     public bool IsVerified { get; set; }
     public DateTime CreatedAt { get; set; }
     public UserAct Act { get; set; }
-    public int TestValue16 { get; set; }
+    public int TestValue17 { get; set; }
 }
 
 [Table("User")]

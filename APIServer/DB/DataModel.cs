@@ -13,7 +13,6 @@ public class TempUser
     public DateTime CreatedAt { get; set; }
     public UserAct Act { get; set; }
     public int TestValue { get; set; }
-    public int TestValue2 { get; set; }
 }
 
 [Table("User")]

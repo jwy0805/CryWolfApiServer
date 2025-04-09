@@ -11,7 +11,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="github action test 5" />
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="github actions test 6">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/db-intigration.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/db-intigration.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,7 +126,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="다중 시작.BothServers">
+  <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -478,7 +493,7 @@
       <workItem from="1743592691461" duration="5554000" />
       <workItem from="1743739014923" duration="12440000" />
       <workItem from="1744070348133" duration="2691000" />
-      <workItem from="1744116283360" duration="10002000" />
+      <workItem from="1744116283360" duration="11308000" />
     </task>
     <task id="LOCAL-00001" summary="Summary - 1004&#10;&#10;API Logics has been modified.&#10; - The logics of collection initializing has been improved to be more powerful.&#10; - but some errors occured, so it needs to be fixed.&#10; &#10;Web packets has been changed.&#10; - xxxInfo is included in Owned xxxInfo.">
       <option name="closed" value="true" />
@@ -832,7 +847,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744128156278</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="github actions test 6">
+      <option name="closed" value="true" />
+      <created>1744128812813</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1744128812813</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -842,7 +865,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="To float site on domain" />
     <MESSAGE value="use data protection key" />
     <MESSAGE value="docker" />
     <MESSAGE value="Add Database Connection Option" />
@@ -867,6 +889,7 @@
     <MESSAGE value="github action test 3" />
     <MESSAGE value="github action test 4" />
     <MESSAGE value="github action test 5" />
-    <option name="LAST_COMMIT_MESSAGE" value="github action test 5" />
+    <MESSAGE value="github actions test 6" />
+    <option name="LAST_COMMIT_MESSAGE" value="github actions test 6" />
   </component>
 </project>

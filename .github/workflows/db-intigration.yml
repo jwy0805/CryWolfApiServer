@@ -29,9 +29,6 @@ jobs:
       - name: Build
         run: dotnet build APIServer/APIServer.csproj --configuration Release
 
-      - name: Debug DB Connection String
-        run: echo "DB_CONNECTION_STRING:${{ secrets.DB_CONNECTION_STRING }}"
-
       - name: EF Migrate
         run: dotnet ef database update --project APIServer/APIServer.csproj
         env:

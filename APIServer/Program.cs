@@ -13,6 +13,7 @@ var certPath = Environment.GetEnvironmentVariable("CERT_PATH");
 var certPwd = Environment.GetEnvironmentVariable("CERT_PASSWORD");
 
 builder.Services.AddSingleton<ConfigService>();
+Console.WriteLine("Power SEX");
 
 // var configService = new ConfigService();
 // var path = Environment.GetEnvironmentVariable("CONFIG_PATH") ??

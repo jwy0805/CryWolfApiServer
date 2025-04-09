@@ -13,7 +13,6 @@ var certPath = Environment.GetEnvironmentVariable("CERT_PATH");
 var certPwd = Environment.GetEnvironmentVariable("CERT_PASSWORD");
 
 builder.Services.AddSingleton<ConfigService>();
-Console.WriteLine("Power SEX");
 
 // var configService = new ConfigService();
 // var path = Environment.GetEnvironmentVariable("CONFIG_PATH") ??
@@ -21,8 +20,8 @@ Console.WriteLine("Power SEX");
 // var appConfig = configService.LoadGoogleConfigs(path);
 
 // Add services to the container. -- StartUp.cs
-var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
-                              builder.Configuration.GetConnectionString("DefaultConnection");
+var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+// var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultConnection");
 Console.WriteLine("DB_CONNECTION_STRING: " + defaultConnectionString);
 var jwtSecret = "QweksldfoqjksdlgSidjSDKgSkdnHGSEISKdndgkseG";
 

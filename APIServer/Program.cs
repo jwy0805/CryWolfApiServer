@@ -22,7 +22,6 @@ builder.Services.AddSingleton<ConfigService>();
 // Add services to the container. -- StartUp.cs
 var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 // var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine("DB_CONNECTION_STRING: " + defaultConnectionString);
 var jwtSecret = "QweksldfoqjksdlgSidjSDKgSkdnHGSEISKdndgkseG";
 
 builder.Services.AddControllers().AddJsonOptions(options =>

@@ -22,16 +22,6 @@ public class UserService
     {
         _configuration = configuration;
         _context = context;
-        
-        InitFirebase();
-    }
-
-    private void InitFirebase()
-    {
-        FirebaseApp.Create(new AppOptions
-        {
-            Credential = GoogleCredential.FromFile("crywolf-adminsdk.json"),
-        });
     }
 
     public async Task ValidateAppleIdToken(string idToken, string expectedAudience)

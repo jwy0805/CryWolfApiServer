@@ -15,9 +15,15 @@ public class TokenValidator
     private readonly AppDbContext _dbContext;
     private readonly TokenService _tokenService;
     
-    private static readonly ConfigurationManager<OpenIdConnectConfiguration> _configurationManager = 
+    private static readonly ConfigurationManager<OpenIdConnectConfiguration> ConfigManagerGoogle = 
         new("https://accounts.google.com/.well-known/openid-configuration", 
             new OpenIdConnectConfigurationRetriever()
+        );
+    
+    private static readonly ConfigurationManager<OpenIdConnectConfiguration> ConfigManagerApple = 
+        new("https://appleid.apple.com/.well-known/openid-configuration", 
+            new OpenIdConnectConfigurationRetriever(),
+            new HttpDocumentRetriever()
         );
 
     public TokenValidator(string secret, AppDbContext dbContext, TokenService tokenService)
@@ -41,6 +47,45 @@ public class TokenValidator
     }
 
     /// <summary>
+    /// Extract the "sub" claim(user's unique identifier) after validating the Apple ID token.
+    /// </summary>
+    /// <param name="tokenId">Google ID Token from client</param>
+    /// <param name="validClientId">Valid Client Id (typically, Apple Client ID)</param>
+    /// <returns>"sub" Value when validated successfully, or null</returns>
+    public async Task<string> ValidateAndExtractAccountFromAppleToken(string tokenId, string validClientId)
+    {
+        try
+        {
+            // Get OpenIdConnectConfiguration
+            var openIdConfig = await ConfigManagerApple.GetConfigurationAsync(CancellationToken.None);
+            
+            // Set Token Validation Parameters
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuers = new[] { "https://appleid.apple.com" },
+                ValidateAudience = true,
+                ValidAudience = validClientId, // My Apple Client ID
+                ValidateLifetime = true,         // Validate token expiration
+                IssuerSigningKeys = openIdConfig.SigningKeys  // The list of public keys from Apple
+            };
+
+            var handler = new JwtSecurityTokenHandler();
+            handler.ValidateToken(tokenId, validationParameters, out var validatedToken);
+            
+            var jwtToken = validatedToken as JwtSecurityToken;
+            var subClaim = jwtToken?.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+            
+            return subClaim?.Value ?? string.Empty;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    /// <summary>
     /// Extract the "sub" claim(user's unique identifier) after validating the Google ID token.
     /// </summary>
     /// <param name="tokenId">Google ID Token from client</param>
@@ -49,7 +94,7 @@ public class TokenValidator
     public async Task<string> ValidateAndExtractAccountFromGoogleToken(string tokenId, string validAudience)
     {
         // Get Google's open ID config public keys
-        OpenIdConnectConfiguration openIdConfig = await _configurationManager.GetConfigurationAsync(CancellationToken.None);
+        var openIdConfig = await ConfigManagerGoogle.GetConfigurationAsync(CancellationToken.None);
 
         // Set Token Validation Parameters
         var validationParameters = new TokenValidationParameters

@@ -12,13 +12,6 @@ var isLocal = Environment.GetEnvironmentVariable("ENVIRONMENT") == "Local";
 var certPath = Environment.GetEnvironmentVariable("CERT_PATH");
 var certPwd = Environment.GetEnvironmentVariable("CERT_PASSWORD");
 
-builder.Services.AddSingleton<ConfigService>();
-
-// var configService = new ConfigService();
-// var path = Environment.GetEnvironmentVariable("CONFIG_PATH") ??
-//            "/Users/jwy/Documents/Dev/CryWolf/Config/CryWolfAccountConfig.json";
-// var appConfig = configService.LoadGoogleConfigs(path);
-
 // Add services to the container. -- StartUp.cs
 var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 // var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultConnection");
@@ -31,13 +24,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 builder.Services.AddSignalR();
 
-// builder.Services.AddAuthentication()
-//     .AddGoogle(options =>
-//     {
-//         options.ClientId = appConfig.GoogleClientId;
-//         options.ClientSecret = appConfig.GoogleClientSecret;
-//     });
-
 builder.Services.AddScoped<TokenService>(provider => new TokenService(jwtSecret, 
     provider.GetRequiredService<AppDbContext>()));
 
@@ -48,6 +34,7 @@ builder.Services.AddScoped<TokenValidator>(provider => new TokenValidator(jwtSec
 builder.Services.AddHostedService<ExpiredTokenCleanupService>();
 builder.Services.AddHostedService<UserManagementService>();
 builder.Services.AddHttpClient<ApiService>();
+builder.Services.AddSingleton<ConfigService>();
 builder.Services.AddSingleton<ApiService>();
 builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<TaskQueueService>();

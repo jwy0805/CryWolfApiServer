@@ -128,6 +128,48 @@ public class UserAccountController : ControllerBase
     }
 
     [HttpPut]
+    [Route("LoginApple")]
+    public async Task<IActionResult> LoginApple([FromBody] LoginApplePacketRequired required)
+    {
+        var res = new LoginApplePacketResponse();
+        var appleBundleId = _configService.GetAppleBundleId();
+        if (appleBundleId == string.Empty)
+        {
+            Console.WriteLine("Apple Bundle ID is not set.");
+            res.LoginOk = false;
+            return Ok(res);
+        }
+        
+        var sub = await _tokenValidator.ValidateAndExtractAccountFromAppleToken(required.IdToken, appleBundleId);
+        if (sub == string.Empty)
+        {
+            res.LoginOk = false;
+            return Ok(res);
+        }
+        
+        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+        
+        // Check if the user exists in the database
+        if (user == null)
+        {
+            await _userService.CreateAccount(sub);
+            user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+            if (user == null)
+            {
+                res.LoginOk = false;
+                return Ok(res);
+            }
+        }
+        
+        var tokens = _tokenService.GenerateTokens(user.UserId);
+        res.LoginOk = true;
+        res.AccessToken = tokens.AccessToken;
+        res.RefreshToken = tokens.RefreshToken;
+        
+        return Ok(res);
+    }
+    
+    [HttpPut]
     [Route("LoginGoogle")]
     public async Task<IActionResult> LoginGoogle([FromBody] LoginGooglePacketRequired required)
     {
@@ -153,7 +195,9 @@ public class UserAccountController : ControllerBase
         if (user == null)
         {
             await _userService.CreateAccount(sub);
+            Console.WriteLine("Create Account");
             user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+            
             if (user == null)
             {
                 res.LoginOk = false;
@@ -170,46 +214,13 @@ public class UserAccountController : ControllerBase
     }
     
     [HttpPost]
-    [Route("GetAppleCustomToken")]
-    public async Task<IActionResult> GetAppleCustomToken([FromBody] GetAppleTokenPacketRequired required)
-    {
-        const string audience = "com.hamonstudio.crywolf";
-        var idToken = required.IdToken;
-
-        try
-        {
-            await _userService.ValidateAppleIdToken(idToken, audience);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(new { error = "Apple ID Token validation failed.", message = e.Message });
-        }
-
-        try
-        {
-            var customToken = await _userService.GetAppleCustomTokenAsync(idToken);
-            if (string.IsNullOrEmpty(customToken))
-            {
-                return BadRequest(new { error = "Custom token generation failed." });
-            }
-            var res = new GetAppleTokenPacketResponse { CustomToken = customToken };
-            
-            return Ok(res);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(new { error = "Custom token generation failed.", message = e.Message });
-        }
-    }
-    
-    [HttpPost]
     [Route("RefreshToken")]
     public IActionResult RefreshToken([FromBody] RefreshTokenRequired request)
     {
         try
         {
             var tokens = _tokenValidator.RefreshAccessToken(request.RefreshToken);
-            var response = new RefreshTokenResponse()
+            var response = new RefreshTokenResponse
             {
                 AccessToken = tokens.AccessToken,
                 RefreshToken = tokens.RefreshToken

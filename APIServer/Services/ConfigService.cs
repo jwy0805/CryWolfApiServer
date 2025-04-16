@@ -2,17 +2,39 @@ namespace ApiServer;
 
 public class ConfigService
 {
-    private GoogleConfigs? _googleConfigs;
+    private Configs? _configs;
+
+    public ConfigService()
+    {
+        var path = Environment.GetEnvironmentVariable("CONFIG_PATH") ??
+                   "/Users/jwy/Documents/Dev/CryWolf/Config/CryWolfAccountConfig.json";
+        _configs = LoadConfigs(path);
+    }
     
-    public GoogleConfigs LoadGoogleConfigs(string path)
+    private Configs LoadConfigs(string path)
     {
         var jsonString = File.ReadAllText(path);
-        _googleConfigs = Newtonsoft.Json.JsonConvert.DeserializeObject<GoogleConfigs>(jsonString);
-        return _googleConfigs ?? new GoogleConfigs("", "");
+        _configs = Newtonsoft.Json.JsonConvert.DeserializeObject<Configs>(jsonString);
+        return _configs ?? new Configs("", "", "", "");
     }
-
+    
     public string GetGoogleClientId()
     {
-        return _googleConfigs?.GoogleClientId ?? string.Empty;
+        return _configs?.GoogleClientId ?? string.Empty;
+    }
+    
+    public string GetGoogleClientSecret()
+    {
+        return _configs?.GoogleClientSecret ?? string.Empty;
+    }
+    
+    public string GetAppleTeamId()
+    {
+        return _configs?.AppleTeamId ?? string.Empty;
+    }
+    
+    public string GetAppleBundleId()
+    {
+        return _configs?.AppleBundleId ?? string.Empty;
     }
 }

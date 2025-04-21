@@ -223,6 +223,8 @@ public class MatchController : ControllerBase
             || userInfo.DeckUnits.Length != 6)
         {
             res.ChangeOk = false;
+            Console.WriteLine("start tutorial error");
+            Console.WriteLine($"{userInfo.User?.UserId}, {userInfo.DeckUnits.Length}");
             return NotFound();
         }
 

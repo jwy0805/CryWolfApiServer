@@ -121,6 +121,7 @@ public class SinglePlayController: ControllerBase
         if (stageInfo == null)
         {
             res.ChangeOk = false;
+            Console.WriteLine("[StartGame] StageInfo not found");
             return NotFound();
         }
         

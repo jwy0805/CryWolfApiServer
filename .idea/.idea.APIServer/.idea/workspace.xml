@@ -11,10 +11,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="250421&#10;mobile game server test">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/SinglePlayController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/SinglePlayController.cs" afterDir="false" />
-    </list>
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="console.writeline" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -485,15 +482,7 @@
       <workItem from="1744682329128" duration="5841000" />
       <workItem from="1744773762525" duration="22062000" />
       <workItem from="1744897543819" duration="5095000" />
-      <workItem from="1745200558329" duration="1856000" />
-    </task>
-    <task id="LOCAL-00011" summary="241117 for docker">
-      <option name="closed" value="true" />
-      <created>1731849041299</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1731849041299</updated>
+      <workItem from="1745200558329" duration="2175000" />
     </task>
     <task id="LOCAL-00012" summary="241118 Url has been modified to use in docker network.">
       <option name="closed" value="true" />
@@ -879,7 +868,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745201316369</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="console.writeline">
+      <option name="closed" value="true" />
+      <created>1745202730753</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1745202730753</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -889,7 +886,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="250309" />
     <MESSAGE value="250320&#10;&#10;Set tutorial api&#10;Set tutorial database" />
     <MESSAGE value="Summary 250404&#10;&#10;Social Login&#10;- Google Login&#10;- New codes will be tested." />
     <MESSAGE value="Summary 250408&#10;&#10;Github Actions&#10;- github workflows created.&#10;- Database scheme will be intigrated automatically by github actions." />
@@ -914,6 +910,7 @@
     <MESSAGE value="Remove firebase auth&#10;&#10;only use Unity Authentication" />
     <MESSAGE value="250416&#10;&#10;Google Login Success.&#10;&#10;Apple Login must be tested." />
     <MESSAGE value="250421&#10;mobile game server test" />
-    <option name="LAST_COMMIT_MESSAGE" value="250421&#10;mobile game server test" />
+    <MESSAGE value="console.writeline" />
+    <option name="LAST_COMMIT_MESSAGE" value="console.writeline" />
   </component>
 </project>

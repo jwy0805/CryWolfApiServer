@@ -11,15 +11,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="250421&#10;mobile game server test">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/SinglePlayController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/SinglePlayController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -491,15 +485,7 @@
       <workItem from="1744682329128" duration="5841000" />
       <workItem from="1744773762525" duration="22062000" />
       <workItem from="1744897543819" duration="5095000" />
-      <workItem from="1745200558329" duration="741000" />
-    </task>
-    <task id="LOCAL-00010" summary="BaseUrl Modification">
-      <option name="closed" value="true" />
-      <created>1731719116135</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1731719116136</updated>
+      <workItem from="1745200558329" duration="1856000" />
     </task>
     <task id="LOCAL-00011" summary="241117 for docker">
       <option name="closed" value="true" />
@@ -885,7 +871,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744813153288</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="250421&#10;mobile game server test">
+      <option name="closed" value="true" />
+      <created>1745201316369</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1745201316369</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -895,7 +889,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="250121&#10;&#10;Single Play has been added.&#10;data about single play stage has been added." />
     <MESSAGE value="250309" />
     <MESSAGE value="250320&#10;&#10;Set tutorial api&#10;Set tutorial database" />
     <MESSAGE value="Summary 250404&#10;&#10;Social Login&#10;- Google Login&#10;- New codes will be tested." />
@@ -920,6 +913,7 @@
     <MESSAGE value="github actions test 17" />
     <MESSAGE value="Remove firebase auth&#10;&#10;only use Unity Authentication" />
     <MESSAGE value="250416&#10;&#10;Google Login Success.&#10;&#10;Apple Login must be tested." />
-    <option name="LAST_COMMIT_MESSAGE" value="250416&#10;&#10;Google Login Success.&#10;&#10;Apple Login must be tested." />
+    <MESSAGE value="250421&#10;mobile game server test" />
+    <option name="LAST_COMMIT_MESSAGE" value="250421&#10;mobile game server test" />
   </component>
 </project>

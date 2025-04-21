@@ -87,6 +87,7 @@ public class SinglePlayController: ControllerBase
     [HttpPut("StartGame")]
     public async Task<IActionResult> StartGame([FromBody] ChangeActPacketSingleRequired required)
     {
+        Console.WriteLine("[StartGame] method called");
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
@@ -105,6 +106,7 @@ public class SinglePlayController: ControllerBase
         if (user == null || battleSetting == null || deck == null || userStage == null)
         {
             res.ChangeOk = false;
+            Console.WriteLine("[StartGame] User or BattleSetting or Deck or UserStage not found on single play start");
             return NotFound();
         }
 
@@ -137,7 +139,7 @@ public class SinglePlayController: ControllerBase
             StageId = required.StageId
         };
 
-        Console.WriteLine(required.SessionId);
+        Console.WriteLine($"[StartGame] {required.SessionId}");
         await _apiService.SendRequestToSocketAsync<SinglePlayStartPacketRequired>(
             "singlePlay", singlePlayPacket, HttpMethod.Post);
         

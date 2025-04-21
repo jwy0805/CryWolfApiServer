@@ -159,6 +159,11 @@ public class UserService
         for (int i = 0; i < 3; i++)
         {
             var deck = new Deck { UserId = userId, Faction = Faction.Wolf, DeckNumber = i + 1};
+            if (i == 0)
+            {
+                deck.LastPicked = true;
+            }
+            
             _context.Deck.Add(deck);
             _context.SaveChangesExtended();
             

@@ -62,7 +62,12 @@ public class UserInfo
     public int WinRate { get; set; }
     public int Gold { get; set; }
     public int Spinel { get; set; }
-    public bool BattleTutorialDone { get; set; }
+}
+
+public class UserTutorialInfo
+{
+    public bool WolfTutorialDone { get; set; }
+    public bool SheepTutorialDone { get; set; }
     public bool CollectionTutorialDone { get; set; }
     public bool ReinforceTutorialDone { get; set; }
 }
@@ -425,6 +430,7 @@ public class LoadUserInfoPacketResponse
 {
     public bool LoadUserInfoOk { get; set; }
     public UserInfo UserInfo { get; set; }
+    public UserTutorialInfo UserTutorialInfo { get; set; }
 }
 
 public class LoadTestUserPacketRequired
@@ -436,6 +442,7 @@ public class LoadTestUserPacketResponse
 {
     public bool LoadTestUserOk { get; set; }
     public UserInfo UserInfo { get; set; }
+    public UserTutorialInfo UserTutorialInfo { get; set; }
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
 }

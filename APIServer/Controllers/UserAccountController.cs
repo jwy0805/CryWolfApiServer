@@ -279,9 +279,13 @@ public class UserAccountController : ControllerBase
             Victories = userMatch.WinRankMatch,
             WinRate = winRate,
             Gold = userStat.Gold,
-            Spinel = userStat.Spinel,
-            BattleTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done &&
-                                 userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
+            Spinel = userStat.Spinel
+        };
+
+        res.UserTutorialInfo = new UserTutorialInfo
+        {
+            WolfTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done,
+            SheepTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
             CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
             ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };
@@ -335,8 +339,12 @@ public class UserAccountController : ControllerBase
             WinRate = winRate,
             Gold = userStat.Gold,
             Spinel = userStat.Spinel,
-            BattleTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done &&
-                                userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
+        };
+        
+        res.UserTutorialInfo = new UserTutorialInfo
+        {
+            WolfTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done,
+            SheepTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
             CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
             ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };

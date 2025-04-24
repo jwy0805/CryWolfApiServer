@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250408155039_github_action_test_4")]
-    partial class github_action_test_4
+    [Migration("20250424032432_SchemaBaseline")]
+    partial class SchemaBaseline
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -411,9 +411,6 @@ namespace ApiServer.Migrations
                     b.Property<string>("TempPassword")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("TempValue")
-                        .HasColumnType("int");
 
                     b.HasKey("TempUserAccount", "CreatedAt");
 

@@ -4,10 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApiServer.DB;
 
+// User before email authentication
 [Table("TempUser")]
 public class TempUser
 {
+    [MaxLength(60)]
     public string TempUserAccount { get; set; }
+    [MaxLength(120)]
     public string TempPassword { get; set; }
     public bool IsVerified { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -29,6 +32,7 @@ public class User
     public UserState State { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? LastPingTime { get; set; }
+    public LoginMethod LoginMethod { get; set; }
 }
 
 [Table("UserStats")]

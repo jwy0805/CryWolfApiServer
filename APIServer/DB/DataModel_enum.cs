@@ -27,7 +27,15 @@ public enum UserState
     Activate,
     Deactivate,
     Suspension,
-    Ban
+    Banned
+}
+
+public enum LoginMethod
+{
+    Guest,
+    Direct,
+    Google,
+    Apple
 }
 
 public enum TutorialType

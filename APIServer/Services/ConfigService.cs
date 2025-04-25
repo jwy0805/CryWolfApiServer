@@ -15,7 +15,7 @@ public class ConfigService
     {
         var jsonString = File.ReadAllText(path);
         _configs = Newtonsoft.Json.JsonConvert.DeserializeObject<Configs>(jsonString);
-        return _configs ?? new Configs("", "", "", "");
+        return _configs ?? new Configs("", "", "", "", "");
     }
     
     public string GetGoogleClientId()
@@ -36,5 +36,10 @@ public class ConfigService
     public string GetAppleBundleId()
     {
         return _configs?.AppleBundleId ?? string.Empty;
+    }
+    
+    public string GetAdminPassword()
+    {
+        return _configs?.AdminPassword ?? string.Empty;
     }
 }

@@ -162,5 +162,114 @@ public class AppDbContext : DbContext
         builder.Entity<ReinforcePoint>().HasKey(rr => new { rr.Class, rr.Level });
 
         builder.Entity<ExpTable>().HasKey(et => new { et.Level });
+        
+        // Delete
+        builder.Entity<BattleSetting>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(b => b.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Deck>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(d => d.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<DeckUnit>()
+            .HasOne<Deck>()
+            .WithMany()
+            .HasForeignKey(d => d.DeckId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Friends>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(f => f.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Friends>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(f => f.FriendId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<Mail>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(m => m.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<RefreshToken>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Transaction>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<UserCharacter>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(uc => uc.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserEnchant>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(ue => ue.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserMaterial>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(um => um.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserProduct>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(up => up.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserSheep>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(us => us.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserStage>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(us => us.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserUnit>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(uu => uu.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserMatch>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(um => um.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserStats>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(us => us.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserTutorial>()
+            .HasOne<User>()
+            .WithMany()
+            .HasForeignKey(ut => ut.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -64,7 +64,7 @@ public class UserService
         }
     }
     
-    public async Task<bool> CreateAccount(string userAccount, string? password = null)
+    public async Task<bool> CreateAccount(string userAccount, LoginMethod loginMethod, string? password = null)
     {
         var account = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == userAccount);
         if (account != null) return false;
@@ -77,6 +77,7 @@ public class UserService
             Role = UserRole.User,
             State = UserState.Deactivate,
             CreatedAt = DateTime.UtcNow,
+            LoginMethod = loginMethod,
         };
         
         _context.User.Add(newUser);

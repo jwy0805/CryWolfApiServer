@@ -152,7 +152,7 @@ public class UserAccountController : ControllerBase
         // Check if the user exists in the database
         if (user == null)
         {
-            await _userService.CreateAccount(sub);
+            await _userService.CreateAccount(sub, LoginMethod.Apple);
             user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
             if (user == null)
             {
@@ -194,7 +194,7 @@ public class UserAccountController : ControllerBase
         // Check if the user exists in the database
         if (user == null)
         {
-            await _userService.CreateAccount(sub);
+            await _userService.CreateAccount(sub, LoginMethod.Google);
             Console.WriteLine("Create Account");
             user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
             
@@ -436,6 +436,28 @@ public class UserAccountController : ControllerBase
                 await transaction.RollbackAsync();
             }
         });
+
+        return Ok(res);
+    }
+    
+    [HttpDelete]
+    [Route("DeleteAccountHard")]
+    public async Task<IActionResult> DeleteAccountHard([FromBody] DeleteUserAccountHardPacketRequired required)
+    {
+        if (required.AdminPassword != _configService.GetAdminPassword())
+        {
+            return Unauthorized(new { message = "Invalid Request." });
+        }
+        
+        var user = await _context.User.FirstOrDefaultAsync(u => u.UserId == required.UserId);
+        if (user == null) return NotFound();
+        
+        var res = new DeleteUserAccountHardPacketResponse();
+
+        _context.User.Remove(user);
+        await _context.SaveChangesAsync();
+        
+        res.DeleteOk = true;
 
         return Ok(res);
     }

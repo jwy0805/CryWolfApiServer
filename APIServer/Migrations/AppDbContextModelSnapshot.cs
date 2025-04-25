@@ -93,6 +93,8 @@ namespace ApiServer.Migrations
 
                     b.HasKey("DeckId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Deck");
                 });
 
@@ -151,6 +153,8 @@ namespace ApiServer.Migrations
 
                     b.HasKey("UserId", "FriendId");
 
+                    b.HasIndex("FriendId");
+
                     b.ToTable("Friends");
                 });
 
@@ -191,6 +195,8 @@ namespace ApiServer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("MailId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Mail");
                 });
@@ -296,6 +302,8 @@ namespace ApiServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("RefreshToken");
                 });
 
@@ -394,7 +402,8 @@ namespace ApiServer.Migrations
             modelBuilder.Entity("ApiServer.DB.TempUser", b =>
                 {
                     b.Property<string>("TempUserAccount")
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -407,7 +416,8 @@ namespace ApiServer.Migrations
 
                     b.Property<string>("TempPassword")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)");
 
                     b.HasKey("TempUserAccount", "CreatedAt");
 
@@ -441,6 +451,8 @@ namespace ApiServer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("TransactionTimestamp", "UserId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Transaction");
                 });
@@ -508,6 +520,9 @@ namespace ApiServer.Migrations
 
                     b.Property<DateTime?>("LastPingTime")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("LoginMethod")
+                        .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -728,11 +743,161 @@ namespace ApiServer.Migrations
                     b.ToTable("User_Unit");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.BattleSetting", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.Deck", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.DeckUnit", b =>
+                {
+                    b.HasOne("ApiServer.DB.Deck", null)
+                        .WithMany()
+                        .HasForeignKey("DeckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.Friends", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("FriendId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.Mail", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.RefreshToken", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.Transaction", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserCharacter", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserEnchant", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ApiServer.DB.UserMatch", b =>
                 {
                     b.HasOne("ApiServer.DB.User", null)
-                        .WithOne()
-                        .HasForeignKey("ApiServer.DB.UserMatch", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserMaterial", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserProduct", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserSheep", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserStage", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserStats", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserTutorial", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserUnit", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

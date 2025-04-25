@@ -13,54 +13,16 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150110_Init.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150110_Init.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150513_test.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150513_test.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150647_test2.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150647_test2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150741_test3.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150741_test3.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150852_test4.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408150852_test4.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408151104_add_lastpingtime_column_on_user_table.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408151104_add_lastpingtime_column_on_user_table.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408152503_github_actions_test.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408152503_github_actions_test.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408153124_github_action_test_2.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408153124_github_action_test_2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408153527_github_action_test_3.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408153527_github_action_test_3.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408155039_github_action_test_4.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408155039_github_action_test_4.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408160207_github_action_test_5.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408160207_github_action_test_5.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408161301_github_action_test_6.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250408161301_github_action_test_6.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409011913_github_action_test_7.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409011913_github_action_test_7.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409012655_github_action_test_8.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409012655_github_action_test_8.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409015036_github_action_test_9.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409015036_github_action_test_9.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409023852_github_action_test_10.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409023852_github_action_test_10.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409024432_github_action_test_11.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409024432_github_action_test_11.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409030150_github_action_test_12.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409030150_github_action_test_12.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409031659_github_actions_test_13.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409031659_github_actions_test_13.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409032214_github_actions_test_14.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409032214_github_actions_test_14.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409035757_github_actions_test_15.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409035757_github_actions_test_15.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409055500_github_actions_test_16.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409055500_github_actions_test_16.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409060000_github_actions_test_17.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409060000_github_actions_test_17.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409103049_rds_complete.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/20250409103049_rds_complete.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Config/Configs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Config/Configs.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Pages/Verify.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/ConfigService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/ConfigService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
@@ -71,8 +33,15 @@
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
@@ -547,15 +516,8 @@
       <workItem from="1744773762525" duration="22062000" />
       <workItem from="1744897543819" duration="5095000" />
       <workItem from="1745200558329" duration="11135000" />
-      <workItem from="1745461019181" duration="1238000" />
-    </task>
-    <task id="LOCAL-00015" summary="241120 additional commit">
-      <option name="closed" value="true" />
-      <created>1732113987453</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1732113987453</updated>
+      <workItem from="1745461019181" duration="2720000" />
+      <workItem from="1745527575145" duration="12337000" />
     </task>
     <task id="LOCAL-00016" summary="Emergency Modification Commit and Push">
       <option name="closed" value="true" />
@@ -941,7 +903,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745295864458</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="DB sync">
+      <option name="closed" value="true" />
+      <created>1745465234892</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1745465234892</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -951,7 +921,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Summary 250409&#10;&#10;Database is back on track.&#10;&#10;And github action testing" />
     <MESSAGE value="github action test" />
     <MESSAGE value="github action test 2" />
     <MESSAGE value="github action test 3" />
@@ -976,6 +945,7 @@
     <MESSAGE value="lk" />
     <MESSAGE value="deck error solved." />
     <MESSAGE value="250422&#10;&#10;Tutorial Info Data class added." />
-    <option name="LAST_COMMIT_MESSAGE" value="250422&#10;&#10;Tutorial Info Data class added." />
+    <MESSAGE value="DB sync" />
+    <option name="LAST_COMMIT_MESSAGE" value="DB sync" />
   </component>
 </project>

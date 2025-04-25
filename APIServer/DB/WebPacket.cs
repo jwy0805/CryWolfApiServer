@@ -311,6 +311,17 @@ public class LoginUserAccountPacketResponse
     public string RefreshToken { get; set; }
 }
 
+public class DeleteUserAccountHardPacketRequired
+{
+    public int UserId { get; set; }
+    public string AdminPassword { get; set; }
+}
+
+public class DeleteUserAccountHardPacketResponse
+{
+    public bool DeleteOk { get; set; }
+}
+
 public class GetAppleTokenPacketRequired
 {
     public string IdToken { get; set; }

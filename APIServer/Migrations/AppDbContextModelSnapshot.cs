@@ -73,6 +73,22 @@ namespace ApiServer.Migrations
                     b.ToTable("CompositionProbability");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.DailyProduct", b =>
+                {
+                    b.Property<int>("DailyProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Probability")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DailyProductId");
+
+                    b.ToTable("DailyProduct");
+                });
+
             modelBuilder.Entity("ApiServer.DB.Deck", b =>
                 {
                     b.Property<int>("DeckId")
@@ -521,29 +537,14 @@ namespace ApiServer.Migrations
                     b.Property<int>("Act")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
                     b.Property<DateTime?>("LastPingTime")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("varchar(120)");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserAccount")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("varchar(60)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -562,7 +563,9 @@ namespace ApiServer.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("LinkedAt")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("PasswordHash")
                         .HasMaxLength(120)
@@ -788,6 +791,15 @@ namespace ApiServer.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.DailyProduct", b =>
+                {
+                    b.HasOne("ApiServer.DB.Product", null)
+                        .WithMany()
+                        .HasForeignKey("DailyProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ApiServer.DB.Deck", b =>

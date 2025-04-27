@@ -22,6 +22,7 @@ public class AppDbContext : DbContext
     public DbSet<Character> Character { get; set; }
     public DbSet<Material> Material { get; set; }
     public DbSet<Product> Product { get; set; }
+    public DbSet<DailyProduct> DailyProduct { get; set; }
     public DbSet<Transaction> Transaction { get; set; }
     public DbSet<ProductComposition> ProductComposition { get; set; }
     public DbSet<CompositionProbability> CompositionProbability { get; set; }
@@ -100,7 +101,7 @@ public class AppDbContext : DbContext
         {
             entity.Property(product => product.Currency).HasConversion(v => (int)v, v => (CurrencyType)v);
         });
-
+        
         builder.Entity<Transaction>().HasKey(t => new { t.TransactionTimestamp, t.UserId });
         builder.Entity<Transaction>(entity =>
         {
@@ -111,6 +112,8 @@ public class AppDbContext : DbContext
             entity.Property(t => t.CashCurrency)
                 .HasConversion(v => (int)v, v => (CashCurrencyType)v);
         });
+
+        builder.Entity<DailyProduct>().HasOne<Product>().WithMany().HasForeignKey(dp => dp.DailyProductId);
         
         builder.Entity<ProductComposition>().HasKey(pc => new { pc.ProductId, pc.CompositionId });
         

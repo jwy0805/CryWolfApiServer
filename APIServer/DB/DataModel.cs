@@ -251,6 +251,14 @@ public class Product
     public bool IsFixed { get; set; }
 }
 
+[Table("DailyProduct")]
+public class DailyProduct
+{
+    public int DailyProductId { get; set; }
+    public int ProductId { get; set; }
+    public int Probability { get; set; }
+}
+
 [Table("ProductComposition")]
 public class ProductComposition
 {

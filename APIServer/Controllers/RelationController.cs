@@ -37,7 +37,7 @@ public class RelationController : ControllerBase
             return Ok(res);
         }
         
-        var friendsList = _context.Friends.AsNoTracking()
+        var friendsList = _context.Friend.AsNoTracking()
             .Where(friend => friend.UserId == userId && friend.Status == FriendStatus.Accepted)
             .Join(_context.User,
                 friend => friend.FriendId,
@@ -79,7 +79,7 @@ public class RelationController : ControllerBase
             return Unauthorized();
         }
         
-        var pendingFriends = _context.Friends.AsNoTracking()
+        var pendingFriends = _context.Friend.AsNoTracking()
             .Where(friend => friend.FriendId == userId && friend.Status == FriendStatus.Pending)
             .Join(
                 _context.User,
@@ -134,7 +134,7 @@ public class RelationController : ControllerBase
             return Ok(new AcceptFriendPacketResponse { AcceptFriendOk = false });
         }
         
-        var friend = _context.Friends
+        var friend = _context.Friend
             .FirstOrDefault(friend =>
                 friend.UserId == friendId && friend.FriendId == userId && friend.Status == FriendStatus.Pending);
         if (friend == null)
@@ -146,9 +146,9 @@ public class RelationController : ControllerBase
         if (required.Accept)
         {
             friend.Status = FriendStatus.Accepted;
-            _context.Friends.Update(friend);
+            _context.Friend.Update(friend);
             
-            var newFriend = new Friends
+            var newFriend = new Friend
             {
                 UserId = userId.Value,
                 FriendId = friendId.Value,
@@ -156,7 +156,7 @@ public class RelationController : ControllerBase
                 CreatedAt = DateTime.Now,
             };
             
-            _context.Friends.Add(newFriend);
+            _context.Friend.Add(newFriend);
             _context.SaveChanges();
             
             return Ok(new AcceptFriendPacketResponse
@@ -167,7 +167,7 @@ public class RelationController : ControllerBase
         }
         else
         {
-            _context.Friends.Remove(friend);
+            _context.Friend.Remove(friend);
             _context.SaveChanges();
             
             return Ok(new AcceptFriendPacketResponse
@@ -214,7 +214,7 @@ public class RelationController : ControllerBase
             {
                 result.friendUser,
                 result.friendUserStat,
-                Friend = _context.Friends.AsNoTracking().FirstOrDefault(friend 
+                Friend = _context.Friend.AsNoTracking().FirstOrDefault(friend 
                     => friend.UserId == result.friendUser.UserId 
                        && friend.FriendId == userId 
                        && friend.Status != FriendStatus.Blocked)
@@ -271,15 +271,11 @@ public class RelationController : ControllerBase
             });
         }
 
-        var friendRelations = _context.Friends
-            .Where(f => (f.UserId == userId && f.FriendId == friendId) 
-                        || (f.UserId == friendId && f.FriendId == userId))
-            .ToList();
-        var friendRelation1 = friendRelations
-            .FirstOrDefault(friend => friend.UserId == userId && friend.FriendId == friendId);
-        var friendRelation2 = friendRelations
-            .FirstOrDefault(friend => friend.UserId == friendId && friend.FriendId == userId);
-        if (friendRelation1 == null || friendRelation2 == null)
+        var friendRelations = _context.Friend
+            .FirstOrDefault(f => (f.UserId == userId && f.FriendId == friendId)
+                        || (f.UserId == friendId && f.FriendId == userId));
+        
+        if (friendRelations == null)
         {
             _logger.LogWarning("Requested Username Unauthorized");
             return Ok(new FriendRequestPacketResponse
@@ -289,20 +285,7 @@ public class RelationController : ControllerBase
             });
         }
 
-        if (required.CurrentFriendStatus == FriendStatus.Blocked)
-        {
-            friendRelation1.Status = FriendStatus.Blocked;
-            friendRelation2.Status = FriendStatus.None;
-            _context.Friends.Update(friendRelation1);
-            _context.Friends.Update(friendRelation2);
-        }
-        
-        if (required.CurrentFriendStatus == FriendStatus.None)
-        {
-            _context.Friends.Remove(friendRelation1);
-            _context.Friends.Remove(friendRelation2);
-        }
-        
+        _context.Friend.Remove(friendRelations);
         _context.SaveChanges();
         
         return Ok(new FriendRequestPacketResponse

@@ -61,7 +61,7 @@ public class Verify : PageModel
                 await _dbContext.SaveChangesAsync();
 
                 var created = await _userService
-                    .CreateAccount(tempUser.TempUserAccount, LoginMethod.Direct, tempUser.TempPassword);
+                    .CreateAccount(tempUser.TempUserAccount, AuthProvider.Direct, tempUser.TempPassword);
                 if (created)
                 {
                     await _dbContext.SaveChangesAsync();

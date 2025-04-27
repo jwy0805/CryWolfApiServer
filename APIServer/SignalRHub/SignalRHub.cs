@@ -260,33 +260,44 @@ public class SignalRHub: Hub
             
             try
             {
-                var friendRelations = _context.Friends
-                    .Where(f => (f.UserId == userId && f.FriendId == friendId) 
-                                || (f.UserId == friendId && f.FriendId == userId))
-                    .ToList();
-                var friendRelation1 = friendRelations
-                    .FirstOrDefault(f => f.UserId == userId && f.FriendId == friendId);
-                var friendRelation2 = friendRelations
-                    .FirstOrDefault(f => f.UserId == friendId && f.FriendId == userId);
+                var friendRelations = _context.Friend
+                    .FirstOrDefault(f => (f.UserId == userId && f.FriendId == friendId)
+                                         || (f.UserId == friendId && f.FriendId == userId));
 
-                if (friendRelation1 == null && required.CurrentFriendStatus == FriendStatus.None)
+                if (friendRelations != null)
                 {
-                    var newFriend = new Friends
+                    switch (friendRelations.Status)
+                    {
+                        case FriendStatus.Pending:
+                            friendRelations.Status = FriendStatus.Accepted;
+                            res.FriendStatus = FriendStatus.Accepted;
+                            break;
+                        case FriendStatus.Blocked:
+                            res.FriendStatus = FriendStatus.Blocked;
+                            break;
+                        case FriendStatus.Accepted:
+                            res.FriendStatus = FriendStatus.Accepted;
+                            break;
+                        case FriendStatus.None:
+                            res.FriendStatus = FriendStatus.None;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                else
+                {
+                    (userId, friendId) = userId > friendId ? (friendId, userId) : (userId, friendId);
+                    
+                    var newFriend = new Friend
                     {
                         UserId = userId.Value,
                         FriendId = friendId.Value,
                         CreatedAt = DateTime.Now,
                         Status = FriendStatus.Pending
                     };
-                    _context.Friends.Add(newFriend);
+                    _context.Friend.Add(newFriend);
                     res.FriendStatus = FriendStatus.Pending;
-                }
-                else
-                {
-                    if (friendRelation1 != null) _context.Friends.Remove(friendRelation1);
-                    if (friendRelation2 != null) _context.Friends.Remove(friendRelation2);
-
-                    res.FriendStatus = FriendStatus.None;
                 }
 
                 await _context.SaveChangesExtendedAsync();
@@ -295,7 +306,7 @@ public class SignalRHub: Hub
             catch (Exception e)
             {
                 await transaction.RollbackAsync();
-                _logger.LogError($"Transaction Error: {e.Message}");
+                _logger.LogError($"Friend Request Transaction Error: {e.Message}");
                 throw;
             }
         });

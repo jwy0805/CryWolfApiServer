@@ -21,18 +21,48 @@ public class TempUser
 public class User
 {
     public int UserId { get; set; }
-    [MaxLength(60)]
-    public string UserAccount { get; set; }
-    [MaxLength(120)]
-    public string Password { get; set; }
     [MaxLength(30)]
     public string UserName { get; set; }
     public UserRole Role { get; set; }
     public UserAct Act { get; set; }
     public UserState State { get; set; }
-    public DateTime CreatedAt { get; set; }
     public DateTime? LastPingTime { get; set; }
-    public LoginMethod LoginMethod { get; set; }
+    
+    // Navigation properties
+    public ICollection<BattleSetting> BattleSettings { get; set; }
+    public ICollection<Deck> Decks { get; set; }
+    public ICollection<Mail> Mails { get; set; }
+    public ICollection<RefreshToken> RefreshTokens { get; set; }
+    public ICollection<Transaction> Transactions { get; set; }
+    public ICollection<UserAuth> UserAuths { get; set; }
+    public ICollection<UserCharacter> UserCharacters { get; set; }
+    public ICollection<UserEnchant> UserEnchants { get; set; }
+    public ICollection<UserMaterial> UserMaterials { get; set; }
+    public ICollection<UserMatch> UserMatches { get; set; }
+    public ICollection<UserProduct> UserProducts { get; set; }
+    public ICollection<UserSheep> UserSheep { get; set; }
+    public ICollection<UserStage> UserStages { get; set; }
+    public UserStats UserStats { get; set; }
+    public ICollection<UserTutorial> UserTutorials { get; set; }
+    public ICollection<UserUnit> UserUnits { get; set; }
+}
+
+[Table("UserAuth")]
+public class UserAuth
+{
+    public int UserAuthId { get; set; }
+    public int UserId { get; set; }
+    public AuthProvider Provider { get; set; }
+    
+    // ID, sub, deviceId
+    [MaxLength(60)]
+    public string       UserAccount  { get; set; } = null!;
+    [MaxLength(120)]
+    public string?      PasswordHash    { get; set; }
+    public DateTime     LinkedAt        { get; set; }      
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("UserStats")]
@@ -45,6 +75,9 @@ public class UserStats
     public int Exp { get; set; }
     public int Gold { get; set; }
     public int Spinel { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("UserMatch")]
@@ -56,6 +89,9 @@ public class UserMatch
     public int LoseRankMatch { get; set; }
     public int WinFriendlyMatch { get; set; }
     public int LoseFriendlyMatch { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("UserTutorial")]
@@ -65,10 +101,13 @@ public class UserTutorial
     public TutorialType TutorialType { get; set; }
     public int TutorialStep { get; set; }
     public bool Done { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("Friends")]
-public class Friends
+public class Friend
 {
     public int UserId { get; set; }
     public int FriendId { get; set; }
@@ -92,6 +131,9 @@ public class Mail
     public string? Message { get; set; }
     [MaxLength(30)]
     public string? Sender { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("RefreshToken")]
@@ -104,6 +146,9 @@ public class RefreshToken
     public DateTime ExpiresAt { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdateAt { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("ExpTable")]
@@ -135,6 +180,10 @@ public class Deck
     public Faction Faction { get; set; }
     public int DeckNumber { get; set; }
     public bool LastPicked { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
+    public ICollection<DeckUnit> DeckUnits { get; set; }
 }
 
 [Table("Deck_Unit")]
@@ -142,6 +191,9 @@ public class DeckUnit
 {
     public int DeckId { get; set; }
     public UnitId UnitId { get; set; }
+    
+    // Navigation properties
+    public Deck Deck { get; set; }
 }
 
 [Table("User_Unit")]
@@ -150,6 +202,9 @@ public class UserUnit
     public int UserId { get; set; }
     public UnitId UnitId { get; set; }
     public int Count { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("Sheep")]
@@ -254,6 +309,9 @@ public class UserStage
     public int StageStar { get; set; }
     public bool IsCleared { get; set; }
     public bool IsAvailable { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("User_Product")]
@@ -262,6 +320,9 @@ public class UserProduct
     public int UserId { get; set; }
     public int ProductId { get; set; }
     public int Count { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("User_Sheep")]
@@ -270,6 +331,9 @@ public class UserSheep
     public int UserId { get; set; }
     public SheepId SheepId { get; set; }
     public int Count { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("User_Enchant")]
@@ -278,6 +342,9 @@ public class UserEnchant
     public int UserId { get; set; }
     public EnchantId EnchantId { get; set; }
     public int Count { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("User_Character")]
@@ -286,6 +353,9 @@ public class UserCharacter
     public int UserId { get; set; }
     public CharacterId CharacterId { get; set; }
     public int Count { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("Unit_Material")]
@@ -302,6 +372,9 @@ public class UserMaterial
     public int UserId { get; set; }
     public MaterialId MaterialId { get; set; }
     public int Count { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("Transaction")]
@@ -332,6 +405,9 @@ public class Transaction
         var timestampString = $"{PurchaseAt:yyyyMMddHHmmssfff}";
         TransactionTimestamp = long.Parse(timestampString);
     }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("BattleSetting")]
@@ -341,6 +417,9 @@ public class BattleSetting
     public int SheepId { get; set; }
     public int EnchantId { get; set; }
     public int CharacterId { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
 }
 
 [Table("ReinforcePoint")]

@@ -93,7 +93,8 @@ namespace ApiServer.Migrations
 
                     b.HasKey("DeckId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "Faction", "DeckNumber")
+                        .IsUnique();
 
                     b.ToTable("Deck");
                 });
@@ -107,6 +108,8 @@ namespace ApiServer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("DeckId", "UnitId");
+
+                    b.HasIndex("UnitId");
 
                     b.ToTable("Deck_Unit");
                 });
@@ -137,7 +140,7 @@ namespace ApiServer.Migrations
                     b.ToTable("ExpTable");
                 });
 
-            modelBuilder.Entity("ApiServer.DB.Friends", b =>
+            modelBuilder.Entity("ApiServer.DB.Friend", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -155,7 +158,10 @@ namespace ApiServer.Migrations
 
                     b.HasIndex("FriendId");
 
-                    b.ToTable("Friends");
+                    b.ToTable("Friends", t =>
+                        {
+                            t.HasCheckConstraint("CK_Friend_Order", "`UserId` < `FriendId`");
+                        });
                 });
 
             modelBuilder.Entity("ApiServer.DB.Mail", b =>
@@ -516,13 +522,12 @@ namespace ApiServer.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<DateTime?>("LastPingTime")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("LoginMethod")
-                        .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -547,10 +552,41 @@ namespace ApiServer.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserAccount")
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserAuth", b =>
+                {
+                    b.Property<int>("UserAuthId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LinkedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)");
+
+                    b.Property<int>("Provider")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserAccount")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserAuthId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("Provider", "UserAccount")
                         .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("UserAuth");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserCharacter", b =>
@@ -685,9 +721,6 @@ namespace ApiServer.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserLevel")
-                        .HasColumnType("int");
-
                     b.Property<int>("Exp")
                         .HasColumnType("int");
 
@@ -703,7 +736,10 @@ namespace ApiServer.Migrations
                     b.Property<int>("Spinel")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "UserLevel");
+                    b.Property<int>("UserLevel")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
 
                     b.ToTable("UserStats");
                 });
@@ -745,32 +781,44 @@ namespace ApiServer.Migrations
 
             modelBuilder.Entity("ApiServer.DB.BattleSetting", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("BattleSettings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.Deck", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("Decks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.DeckUnit", b =>
                 {
-                    b.HasOne("ApiServer.DB.Deck", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.Deck", "Deck")
+                        .WithMany("DeckUnits")
                         .HasForeignKey("DeckId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ApiServer.DB.Unit", null)
+                        .WithMany()
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Deck");
                 });
 
-            modelBuilder.Entity("ApiServer.DB.Friends", b =>
+            modelBuilder.Entity("ApiServer.DB.Friend", b =>
                 {
                     b.HasOne("ApiServer.DB.User", null)
                         .WithMany()
@@ -787,119 +835,197 @@ namespace ApiServer.Migrations
 
             modelBuilder.Entity("ApiServer.DB.Mail", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("Mails")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.RefreshToken", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.Transaction", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("Transactions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.UserAuth", b =>
+                {
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserAuths")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserCharacter", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserCharacters")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserEnchant", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserEnchants")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserMatch", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserMatches")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserMaterial", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserMaterials")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserProduct", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserProducts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserSheep", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserSheep")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserStage", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserStages")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserStats", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithOne("UserStats")
+                        .HasForeignKey("ApiServer.DB.UserStats", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserTutorial", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserTutorials")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserUnit", b =>
                 {
-                    b.HasOne("ApiServer.DB.User", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.User", "User")
+                        .WithMany("UserUnits")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.Deck", b =>
+                {
+                    b.Navigation("DeckUnits");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.User", b =>
+                {
+                    b.Navigation("BattleSettings");
+
+                    b.Navigation("Decks");
+
+                    b.Navigation("Mails");
+
+                    b.Navigation("RefreshTokens");
+
+                    b.Navigation("Transactions");
+
+                    b.Navigation("UserAuths");
+
+                    b.Navigation("UserCharacters");
+
+                    b.Navigation("UserEnchants");
+
+                    b.Navigation("UserMatches");
+
+                    b.Navigation("UserMaterials");
+
+                    b.Navigation("UserProducts");
+
+                    b.Navigation("UserSheep");
+
+                    b.Navigation("UserStages");
+
+                    b.Navigation("UserStats")
+                        .IsRequired();
+
+                    b.Navigation("UserTutorials");
+
+                    b.Navigation("UserUnits");
                 });
 #pragma warning restore 612, 618
         }

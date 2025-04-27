@@ -30,7 +30,7 @@ public enum UserState
     Banned
 }
 
-public enum LoginMethod
+public enum AuthProvider
 {
     Guest,
     Direct,

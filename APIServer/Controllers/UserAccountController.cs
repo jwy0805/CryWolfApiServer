@@ -42,7 +42,7 @@ public class UserAccountController : ControllerBase
         var approved = false;
         var res = new ValidateNewAccountPacketResponse();
         var tempUserDb = _context.TempUser;
-        var account = _context.User
+        var account = _context.UserAuth
             .AsNoTracking()
             .FirstOrDefault(user => user.UserAccount == required.UserAccount);
         
@@ -99,29 +99,45 @@ public class UserAccountController : ControllerBase
     public LoginUserAccountPacketResponse Login([FromBody] LoginUserAccountPacketRequired required)
     {
         var res = new LoginUserAccountPacketResponse();
-        var user = _context.User
+        var userAuth = _context.UserAuth
             .AsNoTracking()
             .FirstOrDefault(u => u.UserAccount == required.UserAccount);
 
-        if (user == null)
+        if (userAuth == null)
         {
             res.LoginOk = false;
         }
         else
         {
-            if (_tokenValidator.VerifyPassword(required.Password, user.Password) == false)
+            var user = _context.User
+                .AsNoTracking()
+                .FirstOrDefault(u => u.UserId == userAuth.UserId);
+            if (user == null)
             {
                 res.LoginOk = false;
-                return res;
             }
+            else
+            {
+                if (string.IsNullOrEmpty(userAuth.PasswordHash))
+                {
+                    res.LoginOk = false;
+                    return res;
+                }
+                
+                if (_tokenValidator.VerifyPassword(required.Password, userAuth.PasswordHash) == false)
+                {
+                    res.LoginOk = false;
+                    return res;
+                }
             
-            var tokens = _tokenService.GenerateTokens(user.UserId);
-            res.AccessToken = tokens.AccessToken;
-            res.RefreshToken = tokens.RefreshToken;
-            res.LoginOk = true;
-            user.State = UserState.Activate;
-            user.Act = UserAct.InLobby;
-            _context.SaveChangesExtended();
+                var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+                res.AccessToken = tokens.AccessToken;
+                res.RefreshToken = tokens.RefreshToken;
+                res.LoginOk = true;
+                user.State = UserState.Activate;
+                user.Act = UserAct.InLobby;
+                _context.SaveChangesExtended();
+            }
         }
         
         return res;
@@ -147,13 +163,13 @@ public class UserAccountController : ControllerBase
             return Ok(res);
         }
         
-        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+        var user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
         
         // Check if the user exists in the database
         if (user == null)
         {
-            await _userService.CreateAccount(sub, LoginMethod.Apple);
-            user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+            await _userService.CreateAccount(sub, AuthProvider.Apple);
+            user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
             if (user == null)
             {
                 res.LoginOk = false;
@@ -189,14 +205,14 @@ public class UserAccountController : ControllerBase
             return Ok(res);
         }
         
-        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+        var user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
 
         // Check if the user exists in the database
         if (user == null)
         {
-            await _userService.CreateAccount(sub, LoginMethod.Google);
+            await _userService.CreateAccount(sub, AuthProvider.Google);
             Console.WriteLine("Create Account");
-            user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+            user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
             
             if (user == null)
             {
@@ -205,6 +221,32 @@ public class UserAccountController : ControllerBase
             }
         }
 
+        var tokens = _tokenService.GenerateTokens(user.UserId);
+        res.LoginOk = true;
+        res.AccessToken = tokens.AccessToken;
+        res.RefreshToken = tokens.RefreshToken;
+        
+        return Ok(res);
+    }
+
+    [HttpPut]
+    [Route("LoginGuest")]
+    public async Task<IActionResult> LoginGuest([FromBody] LoginGuestPacketRequired required)
+    {
+        var res = new LoginGuestPacketResponse();
+        var user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == required.GuestId);
+        
+        if (user == null)
+        {
+            await _userService.CreateAccount(required.GuestId, AuthProvider.Guest);
+            user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == required.GuestId);
+            if (user == null)
+            {
+                res.LoginOk = false;
+                return Ok(res);
+            }
+        }
+        
         var tokens = _tokenService.GenerateTokens(user.UserId);
         res.LoginOk = true;
         res.AccessToken = tokens.AccessToken;

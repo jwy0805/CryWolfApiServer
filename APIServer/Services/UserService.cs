@@ -64,23 +64,33 @@ public class UserService
         }
     }
     
-    public async Task<bool> CreateAccount(string userAccount, LoginMethod loginMethod, string? password = null)
+    public async Task<bool> CreateAccount(string userAccount, AuthProvider provider, string? password = null)
     {
-        var account = _context.User.AsNoTracking().FirstOrDefault(u => u.UserAccount == userAccount);
-        if (account != null) return false;
+        var account = _context.UserAuth.AsNoTracking()
+            .FirstOrDefault(u => u.UserAccount == userAccount);
+        if (account != null)
+        {
+            return false;
+        }
         
         var newUser = new User
         {
-            UserAccount = userAccount,
             UserName = string.Empty,
-            Password = password ?? string.Empty,
             Role = UserRole.User,
             State = UserState.Deactivate,
-            CreatedAt = DateTime.UtcNow,
-            LoginMethod = loginMethod,
+        };
+
+        var newUserAuth = new UserAuth
+        {
+            UserId = newUser.UserId,
+            UserAccount = userAccount,
+            PasswordHash = password ?? string.Empty,
+            LinkedAt = DateTime.UtcNow,
+            Provider = provider,
         };
         
         _context.User.Add(newUser);
+        _context.UserAuth.Add(newUserAuth);
         await _context.SaveChangesExtendedAsync(); // 이 때 UserId가 생성
         
         var newUserStat = new UserStats

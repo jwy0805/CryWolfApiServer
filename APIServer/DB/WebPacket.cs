@@ -48,6 +48,21 @@ public class TestApiToSocketResponse
 
 #endregion
 
+#region API Server Only
+
+public class DeleteUserAccountHardPacketRequired
+{
+    public int UserId { get; set; }
+    public string AdminPassword { get; set; }
+}
+
+public class DeleteUserAccountHardPacketResponse
+{
+    public bool DeleteOk { get; set; }
+}
+
+#endregion
+
 #region For Client
 
 public class UserInfo
@@ -311,17 +326,6 @@ public class LoginUserAccountPacketResponse
     public string RefreshToken { get; set; }
 }
 
-public class DeleteUserAccountHardPacketRequired
-{
-    public int UserId { get; set; }
-    public string AdminPassword { get; set; }
-}
-
-public class DeleteUserAccountHardPacketResponse
-{
-    public bool DeleteOk { get; set; }
-}
-
 public class GetAppleTokenPacketRequired
 {
     public string IdToken { get; set; }
@@ -350,6 +354,18 @@ public class LoginGooglePacketRequired
 }
 
 public class LoginGooglePacketResponse
+{
+    public bool LoginOk { get; set; }
+    public string AccessToken { get; set; }
+    public string RefreshToken { get; set; }
+}
+
+public class LoginGuestPacketRequired
+{
+    public string GuestId { get; set; }
+}
+
+public class LoginGuestPacketResponse
 {
     public bool LoginOk { get; set; }
     public string AccessToken { get; set; }

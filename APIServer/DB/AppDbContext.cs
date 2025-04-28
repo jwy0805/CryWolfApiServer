@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<Material> Material { get; set; }
     public DbSet<Product> Product { get; set; }
     public DbSet<DailyProduct> DailyProduct { get; set; }
+    public DbSet<UserDailyProduct> UserDailyProduct { get; set; }
     public DbSet<Transaction> Transaction { get; set; }
     public DbSet<ProductComposition> ProductComposition { get; set; }
     public DbSet<CompositionProbability> CompositionProbability { get; set; }
@@ -97,6 +98,12 @@ public class AppDbContext : DbContext
             entity.Property(material => material.Class).HasConversion(v => (int)v, v => (UnitClass)v);
         });
 
+        builder.Entity<Product>()
+            .HasOne(p => p.DailyProduct)
+            .WithOne(dp => dp.Product)
+            .HasForeignKey<DailyProduct>(dp => dp.ProductId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
         builder.Entity<Product>(entity =>
         {
             entity.Property(product => product.Currency).HasConversion(v => (int)v, v => (CurrencyType)v);
@@ -113,7 +120,20 @@ public class AppDbContext : DbContext
                 .HasConversion(v => (int)v, v => (CashCurrencyType)v);
         });
 
-        builder.Entity<DailyProduct>().HasOne<Product>().WithMany().HasForeignKey(dp => dp.DailyProductId);
+        builder.Entity<DailyProduct>().HasKey(dp => dp.ProductId);
+        
+        builder.Entity<UserDailyProduct>()
+            .HasOne(udp => udp.Product)
+            .WithMany()
+            .HasForeignKey(udp => udp.ProductId);
+        
+        builder.Entity<UserDailyProduct>()
+            .HasOne(udp => udp.User)
+            .WithMany()                        
+            .HasForeignKey(udp => udp.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<UserDailyProduct>().HasKey(udp => new { udp.UserId, udp.Slot });
         
         builder.Entity<ProductComposition>().HasKey(pc => new { pc.ProductId, pc.CompositionId });
         

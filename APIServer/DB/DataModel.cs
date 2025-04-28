@@ -249,14 +249,33 @@ public class Product
     public CurrencyType Currency { get; set; }
     public ProductCategory Category { get; set; }
     public bool IsFixed { get; set; }
+    
+    // Navigation properties
+    public DailyProduct DailyProduct { get; set; }
 }
 
 [Table("DailyProduct")]
 public class DailyProduct
 {
-    public int DailyProductId { get; set; }
     public int ProductId { get; set; }
     public int Probability { get; set; }
+    
+    // Navigation properties
+    public Product Product { get; set; }
+}
+
+[Table("UserDailyProduct")]
+public class UserDailyProduct
+{
+    public int UserId { get; set; }
+    public byte Slot { get; set; }
+    public int ProductId { get; set; }
+    public DateOnly SeedDate { get; set; }
+    public byte RefreshIndex { get; set; }
+    public DateTime RefreshAt { get; set; }
+    
+    public User User { get; set; }
+    public Product Product { get; set; }
 }
 
 [Table("ProductComposition")]

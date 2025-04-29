@@ -42,6 +42,7 @@ public class User
     public ICollection<UserProduct> UserProducts { get; set; }
     public ICollection<UserSheep> UserSheep { get; set; }
     public ICollection<UserStage> UserStages { get; set; }
+    public ICollection<UserSubscription> UserSubscriptions { get; set; }
     public UserStats UserStats { get; set; }
     public ICollection<UserTutorial> UserTutorials { get; set; }
     public ICollection<UserUnit> UserUnits { get; set; }
@@ -92,6 +93,32 @@ public class UserMatch
     
     // Navigation properties
     public User User { get; set; }
+}
+
+[Table("UserSubscription")]
+public class UserSubscription
+{
+    public int UserId { get; set; }
+    public SubscriptionType SubscriptionType { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
+    public DateTime ExpiresAtUtc { get; set; }
+    public DateTime? CanceledAtUtc { get; set; }
+    public bool IsCanceled { get; set; }
+    public bool IsTrial { get; set; }
+    
+    // Navigation properties
+    public User User { get; set; }
+}
+
+[Table("UserSubscriptionHistory")]
+public class UserSubscriptionHistory
+{
+    public long HistoryId { get; set; }
+    public int UserId { get; set; }
+    public SubscriptionType SubscriptionType { get; set; }
+    public DateTime         FromUtc          { get; set; }
+    public DateTime         ToUtc            { get; set; }
+    public SubscriptionEvent EventType       { get; set; }   // Started / Renewed / Canceled / Expired …
 }
 
 [Table("UserTutorial")]
@@ -273,6 +300,7 @@ public class UserDailyProduct
     public DateOnly SeedDate { get; set; }
     public byte RefreshIndex { get; set; }
     public DateTime RefreshAt { get; set; }
+    public bool AdsWatched { get; set; }
     
     public User User { get; set; }
     public Product Product { get; set; }

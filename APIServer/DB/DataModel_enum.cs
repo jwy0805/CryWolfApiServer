@@ -259,6 +259,22 @@ public enum ProductType
     Spinel = 7,
 }
 
+public enum SubscriptionType
+{
+    None = 0, 
+    SeasonPass = 1,
+    AdsRemover = 2,
+}
+
+public enum SubscriptionEvent
+{
+    None = 0,
+    Started = 1,
+    Renewed = 2,
+    Canceled = 3,
+    Expired = 4,
+}
+
 public enum ProductCategory
 {
     None = 0,

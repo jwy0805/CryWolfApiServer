@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<Material> Material { get; set; }
     public DbSet<Product> Product { get; set; }
     public DbSet<DailyProduct> DailyProduct { get; set; }
+    public DbSet<DailyFreeProduct> DailyFreeProduct { get; set; }
     public DbSet<UserDailyProduct> UserDailyProduct { get; set; }
     public DbSet<Transaction> Transaction { get; set; }
     public DbSet<ProductComposition> ProductComposition { get; set; }
@@ -74,10 +75,8 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<UserTutorial>().HasKey(ut => new { ut.UserId, ut.TutorialType });
-        builder.Entity<UserTutorial>(entity =>
-        {
-            entity.Property(ut => ut.TutorialType).HasConversion(v => (int)v, v => (TutorialType)v);
-        });
+        builder.Entity<UserTutorial>().Property(ut => ut.TutorialType)
+            .HasConversion(v => (int)v, v => (TutorialType)v);
         
         builder.Entity<UserTutorial>()
             .HasOne(ut => ut.User)
@@ -168,11 +167,8 @@ public class AppDbContext : DbContext
             .HasForeignKey(m => m.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.Entity<Product>(entity =>
-        {
-            entity.Property(product => product.Currency)
-                .HasConversion(v => (int)v, v => (CurrencyType)v);
-        });
+        builder.Entity<Product>().Property(product => product.Currency)
+            .HasConversion(v => (int)v, v => (CurrencyType)v);
         
         builder.Entity<Transaction>().HasKey(t => new { t.TransactionTimestamp, t.UserId });
         builder.Entity<Transaction>(entity =>
@@ -191,6 +187,12 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<DailyProduct>().HasKey(dp => dp.ProductId);
+        builder.Entity<DailyProduct>().Property(dp => dp.Class)
+            .HasConversion(v => (int)v, v => (UnitClass)v);
+
+        builder.Entity<DailyFreeProduct>().HasKey(dp => dp.ProductId);
+        builder.Entity<DailyFreeProduct>().Property(dp => dp.Class)
+            .HasConversion(v => (int)v, v => (UnitClass)v);
         
         builder.Entity<UserDailyProduct>()
             .HasOne(udp => udp.Product)
@@ -228,11 +230,8 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<UserSubscription>().HasKey(us => new { us.UserId, us.SubscriptionType });
-        builder.Entity<UserSubscription>(entity =>
-        {
-            entity.Property(us => us.SubscriptionType)
-                .HasConversion(v => (int)v, v => (SubscriptionType)v);
-        });
+        builder.Entity<UserSubscription>().Property(us => us.SubscriptionType)
+            .HasConversion(v => (int)v, v => (SubscriptionType)v);
         builder.Entity<UserSubscription>().HasIndex(u => u.ExpiresAtUtc);
         builder.Entity<UserSubscription>()
             .HasOne(us => us.User)
@@ -260,18 +259,12 @@ public class AppDbContext : DbContext
             .HasForeignKey(du => du.UnitId)
             .OnDelete(DeleteBehavior.Restrict);
         
-        builder.Entity<DeckUnit>(entity =>
-        {
-            entity.Property(unit => unit.UnitId)
-                .HasConversion(v => (int)v, v => (UnitId)v);
-        });
+        builder.Entity<DeckUnit>().Property(unit => unit.UnitId)
+            .HasConversion(v => (int)v, v => (UnitId)v);
         
         builder.Entity<UserUnit>().HasKey(userUnit => new { userUnit.UserId, userUnit.UnitId });
-        builder.Entity<UserUnit>(entity =>
-        {
-            entity.Property(unit => unit.UnitId)
-                .HasConversion(v => (int)v, v => (UnitId)v);
-        });
+        builder.Entity<UserUnit>().Property(unit => unit.UnitId)
+            .HasConversion(v => (int)v, v => (UnitId)v);
         builder.Entity<UserUnit>()
             .HasOne(uu => uu.User)
             .WithMany(u => u.UserUnits)
@@ -279,11 +272,8 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<UserSheep>().HasKey(userSheep => new { userSheep.UserId, userSheep.SheepId });
-        builder.Entity<UserSheep>(entity =>
-        {
-            entity.Property(sheep => sheep.SheepId)
-                .HasConversion(v => (int)v, v => (SheepId)v);
-        });
+        builder.Entity<UserSheep>().Property(sheep => sheep.SheepId)
+            .HasConversion(v => (int)v, v => (SheepId)v);
         builder.Entity<UserSheep>()
             .HasOne(us => us.User)
             .WithMany(u => u.UserSheep)
@@ -291,11 +281,8 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<UserEnchant>().HasKey(userEnchant => new { userEnchant.UserId, userEnchant.EnchantId });
-        builder.Entity<UserEnchant>(entity =>
-        {
-            entity.Property(enchant => enchant.EnchantId)
-                .HasConversion(v => (int)v, v => (EnchantId)v);
-        });
+        builder.Entity<UserEnchant>().Property(enchant => enchant.EnchantId)
+            .HasConversion(v => (int)v, v => (EnchantId)v);
         builder.Entity<UserEnchant>()
             .HasOne(ue => ue.User)
             .WithMany(u => u.UserEnchants)
@@ -303,11 +290,8 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<UserCharacter>().HasKey(userCharacter => new { userCharacter.UserId, userCharacter.CharacterId });
-        builder.Entity<UserCharacter>(entity =>
-        {
-            entity.Property(character => character.CharacterId)
-                .HasConversion(v => (int)v, v => (CharacterId)v);
-        });
+        builder.Entity<UserCharacter>().Property(character => character.CharacterId)
+            .HasConversion(v => (int)v, v => (CharacterId)v);
         builder.Entity<UserCharacter>()
             .HasOne(uc => uc.User)
             .WithMany(u => u.UserCharacters)

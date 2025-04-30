@@ -1,11 +1,12 @@
 using ApiServer.DB;
+using ApiServer.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiServer.Providers;
 
 public class CachedDataProvider
 {
-    private record DailyProductSnapshot(int ProductId, int Probability);
+    private record DailyProductSnapshot(int ProductId, int Weight, UnitClass Class);
     private record FreeProductSnapshot(int ProductId);
 
     private readonly List<DailyProductSnapshot> _dailyProductSnapshots;
@@ -17,8 +18,9 @@ public class CachedDataProvider
         using var context = dbContextFactory.CreateDbContext();
         
         _dailyProductSnapshots = context.DailyProduct.AsNoTracking()
-            .Select(dp => new DailyProductSnapshot(dp.ProductId, dp.Weight))
+            .Select(dp => new DailyProductSnapshot(dp.ProductId, dp.Weight, dp.Class))
             .ToList();
+
         
         _freeProductSnapshots = context.Product.AsNoTracking()
             .Where(p => p.Price == 0)
@@ -28,29 +30,19 @@ public class CachedDataProvider
 
     public List<int> GetRandomDailyProductsDistinct(int count)
     {
-        if (count <= 0) return new List<int>();
-        if (count >= _dailyProductSnapshots.Count) return _dailyProductSnapshots.Select(dps => dps.ProductId).ToList();
-        
+        var random = new Random();
         var pool = _dailyProductSnapshots
-            .Select(dps => new DailyProductSnapshot(dps.ProductId, dps.Probability)).ToList();
+            .Select(dp => new WeightedItem<DailyProductSnapshot>(dp, dp.Weight))
+            .ToList();
+        
         var result = new List<int>(count);
-        for (var i = 0; i < count; i++)
-        {
-            var totalWeight = pool.Sum(p => p.Probability);
-            var random = _random.Next(1, totalWeight + 1);
-            var accumulatedWeight = 0;
-            for (var j = 0; j < pool.Count; j++)
-            {
-                accumulatedWeight += pool[j].Probability;
-                if (random <= accumulatedWeight)
-                {
-                    result.Add(pool[j].ProductId);
-                    pool.RemoveAt(j);
-                    break;
-                }
-            }
-        }
 
+        for (var i = 0; i < count && pool.Count > 0; i++)
+        {
+            var pickedItem = pool.PopRandomByWeight(random);
+            result.Add(pickedItem.Item.ProductId);
+        }
+        
         return result;
     }
 
@@ -60,8 +52,31 @@ public class CachedDataProvider
         return _freeProductSnapshots[randomIndex].ProductId;
     }
 
-    // public List<int> GetRandomDailyProductsForClosedPicks(int cout)
-    // {
-    //     
-    // }
+    public List<int> GetRandomDailyProductsForClosedPicks(int count)
+    {
+        var random = new Random();
+        var result = new List<int>(count);
+
+        for (var i = 0; i < count; i++)
+        {
+            var randomValue = random.Next(0, 100);
+            var filteredClass = randomValue switch
+            {
+                >= 40 and < 100 => UnitClass.Knight,
+                >= 10 and < 40 => UnitClass.NobleKnight,
+                _ => UnitClass.Baron,
+            };
+
+            var filteredItems = _dailyProductSnapshots
+                .Where(dp => dp.Class == filteredClass)
+                .Select(dp => new WeightedItem<int>(dp.ProductId, dp.Weight))
+                .ToList();
+            
+            if (filteredItems.Count == 0) break; // No more items to pick
+            var pickedItem = filteredItems.PopRandomByWeight(random);
+            result.Add(pickedItem.Item);
+        }
+
+        return result;
+    }
 }

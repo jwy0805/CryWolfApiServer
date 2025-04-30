@@ -82,7 +82,7 @@ public enum UnitClass
     Peasant,
     Squire,
     Knight,
-    HighRankingKnight,
+    NobleKnight,
     Baron,
     Count,
     Duke,

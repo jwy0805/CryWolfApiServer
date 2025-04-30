@@ -45,12 +45,6 @@ builder.Services.AddScoped<RewardService>();
 builder.Services.AddScoped<IDailyProductService, DailyProductService>();
 builder.Services.AddTransient<UserService>();
 
-// builder.Services.AddDbContext<AppDbContext>(options =>
-//     options.UseMySql(defaultConnectionString,
-//         new MariaDbServerVersion(new Version(11, 3, 2)),
-//         mysqlOptions => mysqlOptions
-//             .EnableRetryOnFailure(5, TimeSpan.FromSeconds(5), null)));
-
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
         options.UseMySql(defaultConnectionString,
             new MariaDbServerVersion(new Version(11, 3, 2)),

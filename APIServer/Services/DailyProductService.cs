@@ -64,8 +64,7 @@ public class DailyProductService : IDailyProductService
         var openPicks = _cachedDataProvider.GetRandomDailyProductsDistinct(3);
         // Daily products that can be purchased by watching ads (3 slots - 1 is free, 2 are paid)
         var freePick = _cachedDataProvider.GetRandomFreeProduct();
-        // var closedPicks = _cachedDataProvider.GetRandomDailyProductsForClosedPicks(2);
-        var closedPicks = _cachedDataProvider.GetRandomDailyProductsDistinct(2);
+        var closedPicks = _cachedDataProvider.GetRandomDailyProductsForClosedPicks(2);
         
         var dailyProductIds = openPicks.Concat(new [] { freePick }).Concat(closedPicks).ToList();
         var slot = 0;

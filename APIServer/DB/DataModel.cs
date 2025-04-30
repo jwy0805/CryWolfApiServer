@@ -279,10 +279,22 @@ public class Product
     
     // Navigation properties
     public DailyProduct DailyProduct { get; set; }
+    public DailyFreeProduct DailyFreeProduct { get; set; }
 }
 
 [Table("DailyProduct")]
 public class DailyProduct
+{
+    public int ProductId { get; set; }
+    public int Weight { get; set; }
+    public UnitClass Class { get; set; }
+    
+    // Navigation properties
+    public Product Product { get; set; }
+}
+
+[Table("DailyFreeProduct")]
+public class DailyFreeProduct
 {
     public int ProductId { get; set; }
     public int Weight { get; set; }

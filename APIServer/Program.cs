@@ -2,6 +2,7 @@ using System.Security.Cryptography.X509Certificates;
 using ApiServer.Services;
 using ApiServer;
 using ApiServer.DB;
+using ApiServer.Providers;
 using ApiServer.SignalRHub;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ builder.Services.AddScoped<TokenValidator>(provider => new TokenValidator(jwtSec
 
 builder.Services.AddHostedService<ExpiredTokenCleanupService>();
 builder.Services.AddHostedService<UserManagementService>();
+builder.Services.AddHostedService<DailyJob>();
 builder.Services.AddHttpClient<ApiService>();
 builder.Services.AddSingleton<ConfigService>();
 builder.Services.AddSingleton<ApiService>();
@@ -40,22 +42,22 @@ builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<TaskQueueService>();
 builder.Services.AddScoped<SinglePlayService>();
 builder.Services.AddScoped<RewardService>();
+builder.Services.AddScoped<IDailyProductService, DailyProductService>();
 builder.Services.AddTransient<UserService>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseMySql(defaultConnectionString
-        , new MariaDbServerVersion(new Version(11, 3, 2)),
-        mysqlOptions =>
-        {
-            mysqlOptions.EnableRetryOnFailure(
-                maxRetryCount: 5,      // max retry count
-                maxRetryDelay: TimeSpan.FromSeconds(5), // delay between retries
-                errorNumbersToAdd: null 
-            );
-        });
-});
+// builder.Services.AddDbContext<AppDbContext>(options =>
+//     options.UseMySql(defaultConnectionString,
+//         new MariaDbServerVersion(new Version(11, 3, 2)),
+//         mysqlOptions => mysqlOptions
+//             .EnableRetryOnFailure(5, TimeSpan.FromSeconds(5), null)));
 
+builder.Services.AddDbContextFactory<AppDbContext>(options =>
+        options.UseMySql(defaultConnectionString,
+            new MariaDbServerVersion(new Version(11, 3, 2)),
+            mysqlOptions => mysqlOptions
+                .EnableRetryOnFailure(5, TimeSpan.FromSeconds(5), null)));
+
+builder.Services.AddSingleton<CachedDataProvider>();
 
 builder.Services.AddRazorPages();
 

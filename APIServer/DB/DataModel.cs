@@ -285,7 +285,8 @@ public class Product
 public class DailyProduct
 {
     public int ProductId { get; set; }
-    public int Probability { get; set; }
+    public int Weight { get; set; }
+    public UnitClass Class { get; set; }
     
     // Navigation properties
     public Product Product { get; set; }

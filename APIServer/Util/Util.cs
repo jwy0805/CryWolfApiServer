@@ -16,4 +16,20 @@ public class Util
         
         return shuffled;
     }
+
+    // public static List<T> WeightedSampler(IReadOnlyList<Tuple<int, int>> samples, int resultCount) where T : struct
+    // {
+    //     var itemIds = samples.Select(sample => sample.Item1).ToList();
+    //     var weights = samples.Select(sample => sample.Item2).ToList();
+    //     var totalWeight = samples.Sum(sample => sample.Item2);
+    //     var cumulativeWeights = new int[samples.Count];
+    //
+    //     for (var i = 0; i < samples.Count; i++)
+    //     {
+    //         cumulativeWeights[i] += weights[i];
+    //     }
+    //
+    //     var random = Random.Next(totalWeight);
+    //     
+    // }
 }

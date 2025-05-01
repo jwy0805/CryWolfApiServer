@@ -18,25 +18,30 @@ public class PaymentController : ControllerBase
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
     private readonly TaskQueueService _taskQueueService;
+    private readonly DailyProductService _dailyProductService;
     
     public PaymentController(
         AppDbContext context,
         TaskQueueService taskQueueService,
         TokenService tokenService,
-        TokenValidator tokenValidator)
+        TokenValidator tokenValidator,
+        DailyProductService dailyProductService)
     {
         _context = context;
         _taskQueueService = taskQueueService;
         _tokenService = tokenService;
         _tokenValidator = tokenValidator;
+        _dailyProductService = dailyProductService;
     }
 
     [HttpPost]
     [Route("InitProducts")]
-    public IActionResult InitProducts([FromBody] InitProductPacketRequired required)
+    public async Task<IActionResult> InitProducts([FromBody] InitProductPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null) return Unauthorized();
         
         var productGroups = _context.Product
             .Where(product => product.IsFixed)
@@ -44,6 +49,60 @@ public class PaymentController : ControllerBase
             .ToDictionary(grouping => grouping.Key, grouping => grouping.ToList());
         var compositions = _context.ProductComposition.ToList();
         var probabilities = _context.CompositionProbability.ToList();
+        
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var dailyProductExists = await _context.UserDailyProduct
+            .AnyAsync(udp => udp.UserId == userId && udp.SeedDate == today);
+        
+        if (dailyProductExists == false)
+        {
+            await _dailyProductService.SnapshotDailyProductsAsync(today);
+        }
+        
+        var dailyProducts = await _context.UserDailyProduct.AsNoTracking()
+            .Where(udp => udp.UserId == userId && udp.SeedDate == today)
+            .OrderBy(udp => udp.Slot)
+            .ToListAsync();
+
+        // Get
+        var dailyProductInfos = dailyProducts.Select(udp =>
+        {
+            var product = productGroups.Values.SelectMany(x => x).First(p => p.ProductId == udp.ProductId);
+            var productInfo = new ProductInfo
+            {
+                Id = product.ProductId,
+                Price = product.Price,
+                CurrencyType = product.Currency,
+                Category = product.Category,
+                ProductCode = product.ProductCode,
+                Compositions = compositions.Where(pc => pc.ProductId == product.ProductId)
+                    .Select(pc => new CompositionInfo
+                    {
+                        Id = pc.ProductId,
+                        CompositionId = pc.CompositionId,
+                        Type = pc.Type,
+                        Count = pc.Count,
+                        MinCount = pc is { Count: 0, Guaranteed: false }
+                            ? probabilities
+                                .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
+                                .Min(cp => cp.Count)
+                            : 0,
+                        MaxCount = pc is { Count: 0, Guaranteed: false }
+                            ? probabilities
+                                .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
+                                .Max(cp => cp.Count)
+                            : 0,
+                        Guaranteed = pc.Guaranteed,
+                        IsSelectable = pc.IsSelectable
+                    }).ToList(),
+            };
+            return new DailyProductInfo
+            {
+                ProductInfo = productInfo,
+                Bought = udp.Bought,
+            };
+        }).ToList();
+            
         var res = new InitProductPacketResponse
         {
             GetProductOk = true,
@@ -54,6 +113,7 @@ public class PaymentController : ControllerBase
             GoldItems = GetProductInfoList(ProductCategory.GoldPackage, productGroups, compositions, probabilities),
             SpinelItems = GetProductInfoList(ProductCategory.SpinelPackage, productGroups, compositions, probabilities),
             ReservedSales = GetProductInfoList(ProductCategory.ReservedSale, productGroups, compositions, probabilities),
+            DailyDeals = dailyProductInfos,
         };
         
         return Ok(res);

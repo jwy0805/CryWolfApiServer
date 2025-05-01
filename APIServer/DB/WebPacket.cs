@@ -133,11 +133,8 @@ public class CompositionInfo
 
 public class DailyProductInfo
 {
-    public int Id { get; set; }
-    public int Price { get; set; }
-    public CurrencyType CurrencyType { get; set; }
-    public ProductCategory Category { get; set; }
-    public bool AlreadyBought { get; set; }
+    public ProductInfo ProductInfo { get; set; }
+    public bool Bought { get; set; }
 }
 
 public class UnitInfo

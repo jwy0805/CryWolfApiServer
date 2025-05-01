@@ -313,6 +313,8 @@ public class UserDailyProduct
     public DateOnly SeedDate { get; set; }
     public byte RefreshIndex { get; set; }
     public DateTime RefreshAt { get; set; }
+    public bool Bought { get; set; }
+    public bool NeedAds { get; set; }
     public bool AdsWatched { get; set; }
     
     public User User { get; set; }

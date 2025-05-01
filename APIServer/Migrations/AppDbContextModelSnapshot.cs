@@ -635,6 +635,9 @@ namespace ApiServer.Migrations
                     b.Property<bool>("AdsWatched")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("Bought")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 

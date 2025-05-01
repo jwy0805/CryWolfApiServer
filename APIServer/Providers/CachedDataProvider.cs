@@ -7,7 +7,7 @@ namespace ApiServer.Providers;
 public class CachedDataProvider
 {
     private record DailyProductSnapshot(int ProductId, int Weight, UnitClass Class);
-    private record FreeProductSnapshot(int ProductId);
+    private record FreeProductSnapshot(int ProductId, int Weight, UnitClass Class);
 
     private readonly List<DailyProductSnapshot> _dailyProductSnapshots;
     private readonly List<FreeProductSnapshot> _freeProductSnapshots;
@@ -22,9 +22,8 @@ public class CachedDataProvider
             .ToList();
 
         
-        _freeProductSnapshots = context.Product.AsNoTracking()
-            .Where(p => p.Price == 0)
-            .Select(p => new FreeProductSnapshot(p.ProductId))
+        _freeProductSnapshots = context.DailyFreeProduct.AsNoTracking()
+            .Select(p => new FreeProductSnapshot(p.ProductId, p.Weight, p.Class))
             .ToList();
     }
 
@@ -48,8 +47,10 @@ public class CachedDataProvider
 
     public int GetRandomFreeProduct()
     {
-        var randomIndex = _random.Next(0, _freeProductSnapshots.Count);
-        return _freeProductSnapshots[randomIndex].ProductId;
+        var pool = _freeProductSnapshots
+            .Select(fp => new WeightedItem<FreeProductSnapshot>(fp, fp.Weight))
+            .ToList();
+        return pool.PopRandomByWeight(_random).Item.ProductId;
     }
 
     public List<int> GetRandomDailyProductsForClosedPicks(int count)

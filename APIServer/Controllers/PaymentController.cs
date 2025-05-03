@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using ApiServer.DB;
+using ApiServer.Providers;
 using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,19 +20,22 @@ public class PaymentController : ControllerBase
     private readonly TokenValidator _tokenValidator;
     private readonly TaskQueueService _taskQueueService;
     private readonly DailyProductService _dailyProductService;
+    private readonly CachedDataProvider _cachedDataProvider;
     
     public PaymentController(
         AppDbContext context,
         TaskQueueService taskQueueService,
         TokenService tokenService,
         TokenValidator tokenValidator,
-        DailyProductService dailyProductService)
+        DailyProductService dailyProductService,
+        CachedDataProvider cachedDataProvider)
     {
         _context = context;
         _taskQueueService = taskQueueService;
         _tokenService = tokenService;
         _tokenValidator = tokenValidator;
         _dailyProductService = dailyProductService;
+        _cachedDataProvider = cachedDataProvider;
     }
 
     [HttpPost]
@@ -59,13 +63,13 @@ public class PaymentController : ControllerBase
             await _dailyProductService.SnapshotDailyProductsAsync(today);
         }
         
-        var dailyProducts = await _context.UserDailyProduct.AsNoTracking()
+        var userDailyProducts = await _context.UserDailyProduct.AsNoTracking()
             .Where(udp => udp.UserId == userId && udp.SeedDate == today)
             .OrderBy(udp => udp.Slot)
             .ToListAsync();
 
         // Get
-        var dailyProductInfos = dailyProducts.Select(udp =>
+        var dailyProductInfos = userDailyProducts.Select(udp =>
         {
             var product = productGroups.Values.SelectMany(x => x).First(p => p.ProductId == udp.ProductId);
             var productInfo = new ProductInfo
@@ -99,7 +103,12 @@ public class PaymentController : ControllerBase
             return new DailyProductInfo
             {
                 ProductInfo = productInfo,
+                Class = _cachedDataProvider.GetDailyProductSnapshots()
+                    .First(record => record.ProductId == udp.ProductId).Class,
+                Slot = udp.Slot,
                 Bought = udp.Bought,
+                AdsWatched = udp.AdsWatched,
+                NeedAds = udp.NeedAds
             };
         }).ToList();
             

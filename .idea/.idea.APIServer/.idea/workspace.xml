@@ -14,21 +14,11 @@
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
@@ -514,23 +504,8 @@
       <workItem from="1745735653189" duration="15180000" />
       <workItem from="1745806692911" duration="9762000" />
       <workItem from="1745911888686" duration="46823000" />
-      <workItem from="1746063201549" duration="307000" />
-    </task>
-    <task id="LOCAL-00026" summary="docker test">
-      <option name="closed" value="true" />
-      <created>1732518407429</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1732518407429</updated>
-    </task>
-    <task id="LOCAL-00027" summary="docker test">
-      <option name="closed" value="true" />
-      <created>1732525132940</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1732525132940</updated>
+      <workItem from="1746063201549" duration="1307000" />
+      <workItem from="1746165193907" duration="2407000" />
     </task>
     <task id="LOCAL-00028" summary="docker test">
       <option name="closed" value="true" />
@@ -908,7 +883,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746021338340</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="feat(DB-AppDbContext) Add Column&#10;&#10;Add Column [NeedAds] to UserDailyProduct Table to distinguish the products to need to watch ads.&#10;&#10;[InitProductPacketResponse] has DailyProductInfo, client can display daily products for each user.">
+      <option name="closed" value="true" />
+      <created>1746063687315</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1746063687316</updated>
+    </task>
+    <task id="LOCAL-00076" summary=".">
+      <option name="closed" value="true" />
+      <created>1746063695771</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1746063695771</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -918,7 +909,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="github actions test 10" />
     <MESSAGE value="github actions test 11" />
     <MESSAGE value="github actions test 12" />
     <MESSAGE value="github actions test 13" />
@@ -938,11 +928,12 @@
     <MESSAGE value="Summary 250427&#10;&#10;DB version upgraded to 0.2v&#10; - User table has been divided into User and User Auth.&#10; - Friend table has only one row.&#10; - Daily product table will be added." />
     <MESSAGE value="..." />
     <MESSAGE value="AppDbContext DailyProduct Model Created." />
-    <MESSAGE value="." />
     <MESSAGE value="250429&#10;&#10;New table added.&#10; - Daily Product set.&#10; - Logic for Displaying Daily Product will be added." />
     <MESSAGE value="UserSubscription Table Added.&#10; - Managing user's subscriptions such as GoldenPass, Ads Remover.&#10; - All payment history can be managed by UserSubscriptionHistory table." />
     <MESSAGE value="feat(Database - AbbDbContext): DataModel changed.&#10;&#10; - Rename Column [Probability -&gt; Weight] on DailyProduct Table.&#10; - Add Column 'Class' on DailyProduct Table to distinct card colour by class for client." />
     <MESSAGE value="feat(Database-AppDbContext)&#10;&#10;DailyProduct Table has been divided into 'DailyProduct' and 'DailyFreeProduct'." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(Database-AppDbContext)&#10;&#10;DailyProduct Table has been divided into 'DailyProduct' and 'DailyFreeProduct'." />
+    <MESSAGE value="feat(DB-AppDbContext) Add Column&#10;&#10;Add Column [NeedAds] to UserDailyProduct Table to distinguish the products to need to watch ads.&#10;&#10;[InitProductPacketResponse] has DailyProductInfo, client can display daily products for each user." />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
 </project>

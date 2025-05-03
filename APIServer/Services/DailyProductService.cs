@@ -31,7 +31,7 @@ public class DailyProductService : IDailyProductService
 
         foreach (var userId in userIds)
         {
-            await CreateDailyProductSnapshotAsync(userId, dateOnly, 0, dailyProductSet, token);
+            await CreateUserDailyProductSnapshotAsync(userId, dateOnly, 0, dailyProductSet, token);
         }
 
         _logger.LogInformation("DailyProducts snapshot for {Count} done.", userIds.Count);
@@ -50,11 +50,11 @@ public class DailyProductService : IDailyProductService
         var newIndex = (byte)(snaps[0].RefreshIndex + 1);
         _context.UserDailyProduct.RemoveRange(snaps);
         
-        await CreateDailyProductSnapshotAsync(userId, today, newIndex, dailySet, token);
+        await CreateUserDailyProductSnapshotAsync(userId, today, newIndex, dailySet, token);
         return true;
     }
     
-    private async Task CreateDailyProductSnapshotAsync(int userId, DateOnly dateOnly, byte refreshIndex,
+    private async Task CreateUserDailyProductSnapshotAsync(int userId, DateOnly dateOnly, byte refreshIndex,
         List<DailyProduct> dailySet, CancellationToken token)
     {
         // Daily products that can be purchased without watching ads (3 slots)

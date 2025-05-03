@@ -6,13 +6,15 @@ namespace ApiServer.Providers;
 
 public class CachedDataProvider
 {
-    private record DailyProductSnapshot(int ProductId, int Weight, UnitClass Class);
+    public record DailyProductSnapshot(int ProductId, int Weight, UnitClass Class);
     private record FreeProductSnapshot(int ProductId, int Weight, UnitClass Class);
 
     private readonly List<DailyProductSnapshot> _dailyProductSnapshots;
     private readonly List<FreeProductSnapshot> _freeProductSnapshots;
     private readonly Random _random = new();
     
+    public List<DailyProductSnapshot> GetDailyProductSnapshots() => _dailyProductSnapshots;
+
     public CachedDataProvider(IDbContextFactory<AppDbContext> dbContextFactory)
     {
         using var context = dbContextFactory.CreateDbContext();

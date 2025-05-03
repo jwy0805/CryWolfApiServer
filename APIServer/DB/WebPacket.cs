@@ -134,7 +134,11 @@ public class CompositionInfo
 public class DailyProductInfo
 {
     public ProductInfo ProductInfo { get; set; }
+    public UnitClass Class { get; set; }
+    public int Slot { get; set; }
     public bool Bought { get; set; }
+    public bool AdsWatched { get; set; }
+    public bool NeedAds { get; set; }
 }
 
 public class UnitInfo

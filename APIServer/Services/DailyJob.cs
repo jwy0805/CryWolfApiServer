@@ -32,7 +32,7 @@ public class DailyJob : BackgroundService
     private async Task ResetDailyProducts(CancellationToken token)
     {
         using var scope = _serviceProvider.CreateScope();
-        var provider = scope.ServiceProvider.GetRequiredService<DailyProductService>();
+        var provider = scope.ServiceProvider.GetRequiredService<IDailyProductService>();
         await provider.SnapshotDailyProductsAsync(DateOnly.FromDateTime(DateTime.UtcNow), token);
     }
 }

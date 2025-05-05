@@ -11,18 +11,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="feat(API) Product Init Method&#10;&#10;Daily product will be initiated when client logs in.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -506,14 +496,7 @@
       <workItem from="1745911888686" duration="46823000" />
       <workItem from="1746063201549" duration="1307000" />
       <workItem from="1746165193907" duration="2407000" />
-    </task>
-    <task id="LOCAL-00028" summary="docker test">
-      <option name="closed" value="true" />
-      <created>1732526743961</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1732526743961</updated>
+      <workItem from="1746261638765" duration="1606000" />
     </task>
     <task id="LOCAL-00029" summary="241126&#10;&#10;Email Service error has been fixed.&#10; - Db context error when using link that verify user email has been fixed.">
       <option name="closed" value="true" />
@@ -899,7 +882,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746063695771</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="feat(API) Product Init Method&#10;&#10;Daily product will be initiated when client logs in.">
+      <option name="closed" value="true" />
+      <created>1746261961170</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1746261961170</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -909,7 +900,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="github actions test 11" />
     <MESSAGE value="github actions test 12" />
     <MESSAGE value="github actions test 13" />
     <MESSAGE value="github actions test 14" />
@@ -934,6 +924,7 @@
     <MESSAGE value="feat(Database-AppDbContext)&#10;&#10;DailyProduct Table has been divided into 'DailyProduct' and 'DailyFreeProduct'." />
     <MESSAGE value="feat(DB-AppDbContext) Add Column&#10;&#10;Add Column [NeedAds] to UserDailyProduct Table to distinguish the products to need to watch ads.&#10;&#10;[InitProductPacketResponse] has DailyProductInfo, client can display daily products for each user." />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="feat(API) Product Init Method&#10;&#10;Daily product will be initiated when client logs in." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(API) Product Init Method&#10;&#10;Daily product will be initiated when client logs in." />
   </component>
 </project>

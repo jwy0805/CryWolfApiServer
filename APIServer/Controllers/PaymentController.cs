@@ -19,7 +19,7 @@ public class PaymentController : ControllerBase
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
     private readonly TaskQueueService _taskQueueService;
-    private readonly DailyProductService _dailyProductService;
+    private readonly IDailyProductService _dailyProductService;
     private readonly CachedDataProvider _cachedDataProvider;
     
     public PaymentController(
@@ -27,7 +27,7 @@ public class PaymentController : ControllerBase
         TaskQueueService taskQueueService,
         TokenService tokenService,
         TokenValidator tokenValidator,
-        DailyProductService dailyProductService,
+        IDailyProductService dailyProductService,
         CachedDataProvider cachedDataProvider)
     {
         _context = context;

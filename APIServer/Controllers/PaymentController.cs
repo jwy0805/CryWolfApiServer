@@ -46,13 +46,14 @@ public class PaymentController : ControllerBase
         if (principal == null) return Unauthorized();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         if (userId == null) return Unauthorized();
-        
-        var productGroups = _context.Product
+
+        var products = _context.Product.AsNoTracking();
+        var productGroups = products
             .Where(product => product.IsFixed)
             .GroupBy(product => product.Category)
             .ToDictionary(grouping => grouping.Key, grouping => grouping.ToList());
-        var compositions = _context.ProductComposition.ToList();
-        var probabilities = _context.CompositionProbability.ToList();
+        var compositions = _context.ProductComposition.AsNoTracking().ToList();
+        var probabilities = _context.CompositionProbability.AsNoTracking().ToList();
         
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var dailyProductExists = await _context.UserDailyProduct
@@ -60,18 +61,18 @@ public class PaymentController : ControllerBase
         
         if (dailyProductExists == false)
         {
-            await _dailyProductService.SnapshotDailyProductsAsync(today);
+            await _dailyProductService.CreateUserDailyProductSnapshotAsync(userId.Value, today, 0);
         }
         
         var userDailyProducts = await _context.UserDailyProduct.AsNoTracking()
             .Where(udp => udp.UserId == userId && udp.SeedDate == today)
             .OrderBy(udp => udp.Slot)
             .ToListAsync();
-
+        
         // Get
         var dailyProductInfos = userDailyProducts.Select(udp =>
         {
-            var product = productGroups.Values.SelectMany(x => x).First(p => p.ProductId == udp.ProductId);
+            var product = products.FirstOrDefault(p => p.ProductId == udp.ProductId) ?? new Product();
             var productInfo = new ProductInfo
             {
                 Id = product.ProductId,
@@ -214,19 +215,15 @@ public class PaymentController : ControllerBase
         {
             var validationResult = await ValidateGoogleReceiptAsync(required.Receipt);
             if (validationResult.IsValid == false) return BadRequest(validationResult.Message);
-            res.PaymentOk = true;
         }
         else if (isAppleReceipt)
         {
             var validationResult = await ValidateAppleReceiptAsync(required.Receipt);
             if (validationResult.IsValid == false) return BadRequest(validationResult.Message);
-            res.PaymentOk = true;
         }
-        else
-        {
-            // test
-            res.PaymentOk = true;
-        }
+
+        // test
+        res.PaymentOk = true;
 
         if (res.PaymentOk)
         {

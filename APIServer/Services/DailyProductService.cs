@@ -7,6 +7,8 @@ namespace ApiServer.Services;
 public interface IDailyProductService
 {
     Task SnapshotDailyProductsAsync(DateOnly dateOnly, CancellationToken token = default);
+    Task CreateUserDailyProductSnapshotAsync(int userId, DateOnly dateOnly, byte refreshIndex,
+        CancellationToken token = default);
     Task<bool> RefreshByAdsAsync(int userId, CancellationToken token = default);
 }
 
@@ -27,11 +29,10 @@ public class DailyProductService : IDailyProductService
     public async Task SnapshotDailyProductsAsync(DateOnly dateOnly, CancellationToken token = default)
     {
         var userIds = await _context.User.Select(user => user.UserId).ToListAsync(token);
-        var dailyProductSet = await _context.DailyProduct.AsNoTracking().ToListAsync(token);
 
         foreach (var userId in userIds)
         {
-            await CreateUserDailyProductSnapshotAsync(userId, dateOnly, 0, dailyProductSet, token);
+            await CreateUserDailyProductSnapshotAsync(userId, dateOnly, 0, token);
         }
 
         _logger.LogInformation("DailyProducts snapshot for {Count} done.", userIds.Count);
@@ -50,12 +51,12 @@ public class DailyProductService : IDailyProductService
         var newIndex = (byte)(snaps[0].RefreshIndex + 1);
         _context.UserDailyProduct.RemoveRange(snaps);
         
-        await CreateUserDailyProductSnapshotAsync(userId, today, newIndex, dailySet, token);
+        await CreateUserDailyProductSnapshotAsync(userId, today, newIndex, token);
         return true;
     }
     
-    private async Task CreateUserDailyProductSnapshotAsync(int userId, DateOnly dateOnly, byte refreshIndex,
-        List<DailyProduct> dailySet, CancellationToken token)
+    public async Task CreateUserDailyProductSnapshotAsync(int userId, DateOnly dateOnly, byte refreshIndex,
+        CancellationToken token)
     {
         // Daily products that can be purchased without watching ads (3 slots)
         var openPicks = _cachedDataProvider.GetRandomDailyProductsDistinct(3);

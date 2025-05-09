@@ -288,13 +288,15 @@ public class UserAccountController : ControllerBase
         
         var user = _context.User.AsNoTracking()
             .FirstOrDefault(user => user.UserId == userId);
+        var userAuth = _context.UserAuth.AsNoTracking()
+            .FirstOrDefault(userAuth => userAuth.UserId == userId);
         var userStat = _context.UserStats.AsNoTracking()
             .FirstOrDefault(userStat => userStat.UserId == userId);
         var userMatch = _context.UserMatch.AsNoTracking()
             .FirstOrDefault(um => um.UserId == userId);
         var userTutorial = _context.UserTutorial.AsNoTracking()
             .Where(ut => ut.UserId == userId).ToList();
-        if (user == null || userStat == null || userMatch == null)
+        if (user == null || userAuth == null || userStat == null || userMatch == null)
         {
             Console.WriteLine("LoadUserInfo Null Error");
             return NotFound();
@@ -312,6 +314,7 @@ public class UserAccountController : ControllerBase
             
         res.UserInfo = new UserInfo
         {
+            UserAccount = userAuth.UserAccount,
             UserName = user.UserName,
             Level = userStat.UserLevel,
             Exp = userStat.Exp,
@@ -342,18 +345,19 @@ public class UserAccountController : ControllerBase
     public IActionResult LoadTestUser([FromBody] LoadTestUserPacketRequired required)
     {
         var res = new LoadTestUserPacketResponse();
-        var user = _context.User
-            .AsNoTracking()
-            .FirstOrDefault(user => user.UserId == required.UserId);
-        if (user == null) return NotFound();
+        var userId = required.UserId;
         
+        var user = _context.User.AsNoTracking()
+            .FirstOrDefault(user => user.UserId == userId);
+        var userAuth = _context.UserAuth.AsNoTracking()
+            .FirstOrDefault(userAuth => userAuth.UserId == userId);
         var userStat = _context.UserStats.AsNoTracking()
-            .FirstOrDefault(userStat => userStat.UserId == required.UserId);
+            .FirstOrDefault(userStat => userStat.UserId == userId);
         var userMatch = _context.UserMatch.AsNoTracking()
-            .FirstOrDefault(um => um.UserId == required.UserId);
+            .FirstOrDefault(um => um.UserId == userId);
         var userTutorial = _context.UserTutorial.AsNoTracking()
-            .Where(ut => ut.UserId == required.UserId).ToList();
-        if (userStat == null || userMatch == null)
+            .Where(ut => ut.UserId == userId).ToList();
+        if (user == null || userAuth == null || userStat == null || userMatch == null)
         {
             Console.WriteLine("LoadUserInfo Null Error");
             return NotFound();
@@ -371,6 +375,7 @@ public class UserAccountController : ControllerBase
             
         res.UserInfo = new UserInfo
         {
+            UserAccount = userAuth.UserAccount,
             UserName = user.UserName,
             Level = userStat.UserLevel,
             Exp = userStat.Exp,

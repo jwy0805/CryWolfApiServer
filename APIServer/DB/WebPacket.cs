@@ -67,6 +67,7 @@ public class DeleteUserAccountHardPacketResponse
 
 public class UserInfo
 {
+    public string UserAccount { get; set; }
     public string UserName { get; set; }
     public int Level { get; set; }
     public int Exp { get; set; }

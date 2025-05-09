@@ -13,17 +13,14 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +113,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.vagrant&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.webpack&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -508,14 +505,8 @@
       <workItem from="1746261638765" duration="8677000" />
       <workItem from="1746537003382" duration="802000" />
       <workItem from="1746538492795" duration="10378000" />
-    </task>
-    <task id="LOCAL-00031" summary="1208 docker">
-      <option name="closed" value="true" />
-      <created>1733629628029</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1733629628029</updated>
+      <workItem from="1746611632486" duration="1008000" />
+      <workItem from="1746687413940" duration="4878000" />
     </task>
     <task id="LOCAL-00032" summary="1208&#10;docker">
       <option name="closed" value="true" />
@@ -901,7 +892,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746539742857</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="feat(PaymentController) Get DailyProducts&#10;&#10;Error for creating daily product set has been fixed.">
+      <option name="closed" value="true" />
+      <created>1746611690093</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1746611690094</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -911,7 +910,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="github actions test 14" />
     <MESSAGE value="github actions test 15" />
     <MESSAGE value="github actions test 16" />
     <MESSAGE value="github actions test 17" />
@@ -936,6 +934,11 @@
     <MESSAGE value="feat(API) Product Init Method&#10;&#10;Daily product will be initiated when client logs in." />
     <MESSAGE value="feat(Services) DailyJob Error" />
     <MESSAGE value="feat(DB) New Column&#10;&#10;NeedAds column has been added into table UserDailyProduct" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(DB) New Column&#10;&#10;NeedAds column has been added into table UserDailyProduct" />
+    <MESSAGE value="feat(PaymentController) Get DailyProducts&#10;&#10;Error for creating daily product set has been fixed." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(PaymentController) Get DailyProducts&#10;&#10;Error for creating daily product set has been fixed." />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

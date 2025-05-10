@@ -12,62 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Privacy.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Privacy.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Terms.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Terms.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/Shared/PolicyLayout.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/Shared/PolicyLayout.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_en.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_ja.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_kr.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_en.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_ja.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_kr.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Main.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Main.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Main.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Main.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/Pages/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/Shared/TopBar.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Shared/TopBar.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.staticwebassets.runtime.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.staticwebassets.runtime.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Pages/Main.razor.rz.scp.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Pages/Main.razor.rz.scp.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/bundle/WebSite.styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/bundle/WebSite.styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/WebSite.bundle.scp.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/WebSite.bundle.scp.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.build.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.pack.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.pack.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets/msbuild.WebSite.Microsoft.AspNetCore.StaticWebAssets.props" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets/msbuild.WebSite.Microsoft.AspNetCore.StaticWebAssets.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/css/site.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -558,15 +504,7 @@
       <workItem from="1746687413940" duration="4878000" />
       <workItem from="1746751751399" duration="13800000" />
       <workItem from="1746795731877" duration="5078000" />
-      <workItem from="1746841066584" duration="20501000" />
-    </task>
-    <task id="LOCAL-00033" summary="241212&#10;&#10;Payment and mail logic updated.&#10; - Atomicity of DB query is guaranteed when it comes to paying products.&#10; - Mail controller and Task queue service has been added.&#10; - Algorithms when used to products in packages are added.">
-      <option name="closed" value="true" />
-      <created>1733981813507</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1733981813507</updated>
+      <workItem from="1746841066584" duration="22948000" />
     </task>
     <task id="LOCAL-00034" summary="241223&#10;User Management Logic Added.&#10;&#10;Friendly Match Service Added.">
       <option name="closed" value="true" />
@@ -952,7 +890,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746751889435</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="feat(Web) Terms and Privacy&#10;&#10;Terms and Privacy has been created.&#10;It will be shown by users who want to read Terms and Privacy after logging in.&#10;It will be shown by browser, hamonstudio.net.">
+      <option name="closed" value="true" />
+      <created>1746866718278</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1746866718278</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -962,7 +908,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="github actions test 16" />
     <MESSAGE value="github actions test 17" />
     <MESSAGE value="Remove firebase auth&#10;&#10;only use Unity Authentication" />
     <MESSAGE value="250416&#10;&#10;Google Login Success.&#10;&#10;Apple Login must be tested." />
@@ -987,7 +932,8 @@
     <MESSAGE value="feat(DB) New Column&#10;&#10;NeedAds column has been added into table UserDailyProduct" />
     <MESSAGE value="feat(PaymentController) Get DailyProducts&#10;&#10;Error for creating daily product set has been fixed." />
     <MESSAGE value="feat(Controller) Web Packet Modified&#10;&#10;Class 'UserInfo' in Web Packet has a new property 'UserAccount' from UserAuth DB to bind user account into user manager instance on client." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(Controller) Web Packet Modified&#10;&#10;Class 'UserInfo' in Web Packet has a new property 'UserAccount' from UserAuth DB to bind user account into user manager instance on client." />
+    <MESSAGE value="feat(Web) Terms and Privacy&#10;&#10;Terms and Privacy has been created.&#10;It will be shown by users who want to read Terms and Privacy after logging in.&#10;It will be shown by browser, hamonstudio.net." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(Web) Terms and Privacy&#10;&#10;Terms and Privacy has been created.&#10;It will be shown by users who want to read Terms and Privacy after logging in.&#10;It will be shown by browser, hamonstudio.net." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

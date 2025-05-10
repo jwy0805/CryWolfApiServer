@@ -60,6 +60,7 @@ public class UserAuth
     public string       UserAccount  { get; set; } = null!;
     [MaxLength(120)]
     public string?      PasswordHash    { get; set; }
+    public bool PolicyAgreed { get; set; }
     public DateTime     LinkedAt        { get; set; }      
     
     // Navigation properties

@@ -34,6 +34,16 @@ a, .btn-link {
     color: red;
 }
 
+.header .logo,
+.header .logo:link,
+.header .logo:visited,
+.header .logo:hover,
+.header .logo:active {
+    text-decoration: none !important;
+    color: inherit;
+    cursor: pointer;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

@@ -58,16 +58,15 @@ public class PaymentController : ControllerBase
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var dailyProductExists = await _context.UserDailyProduct
             .AnyAsync(udp => udp.UserId == userId && udp.SeedDate == today);
-        
-        if (dailyProductExists == false)
-        {
-            await _dailyProductService.CreateUserDailyProductSnapshotAsync(userId.Value, today, 0);
-        }
-        
         var userDailyProducts = await _context.UserDailyProduct.AsNoTracking()
             .Where(udp => udp.UserId == userId && udp.SeedDate == today)
             .OrderBy(udp => udp.Slot)
             .ToListAsync();
+        
+        if (dailyProductExists == false || userDailyProducts.Count == 0)
+        {
+            await _dailyProductService.CreateUserDailyProductSnapshotAsync(userId.Value, today, 0);
+        }
         
         // Get
         var dailyProductInfos = userDailyProducts.Select(udp =>

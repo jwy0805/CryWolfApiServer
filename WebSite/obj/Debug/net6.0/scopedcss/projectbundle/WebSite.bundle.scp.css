@@ -64,6 +64,263 @@
     font-weight: bold;
     text-align: center;
 }
+
+/* === Footer ===================================================== */
+.site-footer[b-ovozt8ox51] {
+    background:#1f1f1f;
+    color:#bdbdbd;
+    font-size:.875rem;              /* 14px 정도 */
+}
+.footer-inner[b-ovozt8ox51] {
+    max-width:1200px;
+    margin:0 auto;
+    padding:32px 16px;
+}
+
+/* 링크 모음 */
+.footer-nav[b-ovozt8ox51] {
+    display:flex; flex-wrap:wrap;
+    gap:12px; margin-bottom:12px;
+}
+.footer-nav a[b-ovozt8ox51] {
+    color:#d9d9d9; text-decoration:none; font-weight:500;
+}
+.footer-nav a:hover[b-ovozt8ox51] { text-decoration:underline; }
+.footer-nav span[b-ovozt8ox51] { color:#4a4a4a; }
+
+/* 사업자 고지 */
+.company-info p[b-ovozt8ox51] { margin:2px 0; }
+.company-info a[b-ovozt8ox51] { color:#d9d9d9; text-decoration:underline; }
+.company-info a:hover[b-ovozt8ox51] { color:#ffffff; }
+
+/* 모바일: 링크를 세로로 */
+@media(max-width:600px) {
+    .footer-nav[b-ovozt8ox51]{ flex-direction:column; gap:8px; }
+}
+/* _content/WebSite/Pages/Privacy.razor.rz.scp.css */
+/* ─── 기본 리셋 ─── */
+*[b-z9lqg7ngls] {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body[b-z9lqg7ngls] {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+}
+
+/* ─── Header ─── */
+.header[b-z9lqg7ngls] {
+    text-align: center;
+    padding: 20px 0;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.logo[b-z9lqg7ngls] {
+    text-decoration: none;
+    color: #000;
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+/* ─── Page Title ─── */
+.policy-title[b-z9lqg7ngls] {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    margin: 24px 0;
+    color: #222;
+}
+
+/* ─── Tabs ─── */
+.tabs[b-z9lqg7ngls] {
+    display: flex;
+    justify-content: center;
+    background: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+.tab-button[b-z9lqg7ngls] {
+    padding: 12px 24px;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    transition: color .2s;
+}
+.tab-button.active[b-z9lqg7ngls] {
+    color: #000;
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+}
+
+/* ─── Tab Contents ─── */
+.tab-contents[b-z9lqg7ngls] {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+.tab-content[b-z9lqg7ngls] {
+    display: none;
+    width: 100%;
+    max-width: 1000px;
+}
+.tab-content.active[b-z9lqg7ngls] {
+    display: block;
+}
+
+/* iframe 스타일 */
+.policy-iframe[b-z9lqg7ngls] {
+    width: 100%;
+    height: 70vh;         /* 화면 높이의 70% */
+    border: none;
+    overflow: auto;
+}
+
+/* 작은 저작권 문구 */
+.legal-footer[b-z9lqg7ngls] {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    margin: 24px 0;
+}
+
+/* ─── Scroll Box ─── */
+.scroll-box[b-z9lqg7ngls] {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 12px;    /* 스크롤바와 텍스트 간격 */
+    line-height: 1.6;
+}
+
+/* 커스텀 스크롤바 */
+.scroll-box[b-z9lqg7ngls]::-webkit-scrollbar {
+    width: 6px;
+}
+.scroll-box[b-z9lqg7ngls]::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+/* ─── Legal Footer ─── */
+.legal-footer[b-z9lqg7ngls] {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    margin: 24px 0;
+}
+/* _content/WebSite/Pages/Terms.razor.rz.scp.css */
+/* ─── 기본 리셋 ─── */
+*[b-iax6jgrwqe] {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body[b-iax6jgrwqe] {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+}
+
+/* ─── Header ─── */
+.header[b-iax6jgrwqe] {
+    text-align: center;
+    padding: 20px 0;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.logo[b-iax6jgrwqe] {
+    text-decoration: none;
+    color: #000;
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+/* ─── Page Title ─── */
+.policy-title[b-iax6jgrwqe] {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    margin: 24px 0;
+    color: #222;
+}
+
+/* ─── Tabs ─── */
+.tabs[b-iax6jgrwqe] {
+    display: flex;
+    justify-content: center;
+    background: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+.tab-button[b-iax6jgrwqe] {
+    padding: 12px 24px;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    transition: color .2s;
+}
+.tab-button.active[b-iax6jgrwqe] {
+    color: #000;
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+}
+
+/* ─── Tab Contents ─── */
+.tab-contents[b-iax6jgrwqe] {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+.tab-content[b-iax6jgrwqe] {
+    display: none;
+    width: 100%;
+    max-width: 1000px;
+}
+.tab-content.active[b-iax6jgrwqe] {
+    display: block;
+}
+
+/* iframe 스타일 */
+.policy-iframe[b-iax6jgrwqe] {
+    width: 100%;
+    height: 70vh;         /* 화면 높이의 70% */
+    border: none;
+    overflow: auto;
+}
+
+/* 작은 저작권 문구 */
+.legal-footer[b-iax6jgrwqe] {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    margin: 24px 0;
+}
+
+/* ─── Scroll Box ─── */
+.scroll-box[b-iax6jgrwqe] {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 12px;    /* 스크롤바와 텍스트 간격 */
+    line-height: 1.6;
+}
+
+/* 커스텀 스크롤바 */
+.scroll-box[b-iax6jgrwqe]::-webkit-scrollbar {
+    width: 6px;
+}
+.scroll-box[b-iax6jgrwqe]::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+/* ─── Legal Footer ─── */
+.legal-footer[b-iax6jgrwqe] {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    margin: 24px 0;
+}
 /* _content/WebSite/Shared/MainLayout.razor.rz.scp.css */
 .page[b-oej2ji0nqz] {
     position: relative;
@@ -197,6 +454,16 @@ main[b-oej2ji0nqz] {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+/* _content/WebSite/Shared/PolicyLayout.razor.rz.scp.css */
+.page[b-o93z37xwus] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-o93z37xwus] {
+    flex: 1;
 }
 /* _content/WebSite/Shared/TopBar.razor.rz.scp.css */
 .top-bar[b-kd0tv8dfkw] {

@@ -63,3 +63,36 @@
     font-weight: bold;
     text-align: center;
 }
+
+/* === Footer ===================================================== */
+.site-footer {
+    background:#1f1f1f;
+    color:#bdbdbd;
+    font-size:.875rem;              /* 14px 정도 */
+}
+.footer-inner {
+    max-width:1200px;
+    margin:0 auto;
+    padding:32px 16px;
+}
+
+/* 링크 모음 */
+.footer-nav {
+    display:flex; flex-wrap:wrap;
+    gap:12px; margin-bottom:12px;
+}
+.footer-nav a {
+    color:#d9d9d9; text-decoration:none; font-weight:500;
+}
+.footer-nav a:hover { text-decoration:underline; }
+.footer-nav span { color:#4a4a4a; }
+
+/* 사업자 고지 */
+.company-info p { margin:2px 0; }
+.company-info a { color:#d9d9d9; text-decoration:underline; }
+.company-info a:hover { color:#ffffff; }
+
+/* 모바일: 링크를 세로로 */
+@media(max-width:600px) {
+    .footer-nav{ flex-direction:column; gap:8px; }
+}

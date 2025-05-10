@@ -30,6 +30,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTWFpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-ovozt8ox51
 
+[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Privacy.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-z9lqg7ngls
+
+[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Terms.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVGVybXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-iax6jgrwqe
+
 [/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL01haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-oej2ji0nqz
@@ -37,6 +45,10 @@ build_metadata.AdditionalFiles.CssScope = b-oej2ji0nqz
 [/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL05hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-0qbjlm4zef
+
+[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Shared/PolicyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL1BvbGljeUxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-o93z37xwus
 
 [/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Shared/TopBar.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL1RvcEJhci5yYXpvcg==

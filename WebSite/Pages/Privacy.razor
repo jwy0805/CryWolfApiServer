@@ -1,0 +1,70 @@
+@page "/privacy"
+@layout PolicyLayout
+
+<!-- ───────── Header ───────── -->
+<header class="header">
+    <NavLink href="/" class="logo" Match="NavLinkMatch.All">
+        Cry Wolf
+    </NavLink>
+</header>
+
+<!-- ───────── Page Title ───────── -->
+<h1 class="policy-title">개인정보 처리방침</h1>
+
+<!-- ───────── Tabs ───────── -->
+<div class="tabs">
+    @foreach (var tab in _tabs)
+    {
+        <button class="tab-button @(tab.Key == _activeTab ? "active" : "")"
+                @onclick="() => SelectTab(tab.Key)">
+            @tab.Value
+        </button>
+    }
+</div>
+
+<!-- ───────── Tab Contents ───────── -->
+<div class="tab-contents">
+    @foreach (var tab in _tabs)
+    {
+        <div id="@tab.Key" class="tab-content @(tab.Key == _activeTab ? "active" : "")">
+            <div class="box">
+                <iframe
+                    id="@($"policy_{tab.Key}")"
+                    class="policy-iframe"
+                    src="@_policyUrls[tab.Key]"
+                    title="@($"{tab.Value} 약관")">
+                </iframe>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- ───────── Legal Footer ───────── -->
+<div class="legal-footer">
+    © HAMON Korea. All Rights Reserved.
+</div>
+
+@code {
+    // 현재 선택된 탭 키
+    private string _activeTab = "kr";
+
+    private readonly Dictionary<string, string> _policyUrls = new()
+    {
+        ["kr"] = "/policy/privacy_20250510_kr.html",
+        ["en"] = "/policy/privacy_20250510_en.html",
+        ["ja"] = "/policy/privacy_20250510_ja.html"
+    };
+    
+    // 탭 목록: Key = id, Value = 표시명
+    private readonly Dictionary<string, string> _tabs = new()
+    {
+        ["kr"] = "Korean",
+        ["en"] = "English",
+        ["ja"] = "Japanese"
+    };
+
+    private void SelectTab(string key)
+    {
+        _activeTab = key;
+    }
+}

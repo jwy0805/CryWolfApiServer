@@ -61,6 +61,30 @@
       "PackagePath": "staticwebassets/images/CryWolfMobile.png"
     },
     {
+      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_en.html",
+      "PackagePath": "staticwebassets/policy/privacy_20250510_en.html"
+    },
+    {
+      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_ja.html",
+      "PackagePath": "staticwebassets/policy/privacy_20250510_ja.html"
+    },
+    {
+      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_kr.html",
+      "PackagePath": "staticwebassets/policy/privacy_20250510_kr.html"
+    },
+    {
+      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_en.html",
+      "PackagePath": "staticwebassets/policy/term_20250510_en.html"
+    },
+    {
+      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_ja.html",
+      "PackagePath": "staticwebassets/policy/term_20250510_ja.html"
+    },
+    {
+      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_kr.html",
+      "PackagePath": "staticwebassets/policy/term_20250510_kr.html"
+    },
+    {
       "Id": "obj/Debug/net6.0/staticwebassets/msbuild.WebSite.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

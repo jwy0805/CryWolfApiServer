@@ -1,0 +1,111 @@
+/* ─── 기본 리셋 ─── */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+}
+
+/* ─── Header ─── */
+.header {
+    text-align: center;
+    padding: 20px 0;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.logo {
+    text-decoration: none;
+    color: #000;
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+/* ─── Page Title ─── */
+.policy-title {
+    text-align: center;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    margin: 24px 0;
+    color: #222;
+}
+
+/* ─── Tabs ─── */
+.tabs {
+    display: flex;
+    justify-content: center;
+    background: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+.tab-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    transition: color .2s;
+}
+.tab-button.active {
+    color: #000;
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+}
+
+/* ─── Tab Contents ─── */
+.tab-contents {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+.tab-content {
+    display: none;
+    width: 100%;
+    max-width: 1000px;
+}
+.tab-content.active {
+    display: block;
+}
+
+/* iframe 스타일 */
+.policy-iframe {
+    width: 100%;
+    height: 70vh;         /* 화면 높이의 70% */
+    border: none;
+    overflow: auto;
+}
+
+/* 작은 저작권 문구 */
+.legal-footer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    margin: 24px 0;
+}
+
+/* ─── Scroll Box ─── */
+.scroll-box {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 12px;    /* 스크롤바와 텍스트 간격 */
+    line-height: 1.6;
+}
+
+/* 커스텀 스크롤바 */
+.scroll-box::-webkit-scrollbar {
+    width: 6px;
+}
+.scroll-box::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+/* ─── Legal Footer ─── */
+.legal-footer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    margin: 24px 0;
+}

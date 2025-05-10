@@ -32,3 +32,6 @@
 /Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/ref/WebSite.dll
 /Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/Shared/TopBar.razor.rz.scp.css
 /Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/Pages/Main.razor.rz.scp.css
+/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/Pages/Privacy.razor.rz.scp.css
+/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/Pages/Terms.razor.rz.scp.css
+/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/Shared/PolicyLayout.razor.rz.scp.css

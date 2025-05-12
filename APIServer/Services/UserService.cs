@@ -82,14 +82,13 @@ public class UserService
 
         var newUserAuth = new UserAuth
         {
-            UserId = newUser.UserId,
             UserAccount = userAccount,
             PasswordHash = password ?? string.Empty,
             LinkedAt = DateTime.UtcNow,
             Provider = provider,
+            User = newUser,  
         };
         
-        _context.User.Add(newUser);
         _context.UserAuth.Add(newUserAuth);
         await _context.SaveChangesExtendedAsync(); // 이 때 UserId가 생성
         

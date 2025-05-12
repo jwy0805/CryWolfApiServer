@@ -31,6 +31,7 @@ public class DailyJob : BackgroundService
 
     private async Task ResetDailyProducts(CancellationToken token)
     {
+        Console.WriteLine("Resetting daily products...");
         using var scope = _serviceProvider.CreateScope();
         var provider = scope.ServiceProvider.GetRequiredService<IDailyProductService>();
         await provider.SnapshotDailyProductsAsync(DateOnly.FromDateTime(DateTime.UtcNow), token);

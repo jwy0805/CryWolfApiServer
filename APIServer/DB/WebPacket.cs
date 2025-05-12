@@ -374,6 +374,17 @@ public class LoginGuestPacketResponse
     public string RefreshToken { get; set; }
 }
 
+public class PolicyAgreedPacketRequired
+{
+    public string AccessToken { get; set; }
+    public bool PolicyAgreed { get; set; }
+}
+
+public class PolicyAgreedPacketResponse
+{
+    public bool PolicyAgreedOk { get; set; }
+}
+
 public class ChangeActPacketRequired
 {
     public string AccessToken { get; set; }

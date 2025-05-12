@@ -254,6 +254,31 @@ public class UserAccountController : ControllerBase
         
         return Ok(res);
     }
+
+    [HttpPut]
+    [Route("PolicyAgreed")]
+    public async Task<IActionResult> PolicyAgreed([FromBody] PolicyAgreedPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+        
+        var res = new PolicyAgreedPacketResponse();
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        var userId = userIdNull ?? 0;
+        var userAuth = _context.UserAuth.FirstOrDefault(ua => ua.UserId == userId);
+        if (userAuth == null)
+        {
+            Console.WriteLine("User Not Found");
+            return NotFound();
+        }
+
+        userAuth.PolicyAgreed = true;
+        res.PolicyAgreedOk = true;
+        
+        await _context.SaveChangesAsync();
+        
+        return Ok(res);
+    }
     
     [HttpPost]
     [Route("RefreshToken")]

@@ -29,7 +29,7 @@ public class DailyProductService : IDailyProductService
     public async Task SnapshotDailyProductsAsync(DateOnly dateOnly, CancellationToken token = default)
     {
         var userIds = await _context.User.Select(user => user.UserId).ToListAsync(token);
-
+        
         foreach (var userId in userIds)
         {
             await CreateUserDailyProductSnapshotAsync(userId, dateOnly, 0, token);
@@ -89,12 +89,12 @@ public class DailyProductService : IDailyProductService
             await using var transaction = await _context.Database.BeginTransactionAsync(token);
             try
             {
-                var existing = _context.UserDailyProduct
-                    .Where(udp => udp.UserId == userId && udp.SeedDate == dateOnly && udp.RefreshIndex == refreshIndex);
+                var existing = _context.UserDailyProduct.Where(udp => udp.UserId == userId);
                 _context.UserDailyProduct.RemoveRange(existing);
                 _context.UserDailyProduct.AddRange(userDailyProducts);
                 await _context.SaveChangesAsync(token);
                 await transaction.CommitAsync(token);
+                Console.WriteLine($"New free daily item {freePick}");
             }
             catch (Exception e)
             {

@@ -337,6 +337,21 @@ public class UserAccountController : ControllerBase
             return NotFound();
         }
             
+        var userSubscription = _context.UserSubscription.AsNoTracking()
+            .Where(userSubscription => userSubscription.UserId == userId);
+        var subscriptionInfos = new List<SubscriptionInfo>();
+        if (userSubscription.Any() == false)
+        {
+            subscriptionInfos = userSubscription
+                .Where(us => us.ExpiresAtUtc > DateTime.UtcNow)
+                .Select(us => new SubscriptionInfo
+                {
+                    SubscriptionType = us.SubscriptionType,
+                    ExpiresAt = us.ExpiresAtUtc,
+                    StartAt = us.CreatedAtUtc,
+                }).ToList();
+        }
+        
         res.UserInfo = new UserInfo
         {
             UserAccount = userAuth.UserAccount,
@@ -349,7 +364,8 @@ public class UserAccountController : ControllerBase
             Victories = userMatch.WinRankMatch,
             WinRate = winRate,
             Gold = userStat.Gold,
-            Spinel = userStat.Spinel
+            Spinel = userStat.Spinel,
+            Subscriptions = subscriptionInfos,
         };
 
         res.UserTutorialInfo = new UserTutorialInfo

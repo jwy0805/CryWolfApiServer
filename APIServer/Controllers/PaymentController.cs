@@ -84,6 +84,9 @@ public class PaymentController : ControllerBase
             SpinelItems = GetProductInfoList(ProductCategory.SpinelPackage, productGroups, compositions, probabilities),
             ReservedSales = GetProductInfoList(ProductCategory.ReservedSale, productGroups, compositions, probabilities),
             DailyProducts = dailyProductInfos,
+            AdsRemover = GetProductInfoList(ProductCategory.Pass, productGroups, compositions, probabilities)
+                .First(pi => pi.ProductCode == "com.hamon.crywolf.non-consumable.ads_remover"),
+            RefreshTime = userDailyProducts.First().RefreshAt + TimeSpan.FromHours(6),
         };
         
         return Ok(res);

@@ -22,13 +22,13 @@ public class AdsController : ControllerBase
     }
 
     [HttpPut]
-    [Route("CheckDailyProduct")]
-    public async Task<IActionResult> CheckDailyProduct(CheckDailyProductPacketRequired required)
+    [Route("RevealDailyProduct")]
+    public async Task<IActionResult> CheckDailyProduct(RevealDailyProductPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
-        var res = new CheckDailyProductPacketResponse();
+        var res = new RevealDailyProductPacketResponse();
         var userIdN = _tokenValidator.GetUserIdFromAccessToken(principal);
         if (userIdN == null) return BadRequest(res);
         
@@ -41,7 +41,7 @@ public class AdsController : ControllerBase
         _context.UserDailyProduct.Update(userDailyProduct);
         
         await _context.SaveChangesAsync();
-        res.CheckDailyProductOk = true;
+        res.RevealDailyProductOk = true;
         
         return Ok(res);
     }
@@ -67,6 +67,7 @@ public class AdsController : ControllerBase
             res.DailyProducts = await _dailyProductService.GetDailyProductInfos(
                 userId, products, compositions, probabilities);
             res.RefreshDailyProductOk = true;
+            res.RefreshTime = DateTime.Now;
         }
         else
         {

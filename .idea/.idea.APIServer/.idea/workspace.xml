@@ -12,17 +12,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyJob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyJob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
@@ -30,15 +32,8 @@
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,33 +109,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET 실행 설정 프로파일.APIServer: AccountServer.executor": "Run",
-    ".NET 실행 설정 프로파일.MatchMakingServer.executor": "Run",
-    ".NET 실행 설정 프로파일.WebSite.executor": "Debug",
-    ".NET 프로젝트.PacketGenerator.executor": "Debug",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "XThreadsFramesViewSplitterKey": "0.86694825",
-    "git-widget-placeholder": "main",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.webpack",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Run&quot;,
+    &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Run&quot;,
+    &quot;.NET 실행 설정 프로파일.WebSite.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET 프로젝트.PacketGenerator.executor&quot;: &quot;Debug&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.86694825&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.webpack&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mariadb"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mariadb&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -529,23 +524,8 @@
       <workItem from="1746751751399" duration="13800000" />
       <workItem from="1746795731877" duration="5078000" />
       <workItem from="1746841066584" duration="25733000" />
-      <workItem from="1746930092875" duration="11743000" />
-    </task>
-    <task id="LOCAL-00035" summary="250121&#10;&#10;Single Play has been added.&#10;data about single play stage has been added.">
-      <option name="closed" value="true" />
-      <created>1737447094180</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1737447094181</updated>
-    </task>
-    <task id="LOCAL-00036" summary="250309">
-      <option name="closed" value="true" />
-      <created>1741516867027</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1741516867027</updated>
+      <workItem from="1746930092875" duration="18285000" />
+      <workItem from="1747098773506" duration="6034000" />
     </task>
     <task id="LOCAL-00037" summary="250320&#10;&#10;Set tutorial api&#10;Set tutorial database">
       <option name="closed" value="true" />
@@ -923,7 +903,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746873324214</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="feat(Controller) AdsController.cs&#10;&#10;Reward for watching rewarded video will be granted.">
+      <option name="closed" value="true" />
+      <created>1747052975086</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1747052975087</updated>
+    </task>
+    <task id="LOCAL-00085" summary="feat(Service) User Sign up error solved.">
+      <option name="closed" value="true" />
+      <created>1747056658825</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1747056658825</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -933,8 +929,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Remove firebase auth&#10;&#10;only use Unity Authentication" />
-    <MESSAGE value="250416&#10;&#10;Google Login Success.&#10;&#10;Apple Login must be tested." />
     <MESSAGE value="250421&#10;mobile game server test" />
     <MESSAGE value="console.writeline" />
     <MESSAGE value="lk" />
@@ -958,7 +952,9 @@
     <MESSAGE value="feat(Controller) Web Packet Modified&#10;&#10;Class 'UserInfo' in Web Packet has a new property 'UserAccount' from UserAuth DB to bind user account into user manager instance on client." />
     <MESSAGE value="feat(Web) Terms and Privacy&#10;&#10;Terms and Privacy has been created.&#10;It will be shown by users who want to read Terms and Privacy after logging in.&#10;It will be shown by browser, hamonstudio.net." />
     <MESSAGE value="feat(Database) New Column Added.&#10;&#10;Column 'PolicyAgreed' has been added to verify if the user agreed our policies." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(Database) New Column Added.&#10;&#10;Column 'PolicyAgreed' has been added to verify if the user agreed our policies." />
+    <MESSAGE value="feat(Controller) AdsController.cs&#10;&#10;Reward for watching rewarded video will be granted." />
+    <MESSAGE value="feat(Service) User Sign up error solved." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(Service) User Sign up error solved." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

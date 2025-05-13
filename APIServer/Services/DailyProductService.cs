@@ -10,6 +10,11 @@ public interface IDailyProductService
     Task CreateUserDailyProductSnapshotAsync(int userId, DateOnly dateOnly, byte refreshIndex,
         CancellationToken token = default);
     Task<bool> RefreshByAdsAsync(int userId, CancellationToken token = default);
+    Task<List<DailyProductInfo>> GetDailyProductInfos(
+        int userId,
+        List<Product> products,
+        List<ProductComposition> compositions,
+        List<CompositionProbability> probabilities);
 }
 
 public class DailyProductService : IDailyProductService
@@ -42,12 +47,11 @@ public class DailyProductService : IDailyProductService
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var snaps = await _context.UserDailyProduct
-            .Where(udp => udp.UserId == userId && udp.SeedDate == today).ToListAsync(token);
+            .Where(udp => udp.UserId == userId).ToListAsync(token);
 
         if (snaps.Count == 0) return false;
         if (DateTime.UtcNow - snaps[0].RefreshAt < TimeSpan.FromHours(6)) return false;
         
-        var dailySet = await _context.DailyProduct.AsNoTracking().ToListAsync(token);
         var newIndex = (byte)(snaps[0].RefreshIndex + 1);
         _context.UserDailyProduct.RemoveRange(snaps);
         
@@ -101,5 +105,61 @@ public class DailyProductService : IDailyProductService
                 Console.WriteLine(e);
             }
         });
+    }
+
+    public async Task<List<DailyProductInfo>> GetDailyProductInfos(
+        int userId,
+        List<Product> products,
+        List<ProductComposition> compositions,
+        List<CompositionProbability> probabilities)
+    {
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var userDailyProducts = await _context.UserDailyProduct.AsNoTracking()
+            .Where(udp => udp.UserId == userId && udp.SeedDate == today)
+            .OrderBy(udp => udp.Slot)
+            .ToListAsync();
+
+        return userDailyProducts.Select(udp =>
+        {
+            var product = products.FirstOrDefault(p => p.ProductId == udp.ProductId) ?? new Product();
+            var productInfo = new ProductInfo
+            {
+                Id = product.ProductId,
+                Price = _cachedDataProvider.GetDailyProductPrice(product.ProductId),
+                CurrencyType = product.Currency,
+                Category = product.Category,
+                ProductCode = product.ProductCode,
+                Compositions = compositions.Where(pc => pc.ProductId == product.ProductId)
+                    .Select(pc => new CompositionInfo
+                    {
+                        Id = pc.ProductId,
+                        CompositionId = pc.CompositionId,
+                        Type = pc.Type,
+                        Count = pc.Count,
+                        MinCount = pc is { Count: 0, Guaranteed: false }
+                            ? probabilities
+                                .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
+                                .Min(cp => cp.Count)
+                            : 0,
+                        MaxCount = pc is { Count: 0, Guaranteed: false }
+                            ? probabilities
+                                .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
+                                .Max(cp => cp.Count)
+                            : 0,
+                        Guaranteed = pc.Guaranteed,
+                        IsSelectable = pc.IsSelectable
+                    }).ToList(),
+            };
+            return new DailyProductInfo
+            {
+                ProductInfo = productInfo,
+                Class = _cachedDataProvider.GetDailyProductSnapshots()
+                    .First(record => record.ProductId == udp.ProductId).Class,
+                Slot = udp.Slot,
+                Bought = udp.Bought,
+                AdsWatched = udp.AdsWatched,
+                NeedAds = udp.NeedAds
+            };
+        }).ToList();
     }
 }

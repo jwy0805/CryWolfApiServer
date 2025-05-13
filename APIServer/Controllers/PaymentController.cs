@@ -44,10 +44,11 @@ public class PaymentController : ControllerBase
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userId == null) return Unauthorized();
+        var userIdN = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdN == null) return Unauthorized();
+        var userId = userIdN.Value;
 
-        var products = _context.Product.AsNoTracking();
+        var products = _context.Product.AsNoTracking().ToList();
         var productGroups = products
             .Where(product => product.IsFixed)
             .GroupBy(product => product.Category)
@@ -56,7 +57,7 @@ public class PaymentController : ControllerBase
         var probabilities = _context.CompositionProbability.AsNoTracking().ToList();
         
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
-        var dailyProductExists = await _context.UserDailyProduct
+        var dailyProductExists = await _context.UserDailyProduct.AsNoTracking()
             .AnyAsync(udp => udp.UserId == userId && udp.SeedDate == today);
         var userDailyProducts = await _context.UserDailyProduct.AsNoTracking()
             .Where(udp => udp.UserId == userId && udp.SeedDate == today)
@@ -65,52 +66,12 @@ public class PaymentController : ControllerBase
         
         if (dailyProductExists == false || userDailyProducts.Count == 0)
         {
-            await _dailyProductService.CreateUserDailyProductSnapshotAsync(userId.Value, today, 0);
+            await _dailyProductService.CreateUserDailyProductSnapshotAsync(userId, today, 0);
         }
         
         // Get
-        var dailyProductInfos = userDailyProducts.Select(udp =>
-        {
-            var product = products.FirstOrDefault(p => p.ProductId == udp.ProductId) ?? new Product();
-            var productInfo = new ProductInfo
-            {
-                Id = product.ProductId,
-                Price = product.Price,
-                CurrencyType = product.Currency,
-                Category = product.Category,
-                ProductCode = product.ProductCode,
-                Compositions = compositions.Where(pc => pc.ProductId == product.ProductId)
-                    .Select(pc => new CompositionInfo
-                    {
-                        Id = pc.ProductId,
-                        CompositionId = pc.CompositionId,
-                        Type = pc.Type,
-                        Count = pc.Count,
-                        MinCount = pc is { Count: 0, Guaranteed: false }
-                            ? probabilities
-                                .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
-                                .Min(cp => cp.Count)
-                            : 0,
-                        MaxCount = pc is { Count: 0, Guaranteed: false }
-                            ? probabilities
-                                .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
-                                .Max(cp => cp.Count)
-                            : 0,
-                        Guaranteed = pc.Guaranteed,
-                        IsSelectable = pc.IsSelectable
-                    }).ToList(),
-            };
-            return new DailyProductInfo
-            {
-                ProductInfo = productInfo,
-                Class = _cachedDataProvider.GetDailyProductSnapshots()
-                    .First(record => record.ProductId == udp.ProductId).Class,
-                Slot = udp.Slot,
-                Bought = udp.Bought,
-                AdsWatched = udp.AdsWatched,
-                NeedAds = udp.NeedAds
-            };
-        }).ToList();
+        var dailyProductInfos = await _dailyProductService
+            .GetDailyProductInfos(userId, products, compositions, probabilities);
             
         var res = new InitProductPacketResponse
         {
@@ -122,7 +83,7 @@ public class PaymentController : ControllerBase
             GoldItems = GetProductInfoList(ProductCategory.GoldPackage, productGroups, compositions, probabilities),
             SpinelItems = GetProductInfoList(ProductCategory.SpinelPackage, productGroups, compositions, probabilities),
             ReservedSales = GetProductInfoList(ProductCategory.ReservedSale, productGroups, compositions, probabilities),
-            DailyDeals = dailyProductInfos,
+            DailyProducts = dailyProductInfos,
         };
         
         return Ok(res);

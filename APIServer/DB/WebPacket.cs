@@ -715,7 +715,7 @@ public class InitProductPacketResponse
     public List<ProductInfo> GoldItems { get; set; }
     public List<ProductInfo> SpinelItems { get; set; }
     public List<ProductInfo> ReservedSales { get; set; }
-    public List<DailyProductInfo> DailyDeals { get; set; }
+    public List<DailyProductInfo> DailyProducts { get; set; }
 }
 
 public class FriendListPacketRequired
@@ -864,6 +864,28 @@ public class LoadStageInfoPacketResponse
     public List<UserStageInfo> UserStageInfos { get; set; }
     public List<StageEnemyInfo> StageEnemyInfos { get; set; }
     public List<StageRewardInfo> StageRewardInfos { get; set; }
+}
+
+public class CheckDailyProductPacketRequired
+{
+    public string AccessToken { get; set; }
+    public int Slot { get; set; }
+}
+
+public class CheckDailyProductPacketResponse
+{
+    public bool CheckDailyProductOk { get; set; }
+}
+
+public class RefreshDailyProductPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class RefreshDailyProductPacketResponse
+{
+    public bool RefreshDailyProductOk { get; set; }
+    public List<DailyProductInfo> DailyProducts { get; set; }
 }
 
 #endregion

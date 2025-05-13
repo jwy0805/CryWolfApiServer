@@ -288,6 +288,7 @@ public class DailyProduct
 {
     public int ProductId { get; set; }
     public int Weight { get; set; }
+    public int Price { get; set; }
     public UnitClass Class { get; set; }
     
     // Navigation properties

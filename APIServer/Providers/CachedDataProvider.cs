@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using ApiServer.DB;
 using ApiServer.Util;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ namespace ApiServer.Providers;
 
 public class CachedDataProvider
 {
-    public record DailyProductSnapshot(int ProductId, int Weight, UnitClass Class);
+    public record DailyProductSnapshot(int ProductId, int Weight, int Price, UnitClass Class);
     private record FreeProductSnapshot(int ProductId, int Weight, UnitClass Class);
 
     private readonly List<DailyProductSnapshot> _dailyProductSnapshots;
@@ -20,9 +21,8 @@ public class CachedDataProvider
         using var context = dbContextFactory.CreateDbContext();
         
         _dailyProductSnapshots = context.DailyProduct.AsNoTracking()
-            .Select(dp => new DailyProductSnapshot(dp.ProductId, dp.Weight, dp.Class))
+            .Select(dp => new DailyProductSnapshot(dp.ProductId, dp.Weight, dp.Price, dp.Class))
             .ToList();
-
         
         _freeProductSnapshots = context.DailyFreeProduct.AsNoTracking()
             .Select(p => new FreeProductSnapshot(p.ProductId, p.Weight, p.Class))
@@ -81,5 +81,10 @@ public class CachedDataProvider
         }
 
         return result;
+    }
+
+    public int GetDailyProductPrice(int productId)
+    {
+        return _dailyProductSnapshots.FirstOrDefault(dp => dp.ProductId == productId)?.Price ?? int.MaxValue;
     }
 }

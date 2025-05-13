@@ -97,6 +97,9 @@ namespace ApiServer.Migrations
                     b.Property<int>("Class")
                         .HasColumnType("int");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
                     b.Property<int>("Weight")
                         .HasColumnType("int");
 

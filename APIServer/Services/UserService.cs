@@ -232,26 +232,14 @@ public class UserService
 
     private void CreateInitTutorialInfo(int userId)
     {
-        var initTutorials = new[]
+        var initTutorials = new UserTutorial[5];
+        for (var i = 1; i < Enum.GetValues(typeof(TutorialType)).Length; i++)
         {
-            new UserTutorial
+            initTutorials[i - 1] = new UserTutorial
             {
-                UserId = userId, TutorialType = TutorialType.BattleWolf, Done = false
-            },
-            new UserTutorial
-            {
-                UserId = userId, TutorialType = TutorialType.BattleSheep, Done = false
-            },
-            new UserTutorial
-            {
-                UserId = userId, TutorialType = TutorialType.Collection, Done = false
-            },
-            new UserTutorial
-            {
-                UserId = userId, TutorialType = TutorialType.Reinforce, Done = false
-            }
-        };
-        
+                UserId = userId, TutorialType = (TutorialType)i, Done = false
+            };
+        }
         _context.UserTutorial.AddRange(initTutorials);
     }
 }

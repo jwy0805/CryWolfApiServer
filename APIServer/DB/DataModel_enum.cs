@@ -43,6 +43,7 @@ public enum TutorialType
     None,
     BattleWolf,
     BattleSheep,
+    ChangeFaction,
     Collection,
     Reinforce,
 }

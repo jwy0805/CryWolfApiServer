@@ -125,6 +125,7 @@ public class UserSubscriptionHistory
 [Table("UserTutorial")]
 public class UserTutorial
 {
+    public int UserTutorialId { get; set; }
     public int UserId { get; set; }
     public TutorialType TutorialType { get; set; }
     public int TutorialStep { get; set; }

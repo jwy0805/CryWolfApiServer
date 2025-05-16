@@ -372,6 +372,7 @@ public class UserAccountController : ControllerBase
         {
             WolfTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done,
             SheepTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
+            ChangeFactionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.ChangeFaction).Done,
             CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
             ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };
@@ -433,6 +434,7 @@ public class UserAccountController : ControllerBase
         {
             WolfTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done,
             SheepTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
+            ChangeFactionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.ChangeFaction).Done,
             CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
             ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };

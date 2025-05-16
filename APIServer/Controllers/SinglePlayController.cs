@@ -100,14 +100,28 @@ public class SinglePlayController: ControllerBase
         var battleSetting = _context.BattleSetting.AsNoTracking().FirstOrDefault(bs => bs.UserId == userId);
         var deck = _context.Deck.AsNoTracking()
             .FirstOrDefault(d => d.UserId == userId && d.Faction == required.Faction && d.LastPicked);
-        var userStage = _context.UserStage.AsNoTracking()
-            .FirstOrDefault(userStage => userStage.UserId == userId && userStage.StageId == required.StageId);
+        // var userStage = _context.UserStage.AsNoTracking()
+        //     .FirstOrDefault(userStage => userStage.UserId == userId && userStage.StageId == required.StageId);
+        var userStage = _context.UserStage.AsNoTracking().FirstOrDefault(us => us.UserId == userId);
 
-        if (user == null || battleSetting == null || deck == null || userStage == null)
+        if (user == null || battleSetting == null || deck == null)
         {
-            res.ChangeOk = false;
             Console.WriteLine("[StartGame] User or BattleSetting or Deck or UserStage not found on single play start");
             return NotFound();
+        }
+
+        if (userStage == null)
+        {
+            return NotFound();
+        }
+
+        if (required.LoadStageInServer == false)
+        {
+            if (userStage.StageId != required.StageId)
+            {
+                Console.WriteLine("[StartGame] Stage id mismatch - suspected cheating");
+                res.ChangeOk = false;
+            }
         }
 
         user.Act = UserAct.InSingleGame;
@@ -116,11 +130,10 @@ public class SinglePlayController: ControllerBase
         var deckUnits = _context.DeckUnit.AsNoTracking()
             .Where(du => du.DeckId == deck.DeckId)
             .Select(du => du.UnitId).ToArray();
-        var stageInfo = _singlePlayService.StageInfos.FirstOrDefault(si => si.StageId == required.StageId);
+        var stageInfo = _singlePlayService.StageInfos.FirstOrDefault(si => si.StageId == userStage.StageId);
         
         if (stageInfo == null)
         {
-            res.ChangeOk = false;
             Console.WriteLine("[StartGame] StageInfo not found");
             return NotFound();
         }
@@ -135,7 +148,7 @@ public class SinglePlayController: ControllerBase
             EnemyUnitIds = stageInfo.StageEnemy.Select(se => se.UnitId).ToArray(),
             EnemyCharacterId = stageInfo.CharacterId,
             EnemyAssetId = stageInfo.AssetId,
-            MapId = _singlePlayService.StageInfos.First(si => si.StageId == required.StageId).MapId,
+            MapId = _singlePlayService.StageInfos.First(si => si.StageId == userStage.StageId).MapId,
             SessionId = required.SessionId,
             StageId = required.StageId
         };

@@ -13,12 +13,25 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/SinglePlayController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/SinglePlayController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
@@ -68,6 +81,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7fe79a50e72b83d86bcb87e6e177c55c4e64595e94e8591a17f6ec586ffc9f71/Interop.IOErrors.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8ea21ac773d9dbb35bda81e94336d7efbd03459b6fc241fcdb64737e5c1/NavigationExpandingExpressionVisitor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8f2ba51d4c579e65ff5ba9d5807aefaa39879cab8ec9a0307b6c90e75c37f/SmtpClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/90f759db8113d19fb412ddf678b2a5d6d243ed115611175dadd1bcb89eee4f/TaskAwaiter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9963f31d4cf666c1b1a3854a70d0b76aca953b34eb6596e4d56fc38f7cd6/GoogleCredential.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9c4bc7a42edb4f44257aefae1e3601584c931b4571a629257b1cf01a10ab4f/ConfigurationManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bebd253e21dcf766929bfdfd74615bfe46e6e1693b289273dbdb82152893/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
@@ -98,33 +112,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Run&quot;,
-    &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Run&quot;,
-    &quot;.NET 실행 설정 프로파일.WebSite.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET 프로젝트.PacketGenerator.executor&quot;: &quot;Debug&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.86694825&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.webpack&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET 실행 설정 프로파일.APIServer: AccountServer.executor": "Debug",
+    ".NET 실행 설정 프로파일.MatchMakingServer.executor": "Run",
+    ".NET 실행 설정 프로파일.WebSite.executor": "Debug",
+    ".NET 프로젝트.PacketGenerator.executor": "Debug",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "XThreadsFramesViewSplitterKey": "0.86694825",
+    "git-widget-placeholder": "main",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "settings.webpack",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mariadb&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -515,15 +529,10 @@
       <workItem from="1746841066584" duration="25733000" />
       <workItem from="1746930092875" duration="18285000" />
       <workItem from="1747098773506" duration="18392000" />
-      <workItem from="1747135222484" duration="7309000" />
-    </task>
-    <task id="LOCAL-00039" summary="Summary 250409&#10;&#10;Database is back on track.&#10;&#10;And github action testing">
-      <option name="closed" value="true" />
-      <created>1744125251394</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1744125251394</updated>
+      <workItem from="1747135222484" duration="8398000" />
+      <workItem from="1747190511957" duration="8194000" />
+      <workItem from="1747311143143" duration="1242000" />
+      <workItem from="1747358179037" duration="7975000" />
     </task>
     <task id="LOCAL-00040" summary="github action test">
       <option name="closed" value="true" />
@@ -909,7 +918,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747105950233</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="feat(DB, Controller) Applying ads remover&#10;&#10;New column added&#10; - Column 'Price' to table 'DailyProduct'&#10; &#10;Some methods&#10; - Methods related ads remover are added.&#10; - Refreshing daily products&#10; - Timer for refreshing button has been created.">
+      <option name="closed" value="true" />
+      <created>1747146422295</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1747146422295</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -919,7 +936,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="lk" />
     <MESSAGE value="deck error solved." />
     <MESSAGE value="250422&#10;&#10;Tutorial Info Data class added." />
     <MESSAGE value="DB sync" />
@@ -944,7 +960,8 @@
     <MESSAGE value="feat(Service) User Sign up error solved." />
     <MESSAGE value="feat(DB, Controller) New column added, reward added&#10;&#10;'Price' column has been added to table 'DailyProduct'.&#10;The price of daily product should be cheaper than original price.&#10;&#10;Api logic for reward after watching rewarded video has been created." />
     <MESSAGE value="1" />
-    <option name="LAST_COMMIT_MESSAGE" value="1" />
+    <MESSAGE value="feat(DB, Controller) Applying ads remover&#10;&#10;New column added&#10; - Column 'Price' to table 'DailyProduct'&#10; &#10;Some methods&#10; - Methods related ads remover are added.&#10; - Refreshing daily products&#10; - Timer for refreshing button has been created." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(DB, Controller) Applying ads remover&#10;&#10;New column added&#10; - Column 'Price' to table 'DailyProduct'&#10; &#10;Some methods&#10; - Methods related ads remover are added.&#10; - Refreshing daily products&#10; - Timer for refreshing button has been created." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

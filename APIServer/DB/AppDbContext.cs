@@ -74,7 +74,7 @@ public class AppDbContext : DbContext
             .HasForeignKey(um => um.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.Entity<UserTutorial>().HasKey(ut => new { ut.UserId, ut.TutorialType });
+        builder.Entity<UserTutorial>().HasIndex(ut => new { ut.UserId, ut.TutorialType }).IsUnique();
         builder.Entity<UserTutorial>().Property(ut => ut.TutorialType)
             .HasConversion(v => (int)v, v => (TutorialType)v);
         

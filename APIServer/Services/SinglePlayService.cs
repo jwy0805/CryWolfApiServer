@@ -1,4 +1,5 @@
 using ApiServer.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiServer.Services;
 
@@ -15,7 +16,7 @@ public class SinglePlayService
         List<StageEnemy> stageEnemies = _context.StageEnemy.ToList();
         List<StageReward> stageRewards = _context.StageReward.ToList();
         
-        foreach (var stage in _context.Stage)
+        foreach (var stage in _context.Stage.AsNoTracking())
         {
             var stageInfo = new StageInfo
             {

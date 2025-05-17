@@ -413,7 +413,6 @@ public class ChangeActPacketSingleRequired
     public int SessionId { get; set; }
     public int StageId { get; set; }
     public Faction Faction { get; set; }
-    public bool LoadStageInServer { get; set; }
 }
 
 public class ChangeActPacketSingleResponse

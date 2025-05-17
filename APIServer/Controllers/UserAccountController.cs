@@ -501,8 +501,8 @@ public class UserAccountController : ControllerBase
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         if (userId == null) return Unauthorized();
 
-        var userTutorial = _context.UserTutorial.FirstOrDefault(ut => ut.UserId == userId);
-        if (userTutorial == null) return NotFound();
+        var userTutorial = _context.UserTutorial.Where(ut => ut.UserId == userId).ToList();
+        if (userTutorial.Any() == false) return NotFound();
         
         var strategy = _context.Database.CreateExecutionStrategy();
         
@@ -511,11 +511,15 @@ public class UserAccountController : ControllerBase
             await using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                userTutorial.Done = required.Done;
-                foreach (var tutorialType in required.TutorialTypes)
+                foreach (var type in required.TutorialTypes)
                 {
-                    userTutorial.TutorialType = tutorialType;
+                    var tutorial = userTutorial.FirstOrDefault(ut => ut.TutorialType == type);
+                    if (tutorial != null)
+                    {
+                        tutorial.Done = required.Done;
+                    }
                 }
+                
                 await _context.SaveChangesExtendedAsync();
                 res.UpdateTutorialOk = true;
                 await transaction.CommitAsync();

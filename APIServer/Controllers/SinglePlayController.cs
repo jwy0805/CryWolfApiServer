@@ -100,28 +100,19 @@ public class SinglePlayController: ControllerBase
         var battleSetting = _context.BattleSetting.AsNoTracking().FirstOrDefault(bs => bs.UserId == userId);
         var deck = _context.Deck.AsNoTracking()
             .FirstOrDefault(d => d.UserId == userId && d.Faction == required.Faction && d.LastPicked);
-        // var userStage = _context.UserStage.AsNoTracking()
-        //     .FirstOrDefault(userStage => userStage.UserId == userId && userStage.StageId == required.StageId);
-        var userStage = _context.UserStage.AsNoTracking().FirstOrDefault(us => us.UserId == userId);
-
+        var userStage = _context.UserStage.AsNoTracking()
+            .FirstOrDefault(us => us.UserId == userId && us.StageId == required.StageId);
+        
         if (user == null || battleSetting == null || deck == null)
         {
             Console.WriteLine("[StartGame] User or BattleSetting or Deck or UserStage not found on single play start");
             return NotFound();
         }
 
-        if (userStage == null)
+        if (userStage == null || userStage.StageId != required.StageId)
         {
-            return NotFound();
-        }
-
-        if (required.LoadStageInServer == false)
-        {
-            if (userStage.StageId != required.StageId)
-            {
-                Console.WriteLine("[StartGame] Stage id mismatch - suspected cheating");
-                res.ChangeOk = false;
-            }
+            Console.WriteLine($"[StartGame] Stage id mismatch - suspected cheating user - {userId}");
+            return NotFound();            
         }
 
         user.Act = UserAct.InSingleGame;

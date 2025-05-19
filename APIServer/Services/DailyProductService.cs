@@ -119,6 +119,11 @@ public class DailyProductService : IDailyProductService
             .OrderBy(udp => udp.Slot)
             .ToListAsync();
 
+        if (userDailyProducts.Count == 0)
+        {
+            await CreateUserDailyProductSnapshotAsync(userId, today, 0, CancellationToken.None);
+        }
+
         return userDailyProducts.Select(udp =>
         {
             var product = products.FirstOrDefault(p => p.ProductId == udp.ProductId) ?? new Product();

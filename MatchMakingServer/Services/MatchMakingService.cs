@@ -40,10 +40,14 @@ public class MatchMakingService : BackgroundService
     {
         lock (_lock)
         {
+            Console.WriteLine("MatchMaking Service is running!");
+
             foreach (var mapId in _sheepUserQueues.Keys)
             {
                 var sheepUserQueue = _sheepUserQueues[mapId];
                 var wolfUserQueue = _wolfUserQueues[mapId];
+
+                Console.WriteLine($"Count : {sheepUserQueue.Count} / {wolfUserQueue.Count}");
                 
                 while (sheepUserQueue.Count > 0 && wolfUserQueue.Count > 0)
                 {
@@ -232,7 +236,7 @@ public class MatchMakingService : BackgroundService
             _jobService.Push(() => 
             {
                 if (_cancelUserList.Contains(packet.UserId)) _cancelUserList.Remove(packet.UserId);
-
+                
                 if (_sheepUserQueues.ContainsKey(packet.MapId) == false)
                 {
                     _sheepUserQueues[packet.MapId] = new PriorityQueue<MatchMakingPacketRequired, int>();
@@ -251,6 +255,8 @@ public class MatchMakingService : BackgroundService
                 {
                     _wolfUserQueues[packet.MapId].Enqueue(packet, packet.RankPoint);
                 }
+                
+                Console.WriteLine($"user {packet.UserId} : session {packet.SessionId}, {_sheepUserQueues[packet.MapId].Count}, {_wolfUserQueues[packet.MapId].Count}");
             });
         }
     }

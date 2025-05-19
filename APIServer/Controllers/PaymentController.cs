@@ -126,7 +126,7 @@ public class PaymentController : ControllerBase
             : new List<ProductInfo>();
     }
 
-    [HttpPost]
+    [HttpPut]
     [Route("Purchase")]
     public async Task<IActionResult> Purchase([FromBody] VirtualPaymentPacketRequired required)
     {
@@ -137,30 +137,65 @@ public class PaymentController : ControllerBase
         if (userId == 0) return Unauthorized();
         
         var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
-        var product = _context.Product.FirstOrDefault(p => p.ProductCode == required.ProductCode);
+        var product = _context.Product.AsNoTracking().FirstOrDefault(p => p.ProductCode == required.ProductCode);
         if (product == null || userStat == null) return BadRequest("Invalid product code");
 
-        var res = new VirtualPaymentPacketResponse();
-        var currency = product.Currency switch
+        var response = new VirtualPaymentPacketResponse();
+        var balance = product.Currency switch
         {
-            CurrencyType.Gold => userStat.Gold,
+            CurrencyType.Gold   => userStat.Gold,
             CurrencyType.Spinel => userStat.Spinel,
-            _ => 0
+            _                    => 0
         };
+        if (balance < product.Price) return Ok(response);
 
-        if (currency < product.Price)
+        switch (product.Currency)
         {
-            res.PaymentOk = false;
+            case CurrencyType.Gold:
+                userStat.Gold -= product.Price;
+                break;
+            case CurrencyType.Spinel:
+                userStat.Spinel -= product.Price;
+                break;
+            default:
+                return BadRequest("지원하지 않는 화폐입니다.");
         }
-        else
-        {
-            await PurchaseComplete(userId, required.ProductCode);
-        }
+
+        await PurchaseComplete(userId, required.ProductCode);
+
+        response.PaymentOk = true;
+        return Ok(response);
+    }
+
+    [HttpPut]
+    [Route("PurchaseDaily")]
+    public async Task<IActionResult> PurchaseDaily([FromBody] DailyPaymentPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
         
-        return Ok(res);
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdNull == null) return Unauthorized();
+        
+        var userId = userIdNull.Value;
+        var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
+        var product = _context.Product.FirstOrDefault(p => p.ProductCode == required.ProductCode);
+        var dailyProducts = _cachedDataProvider.GetDailyProductSnapshots();
+        if (product == null || userStat == null) return BadRequest("Invalid product code");
+        
+        var response = new DailyPaymentPacketResponse();
+        var balanceGold = userStat.Gold;
+        var price = dailyProducts.First(dp => dp.ProductId == product.ProductId).Price;
+        if (balanceGold < price) return Ok(response);
+        
+        userStat.Gold -= price;
+        await PurchaseComplete(userId, required.ProductCode);
+        
+        response.PaymentOk = true;
+        return Ok(response);
     }
     
-    [HttpPost]
+    [HttpPut]
     [Route("PurchaseSpinel")]
     public async Task<IActionResult> PurchaseSpinel([FromBody] CashPaymentPacketRequired required)
     {

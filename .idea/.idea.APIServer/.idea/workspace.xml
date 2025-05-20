@@ -13,9 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
@@ -25,7 +22,6 @@
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
@@ -113,33 +109,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET 실행 설정 프로파일.APIServer: AccountServer.executor": "Run",
-    ".NET 실행 설정 프로파일.MatchMakingServer.executor": "Run",
-    ".NET 실행 설정 프로파일.WebSite.executor": "Debug",
-    ".NET 프로젝트.PacketGenerator.executor": "Debug",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "XThreadsFramesViewSplitterKey": "0.86694825",
-    "git-widget-placeholder": "main",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.webpack",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Run&quot;,
+    &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Run&quot;,
+    &quot;.NET 실행 설정 프로파일.WebSite.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET 프로젝트.PacketGenerator.executor&quot;: &quot;Debug&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.86694825&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.webpack&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mariadb"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mariadb&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="다중 시작.BothServers">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -535,15 +531,8 @@
       <workItem from="1747311143143" duration="1242000" />
       <workItem from="1747358179037" duration="16208000" />
       <workItem from="1747456038944" duration="6764000" />
-      <workItem from="1747489488452" duration="26206000" />
-    </task>
-    <task id="LOCAL-00042" summary="github action test 3">
-      <option name="closed" value="true" />
-      <created>1744126576835</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1744126576835</updated>
+      <workItem from="1747489488452" duration="26243000" />
+      <workItem from="1747706812083" duration="5253000" />
     </task>
     <task id="LOCAL-00043" summary="github action test 4">
       <option name="closed" value="true" />
@@ -929,7 +918,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747483393764</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="feat-DailyProductService.cs">
+      <option name="closed" value="true" />
+      <created>1747665498346</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1747665498346</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -939,7 +936,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="DB sync" />
     <MESSAGE value="250425&#10;&#10;User Account Delete Method Added.&#10; - Hard delete&#10; - With cascade delete enabled, all keys associated with the user are automatically deleted when the user is removed.&#10; &#10;A new property has been added to the User table.&#10; - The 'Login Method' property has been added.&#10; - It specifies how the user logged in (e.g., Apple, Google)." />
     <MESSAGE value="Summary 250427&#10;&#10;DB version upgraded to 0.2v&#10; - User table has been divided into User and User Auth.&#10; - Friend table has only one row.&#10; - Daily product table will be added." />
     <MESSAGE value="..." />
@@ -964,7 +960,8 @@
     <MESSAGE value="feat(DB, Controller) Applying ads remover&#10;&#10;New column added&#10; - Column 'Price' to table 'DailyProduct'&#10; &#10;Some methods&#10; - Methods related ads remover are added.&#10; - Refreshing daily products&#10; - Timer for refreshing button has been created." />
     <MESSAGE value="feat(DB) User Tutorial Table Changed.&#10;&#10;PK has been changed to 'UserTutorialId'.&#10;One of exist Key 'TutorialType' is mutable if new type of tutorial added." />
     <MESSAGE value="0517" />
-    <option name="LAST_COMMIT_MESSAGE" value="0517" />
+    <MESSAGE value="feat-DailyProductService.cs" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat-DailyProductService.cs" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -143,7 +143,7 @@ public class UserAccountController : ControllerBase
         return res;
     }
 
-    [HttpPut]
+    [HttpPost]
     [Route("LoginApple")]
     public async Task<IActionResult> LoginApple([FromBody] LoginApplePacketRequired required)
     {
@@ -185,7 +185,7 @@ public class UserAccountController : ControllerBase
         return Ok(res);
     }
     
-    [HttpPut]
+    [HttpPost]
     [Route("LoginGoogle")]
     public async Task<IActionResult> LoginGoogle([FromBody] LoginGooglePacketRequired required)
     {
@@ -229,7 +229,7 @@ public class UserAccountController : ControllerBase
         return Ok(res);
     }
 
-    [HttpPut]
+    [HttpPost]
     [Route("LoginGuest")]
     public async Task<IActionResult> LoginGuest([FromBody] LoginGuestPacketRequired required)
     {
@@ -255,7 +255,7 @@ public class UserAccountController : ControllerBase
         return Ok(res);
     }
 
-    [HttpPut]
+    [HttpPost]
     [Route("PolicyAgreed")]
     public async Task<IActionResult> PolicyAgreed([FromBody] PolicyAgreedPacketRequired required)
     {
@@ -532,6 +532,44 @@ public class UserAccountController : ControllerBase
         });
 
         return Ok(res);
+    }
+
+    [HttpDelete]
+    [Route("Logout")]
+    public async Task<IActionResult> Logout([FromBody] LogoutPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdNull == null) return Unauthorized();
+        var userId = userIdNull.Value;
+        
+        var res = new LogoutPacketResponse();
+        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserId == userId);
+        var refreshToken = _context.RefreshTokens.AsNoTracking().Where(rt => rt.UserId == userId);
+        if (user == null) return NotFound();
+        
+        if (refreshToken.Any())
+        {
+            foreach (var token in refreshToken)
+            {
+                _context.RefreshTokens.Remove(token);
+            }
+        }
+        
+        user.Act = UserAct.Offline;
+        await _context.SaveChangesExtendedAsync();
+        res.LogoutOk = true;
+        
+        return Ok(res);
+    }
+    
+    [HttpDelete]
+    [Route("DeleteAccount")]
+    public async Task<IActionResult> DeleteAccountHard()
+    {
+        return Ok();
     }
     
     [HttpDelete]

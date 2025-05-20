@@ -40,17 +40,14 @@ public class MatchMakingService : BackgroundService
     {
         lock (_lock)
         {
-            Console.WriteLine("MatchMaking Service is running!");
-
             foreach (var mapId in _sheepUserQueues.Keys)
             {
                 var sheepUserQueue = _sheepUserQueues[mapId];
                 var wolfUserQueue = _wolfUserQueues[mapId];
-
-                Console.WriteLine($"Count : {sheepUserQueue.Count} / {wolfUserQueue.Count}");
                 
                 while (sheepUserQueue.Count > 0 && wolfUserQueue.Count > 0)
                 {
+                    Console.WriteLine($"Processing Matchmaking... {sheepUserQueue.Count}, {wolfUserQueue.Count}");
                     var matchResult = FindMatch(mapId);
                     if (matchResult == null) break;
                     ProcessMatchRequest(matchResult.Value.Item1, matchResult.Value.Item2);

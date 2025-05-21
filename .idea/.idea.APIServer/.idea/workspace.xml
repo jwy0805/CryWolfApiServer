@@ -11,8 +11,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="feat - 1.0.0 production">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="feat 1.0.0 -&gt; Loading User Daily Product Error Fixed.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -512,15 +513,7 @@
       <workItem from="1747456038944" duration="6764000" />
       <workItem from="1747489488452" duration="26243000" />
       <workItem from="1747706812083" duration="12567000" />
-      <workItem from="1747783471698" duration="1936000" />
-    </task>
-    <task id="LOCAL-00045" summary="github actions test 6">
-      <option name="closed" value="true" />
-      <created>1744128812813</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1744128812813</updated>
+      <workItem from="1747783471698" duration="3103000" />
     </task>
     <task id="LOCAL-00046" summary="github action test 7">
       <option name="closed" value="true" />
@@ -906,7 +899,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747783496716</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="feat 1.0.0 -&gt; Loading User Daily Product Error Fixed.">
+      <option name="closed" value="true" />
+      <created>1747786057429</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1747786057429</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -916,7 +917,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="..." />
     <MESSAGE value="AppDbContext DailyProduct Model Created." />
     <MESSAGE value="250429&#10;&#10;New table added.&#10; - Daily Product set.&#10; - Logic for Displaying Daily Product will be added." />
     <MESSAGE value="UserSubscription Table Added.&#10; - Managing user's subscriptions such as GoldenPass, Ads Remover.&#10; - All payment history can be managed by UserSubscriptionHistory table." />
@@ -941,7 +941,8 @@
     <MESSAGE value="feat-DailyProductService.cs" />
     <MESSAGE value="feat(Build) - first product build" />
     <MESSAGE value="feat - 1.0.0 production" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat - 1.0.0 production" />
+    <MESSAGE value="feat 1.0.0 -&gt; Loading User Daily Product Error Fixed." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat 1.0.0 -&gt; Loading User Daily Product Error Fixed." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

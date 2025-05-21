@@ -154,7 +154,7 @@ public class UserService
             _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = wolfUnit, Count = 1});
         }
         
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             var deck = new Deck { UserId = userId, Faction = Faction.Sheep, DeckNumber = i + 1};
             _context.Deck.Add(deck);
@@ -166,7 +166,7 @@ public class UserService
             }
         }
         
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             var deck = new Deck { UserId = userId, Faction = Faction.Wolf, DeckNumber = i + 1};
             if (i == 0)

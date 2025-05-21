@@ -372,6 +372,16 @@ public class LogoutPacketResponse
     public bool LogoutOk { get; set; }
 }
 
+public class DeleteUserAccountPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class DeleteUserAccountPacketResponse
+{
+    public bool DeleteOk { get; set; }
+}
+
 public class PolicyAgreedPacketRequired
 {
     public string AccessToken { get; set; }

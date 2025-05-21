@@ -567,9 +567,26 @@ public class UserAccountController : ControllerBase
     
     [HttpDelete]
     [Route("DeleteAccount")]
-    public async Task<IActionResult> DeleteAccountHard()
+    public async Task<IActionResult> DeleteAccountHard([FromBody] DeleteUserAccountPacketRequired required)
     {
-        return Ok();
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdNull == null) return Unauthorized();
+        
+        var userId = userIdNull.Value;
+        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserId == userId);
+        if (user == null) return NotFound();
+        
+        var res = new DeleteUserAccountPacketResponse();
+        
+        _context.User.Remove(user);
+        await _context.SaveChangesAsync();
+        
+        res.DeleteOk = true;
+        
+        return Ok(res);
     }
     
     [HttpDelete]

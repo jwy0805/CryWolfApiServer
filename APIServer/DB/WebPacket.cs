@@ -78,6 +78,7 @@ public class UserInfo
     public int WinRate { get; set; }
     public int Gold { get; set; }
     public int Spinel { get; set; }
+    public bool NameInitialized { get; set; }
     public List<SubscriptionInfo> Subscriptions { get; set; }
 }
 
@@ -430,6 +431,18 @@ public class ChangeActTestPacketRequired
 public class ChangeActTestPacketResponse
 {
     public bool ChangeOk { get; set; }
+}
+
+public class UpdateNamePacketRequired
+{
+    public string AccessToken { get; set; }
+    public string NewName { get; set; }
+}
+
+public class UpdateNamePacketResponse
+{
+    public bool ChangeNameOk { get; set; }
+    public int ErrorCode { get; set; } 
 }
 
 public class CancelMatchPacketRequired

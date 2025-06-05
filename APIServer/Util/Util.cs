@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace ApiServer.Util;
 
 public class Util
@@ -15,5 +17,21 @@ public class Util
         }
         
         return shuffled;
+    }
+
+    private static readonly Regex _engRx = new(@"^[A-Za-z0-9_]{3,20}$");
+    private static readonly Regex _cjkrx = new(
+        @"^[\uAC00-\uD7A3" +       // 한글 음절
+        @"\u3040-\u309F" +       // 히라가나
+        @"\u30A0-\u30FF" +       // 가타카나
+        @"\u4E00-\u9FFF" +       // CJK Unified Ideographs(한자)
+        @"0-9" + 
+        @"]{3,10}$");
+    
+    public static bool IsValidUsername(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return false;
+        
+        return _engRx.IsMatch(name) || _cjkrx.IsMatch(name);
     }
 }

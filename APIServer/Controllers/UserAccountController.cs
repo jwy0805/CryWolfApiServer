@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using ApiServer.DB;
 using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,10 @@ public class UserAccountController : ControllerBase
         _logger = logger;
     }
     
+    /// <summary>
+    /// Error Code 1 -> Account Already Exists.
+    /// Error Code 2 -> Password Invalid
+    /// </summary>
     [HttpPost]
     [Route("ValidateNewAccount")]
     public async Task<IActionResult> ValidateNewAccount([FromBody] ValidateNewAccountPacketRequired required)
@@ -365,6 +370,7 @@ public class UserAccountController : ControllerBase
             WinRate = winRate,
             Gold = userStat.Gold,
             Spinel = userStat.Spinel,
+            NameInitialized = user.NameInitialized,
             Subscriptions = subscriptionInfos,
         };
 
@@ -414,6 +420,21 @@ public class UserAccountController : ControllerBase
             Console.WriteLine("Load Exp Error");
             return NotFound();
         }
+        
+        var userSubscription = _context.UserSubscription.AsNoTracking()
+            .Where(userSubscription => userSubscription.UserId == userId);
+        var subscriptionInfos = new List<SubscriptionInfo>();
+        if (userSubscription.Any() == false)
+        {
+            subscriptionInfos = userSubscription
+                .Where(us => us.ExpiresAtUtc > DateTime.UtcNow)
+                .Select(us => new SubscriptionInfo
+                {
+                    SubscriptionType = us.SubscriptionType,
+                    ExpiresAt = us.ExpiresAtUtc,
+                    StartAt = us.CreatedAtUtc,
+                }).ToList();
+        }
             
         res.UserInfo = new UserInfo
         {
@@ -428,6 +449,8 @@ public class UserAccountController : ControllerBase
             WinRate = winRate,
             Gold = userStat.Gold,
             Spinel = userStat.Spinel,
+            NameInitialized = user.NameInitialized,
+            Subscriptions = subscriptionInfos,
         };
         
         res.UserTutorialInfo = new UserTutorialInfo
@@ -443,6 +466,50 @@ public class UserAccountController : ControllerBase
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
         res.LoadTestUserOk = true;
+        
+        return Ok(res);
+    }
+
+    /// <summary>
+    /// ErrorCode 1 -> UserName Already Exists / 
+    /// ErrorCode 2 -> Invalid UserName
+    /// </summary>
+    [HttpPut]
+    [Route("UpdateUsername")]
+    public async Task<IActionResult> UpdateUsername([FromBody] UpdateNamePacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var userIdN = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdN == null) return Unauthorized();  
+        
+        var userId = userIdN.Value;
+        var res = new UpdateNamePacketResponse();
+        var user = await _context.User.FirstOrDefaultAsync(u => u.UserId == userId);
+        if (user == null) return NotFound();
+        
+        var userNameExists = await _context.User.AsNoTracking().AnyAsync(u => u.UserName == required.NewName);
+        if (userNameExists)
+        {
+            res.ChangeNameOk = false;
+            res.ErrorCode = 1;
+            return Ok(res);
+        }
+
+        if (Util.Util.IsValidUsername(required.NewName) == false)
+        {
+            res.ChangeNameOk = false;
+            res.ErrorCode = 2;
+            return Ok(res);
+        }
+        
+        user.UserName = required.NewName;
+        user.NameInitialized = true;
+        await _context.SaveChangesExtendedAsync();
+        
+        res.ChangeNameOk = true;
+        res.ErrorCode = 0;
         
         return Ok(res);
     }

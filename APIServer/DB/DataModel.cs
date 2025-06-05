@@ -23,6 +23,7 @@ public class User
     public int UserId { get; set; }
     [MaxLength(30)]
     public string UserName { get; set; }
+    public bool NameInitialized { get; set; }
     public UserRole Role { get; set; }
     public UserAct Act { get; set; }
     public UserState State { get; set; }

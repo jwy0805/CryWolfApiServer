@@ -211,6 +211,9 @@ namespace ApiServer.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool>("Expired")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime(6)");
 

@@ -157,6 +157,7 @@ public class Mail
     [MaxLength(120)]
     public string? ProductCode { get; set; }
     public bool Claimed { get; set; }
+    public bool Expired { get; set; }
     [MaxLength(120)]
     public string? Message { get; set; }
     [MaxLength(30)]

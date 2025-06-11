@@ -43,6 +43,17 @@ public class MatchCancelPacketResponse
     public int UserId { get; set; }
 }
 
+public class ReportQueueCountsRequired
+{
+    public int QueueCountsSheep { get; set; }
+    public int QueueCountsWolf { get; set; }
+}
+
+public class ReportQueueCountsResponse
+{
+    public bool ReportQueueCountsOk { get; set; }
+}
+
 public class GetRankPointPacketRequired
 {
     public int SheepUserId { get; set; }

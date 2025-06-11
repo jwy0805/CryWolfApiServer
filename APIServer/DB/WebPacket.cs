@@ -48,7 +48,7 @@ public class TestApiToSocketResponse
 
 #endregion
 
-#region API Server Only
+#region External
 
 public class DeleteUserAccountHardPacketRequired
 {
@@ -59,6 +59,19 @@ public class DeleteUserAccountHardPacketRequired
 public class DeleteUserAccountHardPacketResponse
 {
     public bool DeleteOk { get; set; }
+}
+
+public class SendMailByAdminPacketRequired
+{
+    public int[] UserIds { get; set; }
+    public MailType Type { get; set; }
+    public int ProductId { get; set; }
+    public string Message { get; set; }
+}
+
+public class SendMailByAdminPacketResponse
+{
+    public bool SendMailOk { get; set; }
 }
 
 #endregion
@@ -431,6 +444,18 @@ public class ChangeActTestPacketRequired
 public class ChangeActTestPacketResponse
 {
     public bool ChangeOk { get; set; }
+}
+
+public class GetQueueCountsPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class GetQueueCountsPacketResponse
+{
+    public bool GetQueueCountsOk { get; set; }
+    public int QueueCountsSheep { get; set; }
+    public int QueueCountsWolf { get; set; }
 }
 
 public class UpdateNamePacketRequired
@@ -821,6 +846,8 @@ public class ClaimMailPacketRequired
 public class ClaimMailPacketResponse
 {
     public bool ClaimMailOk { get; set; }
+    public bool IsProductMail { get; set; }
+    public int ProductId { get; set; }
 }
 
 public class InviteFriendlyMatchPacketRequired
@@ -957,6 +984,17 @@ public class MatchCancelPacketRequired
 public class MatchCancelPacketResponse
 {
     public int UserId { get; set; }
+}
+
+public class ReportQueueCountsRequired
+{
+    public int SheepQueueCount { get; set; }
+    public int WolfQueueCount { get; set; }
+}
+
+public class ReportQueueCountsResponse
+{
+    public bool ReportQueueCountsOk { get; set; }
 }
 
 public class GetRankPointPacketRequired

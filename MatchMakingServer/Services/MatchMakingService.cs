@@ -27,6 +27,12 @@ public class MatchMakingService : BackgroundService
     {
         _logger.LogInformation("Matchmaking Service is starting.");
 
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            await ReportQueueCountsAsync(stoppingToken);
+        }, stoppingToken);
+
         while (stoppingToken.IsCancellationRequested == false)
         {
             ProcessMatchMaking();
@@ -50,9 +56,46 @@ public class MatchMakingService : BackgroundService
                     Console.WriteLine($"Processing Matchmaking... {sheepUserQueue.Count}, {wolfUserQueue.Count}");
                     var matchResult = FindMatch(mapId);
                     if (matchResult == null) break;
-                    ProcessMatchRequest(matchResult.Value.Item1, matchResult.Value.Item2);
+                    _ = ProcessMatchRequest(matchResult.Value.Item1, matchResult.Value.Item2);
                 }
             }
+        }
+    }
+
+    private async Task ReportQueueCountsAsync(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            try
+            {
+                int sheepCount = 0;
+                int wolfCount = 0;
+                
+                if (_sheepUserQueues.TryGetValue(1, out var queue))
+                {
+                    sheepCount = queue.Count;
+                }
+                
+                if (_wolfUserQueues.TryGetValue(1, out var wolfQueue))
+                {
+                    wolfCount = wolfQueue.Count;
+                }
+                
+                var packet = new ReportQueueCountsRequired
+                {
+                    QueueCountsSheep = sheepCount,
+                    QueueCountsWolf = wolfCount
+                };
+                
+                var res = await _apiService.SendRequestToApiAsync<ReportQueueCountsResponse>(
+                    "Match/ReportQueueCounts", packet, HttpMethod.Post);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to report queue counts.");
+            }
+            
+            await Task.Delay(TimeSpan.FromSeconds(10), token);
         }
     }
 
@@ -87,7 +130,7 @@ public class MatchMakingService : BackgroundService
         }
     }
     
-    private async void ProcessMatchRequest(MatchMakingPacketRequired sheepRequired, MatchMakingPacketRequired wolfRequired)
+    private async Task ProcessMatchRequest(MatchMakingPacketRequired sheepRequired, MatchMakingPacketRequired wolfRequired)
     {   
         _logger.LogInformation(
             $"Matched User {sheepRequired.UserId} (Faction {sheepRequired.Faction}, RankPoint {sheepRequired.RankPoint}) " +
@@ -137,7 +180,7 @@ public class MatchMakingService : BackgroundService
         await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
     }
 
-    private async void ProcessTestMatchRequest(MatchMakingPacketRequired required)
+    private async Task ProcessTestMatchRequest(MatchMakingPacketRequired required)
     {
         _logger.LogInformation($"Test Match Requested User {required.UserId} (Faction {required.Faction}, RankPoint {required.RankPoint})");
         
@@ -226,7 +269,7 @@ public class MatchMakingService : BackgroundService
         if (test)
         {
             Console.WriteLine($"user {packet.UserId} : session {packet.SessionId} test match");
-            ProcessTestMatchRequest(packet);
+            _ = ProcessTestMatchRequest(packet);
         }
         else
         {

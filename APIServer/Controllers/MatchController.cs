@@ -1,4 +1,5 @@
 using ApiServer.DB;
+using ApiServer.Providers;
 using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ public class MatchController : ControllerBase
     private readonly TokenValidator _tokenValidator;
     private readonly MatchService _matchService;
     private readonly RewardService _rewardService;
+    private readonly CachedDataProvider _cachedDataProvider;
     
     public MatchController(
         AppDbContext context, 
@@ -22,7 +24,8 @@ public class MatchController : ControllerBase
         TokenService tokenService, 
         TokenValidator tokenValidator, 
         MatchService matchService,
-        RewardService rewardService)
+        RewardService rewardService,
+        CachedDataProvider cachedDataProvider)
     {
         _context = context;
         _apiService = apiService;
@@ -30,6 +33,7 @@ public class MatchController : ControllerBase
         _tokenValidator = tokenValidator;
         _matchService = matchService;
         _rewardService = rewardService;
+        _cachedDataProvider = cachedDataProvider;
     }
     
     [HttpPut]
@@ -106,6 +110,41 @@ public class MatchController : ControllerBase
             .SendRequestAsync<MatchMakingPacketResponse>("MatchMaking/Match", matchPacket, HttpMethod.Post);
 
         return Ok(res);
+    }
+
+    [HttpPost]
+    [Route("GetQueueCounts")]
+    public GetQueueCountsPacketResponse GetQueueCounts([FromBody] GetQueueCountsPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null)
+        {
+            return new GetQueueCountsPacketResponse { GetQueueCountsOk = false };
+        }
+
+        var res = new GetQueueCountsPacketResponse
+        {
+            GetQueueCountsOk = true,
+            QueueCountsSheep = _cachedDataProvider.QueueCountsSheep,
+            QueueCountsWolf = _cachedDataProvider.QueueCountsWolf,
+        };
+
+        return res;
+    }
+
+    [HttpPost]
+    [Route("ReportQueueCounts")]
+    public ReportQueueCountsResponse ReportQueueCounts([FromBody] ReportQueueCountsRequired required)
+    {
+        _cachedDataProvider.QueueCountsSheep = required.SheepQueueCount;
+        _cachedDataProvider.QueueCountsWolf = required.WolfQueueCount;
+
+        var res = new ReportQueueCountsResponse
+        {
+            ReportQueueCountsOk = true,
+        };
+
+        return res;
     }
     
     [HttpPut]

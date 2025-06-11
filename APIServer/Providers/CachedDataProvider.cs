@@ -14,6 +14,9 @@ public class CachedDataProvider
     private readonly List<FreeProductSnapshot> _freeProductSnapshots;
     private readonly Random _random = new();
     
+    public int QueueCountsSheep { get; set; } = 0;
+    public int QueueCountsWolf { get; set; } = 0;
+    
     public List<DailyProductSnapshot> GetDailyProductSnapshots() => _dailyProductSnapshots;
 
     public CachedDataProvider(IDbContextFactory<AppDbContext> dbContextFactory)

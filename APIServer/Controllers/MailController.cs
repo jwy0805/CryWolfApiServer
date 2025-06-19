@@ -32,7 +32,7 @@ public class MailController : ControllerBase
         _logger = logger;
     }
 
- [HttpPost]
+    [HttpPost]
     [Route("SendMail")]
     public async Task<IActionResult> SendMail([FromBody] SendMailByAdminPacketRequired required)
     {
@@ -52,7 +52,7 @@ public class MailController : ControllerBase
         }
 
         var productCode = string.Empty;
-        if (required.ProductId != 0)
+        if (required.ProductId != null && required.ProductId != 0)
         {
             var product = await _context.Product.AsNoTracking()
                 .FirstOrDefaultAsync(p => p.ProductId == required.ProductId);
@@ -62,13 +62,14 @@ public class MailController : ControllerBase
         var utcNow = DateTime.UtcNow;
         var mails = users.Select(userId => new Mail
         {
-            UserId      = userId,
-            Type        = required.Type,
-            CreatedAt   = utcNow,
-            ExpiresAt   = utcNow.AddDays(30),
-            ProductId   = required.ProductId == 0 ? null : required.ProductId,
+            UserId = userId,
+            Type = required.Type,
+            CreatedAt = utcNow,
+            ExpiresAt = utcNow.AddDays(30),
+            ProductId = required.ProductId == 0 ? null : required.ProductId,
             ProductCode = productCode,
-            Message     = required.Message
+            Message = required.Message,
+            Sender = required.Sender,
         }).ToList();
 
         var response = new SendMailByAdminPacketResponse();
@@ -105,41 +106,41 @@ public class MailController : ControllerBase
     
     [HttpPost]
     [Route("GetMail")]
-    public IActionResult GetMail([FromBody] LoadPendingMailPacketRequired required)
+    public async Task<IActionResult> GetMail([FromBody] LoadPendingMailPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
-        var res = new LoadPendingMailPacketResponse();
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal) ?? 0;
-        if (userId == 0)
-        {
-            res.LoadPendingMailOk = false;
-            return Ok(res);
-        }
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdNull == null) return Unauthorized();
         
-        var mails = _context.Mail.AsNoTracking()
-            .Where(mail => mail.UserId == userId && mail.Expired == false)
-            .ToList();
+        // Left join <Mail, Product>
+        var userId = userIdNull.Value;
+        var mailInfos = await (
+            from mail in _context.Mail.AsNoTracking()
+            where mail.UserId == userId && mail.Expired == false
+            join prod in _context.Product.AsNoTracking()
+                on mail.ProductId equals prod.ProductId into prodGroup
+            from prod in prodGroup.DefaultIfEmpty()
+            select new MailInfo
+            {
+                MailId = mail.MailId,
+                Type = mail.Type,
+                SentAt = mail.CreatedAt,
+                ExpiresAt = mail.ExpiresAt,
+                ProductId = mail.ProductId ?? 0,
+                ProductCategory = prod != null ? prod.Category : ProductCategory.None,
+                Claimed = mail.Claimed,
+                Message = mail.Message ?? string.Empty,
+                Sender = mail.Sender  ?? "Cry Wolf"
+            }
+        ).ToListAsync();
         
-        res.LoadPendingMailOk = true;
-        res.PendingMailList = mails.Select(mail => new MailInfo
+        var res = new LoadPendingMailPacketResponse
         {
-            MailId = mail.MailId,
-            Type = mail.Type,
-            SentAt = mail.CreatedAt,
-            ExpiresAt = mail.ExpiresAt,
-            ProductId = mail.ProductId ?? 0,
-            Claimed = mail.Claimed,
-            Message = mail.Message ?? "",
-            Sender = mail.Sender ?? "Cry Wolf"
-        }).ToList();
-
-        foreach (var mailInfo in res.PendingMailList)
-        {
-            mailInfo.ProductCategory = _context.Product
-                .FirstOrDefault(p => p.ProductId == mailInfo.ProductId)?.Category ?? ProductCategory.None;
-        }
+            LoadPendingMailOk = true,
+            PendingMailList   = mailInfos
+        };
 
         return Ok(res);
     }
@@ -183,49 +184,6 @@ public class MailController : ControllerBase
         }
         
         await _context.SaveChangesAsync();
-        // var strategy = _context.Database.CreateExecutionStrategy();
-        //
-        // await strategy.ExecuteAsync(async () =>
-        // {
-        //     await using var transaction = await _context.Database.BeginTransactionAsync();
-        //     try
-        //     {
-        //         // Lock the mail row 'for update', other transactions will wait until this transaction is committed
-        //         var mail = _context.Mail
-        //             .FromSqlRaw("SELECT * FROM Mail WHERE MailId = {0} AND UserId = {1} FOR UPDATE"
-        //                 , required.MailId, userId)
-        //             .FirstOrDefault();
-        //         
-        //         if (mail == null || mail.Claimed)
-        //         {
-        //             res.ClaimMailOk = false;
-        //             return;
-        //         }
-        //
-        //         var compositions = _context.ProductComposition
-        //             .Where(pc => pc.ProductId == mail.ProductId)
-        //             .ToList();
-        //         
-        //         foreach (var product in compositions
-        //                      .Select(composition => 
-        //                          _rewardService.ClaimFinalProducts(composition.CompositionId))
-        //                         .SelectMany(productList => productList))
-        //         {
-        //             _rewardService.ClaimPurchasedProduct(userId, product);
-        //         }
-        //
-        //         mail.Claimed = true;
-        //         await _context.SaveChangesExtendedAsync();
-        //         await transaction.CommitAsync();
-        //         res.ClaimMailOk = true;
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Console.WriteLine(e);
-        //         await transaction.RollbackAsync();
-        //         res.ClaimMailOk = false;
-        //     }
-        // });
         
         return Ok(res);
     }

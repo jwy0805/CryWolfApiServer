@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ApiServer.DB;
 
 #pragma warning disable CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
@@ -65,8 +67,10 @@ public class SendMailByAdminPacketRequired
 {
     public int[] UserIds { get; set; }
     public MailType Type { get; set; }
-    public int ProductId { get; set; }
+    public int? ProductId { get; set; }
     public string Message { get; set; }
+    [MaxLength(20)]
+    public string Sender { get; set; }
 }
 
 public class SendMailByAdminPacketResponse

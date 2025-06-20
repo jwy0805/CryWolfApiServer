@@ -14,6 +14,7 @@ public class TokenValidator
     private readonly string _secret;
     private readonly AppDbContext _dbContext;
     private readonly TokenService _tokenService;
+    private readonly ILogger<TokenValidator> _logger;
     
     private static readonly ConfigurationManager<OpenIdConnectConfiguration> ConfigManagerGoogle = 
         new("https://accounts.google.com/.well-known/openid-configuration", 
@@ -26,11 +27,12 @@ public class TokenValidator
             new HttpDocumentRetriever()
         );
 
-    public TokenValidator(string secret, AppDbContext dbContext, TokenService tokenService)
+    public TokenValidator(string secret, AppDbContext dbContext, TokenService tokenService, ILogger<TokenValidator> logger)
     {
         _secret = secret;
         _dbContext = dbContext;
         _tokenService = tokenService;
+        _logger = logger;
     }
 
     public int? GetUserIdFromAccessToken(ClaimsPrincipal principal)
@@ -80,7 +82,7 @@ public class TokenValidator
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogWarning("Apple token validation failed: " + e.Message);
             throw;
         }
     }
@@ -119,7 +121,7 @@ public class TokenValidator
         }
         catch (Exception e)
         {
-            Console.WriteLine("Token validation failed: " + e.Message);
+            _logger.LogWarning("Token validation failed: " + e.Message);
             return string.Empty;
         }
     }
@@ -153,14 +155,14 @@ public class TokenValidator
             
             foreach (var claim in principal.Claims)
             {
-                Console.WriteLine($"Validate / Type: {claim.Type}, Value: {claim.Value}");
+                _logger.LogInformation($"Validate / Type: {claim.Type}, Value: {claim.Value}");
             }
             
             return principal;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogWarning("Token validation failed: " + e.Message);
             return null;
         }
     }

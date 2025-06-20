@@ -30,7 +30,8 @@ builder.Services.AddScoped<TokenService>(provider => new TokenService(jwtSecret,
 
 builder.Services.AddScoped<TokenValidator>(provider => new TokenValidator(jwtSecret, 
         provider.GetRequiredService<AppDbContext>(),
-        provider.GetRequiredService<TokenService>()));
+        provider.GetRequiredService<TokenService>(),
+        provider.GetRequiredService<ILogger<TokenValidator>>()));
 
 builder.Services.AddHostedService<ExpiredTokenCleanupService>();
 builder.Services.AddHostedService<UserManagementService>();

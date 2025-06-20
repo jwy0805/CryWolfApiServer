@@ -92,13 +92,21 @@ public class SinglePlayController: ControllerBase
     {
         _logger.LogInformation("[StartGame] method called");
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null) return Unauthorized();
+        if (principal == null)
+        {
+            _logger.LogInformation("[StartGame] Unauthorized access - invalid token");
+            return Unauthorized();
+        }
         
-        var userIdInAccessToken = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userIdInAccessToken == null) return Unauthorized();
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdNull == null)
+        {
+            _logger.LogInformation("[StartGame] Unauthorized access - userId not found in token");
+            return Unauthorized();
+        }
         
         var res = new ChangeActPacketSingleResponse();
-        var userId = userIdInAccessToken.Value;
+        var userId = userIdNull.Value;
         var user = _context.User.FirstOrDefault(u => u.UserId == userId);
         var battleSetting = _context.BattleSetting.AsNoTracking().FirstOrDefault(bs => bs.UserId == userId);
         var deck = _context.Deck.AsNoTracking()

@@ -21,6 +21,7 @@ public class PaymentController : ControllerBase
     private readonly TaskQueueService _taskQueueService;
     private readonly IDailyProductService _dailyProductService;
     private readonly CachedDataProvider _cachedDataProvider;
+    private readonly ILogger<PaymentController> _logger;
     
     public PaymentController(
         AppDbContext context,
@@ -28,7 +29,8 @@ public class PaymentController : ControllerBase
         TokenService tokenService,
         TokenValidator tokenValidator,
         IDailyProductService dailyProductService,
-        CachedDataProvider cachedDataProvider)
+        CachedDataProvider cachedDataProvider,
+        ILogger<PaymentController> logger)
     {
         _context = context;
         _taskQueueService = taskQueueService;
@@ -36,6 +38,7 @@ public class PaymentController : ControllerBase
         _tokenValidator = tokenValidator;
         _dailyProductService = dailyProductService;
         _cachedDataProvider = cachedDataProvider;
+        _logger = logger;
     }
 
     [HttpPost]

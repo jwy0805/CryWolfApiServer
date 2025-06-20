@@ -17,6 +17,7 @@ public class MatchController : ControllerBase
     private readonly MatchService _matchService;
     private readonly RewardService _rewardService;
     private readonly CachedDataProvider _cachedDataProvider;
+    private readonly ILogger<MatchController> _logger;
     
     public MatchController(
         AppDbContext context, 
@@ -25,7 +26,8 @@ public class MatchController : ControllerBase
         TokenValidator tokenValidator, 
         MatchService matchService,
         RewardService rewardService,
-        CachedDataProvider cachedDataProvider)
+        CachedDataProvider cachedDataProvider,
+        ILogger<MatchController> logger)
     {
         _context = context;
         _apiService = apiService;
@@ -34,6 +36,7 @@ public class MatchController : ControllerBase
         _matchService = matchService;
         _rewardService = rewardService;
         _cachedDataProvider = cachedDataProvider;
+        _logger = logger;
     }
     
     [HttpPut]
@@ -262,8 +265,7 @@ public class MatchController : ControllerBase
             || userInfo.DeckUnits.Length != 6)
         {
             res.ChangeOk = false;
-            Console.WriteLine("start tutorial error");
-            Console.WriteLine($"{userInfo.User?.UserId}, {userInfo.DeckUnits.Length}");
+            _logger.LogWarning("start tutorial error");
             return NotFound();
         }
 
@@ -528,13 +530,12 @@ public class MatchController : ControllerBase
         user.Act = UserAct.InLobby;
         
         // Remove user from match making queue
-        Console.WriteLine("cancel");
         var cancelPacket = new MatchCancelPacketRequired { UserId = user.UserId };
         await _apiService
             .SendRequestAsync<MatchCancelPacketResponse>("MatchMaking/CancelMatch", cancelPacket, HttpMethod.Post);
         
         res.CancelOk = await _context.SaveChangesExtendedAsync();
-        Console.WriteLine("cancel ok");
+        _logger.LogInformation("Cancel match making for user {UserId}", user.UserId);
         return Ok(res);
     }
 
@@ -582,7 +583,7 @@ public class MatchController : ControllerBase
         user.Act = UserAct.InLobby;
         
         var res = new SurrenderPacketResponse { SurrenderOk = await _context.SaveChangesExtendedAsync() };
-        Console.WriteLine("surrender ok");
+        _logger.LogInformation("Surrender game {UserId}", user.UserId);
         return Ok(res);
     }
 

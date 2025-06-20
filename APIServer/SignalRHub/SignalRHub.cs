@@ -9,9 +9,9 @@ namespace ApiServer.SignalRHub;
 
 public class SignalRHub: Hub
 {
-    private readonly ILogger<SignalRHub> _logger;
     private readonly AppDbContext _context;
     private readonly TokenValidator _tokenValidator;
+    private readonly ILogger<SignalRHub> _logger;
 
     private static readonly ConcurrentDictionary<string, string> LobbyConnectionUsers = new();
     private static readonly ConcurrentDictionary<string, string> LobbyUserConnections = new();
@@ -19,11 +19,11 @@ public class SignalRHub: Hub
     private static readonly ConcurrentDictionary<string, List<int>> GameWaitingRoom = new();
     private static readonly ConcurrentDictionary<string, Faction> HostFaction = new();
     
-    public SignalRHub(ILogger<SignalRHub> logger, AppDbContext context, TokenValidator tokenValidator)
+    public SignalRHub(AppDbContext context, TokenValidator tokenValidator, ILogger<SignalRHub> logger)
     {
-        _logger = logger;
         _context = context;
         _tokenValidator = tokenValidator;
+        _logger = logger;
     }
 
     public async Task JoinLobby(string username)
@@ -317,7 +317,7 @@ public class SignalRHub: Hub
         }
         else
         {
-            Console.WriteLine("Friend is not in lobby.");
+            _logger.LogInformation("Friend is not in lobby.");
         }
 
         res.FriendRequestOk = true;

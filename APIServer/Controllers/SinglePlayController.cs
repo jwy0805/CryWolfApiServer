@@ -14,19 +14,22 @@ public class SinglePlayController: ControllerBase
     private readonly ApiService _apiService;
     private readonly RewardService _rewardService;
     private readonly TokenValidator _tokenValidator;
+    private readonly ILogger<SinglePlayController> _logger;
     
     public SinglePlayController(
         AppDbContext context,
         SinglePlayService singlePlayService,
         ApiService apiService,
         RewardService rewardService, 
-        TokenValidator tokenValidator)
+        TokenValidator tokenValidator,
+        ILogger<SinglePlayController> logger)
     {
         _context = context;
         _singlePlayService = singlePlayService;
         _apiService = apiService;
         _rewardService = rewardService;
         _tokenValidator = tokenValidator;
+        _logger = logger;
     }
     
     [HttpPost("LoadStageInfo")]
@@ -87,7 +90,7 @@ public class SinglePlayController: ControllerBase
     [HttpPut("StartGame")]
     public async Task<IActionResult> StartGame([FromBody] ChangeActPacketSingleRequired required)
     {
-        Console.WriteLine("[StartGame] method called");
+        _logger.LogInformation("[StartGame] method called");
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
         
@@ -105,13 +108,13 @@ public class SinglePlayController: ControllerBase
         
         if (user == null || battleSetting == null || deck == null)
         {
-            Console.WriteLine("[StartGame] User or BattleSetting or Deck or UserStage not found on single play start");
+            _logger.LogInformation("[StartGame] User or BattleSetting or Deck or UserStage not found on single play start");
             return NotFound();
         }
 
         if (userStage == null || userStage.StageId != required.StageId)
         {
-            Console.WriteLine($"[StartGame] Stage id mismatch - suspected cheating user - {userId}");
+            _logger.LogInformation($"[StartGame] Stage id mismatch - suspected cheating user - {userId}");
             return NotFound();            
         }
 
@@ -125,7 +128,7 @@ public class SinglePlayController: ControllerBase
         
         if (stageInfo == null)
         {
-            Console.WriteLine("[StartGame] StageInfo not found");
+            _logger.LogInformation("[StartGame] StageInfo not found");
             return NotFound();
         }
         
@@ -144,7 +147,7 @@ public class SinglePlayController: ControllerBase
             StageId = required.StageId
         };
 
-        Console.WriteLine($"[StartGame] {required.SessionId}");
+        _logger.LogInformation($"[StartGame] {required.SessionId}");
         await _apiService.SendRequestToSocketAsync<SinglePlayStartPacketRequired>(
             "singlePlay", singlePlayPacket, HttpMethod.Post);
         

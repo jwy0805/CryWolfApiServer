@@ -94,14 +94,12 @@ public class SinglePlayController: ControllerBase
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null)
         {
-            _logger.LogInformation("[StartGame] Unauthorized access - invalid token");
             return Unauthorized();
         }
         
         var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
         if (userIdNull == null)
         {
-            _logger.LogInformation("[StartGame] Unauthorized access - userId not found in token");
             return Unauthorized();
         }
         

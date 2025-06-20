@@ -156,7 +156,7 @@ public class UserService
         
         for (int i = 0; i < 5; i++)
         {
-            var deck = new Deck { UserId = userId, Faction = Faction.Sheep, DeckNumber = i + 1};
+            var deck = new Deck { UserId = userId, Faction = Faction.Sheep, DeckNumber = i + 1, LastPicked = i == 0};
             _context.Deck.Add(deck);
             _context.SaveChangesExtended();
 
@@ -168,7 +168,7 @@ public class UserService
         
         for (int i = 0; i < 5; i++)
         {
-            var deck = new Deck { UserId = userId, Faction = Faction.Wolf, DeckNumber = i + 1};
+            var deck = new Deck { UserId = userId, Faction = Faction.Wolf, DeckNumber = i + 1, LastPicked = i == 0};
             if (i == 0)
             {
                 deck.LastPicked = true;

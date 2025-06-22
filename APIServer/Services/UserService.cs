@@ -223,7 +223,7 @@ public class UserService
             },
             new UserStage
             {
-                StageId = 5001, UserId = userId, IsAvailable = false, IsCleared = false, StageLevel = 1, StageStar = 0
+                StageId = 5001, UserId = userId, IsAvailable = true, IsCleared = false, StageLevel = 1, StageStar = 0
             }
         };
         

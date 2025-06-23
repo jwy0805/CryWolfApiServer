@@ -11,7 +11,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="" />
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,7 +137,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
+  <component name="RunManager" selected="다중 시작.BothServers">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -303,12 +326,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue=".NET 프로젝트.PacketGenerator" />
+      <item itemvalue=".NET 실행 설정 프로파일.WebSite" />
       <item itemvalue=".NET 실행 설정 프로파일.APIServer: AccountServer" />
       <item itemvalue=".NET 실행 설정 프로파일.MatchMakingServer" />
-      <item itemvalue=".NET 실행 설정 프로파일.WebSite" />
-      <item itemvalue="다중 시작.BothServers" />
+      <item itemvalue=".NET 프로젝트.PacketGenerator" />
       <item itemvalue="Docker.APIServer/Dockerfile" />
+      <item itemvalue="다중 시작.BothServers" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
@@ -525,38 +548,8 @@
       <workItem from="1749620078310" duration="6832000" />
       <workItem from="1749637678689" duration="6510000" />
       <workItem from="1750296836140" duration="1300000" />
-    </task>
-    <task id="LOCAL-00052" summary="github actions test 13">
-      <option name="closed" value="true" />
-      <created>1744168661543</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1744168661543</updated>
-    </task>
-    <task id="LOCAL-00053" summary="github actions test 14">
-      <option name="closed" value="true" />
-      <created>1744168958821</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1744168958821</updated>
-    </task>
-    <task id="LOCAL-00054" summary="github actions test 15">
-      <option name="closed" value="true" />
-      <created>1744171154521</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1744171154521</updated>
-    </task>
-    <task id="LOCAL-00055" summary="github actions test 16">
-      <option name="closed" value="true" />
-      <created>1744178166463</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1744178166463</updated>
+      <workItem from="1750413481703" duration="14292000" />
+      <workItem from="1750642041484" duration="4770000" />
     </task>
     <task id="LOCAL-00056" summary="github actions test 17">
       <option name="closed" value="true" />
@@ -918,7 +911,39 @@
       <option name="project" value="LOCAL" />
       <updated>1750300047079</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="feat - logging system">
+      <option name="closed" value="true" />
+      <created>1750414616298</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1750414616298</updated>
+    </task>
+    <task id="LOCAL-00102" summary="feat start game logs">
+      <option name="closed" value="true" />
+      <created>1750416092654</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1750416092654</updated>
+    </task>
+    <task id="LOCAL-00103" summary="feat - Deck Creating">
+      <option name="closed" value="true" />
+      <created>1750419439147</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1750419439147</updated>
+    </task>
+    <task id="LOCAL-00104" summary="feat">
+      <option name="closed" value="true" />
+      <created>1750556748308</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1750556748308</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -928,10 +953,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="." />
-    <MESSAGE value="feat(API) Product Init Method&#10;&#10;Daily product will be initiated when client logs in." />
-    <MESSAGE value="feat(Services) DailyJob Error" />
-    <MESSAGE value="feat(DB) New Column&#10;&#10;NeedAds column has been added into table UserDailyProduct" />
     <MESSAGE value="feat(PaymentController) Get DailyProducts&#10;&#10;Error for creating daily product set has been fixed." />
     <MESSAGE value="feat(Controller) Web Packet Modified&#10;&#10;Class 'UserInfo' in Web Packet has a new property 'UserAccount' from UserAuth DB to bind user account into user manager instance on client." />
     <MESSAGE value="feat(Web) Terms and Privacy&#10;&#10;Terms and Privacy has been created.&#10;It will be shown by users who want to read Terms and Privacy after logging in.&#10;It will be shown by browser, hamonstudio.net." />
@@ -953,7 +974,11 @@
     <MESSAGE value="feat version 1.0.0 for android" />
     <MESSAGE value="d" />
     <MESSAGE value="feat mail controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat mail controller" />
+    <MESSAGE value="feat - logging system" />
+    <MESSAGE value="feat start game logs" />
+    <MESSAGE value="feat - Deck Creating" />
+    <MESSAGE value="feat" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -402,7 +402,7 @@ public class MatchController : ControllerBase
                     IsCleared = false,
                     IsAvailable = true
                 };
-                
+                _logger.LogInformation($"NextStage: {nextStage.StageId}, UserId: {nextStage.UserId} at {DateTime.Now}");
                 _context.UserStage.Add(nextStage);
             }
             

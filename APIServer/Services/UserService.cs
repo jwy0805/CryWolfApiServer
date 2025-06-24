@@ -98,8 +98,8 @@ public class UserService
             UserLevel = 1,
             RankPoint = 500,
             Exp = 0,
-            Gold = 0,
-            Spinel = 0
+            Gold = 1000,
+            Spinel = 50
         };
             
         var newUserMatch = new UserMatch
@@ -118,6 +118,9 @@ public class UserService
         // Create Initial Deck and Collection
         CreateInitDeckAndCollection(newUser.UserId);
         
+        // Send Mail for internal test
+        SendMailInternalTest(newUser.UserId);
+        
         // Create Initial Sheep and Enchant
         CreateInitSheepAndEnchant(newUser.UserId, new [] { SheepId.PrimeSheepWhite }, new [] { EnchantId.Wind });
         CreateInitCharacter(newUser.UserId, new [] { CharacterId.PlayerCharacterBasic });
@@ -127,6 +130,24 @@ public class UserService
 
         await _context.SaveChangesExtendedAsync();
         return true;
+    }
+
+    private void SendMailInternalTest(int userId)
+    {
+        var mail = new Mail
+        {
+            UserId = userId,
+            Type = MailType.Notice,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(30),
+            ProductId = null,
+            ProductCode = string.Empty,
+            Message = "플레이 해주셔서 감사합니다. 아직 테스트중인 게임으로 상점, 보상 수령 등 몇몇 기능이 제대로 작동하지 않을 수 있습니다.",
+            Sender = "Cry Wolf"
+        };
+
+        _context.Mail.Add(mail);
+        _context.SaveChangesExtended();
     }
     
     private void CreateInitDeckAndCollection(int userId)

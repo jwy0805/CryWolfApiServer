@@ -13,7 +13,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
@@ -549,15 +550,8 @@
       <workItem from="1749637678689" duration="6510000" />
       <workItem from="1750296836140" duration="1300000" />
       <workItem from="1750413481703" duration="14292000" />
-      <workItem from="1750642041484" duration="4770000" />
-    </task>
-    <task id="LOCAL-00056" summary="github actions test 17">
-      <option name="closed" value="true" />
-      <created>1744178423960</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1744178423960</updated>
+      <workItem from="1750642041484" duration="9374000" />
+      <workItem from="1750725993810" duration="10121000" />
     </task>
     <task id="LOCAL-00057" summary="Remove firebase auth&#10;&#10;only use Unity Authentication">
       <option name="closed" value="true" />
@@ -943,7 +937,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750556748308</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL-00105" summary="feat - matchcontroller">
+      <option name="closed" value="true" />
+      <created>1750656946036</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1750656946036</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -953,7 +955,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(PaymentController) Get DailyProducts&#10;&#10;Error for creating daily product set has been fixed." />
     <MESSAGE value="feat(Controller) Web Packet Modified&#10;&#10;Class 'UserInfo' in Web Packet has a new property 'UserAccount' from UserAuth DB to bind user account into user manager instance on client." />
     <MESSAGE value="feat(Web) Terms and Privacy&#10;&#10;Terms and Privacy has been created.&#10;It will be shown by users who want to read Terms and Privacy after logging in.&#10;It will be shown by browser, hamonstudio.net." />
     <MESSAGE value="feat(Database) New Column Added.&#10;&#10;Column 'PolicyAgreed' has been added to verify if the user agreed our policies." />
@@ -978,7 +979,8 @@
     <MESSAGE value="feat start game logs" />
     <MESSAGE value="feat - Deck Creating" />
     <MESSAGE value="feat" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat" />
+    <MESSAGE value="feat - matchcontroller" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat - matchcontroller" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

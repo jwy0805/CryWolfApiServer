@@ -5,6 +5,7 @@ namespace ApiServer.Services;
 public class RewardService
 {
     private readonly AppDbContext _context;
+    private readonly ILogger<RewardService> _logger;
     
     private readonly Random _random = new();
     
@@ -28,9 +29,10 @@ public class RewardService
     
     public List<StageInfo> StageInfos { get; set; } = new();
     
-    public RewardService(AppDbContext context)
+    public RewardService(AppDbContext context, ILogger<RewardService> logger)
     {
         _context = context;
+        _logger = logger;
         
         List<StageEnemy> stageEnemies = _context.StageEnemy.ToList();
         List<StageReward> stageRewards = _context.StageReward.ToList();
@@ -56,6 +58,7 @@ public class RewardService
     {
         var rewards = new List<RewardInfo>();
 
+        // Gold Reward
         foreach (var (range, rewardInfo) in _rankRewardInfos)
         {
             if (rankPoint + rankPointValue < range.Min || rankPoint + rankPointValue > range.Max) continue;
@@ -69,7 +72,8 @@ public class RewardService
             });
             break;
         }
-
+        
+        // Other Rewards
         rewards.AddRange(win ? GetRandomMaterial(3) : GetRandomMaterial(1));
 
         return rewards;
@@ -91,11 +95,6 @@ public class RewardService
             }).ToList();
         
         if (rewards == null) return new List<SingleRewardInfo>();
-        
-        foreach (var reward in rewards)
-        {
-            Console.WriteLine(reward);
-        }
 
         return rewards;
     }

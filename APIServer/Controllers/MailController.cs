@@ -187,4 +187,23 @@ public class MailController : ControllerBase
         
         return Ok(res);
     }
+
+    [HttpDelete]
+    [Route("DeleteReadMail")]
+    public async Task<IActionResult> DeleteReadMail([FromBody] DeleteReadMailPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+        
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdNull == null) return Unauthorized();
+        
+        var userId = userIdNull.Value;
+        var mails = await _context.Mail.Where(m => m.UserId == userId && m.Claimed).ToListAsync();
+        if (mails.Count == 0) return Ok(new DeleteReadMailPacketResponse { DeleteReadMailOk = true });
+        
+        _context.Mail.RemoveRange(mails);
+        await _context.SaveChangesAsync();
+        return Ok(new DeleteReadMailPacketResponse { DeleteReadMailOk = true });
+    }
 }

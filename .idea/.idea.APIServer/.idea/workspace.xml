@@ -13,6 +13,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MailController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MailController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
@@ -551,15 +554,8 @@
       <workItem from="1750296836140" duration="1300000" />
       <workItem from="1750413481703" duration="14292000" />
       <workItem from="1750642041484" duration="9374000" />
-      <workItem from="1750725993810" duration="10121000" />
-    </task>
-    <task id="LOCAL-00057" summary="Remove firebase auth&#10;&#10;only use Unity Authentication">
-      <option name="closed" value="true" />
-      <created>1744244358474</created>
-      <option name="number" value="00057" />
-      <option name="presentableId" value="LOCAL-00057" />
-      <option name="project" value="LOCAL" />
-      <updated>1744244358474</updated>
+      <workItem from="1750725993810" duration="17019000" />
+      <workItem from="1750811138297" duration="4805000" />
     </task>
     <task id="LOCAL-00058" summary="250416&#10;&#10;Google Login Success.&#10;&#10;Apple Login must be tested.">
       <option name="closed" value="true" />
@@ -945,7 +941,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750656946036</updated>
     </task>
-    <option name="localTasksCounter" value="106" />
+    <task id="LOCAL-00106" summary="feat &#10;send test mail">
+      <option name="closed" value="true" />
+      <created>1750765937249</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1750765937249</updated>
+    </task>
+    <option name="localTasksCounter" value="107" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -955,7 +959,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(Controller) Web Packet Modified&#10;&#10;Class 'UserInfo' in Web Packet has a new property 'UserAccount' from UserAuth DB to bind user account into user manager instance on client." />
     <MESSAGE value="feat(Web) Terms and Privacy&#10;&#10;Terms and Privacy has been created.&#10;It will be shown by users who want to read Terms and Privacy after logging in.&#10;It will be shown by browser, hamonstudio.net." />
     <MESSAGE value="feat(Database) New Column Added.&#10;&#10;Column 'PolicyAgreed' has been added to verify if the user agreed our policies." />
     <MESSAGE value="feat(Controller) AdsController.cs&#10;&#10;Reward for watching rewarded video will be granted." />
@@ -980,7 +983,8 @@
     <MESSAGE value="feat - Deck Creating" />
     <MESSAGE value="feat" />
     <MESSAGE value="feat - matchcontroller" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat - matchcontroller" />
+    <MESSAGE value="feat &#10;send test mail" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat &#10;send test mail" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

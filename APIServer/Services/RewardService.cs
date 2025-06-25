@@ -75,6 +75,9 @@ public class RewardService
         
         // Other Rewards
         rewards.AddRange(win ? GetRandomMaterial(3) : GetRandomMaterial(1));
+        rewards.Add(win 
+            ? new RewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 30 }
+            : new RewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 10 });
 
         return rewards;
     }
@@ -82,8 +85,10 @@ public class RewardService
     public List<SingleRewardInfo> GetSingleRewards(int stageId, int star)
     {
         if (star == 0 ) return new List<SingleRewardInfo>();
+
+        var rewards = new List<SingleRewardInfo>();
         
-        var rewards = StageInfos
+        rewards = StageInfos
             .FirstOrDefault(si => si.StageId == stageId)?.StageReward
             .Where(sr => sr.Star <= star)
             .Select(sr => new SingleRewardInfo
@@ -94,8 +99,8 @@ public class RewardService
                 Star = sr.Star
             }).ToList();
         
-        if (rewards == null) return new List<SingleRewardInfo>();
-
+        rewards.Add(new SingleRewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 25 });
+        
         return rewards;
     }
     

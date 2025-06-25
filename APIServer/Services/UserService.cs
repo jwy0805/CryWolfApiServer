@@ -118,23 +118,24 @@ public class UserService
         // Create Initial Deck and Collection
         CreateInitDeckAndCollection(newUser.UserId);
         
-        // Send Mail for internal test
-        SendMailInternalTest(newUser.UserId);
-        
         // Create Initial Sheep and Enchant
         CreateInitSheepAndEnchant(newUser.UserId, new [] { SheepId.PrimeSheepWhite }, new [] { EnchantId.Wind });
         CreateInitCharacter(newUser.UserId, new [] { CharacterId.PlayerCharacterBasic });
         CreateInitBattleSetting(newUser.UserId);
         CreateInitStageInfo(newUser.UserId);
         CreateInitTutorialInfo(newUser.UserId);
+        
+        // For closed test
+        SendMailClosedTest(newUser.UserId);
+        await CreateAssetsClosedTest(newUser.UserId);
 
         await _context.SaveChangesExtendedAsync();
         return true;
     }
 
-    private void SendMailInternalTest(int userId)
+    private void SendMailClosedTest(int userId)
     {
-        var mail = new Mail
+        var mail1 = new Mail
         {
             UserId = userId,
             Type = MailType.Notice,
@@ -142,12 +143,49 @@ public class UserService
             ExpiresAt = DateTime.UtcNow.AddDays(30),
             ProductId = null,
             ProductCode = string.Empty,
-            Message = "플레이 해주셔서 감사합니다. 아직 테스트중인 게임으로 상점, 보상 수령 등 몇몇 기능이 제대로 작동하지 않을 수 있습니다.",
-            Sender = "Cry Wolf"
+            Message = "게임을 이용해주셔서 감사합니다. 현재 Cry Wolf는 알파테스트 진행중으로 상점 등 몇몇 기능이 작동하지 않을 수 있습니다.",
+            Sender = "cry wolf"
         };
 
-        _context.Mail.Add(mail);
+        var mail2 = new Mail
+        {
+            UserId = userId,
+            Type = MailType.Notice,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(30),
+            ProductId = null,
+            ProductCode = string.Empty,
+            Message = "꾸준한 업데이트로 찾아뵙도록 하겠습니다. 기타 문의사항은 hamonstd@gmail.com으로 보내주시면 감사하겠습니다.",
+            Sender = "cry wolf"
+        };
+        
+        var mailList = new List<Mail> { mail1, mail2 };
+
+        _context.Mail.AddRange(mailList);
         _context.SaveChangesExtended();
+    }
+    
+    private async Task CreateAssetsClosedTest(int userId)
+    {
+        var sheepUnitIds = new [] { 101, 104, 107, 110, 113, 116, 119, 122, 125 };
+        var wolfUnitIds = new [] { 201, 204, 207, 210, 213, 216, 219, 222, 225 };
+        
+        foreach (var sheepUnit in sheepUnitIds)
+        {
+            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = (UnitId)sheepUnit, Count = 1 });
+        }
+        
+        foreach (var wolfUnit in wolfUnitIds)
+        {
+            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = (UnitId)wolfUnit, Count = 1 });
+        }
+
+        for (int i = 1; i <= 35; i++)
+        {
+            _context.UserMaterial.Add( new UserMaterial { UserId = userId, MaterialId = (MaterialId)i, Count = 5});
+        }
+        
+        await _context.SaveChangesExtendedAsync();
     }
     
     private void CreateInitDeckAndCollection(int userId)

@@ -258,6 +258,7 @@ public enum ProductType
     Character = 5,
     Gold = 6,
     Spinel = 7,
+    Exp = 8,
 }
 
 public enum SubscriptionType

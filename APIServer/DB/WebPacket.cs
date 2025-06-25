@@ -884,6 +884,16 @@ public class AcceptInvitationPacketResponse
     public DeckInfo EnemyDeckWolf { get; set; }
 }
 
+public class DeleteReadMailPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class DeleteReadMailPacketResponse
+{
+    public bool DeleteReadMailOk { get; set; }
+}
+
 public class VirtualPaymentPacketRequired
 {
     public string AccessToken { get; set; }
@@ -917,6 +927,16 @@ public class CashPaymentPacketRequired
 public class CashPaymentPacketResponse
 {
     public bool PaymentOk { get; set; }
+}
+
+public class ReceiveRewardPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class ReceiveRewardPacketResponse
+{
+    public bool ReceiveRewardOk { get; set; }
 }
 
 public class LoadStageInfoPacketRequired

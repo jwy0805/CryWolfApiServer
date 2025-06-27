@@ -10,6 +10,7 @@ public class CachedDataProvider
     public record DailyProductSnapshot(int ProductId, int Weight, int Price, UnitClass Class);
     private record FreeProductSnapshot(int ProductId, int Weight, UnitClass Class);
 
+    private readonly Dictionary<int, int> _expSnapshots;
     private readonly List<DailyProductSnapshot> _dailyProductSnapshots;
     private readonly List<FreeProductSnapshot> _freeProductSnapshots;
     private readonly Random _random = new();
@@ -17,11 +18,15 @@ public class CachedDataProvider
     public int QueueCountsSheep { get; set; } = 0;
     public int QueueCountsWolf { get; set; } = 0;
     
+    public Dictionary<int, int> GetExpSnapshots() => _expSnapshots;
     public List<DailyProductSnapshot> GetDailyProductSnapshots() => _dailyProductSnapshots;
 
     public CachedDataProvider(IDbContextFactory<AppDbContext> dbContextFactory)
     {
         using var context = dbContextFactory.CreateDbContext();
+        
+        _expSnapshots = context.Exp.AsNoTracking()
+            .ToDictionary(exp => exp.Level, exp => exp.Exp);
         
         _dailyProductSnapshots = context.DailyProduct.AsNoTracking()
             .Select(dp => new DailyProductSnapshot(dp.ProductId, dp.Weight, dp.Price, dp.Class))

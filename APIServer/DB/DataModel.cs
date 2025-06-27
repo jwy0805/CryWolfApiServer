@@ -189,6 +189,15 @@ public class ExpTable
     public int Exp { get; set; }
 }
 
+[Table("ExpReward")]
+public class ExpReward
+{
+    public int Level { get; set; }
+    public int ProductId { get; set; }
+    public ProductType ProductType { get; set; }
+    public int Count { get; set; }
+}
+
 [Table("Unit")]
 public class Unit
 {
@@ -279,6 +288,7 @@ public class Product
     public int Price { get; set; }
     public CurrencyType Currency { get; set; }
     public ProductCategory Category { get; set; }
+    public ProductType ProductType { get; set; }
     public bool IsFixed { get; set; }
     
     // Navigation properties
@@ -331,7 +341,7 @@ public class ProductComposition
 {
     public int ProductId { get; set; }
     public int CompositionId { get; set; }
-    public ProductType Type { get; set; }
+    public ProductType ProductType { get; set; }
     public int Count { get; set; }
     public bool Guaranteed { get; set; }
     public bool IsSelectable { get; set; }
@@ -394,6 +404,8 @@ public class UserProduct
 {
     public int UserId { get; set; }
     public int ProductId { get; set; }
+    public ProductType ProductType { get; set; }
+    public AcquisitionPath AcquisitionPath { get; set; }
     public int Count { get; set; }
     
     // Navigation properties

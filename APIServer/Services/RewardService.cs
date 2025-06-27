@@ -76,7 +76,7 @@ public class RewardService
         // Other Rewards
         rewards.AddRange(win ? GetRandomMaterial(3) : GetRandomMaterial(1));
         rewards.Add(win 
-            ? new RewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 30 }
+            ? new RewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 50 }
             : new RewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 10 });
 
         return rewards;
@@ -99,7 +99,7 @@ public class RewardService
                 Star = sr.Star
             }).ToList();
         
-        rewards.Add(new SingleRewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 25 });
+        rewards.Add(new SingleRewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 30 });
         
         return rewards;
     }
@@ -141,7 +141,7 @@ public class RewardService
         {
             if (composition.Guaranteed)
             {
-                if (composition.Type == ProductType.None)
+                if (composition.ProductType == ProductType.None)
                 {
                     var subResults = ClaimFinalProductsInternal(composition.CompositionId, visited);
                     result.AddRange(subResults);
@@ -188,7 +188,7 @@ public class RewardService
     
     public void ClaimPurchasedProduct(int userId, ProductComposition pc)
     {
-        switch (pc.Type)
+        switch (pc.ProductType)
         {
             case ProductType.Unit:
                 var existingUserUnit = _context.UserUnit
@@ -296,6 +296,10 @@ public class RewardService
                 {
                     userStatSpinel.Spinel += pc.Count;
                 }
+                break;
+
+            case ProductType.None:
+                
                 break;
         }
     }

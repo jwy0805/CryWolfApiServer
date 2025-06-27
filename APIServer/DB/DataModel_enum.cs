@@ -279,6 +279,7 @@ public enum SubscriptionEvent
 
 public enum ProductCategory
 {
+    // In shop category
     None = 0,
     SpecialPackage = 1,
     BeginnerPackage = 2,
@@ -290,7 +291,26 @@ public enum ProductCategory
     DailyDeal = 8,
     Pass = 9,
     Other = 100,
-}   
+}
+
+public enum AcquisitionPath
+{
+    None = 0,
+    Shop = 1,
+    Reward = 2,
+    Rank = 3,
+    Single = 4,
+    Mission = 5,
+    Tutorial = 6,
+    Event = 7,
+}
+
+public enum RewardPopupType
+{
+    None = 0, 
+    Item = 1,
+    Select = 2,
+}
 
 public enum CurrencyType
 {

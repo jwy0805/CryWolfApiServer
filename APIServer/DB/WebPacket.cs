@@ -144,6 +144,7 @@ public class ProductInfo
     public List<CompositionInfo> Compositions { get; set; }
     public int Price { get; set; }
     public CurrencyType CurrencyType { get; set; }
+    public ProductType ProductType { get; set; }
     public ProductCategory Category { get; set; }
     public string ProductCode { get; set; }
 }
@@ -152,7 +153,7 @@ public class CompositionInfo
 {
     public int Id { get; set; }
     public int CompositionId { get; set; }
-    public ProductType Type { get; set; }
+    public ProductType ProductType { get; set; }
     public int Count { get; set; }
     public int MinCount { get; set; }
     public int MaxCount { get; set; }
@@ -521,6 +522,7 @@ public class LoadUserInfoPacketResponse
     public bool LoadUserInfoOk { get; set; }
     public UserInfo UserInfo { get; set; }
     public UserTutorialInfo UserTutorialInfo { get; set; }
+    public Dictionary<int, int> ExpTable { get; set; }
 }
 
 public class LoadTestUserPacketRequired
@@ -533,6 +535,7 @@ public class LoadTestUserPacketResponse
     public bool LoadTestUserOk { get; set; }
     public UserInfo UserInfo { get; set; }
     public UserTutorialInfo UserTutorialInfo { get; set; }
+    public Dictionary<int, int> ExpTable { get; set; }
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
 }
@@ -929,14 +932,19 @@ public class CashPaymentPacketResponse
     public bool PaymentOk { get; set; }
 }
 
-public class ReceiveRewardPacketRequired
+public class ClaimProductPacketRequired
 {
     public string AccessToken { get; set; }
+    public AcquisitionPath AcquisitionPath { get; set; }
+    public bool ClaimAll { get; set; }
+    public int MailId { get; set; }
 }
 
-public class ReceiveRewardPacketResponse
+public class ClaimProductPacketResponse
 {
-    public bool ReceiveRewardOk { get; set; }
+    public bool ClaimOk { get; set; }
+    public List<ProductInfo> ProductInfos { get; set; }
+    public RewardPopupType RewardPopupType { get; set; }
 }
 
 public class LoadStageInfoPacketRequired

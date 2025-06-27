@@ -162,6 +162,25 @@ namespace ApiServer.Migrations
                     b.ToTable("Enchant");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.ExpReward", b =>
+                {
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Level", "ProductId");
+
+                    b.ToTable("ExpReward");
+                });
+
             modelBuilder.Entity("ApiServer.DB.ExpTable", b =>
                 {
                     b.Property<int>("Level")
@@ -291,6 +310,9 @@ namespace ApiServer.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("varchar(60)");
 
+                    b.Property<int>("ProductType")
+                        .HasColumnType("int");
+
                     b.HasKey("ProductId");
 
                     b.ToTable("Product");
@@ -313,7 +335,7 @@ namespace ApiServer.Migrations
                     b.Property<bool>("IsSelectable")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("Type")
+                    b.Property<int>("ProductType")
                         .HasColumnType("int");
 
                     b.HasKey("ProductId", "CompositionId");
@@ -734,7 +756,13 @@ namespace ApiServer.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("AcquisitionPath")
+                        .HasColumnType("int");
+
                     b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductType")
                         .HasColumnType("int");
 
                     b.HasKey("UserId", "ProductId");

@@ -43,6 +43,7 @@ public class AppDbContext : DbContext
     public DbSet<BattleSetting> BattleSetting { get; set; }
     public DbSet<ReinforcePoint> ReinforcePoint { get; set; }
     public DbSet<ExpTable> Exp { get; set; }
+    public DbSet<ExpReward> ExpReward { get; set; }
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -160,15 +161,16 @@ public class AppDbContext : DbContext
             .WithOne(dp => dp.Product)
             .HasForeignKey<DailyProduct>(dp => dp.ProductId)
             .OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<Product>().Property(product => product.Currency)
+            .HasConversion(v => (int)v, v => (CurrencyType)v);
+        builder.Entity<Product>().Property(p => p.ProductType)
+            .HasConversion((v => (int)v), v => (ProductType)v);
         
         builder.Entity<Mail>()
             .HasOne(m => m.User)
             .WithMany(u => u.Mails)
             .HasForeignKey(m => m.UserId)
             .OnDelete(DeleteBehavior.Cascade);
-        
-        builder.Entity<Product>().Property(product => product.Currency)
-            .HasConversion(v => (int)v, v => (CurrencyType)v);
         
         builder.Entity<Transaction>().HasKey(t => new { t.TransactionTimestamp, t.UserId });
         builder.Entity<Transaction>(entity =>
@@ -208,12 +210,16 @@ public class AppDbContext : DbContext
         builder.Entity<UserDailyProduct>().HasKey(udp => new { udp.UserId, udp.Slot });
         
         builder.Entity<ProductComposition>().HasKey(pc => new { pc.ProductId, pc.CompositionId });
+        builder.Entity<ProductComposition>().Property(pc => pc.ProductType)
+            .HasConversion(v => (int)v, v => (ProductType)v);
         
         builder.Entity<CompositionProbability>().HasKey(cp => new { cp.ProductId, cp.CompositionId, cp.Count });
         
         builder.Entity<StageEnemy>().HasKey(se => new { se.StageId, se.UnitId });
         
         builder.Entity<StageReward>().HasKey(sr => new { sr.StageId, sr.ProductId, sr.ProductType });
+        builder.Entity<StageReward>().Property(sr => sr.ProductType)
+            .HasConversion(v => (int)v, v => (ProductType)v);
         
         builder.Entity<UserStage>().HasKey(us => new { us.UserId, us.StageId });
         builder.Entity<UserStage>()
@@ -223,6 +229,8 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Entity<UserProduct>().HasKey(up => new { up.UserId, up.ProductId });
+        builder.Entity<UserProduct>().Property(up => up.ProductType)
+            .HasConversion(v => (int)v, v => (ProductType)v);
         builder.Entity<UserProduct>()
             .HasOne(up => up.User)
             .WithMany(u => u.UserProducts)
@@ -309,11 +317,13 @@ public class AppDbContext : DbContext
         
         builder.Entity<BattleSetting>().HasKey(b => new { b.UserId, b.SheepId, b.EnchantId, b.CharacterId });
         
-        builder.Entity<ExpTable>().HasKey(e => e.Level);
-        builder.Entity<ExpTable>().Property(e => e.Level).ValueGeneratedNever();
+        builder.Entity<ExpTable>().HasKey(et => et.Level);
+        builder.Entity<ExpTable>().Property(et => et.Level).ValueGeneratedNever();
         
         builder.Entity<ReinforcePoint>().HasKey(rr => new { rr.Class, rr.Level });
 
-        builder.Entity<ExpTable>().HasKey(et => new { et.Level });
+        builder.Entity<ExpReward>().HasKey(er => new { er.Level, er.ProductId });
+        builder.Entity<ExpReward>().Property(er => er.ProductType)
+            .HasConversion(v => (int)v, v => (ProductType)v);
     }
 }

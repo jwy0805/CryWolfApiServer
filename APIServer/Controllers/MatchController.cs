@@ -405,6 +405,18 @@ public class MatchController : ControllerBase
                 _logger.LogInformation($"NextStage: {nextStage.StageId}, UserId: {nextStage.UserId} at {DateTime.Now}");
                 _context.UserStage.Add(nextStage);
             }
+
+            foreach (var reward in rewards)
+            {
+                _context.Add(new UserProduct
+                {
+                    UserId = user.UserId,
+                    ProductId = reward.ItemId,
+                    ProductType = reward.ProductType,
+                    Count = reward.Count,
+                    AcquisitionPath = AcquisitionPath.Single
+                });
+            }
             
             _context.SaveChangesExtended();
         }

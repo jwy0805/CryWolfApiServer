@@ -133,13 +133,14 @@ public class DailyProductService : IDailyProductService
                 Price = _cachedDataProvider.GetDailyProductPrice(product.ProductId),
                 CurrencyType = product.Currency,
                 Category = product.Category,
+                ProductType = product.ProductType,
                 ProductCode = product.ProductCode,
                 Compositions = compositions.Where(pc => pc.ProductId == product.ProductId)
                     .Select(pc => new CompositionInfo
                     {
                         Id = pc.ProductId,
                         CompositionId = pc.CompositionId,
-                        Type = pc.Type,
+                        ProductType = pc.ProductType,
                         Count = pc.Count,
                         MinCount = pc is { Count: 0, Guaranteed: false }
                             ? probabilities

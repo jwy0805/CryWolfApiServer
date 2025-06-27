@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using ApiServer.DB;
+using ApiServer.Providers;
 using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ public class UserAccountController : ControllerBase
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
     private readonly ConfigService _configService;
+    private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<UserAccountController> _logger;
     
     public UserAccountController(
@@ -25,6 +27,7 @@ public class UserAccountController : ControllerBase
         TokenService tokenService, 
         TokenValidator validator,
         ConfigService configService,
+        CachedDataProvider cachedDataProvider,
         ILogger<UserAccountController> logger)
     {
         _context = context;
@@ -32,6 +35,7 @@ public class UserAccountController : ControllerBase
         _tokenService = tokenService;
         _tokenValidator = validator;
         _configService = configService;
+        _cachedDataProvider = cachedDataProvider;
         _logger = logger;
     }
     
@@ -383,6 +387,7 @@ public class UserAccountController : ControllerBase
             ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };
         
+        res.ExpTable = _cachedDataProvider.GetExpSnapshots();
         res.LoadUserInfoOk = true;
         
         return Ok(res);
@@ -465,6 +470,7 @@ public class UserAccountController : ControllerBase
         var tokens = _tokenService.GenerateTokens(user.UserId);
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
+        res.ExpTable = _cachedDataProvider.GetExpSnapshots();
         res.LoadTestUserOk = true;
         
         return Ok(res);

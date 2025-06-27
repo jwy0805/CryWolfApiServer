@@ -18,6 +18,7 @@ public class PaymentController : ControllerBase
     private readonly AppDbContext _context;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
+    private readonly RewardService _rewardService;
     private readonly TaskQueueService _taskQueueService;
     private readonly IDailyProductService _dailyProductService;
     private readonly CachedDataProvider _cachedDataProvider;
@@ -28,6 +29,7 @@ public class PaymentController : ControllerBase
         TaskQueueService taskQueueService,
         TokenService tokenService,
         TokenValidator tokenValidator,
+        RewardService rewardService,
         IDailyProductService dailyProductService,
         CachedDataProvider cachedDataProvider,
         ILogger<PaymentController> logger)
@@ -36,6 +38,7 @@ public class PaymentController : ControllerBase
         _taskQueueService = taskQueueService;
         _tokenService = tokenService;
         _tokenValidator = tokenValidator;
+        _rewardService = rewardService;
         _dailyProductService = dailyProductService;
         _cachedDataProvider = cachedDataProvider;
         _logger = logger;
@@ -114,7 +117,7 @@ public class PaymentController : ControllerBase
                     {
                         Id = pc.ProductId,
                         CompositionId = pc.CompositionId,
-                        Type = pc.Type,
+                        ProductType = pc.ProductType,
                         Count = pc.Count,
                         MinCount = pc is { Count: 0, Guaranteed: false } ? probabilities
                                 .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
@@ -127,6 +130,7 @@ public class PaymentController : ControllerBase
                     }).ToList(),
                 Price = product.Price,
                 CurrencyType = product.Currency,
+                ProductType = product.ProductType,
                 Category = product.Category,
                 ProductCode = product.ProductCode
             }).ToList()
@@ -154,7 +158,12 @@ public class PaymentController : ControllerBase
             CurrencyType.Spinel => userStat.Spinel,
             _                    => 0
         };
-        if (balance < product.Price) return Ok(response);
+        
+        if (balance < product.Price)
+        {
+            response.PaymentOk = false;
+            return Ok(response);
+        }
 
         switch (product.Currency)
         {
@@ -169,7 +178,7 @@ public class PaymentController : ControllerBase
         }
 
         await PurchaseComplete(userId, required.ProductCode);
-
+        
         response.PaymentOk = true;
         return Ok(response);
     }
@@ -209,8 +218,9 @@ public class PaymentController : ControllerBase
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal) ?? 0;
-        if (userId == 0) return Unauthorized();
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdNull == null) return Unauthorized();
+        var userId = userIdNull.Value;
         
         var isGoogleReceipt = required.Receipt.Contains("purchaseToken");
         var isAppleReceipt = required.Receipt.Contains("transaction_id");
@@ -255,9 +265,92 @@ public class PaymentController : ControllerBase
             Message = "Product Purchased",
             Sender = "Cry Wolf"
         };
+
+        var userProduct = new UserProduct
+        {
+            UserId = userId,
+            AcquisitionPath = AcquisitionPath.Shop,
+            Count = 1,
+            ProductId = product.ProductId,
+            ProductType = product.ProductType,
+        };
         
         _context.Mail.Add(mail);
+        _context.UserProduct.Add(userProduct);
         await _context.SaveChangesExtendedAsync();
+    }
+
+    [HttpPut]
+    [Route("ClaimProduct")]
+    public async Task<IActionResult> ClaimProduct([FromBody] ClaimProductPacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdNull == null) return Unauthorized();
+        var userId = userIdNull.Value;
+        var res = new ClaimProductPacketResponse();
+
+        if (required.ClaimAll)
+        {
+            
+        }
+        else if (required.MailId != 0)
+        {
+            var mail = await _context.Mail
+                .FirstOrDefaultAsync(m => m.MailId == required.MailId && m.UserId == userId && m.Claimed == false);
+            if (mail == null)
+            {
+                return BadRequest("Invalid mail ID or already claimed.");
+            }
+            
+            var userProduct = await _context.UserProduct
+                .FirstOrDefaultAsync(up => up.UserId == userId && up.ProductId == mail.ProductId);
+        }
+        else
+        {
+            var userProducts = _context.UserProduct
+                .Where(up => up.UserId == userId && up.AcquisitionPath == required.AcquisitionPath)
+                .ToList();
+            
+            foreach (var userProduct in userProducts)
+            {
+                var compositions = _context.ProductComposition
+                    .Where(pc => pc.ProductId == userProduct.ProductId)
+                    .ToList();
+                
+                if (compositions.Any(c => c.IsSelectable))
+                {
+                    
+                }
+                else
+                {
+                    _rewardService.ClaimFinalProducts(userProduct.ProductId);
+                    
+                    res.ProductInfos.Add(new ProductInfo
+                    {
+                        Id = userProduct.ProductId,
+                        Compositions = compositions.Select(c => new CompositionInfo
+                        {
+                            Id = c.ProductId,
+                            CompositionId = c.CompositionId,
+                            ProductType = c.ProductType,
+                            Count = c.Count,
+                            MinCount = c.Count > 0 ? c.Count : 0,
+                            MaxCount = c.Count > 0 ? c.Count : 0,
+                            Guaranteed = c.Guaranteed,
+                            IsSelectable = c.IsSelectable
+                        }).ToList(),
+                        ProductType = userProduct.ProductType
+                    });
+
+                    res.RewardPopupType = RewardPopupType.Item;
+                }
+            }
+        }
+        
+        return Ok(res);
     }
     
     private async Task<(bool IsValid, string Message)> ValidateGoogleReceiptAsync(string receipt)

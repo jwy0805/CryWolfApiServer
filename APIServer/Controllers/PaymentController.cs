@@ -17,28 +17,28 @@ public class PaymentController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly TokenService _tokenService;
+    private readonly UserService _userService;
     private readonly TokenValidator _tokenValidator;
-    private readonly RewardService _rewardService;
-    private readonly TaskQueueService _taskQueueService;
+    private readonly ProductClaimService _claimService;
     private readonly IDailyProductService _dailyProductService;
     private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<PaymentController> _logger;
     
     public PaymentController(
         AppDbContext context,
-        TaskQueueService taskQueueService,
         TokenService tokenService,
+        UserService userService,
         TokenValidator tokenValidator,
-        RewardService rewardService,
+        ProductClaimService productClaimService,
         IDailyProductService dailyProductService,
         CachedDataProvider cachedDataProvider,
         ILogger<PaymentController> logger)
     {
         _context = context;
-        _taskQueueService = taskQueueService;
         _tokenService = tokenService;
+        _userService = userService;
         _tokenValidator = tokenValidator;
-        _rewardService = rewardService;
+        _claimService = productClaimService;
         _dailyProductService = dailyProductService;
         _cachedDataProvider = cachedDataProvider;
         _logger = logger;
@@ -48,19 +48,16 @@ public class PaymentController : ControllerBase
     [Route("InitProducts")]
     public async Task<IActionResult> InitProducts([FromBody] InitProductPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null) return Unauthorized();
-        var userIdN = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userIdN == null) return Unauthorized();
-        var userId = userIdN.Value;
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
 
-        var products = _context.Product.AsNoTracking().ToList();
+        var products = _cachedDataProvider.GetProducts();
         var productGroups = products
             .Where(product => product.IsFixed)
             .GroupBy(product => product.Category)
             .ToDictionary(grouping => grouping.Key, grouping => grouping.ToList());
-        var compositions = _context.ProductComposition.AsNoTracking().ToList();
-        var probabilities = _context.CompositionProbability.AsNoTracking().ToList();
+        var compositions = _cachedDataProvider.GetProductCompositions();
+        var probabilities = _cachedDataProvider.GetProbabilities();
         
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var dailyProductExists = await _context.UserDailyProduct.AsNoTracking()
@@ -111,11 +108,11 @@ public class PaymentController : ControllerBase
         return productGroups.TryGetValue(category, out var products)
             ? products.Select(product => new ProductInfo
             {
-                Id = product.ProductId,
+                ProductId = product.ProductId,
                 Compositions = compositions.Where(pc => pc.ProductId == product.ProductId)
                     .Select(pc => new CompositionInfo
                     {
-                        Id = pc.ProductId,
+                        ProductId = pc.ProductId,
                         CompositionId = pc.CompositionId,
                         ProductType = pc.ProductType,
                         Count = pc.Count,
@@ -141,11 +138,8 @@ public class PaymentController : ControllerBase
     [Route("Purchase")]
     public async Task<IActionResult> Purchase([FromBody] VirtualPaymentPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null) return Unauthorized();
-        
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal) ?? 0;
-        if (userId == 0) return Unauthorized();
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
         
         var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
         var product = _context.Product.AsNoTracking().FirstOrDefault(p => p.ProductCode == required.ProductCode);
@@ -154,9 +148,9 @@ public class PaymentController : ControllerBase
         var response = new VirtualPaymentPacketResponse();
         var balance = product.Currency switch
         {
-            CurrencyType.Gold   => userStat.Gold,
+            CurrencyType.Gold => userStat.Gold,
             CurrencyType.Spinel => userStat.Spinel,
-            _                    => 0
+            _ => 0
         };
         
         if (balance < product.Price)
@@ -187,13 +181,9 @@ public class PaymentController : ControllerBase
     [Route("PurchaseDaily")]
     public async Task<IActionResult> PurchaseDaily([FromBody] DailyPaymentPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null) return Unauthorized();
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
         
-        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userIdNull == null) return Unauthorized();
-        
-        var userId = userIdNull.Value;
         var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
         var product = _context.Product.FirstOrDefault(p => p.ProductCode == required.ProductCode);
         var dailyProducts = _cachedDataProvider.GetDailyProductSnapshots();
@@ -215,12 +205,8 @@ public class PaymentController : ControllerBase
     [Route("PurchaseSpinel")]
     public async Task<IActionResult> PurchaseSpinel([FromBody] CashPaymentPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null) return Unauthorized();
-
-        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userIdNull == null) return Unauthorized();
-        var userId = userIdNull.Value;
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
         
         var isGoogleReceipt = required.Receipt.Contains("purchaseToken");
         var isAppleReceipt = required.Receipt.Contains("transaction_id");
@@ -265,90 +251,136 @@ public class PaymentController : ControllerBase
             Message = "Product Purchased",
             Sender = "Cry Wolf"
         };
-
-        var userProduct = new UserProduct
-        {
-            UserId = userId,
-            AcquisitionPath = AcquisitionPath.Shop,
-            Count = 1,
-            ProductId = product.ProductId,
-            ProductType = product.ProductType,
-        };
         
         _context.Mail.Add(mail);
-        _context.UserProduct.Add(userProduct);
         await _context.SaveChangesExtendedAsync();
+    }
+
+    [HttpPut]
+    [Route("SelectProduct")]
+    public async Task<IActionResult> SelectProduct([FromBody] SelectProductPacketRequired required)
+    {
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
+        
+        var allCompositions = _cachedDataProvider.GetProductCompositions();
+        var productCompositionStored = allCompositions
+            .First(pc => 
+                pc.CompositionId == required.SelectedCompositionInfo.CompositionId &&
+                pc.ProductId == required.SelectedCompositionInfo.ProductId &&
+                pc.ProductType == required.SelectedCompositionInfo.ProductType);
+        
+        _claimService.StoreProduct(userId, productCompositionStored);
+        _claimService.AddDisplayingComposition(userId, required.SelectedCompositionInfo);
+        _claimService.RemoveUserProduct(userId, required.SelectedCompositionInfo.ProductId);
+        
+        var userProductList = await _context.UserProduct
+            .Where(up => up.UserId == userId && up.AcquisitionPath == AcquisitionPath.Open)
+            .ToListAsync();
+        var productList = userProductList.Select(up => up.ProductId).ToList();
+        var data = await _claimService.ClassifyAndClaim(userId, productList);
+        await _context.SaveChangesExtendedAsync();
+        
+        var res = new SelectProductPacketResponse
+        {
+            ProductInfos = data.ProductInfos,
+            RandomProductInfos = data.RandomProductInfos,
+            CompositionInfos = data.CompositionInfos,
+            RewardPopupType = data.RewardPopupType,
+        };
+
+        if (data.CompositionInfos.Count == 0 && data.RandomProductInfos.Count == 0 && data.ProductInfos.Count == 0)
+        {
+            res.SelectOk = false;
+        }
+
+        res.SelectOk = true;
+
+        return Ok(res);
     }
 
     [HttpPut]
     [Route("ClaimProduct")]
     public async Task<IActionResult> ClaimProduct([FromBody] ClaimProductPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null) return Unauthorized();
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
+        
+        var userProducts = _context.UserProduct
+            .Where(up => up.UserId == userId && up.AcquisitionPath == AcquisitionPath.Open)
+            .ToList();
+        var allProducts = _cachedDataProvider.GetProducts();
+        var allCompositions = _cachedDataProvider.GetProductCompositions();
+        var fixedProductIds = allProducts
+            .Where(p => p.IsFixed)
+            .Select(p => p.ProductId)
+            .ToHashSet();
 
-        var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userIdNull == null) return Unauthorized();
-        var userId = userIdNull.Value;
-        var res = new ClaimProductPacketResponse();
+        var data = new ClaimData();
 
         if (required.ClaimAll)
         {
-            
+            var userMails = await _context.Mail
+                .Where(m => m.UserId == userId && m.Type == MailType.Product && m.Claimed == false)
+                .ToListAsync();
+            var productIdList = userMails.Where(m => m.ProductId.HasValue)
+                .Select(m => m.ProductId!.Value)
+                .ToList();
+
+            _context.Mail.RemoveRange(userMails);
+            _claimService.UnpackPackages(userId, userMails);
+            data = await _claimService.ClassifyAndClaim(userId, productIdList);
+            await _context.SaveChangesExtendedAsync();
         }
+        // Claim individual product in mail
         else if (required.MailId != 0)
         {
             var mail = await _context.Mail
                 .FirstOrDefaultAsync(m => m.MailId == required.MailId && m.UserId == userId && m.Claimed == false);
-            if (mail == null)
+            if (mail?.ProductId == null)
             {
                 return BadRequest("Invalid mail ID or already claimed.");
             }
             
-            var userProduct = await _context.UserProduct
-                .FirstOrDefaultAsync(up => up.UserId == userId && up.ProductId == mail.ProductId);
+            _context.Mail.Remove(mail);
+            _claimService.UnpackPackages(userId, new List<Mail> { mail });
+            data = await _claimService.ClassifyAndClaim(userId, new List<int> { (int)mail.ProductId });
+            await _context.SaveChangesExtendedAsync();
         }
+        // fixed products by Single, Rank, Event, Tutorial, other products will be sent to mailbox.
         else
         {
-            var userProducts = _context.UserProduct
-                .Where(up => up.UserId == userId && up.AcquisitionPath == required.AcquisitionPath)
-                .ToList();
-            
-            foreach (var userProduct in userProducts)
-            {
-                var compositions = _context.ProductComposition
-                    .Where(pc => pc.ProductId == userProduct.ProductId)
-                    .ToList();
-                
-                if (compositions.Any(c => c.IsSelectable))
-                {
-                    
-                }
-                else
-                {
-                    _rewardService.ClaimFinalProducts(userProduct.ProductId);
-                    
-                    res.ProductInfos.Add(new ProductInfo
-                    {
-                        Id = userProduct.ProductId,
-                        Compositions = compositions.Select(c => new CompositionInfo
-                        {
-                            Id = c.ProductId,
-                            CompositionId = c.CompositionId,
-                            ProductType = c.ProductType,
-                            Count = c.Count,
-                            MinCount = c.Count > 0 ? c.Count : 0,
-                            MaxCount = c.Count > 0 ? c.Count : 0,
-                            Guaranteed = c.Guaranteed,
-                            IsSelectable = c.IsSelectable
-                        }).ToList(),
-                        ProductType = userProduct.ProductType
-                    });
-
-                    res.RewardPopupType = RewardPopupType.Item;
-                }
-            }
+            // foreach (var userProduct in userProducts)
+            // {
+            //     if (fixedProductIds.Contains(userProduct.ProductId))
+            //     {
+            //         var compositions = allCompositions
+            //             .Where(pc => pc.ProductId == userProduct.ProductId)
+            //             .ToList();
+            //         
+            //         foreach (var composition in compositions)
+            //         {
+            //             data.ProductInfos.Add(_claimService.MapProductInfo(userProduct));
+            //             _claimService.StoreProduct(userId, composition);
+            //         }
+            //     }
+            //     else
+            //     {
+            //         _userService.SendProductMail(userId, MailType.Product, "Product Purchased", userProduct.ProductId);
+            //     }
+            // }
         }
+
+        await _context.SaveChangesAsync();
+        
+        var res = new ClaimProductPacketResponse
+        {
+            ProductInfos = data.ProductInfos,
+            RandomProductInfos = data.RandomProductInfos,
+            CompositionInfos = data.CompositionInfos,
+            RewardPopupType = data.RewardPopupType,
+            ClaimOk = true
+        };
         
         return Ok(res);
     }

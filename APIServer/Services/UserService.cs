@@ -133,6 +133,25 @@ public class UserService
         return true;
     }
 
+    public void SendProductMail(int userId, MailType type, string? message = null, int? productId = null)
+    {
+        var mail = new Mail
+        {
+            UserId = userId,
+            Type = type,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(30),
+            ProductId = productId,
+            ProductCode = productId.HasValue 
+                ? _context.Product.AsNoTracking()
+                    .FirstOrDefault(p => p.ProductId == productId)?.ProductCode : string.Empty,
+            Message = message ?? "Product purchased",
+            Sender = "cry wolf"
+        };
+        
+        _context.Mail.Add(mail);
+    }
+    
     private void SendMailClosedTest(int userId)
     {
         var mail1 = new Mail

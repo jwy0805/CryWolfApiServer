@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using ApiServer.DB;
+using ApiServer.Providers;
 using ApiServer.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,12 +16,18 @@ public class CollectionController : ControllerBase
     private readonly AppDbContext _context;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
+    private readonly CachedDataProvider _cachedDataProvider;
     
-    public CollectionController(AppDbContext context, TokenService tokenService, TokenValidator tokenValidator)
+    public CollectionController(
+        AppDbContext context, 
+        TokenService tokenService,
+        TokenValidator tokenValidator,
+        CachedDataProvider cachedDataProvider)
     {
         _context = context;
         _tokenService = tokenService;
         _tokenValidator = tokenValidator;
+        _cachedDataProvider = cachedDataProvider;
     }
 
     [HttpPost]
@@ -66,11 +73,7 @@ public class CollectionController : ControllerBase
                 Class = character.Class
             }).ToList(),
             
-            MaterialInfos = materialList.Select(material => new MaterialInfo
-            {
-                Id = (int)material.MaterialId,
-                Class = material.Class,
-            }).ToList(),
+            MaterialInfos = _cachedDataProvider.GetMaterialInfos(),
             
             ReinforcePoints = reinforcePointList.Select(reinforcePoint => new ReinforcePointInfo
             {

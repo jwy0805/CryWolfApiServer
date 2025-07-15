@@ -43,6 +43,7 @@ builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<TaskQueueService>();
 builder.Services.AddScoped<SinglePlayService>();
 builder.Services.AddScoped<RewardService>();
+builder.Services.AddScoped<ProductClaimService>();
 builder.Services.AddScoped<IDailyProductService, DailyProductService>();
 builder.Services.AddTransient<UserService>();
 

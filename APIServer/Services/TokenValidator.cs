@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using ApiServer.DB;
 using ApiServer.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -35,6 +36,16 @@ public class TokenValidator
         _logger = logger;
     }
 
+    public int Authorize(string accessToken)
+    {
+        var principal = ValidateToken(accessToken);
+        if (principal == null) return -1; // Unauthorized
+        
+        var userId = GetUserIdFromAccessToken(principal);
+        
+        return userId ?? -1; // Return user ID or -1 if not found
+    }
+    
     public int? GetUserIdFromAccessToken(ClaimsPrincipal principal)
     {
         var userIdClaim = principal.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);

@@ -1,13 +1,14 @@
 using ApiServer.DB;
+using ApiServer.Providers;
+using NuGet.Packaging;
 
 namespace ApiServer.Services;
 
 public class RewardService
 {
     private readonly AppDbContext _context;
+    private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<RewardService> _logger;
-    
-    private readonly Random _random = new();
     
     private readonly Dictionary<(int Min, int Max), List<RewardInfo>> _rankRewardInfos = new()
     {
@@ -29,9 +30,10 @@ public class RewardService
     
     public List<StageInfo> StageInfos { get; set; } = new();
     
-    public RewardService(AppDbContext context, ILogger<RewardService> logger)
+    public RewardService(AppDbContext context, CachedDataProvider cachedDataProvider, ILogger<RewardService> logger)
     {
         _context = context;
+        _cachedDataProvider = cachedDataProvider;
         _logger = logger;
         
         List<StageEnemy> stageEnemies = _context.StageEnemy.ToList();
@@ -87,8 +89,8 @@ public class RewardService
         if (star == 0 ) return new List<SingleRewardInfo>();
 
         var rewards = new List<SingleRewardInfo>();
-        
-        rewards = StageInfos
+
+        rewards.AddRange(StageInfos
             .FirstOrDefault(si => si.StageId == stageId)?.StageReward
             .Where(sr => sr.Star <= star)
             .Select(sr => new SingleRewardInfo
@@ -97,7 +99,7 @@ public class RewardService
                 ProductType = sr.ProductType,
                 Count = sr.Count,
                 Star = sr.Star
-            }).ToList();
+            }).ToList() ?? throw new InvalidOperationException());
         
         rewards.Add(new SingleRewardInfo { ItemId = 1, ProductType = ProductType.Exp, Count = 30 });
         
@@ -117,190 +119,5 @@ public class RewardService
         return selectedValues
             .Select(materialId => new RewardInfo { ItemId = materialId, ProductType = ProductType.Material, Count = 1 })
             .ToList();
-    }
-
-    public List<ProductComposition> ClaimFinalProducts(int productId)
-    {
-        var visited = new HashSet<int>();
-        return ClaimFinalProductsInternal(productId, visited);
-    }
-
-    private List<ProductComposition> ClaimFinalProductsInternal(int productId, HashSet<int> visited)
-    {
-        if (!visited.Add(productId))
-        {
-            return new List<ProductComposition>();
-        }
-
-        var compositions = _context.ProductComposition
-            .Where(pc => pc.ProductId == productId)
-            .ToList();
-        var result = new List<ProductComposition>();
-
-        foreach (var composition in compositions)
-        {
-            if (composition.Guaranteed)
-            {
-                if (composition.ProductType == ProductType.None)
-                {
-                    var subResults = ClaimFinalProductsInternal(composition.CompositionId, visited);
-                    result.AddRange(subResults);
-                }
-                else
-                {
-                    result.Add(composition);
-                }
-            }
-            else
-            {
-                var probList = _context.CompositionProbability
-                    .Where(cp => cp.ProductId == composition.ProductId)
-                    .ToList();
-
-                if (probList.Count == 0) continue;
-                
-                var chosenProductId = SelectedRandomProduct(probList);
-                var subResults = ClaimFinalProductsInternal(chosenProductId, visited);
-                result.AddRange(subResults);
-            }
-        }
-
-        return result;
-    }
-
-    private int SelectedRandomProduct(List<CompositionProbability> probList)
-    {
-        double totalProb = probList.Sum(cp => cp.Probability);
-        double randValue = _random.NextDouble() * totalProb;
-        double cumulative = 0.0;
-
-        foreach (var probability in probList)
-        {
-            cumulative += probability.Probability;
-            if (randValue <= cumulative)
-            {
-                return probability.CompositionId;
-            }
-        }
-
-        return probList.Last().CompositionId;
-    }
-    
-    public void ClaimPurchasedProduct(int userId, ProductComposition pc)
-    {
-        switch (pc.ProductType)
-        {
-            case ProductType.Unit:
-                var existingUserUnit = _context.UserUnit
-                    .FirstOrDefault(uu => uu.UserId == userId && uu.UnitId == (UnitId)pc.CompositionId);
-                if (existingUserUnit == null)
-                {
-                    _context.UserUnit.Add(new UserUnit
-                    {
-                        UserId = userId,
-                        UnitId = (UnitId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserUnit.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Material:
-                var existingUserMaterial = _context.UserMaterial
-                    .FirstOrDefault(um => um.UserId == userId && um.MaterialId == (MaterialId)pc.CompositionId);
-                if (existingUserMaterial == null)
-                {
-                    _context.UserMaterial.Add(new UserMaterial
-                    {
-                        UserId = userId,
-                        MaterialId = (MaterialId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserMaterial.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Enchant:
-                var existingUserEnchant = _context.UserEnchant
-                    .FirstOrDefault(ue => ue.UserId == userId && ue.EnchantId == (EnchantId)pc.CompositionId);
-                if (existingUserEnchant == null)
-                {
-                    _context.UserEnchant.Add(new UserEnchant
-                    {
-                        UserId = userId,
-                        EnchantId = (EnchantId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserEnchant.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Sheep:
-                var existingUserSheep = _context.UserSheep
-                    .FirstOrDefault(us => us.UserId == userId && us.SheepId == (SheepId)pc.CompositionId);
-                if (existingUserSheep == null)
-                {
-                    _context.UserSheep.Add(new UserSheep
-                    {
-                        UserId = userId,
-                        SheepId = (SheepId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserSheep.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Character:
-                var existingUserCharacter = _context.UserCharacter
-                    .FirstOrDefault(uc => uc.UserId == userId && uc.CharacterId == (CharacterId)pc.CompositionId);
-                if (existingUserCharacter == null)
-                {
-                    _context.UserCharacter.Add(new UserCharacter
-                    {
-                        UserId = userId,
-                        CharacterId = (CharacterId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserCharacter.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Gold:
-                var userStatGold = _context.UserStats
-                    .FirstOrDefault(us => us.UserId == userId);
-                if (userStatGold != null)
-                {
-                    userStatGold.Gold += pc.Count;
-                }
-                break;
-            
-            case ProductType.Spinel:
-                var userStatSpinel = _context.UserStats
-                    .FirstOrDefault(us => us.UserId == userId);
-                if (userStatSpinel != null)
-                {
-                    userStatSpinel.Spinel += pc.Count;
-                }
-                break;
-
-            case ProductType.None:
-                
-                break;
-        }
     }
 }

@@ -129,7 +129,7 @@ public class DailyProductService : IDailyProductService
             var product = products.FirstOrDefault(p => p.ProductId == udp.ProductId) ?? new Product();
             var productInfo = new ProductInfo
             {
-                Id = product.ProductId,
+                ProductId = product.ProductId,
                 Price = _cachedDataProvider.GetDailyProductPrice(product.ProductId),
                 CurrencyType = product.Currency,
                 Category = product.Category,
@@ -138,7 +138,7 @@ public class DailyProductService : IDailyProductService
                 Compositions = compositions.Where(pc => pc.ProductId == product.ProductId)
                     .Select(pc => new CompositionInfo
                     {
-                        Id = pc.ProductId,
+                        ProductId = pc.ProductId,
                         CompositionId = pc.CompositionId,
                         ProductType = pc.ProductType,
                         Count = pc.Count,

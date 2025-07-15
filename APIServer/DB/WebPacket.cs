@@ -4,52 +4,6 @@ namespace ApiServer.DB;
 
 #pragma warning disable CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
 
-#region API Test
-
-public class TestRequired
-{
-    public int UnitId { get; set; }
-}
-
-public class TestResponse
-{
-    public bool TestOk { get; set; }
-    public string UnitName { get; set; }
-}
-
-public class ServerTestRequired
-{
-    public bool Test { get; set; }
-}
-
-public class ServerTestResponse
-{
-    public bool MatchTestOk { get; set; }
-    public bool SocketTestOk { get; set; }
-}
-
-public class TestApiToMatchRequired
-{
-    public bool Test { get; set; }
-}
-
-public class TestApiToMatchResponse
-{
-    public bool TestOk { get; set; }
-}
-
-public class TestApiToSocketRequired
-{
-    public bool Test { get; set; }
-}
-
-public class TestApiToSocketResponse
-{
-    public bool TestOk { get; set; }
-}
-
-#endregion
-
 #region External
 
 public class DeleteUserAccountHardPacketRequired
@@ -140,7 +94,7 @@ public class SubscriptionInfo
 
 public class ProductInfo
 {
-    public int Id { get; set; }
+    public int ProductId { get; set; }
     public List<CompositionInfo> Compositions { get; set; }
     public int Price { get; set; }
     public CurrencyType CurrencyType { get; set; }
@@ -151,7 +105,7 @@ public class ProductInfo
 
 public class CompositionInfo
 {
-    public int Id { get; set; }
+    public int ProductId { get; set; }
     public int CompositionId { get; set; }
     public ProductType ProductType { get; set; }
     public int Count { get; set; }
@@ -169,6 +123,12 @@ public class DailyProductInfo
     public bool Bought { get; set; }
     public bool AdsWatched { get; set; }
     public bool NeedAds { get; set; }
+}
+
+public class RandomProductInfo
+{
+    public ProductInfo ProductInfo { get; set; }
+    public int Count { get; set; }
 }
 
 public class UnitInfo
@@ -935,7 +895,7 @@ public class CashPaymentPacketResponse
 public class ClaimProductPacketRequired
 {
     public string AccessToken { get; set; }
-    public AcquisitionPath AcquisitionPath { get; set; }
+    public RewardPopupType CurrentState { get; set; }
     public bool ClaimAll { get; set; }
     public int MailId { get; set; }
 }
@@ -944,6 +904,24 @@ public class ClaimProductPacketResponse
 {
     public bool ClaimOk { get; set; }
     public List<ProductInfo> ProductInfos { get; set; }
+    public List<RandomProductInfo> RandomProductInfos { get; set; }
+    public List<CompositionInfo> CompositionInfos { get; set; }
+    public RewardPopupType RewardPopupType { get; set; }
+}
+
+public class SelectProductPacketRequired
+{
+    public string AccessToken { get; set; }
+    public ProductInfo OriginalProductInfo { get; set; }
+    public CompositionInfo SelectedCompositionInfo { get; set; }
+}
+
+public class SelectProductPacketResponse
+{
+    public bool SelectOk { get; set; }
+    public List<ProductInfo> ProductInfos { get; set; }
+    public List<RandomProductInfo> RandomProductInfos { get; set; }
+    public List<CompositionInfo> CompositionInfos { get; set; }
     public RewardPopupType RewardPopupType { get; set; }
 }
 

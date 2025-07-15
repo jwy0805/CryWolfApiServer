@@ -16,6 +16,7 @@ public class MatchController : ControllerBase
     private readonly TokenValidator _tokenValidator;
     private readonly MatchService _matchService;
     private readonly RewardService _rewardService;
+    private readonly ProductClaimService _claimService;
     private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<MatchController> _logger;
     
@@ -26,6 +27,7 @@ public class MatchController : ControllerBase
         TokenValidator tokenValidator, 
         MatchService matchService,
         RewardService rewardService,
+        ProductClaimService claimService,
         CachedDataProvider cachedDataProvider,
         ILogger<MatchController> logger)
     {
@@ -35,6 +37,7 @@ public class MatchController : ControllerBase
         _tokenValidator = tokenValidator;
         _matchService = matchService;
         _rewardService = rewardService;
+        _claimService = claimService;
         _cachedDataProvider = cachedDataProvider;
         _logger = logger;
     }
@@ -344,11 +347,8 @@ public class MatchController : ControllerBase
             LoserRewards = loserRewardsList 
         };
     
-        winUserStats.Gold += winnerRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
-        loseUserStats.Gold += loserRewardsList.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
-    
-        AddMaterialRewards(winUser.UserId, winnerRewardsList);
-        AddMaterialRewards(loseUser.UserId, loserRewardsList);
+        AddGameRewards(winUser.UserId, winnerRewardsList);
+        AddGameRewards(loseUser.UserId, loserRewardsList);
         _context.SaveChangesExtended();
     
         return Ok(res);  
@@ -385,9 +385,7 @@ public class MatchController : ControllerBase
             
             res.Rewards = rewards;
             userStage.StageStar = newStar;
-            userStats.Gold += rewards.FirstOrDefault(reward => reward.ProductType == ProductType.Gold)?.Count ?? 0;
-            userStats.Spinel += rewards.FirstOrDefault(reward => reward.ProductType == ProductType.Spinel)?.Count ?? 0;
-            AddMaterialRewards(user.UserId, rewardInfo);
+            AddGameRewards(user.UserId, rewardInfo);
             
             // Add Next Stage on DB
             if (required.StageId != 1009 || required.StageId != 5009)
@@ -404,18 +402,6 @@ public class MatchController : ControllerBase
                 };
                 _logger.LogInformation($"NextStage: {nextStage.StageId}, UserId: {nextStage.UserId} at {DateTime.Now}");
                 _context.UserStage.Add(nextStage);
-            }
-
-            foreach (var reward in rewards)
-            {
-                _context.Add(new UserProduct
-                {
-                    UserId = user.UserId,
-                    ProductId = reward.ItemId,
-                    ProductType = reward.ProductType,
-                    Count = reward.Count,
-                    AcquisitionPath = AcquisitionPath.Single
-                });
             }
             
             _context.SaveChangesExtended();
@@ -501,8 +487,52 @@ public class MatchController : ControllerBase
         return _rewardService.GetRankRewards(userId, rankPoint, rankPointBefore, false);
     }
 
-    private void AddMaterialRewards(int userId, List<RewardInfo> rewards)
+    private void AddGameRewards(int userId, List<RewardInfo> rewards)
     {
+        var productList = _cachedDataProvider.GetProducts();
+        var productIds = rewards.Select(ri => ri.ItemId).ToArray();
+        var productDictionary = _claimService.ClassifyProducts(userId, productIds);
+        var userMail = _context.Mail;
+
+        // Selectable or random product will be sent to mailbox, other products immediately added to user inventory.
+        foreach (var reward in rewards)
+        {
+            if ((productDictionary.TryGetValue(ProductOpenType.Select, out var selectableList) &&
+                 selectableList.Select(pc => pc.CompositionId).Contains(reward.ItemId)) ||
+                (productDictionary.TryGetValue(ProductOpenType.Random, out var randomList) &&
+                 randomList.Select(pc => pc.CompositionId).Contains(reward.ItemId)))
+            {
+                for (int i = 0; i < reward.Count; i++)
+                {
+                    var mail = new Mail
+                    {
+                        UserId = userId,
+                        Claimed = false,
+                        Expired = false,
+                        CreatedAt = DateTime.UtcNow,
+                        ExpiresAt = DateTime.UtcNow.AddDays(30),
+                        Type = MailType.Product,
+                        ProductId = reward.ItemId,
+                        ProductCode = productList.First(p => p.ProductId == reward.ItemId).ProductCode,
+                        Sender = "cry wolf"
+                    };
+                    
+                    userMail.Add(mail);
+                }
+            }
+            else
+            {
+                var productComposition = new ProductComposition
+                {
+                    ProductId = reward.ItemId,
+                    ProductType = reward.ProductType,
+                    Count = reward.Count,
+                };
+                
+                _claimService.StoreProduct(userId, productComposition);
+            }
+        }
+        
         var userMaterial = _context.UserMaterial;
         foreach (var reward in rewards.Where(r => r.ProductType == ProductType.Material))
         {

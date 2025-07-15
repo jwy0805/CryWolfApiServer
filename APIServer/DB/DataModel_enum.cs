@@ -293,6 +293,14 @@ public enum ProductCategory
     Other = 100,
 }
 
+public enum ProductOpenType
+{
+    None = 0,
+    Single = 1,
+    Random = 2,
+    Select = 3,
+}
+
 public enum AcquisitionPath
 {
     None = 0,
@@ -303,13 +311,17 @@ public enum AcquisitionPath
     Mission = 5,
     Tutorial = 6,
     Event = 7,
+    // 현재 open중인 패키지
+    // ex) Over Power을 개봉하면 User_Product의 Over Power은 사라지고, 하위 상품들이 AcquisitionPath가 Open으로 변경어 테이블에 추가됨
+    Open = 8, 
 }
 
 public enum RewardPopupType
 {
-    None = 0, 
-    Item = 1,
-    Select = 2,
+    None = 0, // from result popup, to main lobby
+    Item = 1, // all item popup
+    Select = 2, // select popup
+    Open = 3, // random open popup 
 }
 
 public enum CurrencyType

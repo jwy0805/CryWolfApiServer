@@ -22,7 +22,7 @@ public class ProductClaimService
     /// <summary>
     /// Unpack products in mailbox to user product table.
     /// </summary>
-    public void UnpackPackages(int userId, List<Mail> mails)
+    public async Task UnpackPackages(int userId, List<Mail> mails)
     {
         var productIds = mails
             .Where(m =>
@@ -60,15 +60,20 @@ public class ProductClaimService
                 }
             }
         }
+
+        foreach (var mail in mails)
+        {
+            mail.Claimed = true;
+        }
         
-        _context.SaveChangesExtended();
+        await _context.SaveChangesExtendedAsync();
     }
 
-    public async Task<ClaimData> ClassifyAndClaim(int userId, List<int> productIds, ClaimData? data = null)
+    public async Task<ClaimData> ClassifyAndClaim(int userId)
     {
-        data ??= new ClaimData();
+        var data = new ClaimData();
         
-        var productDict = ClassifyProducts(userId, productIds.ToArray());
+        var productDict = ClassifyProducts(userId);
         
         if (productDict.TryGetValue(ProductOpenType.Select, out var selectableProducts))
         {
@@ -195,10 +200,10 @@ public class ProductClaimService
                     data.CompositionInfos.Add(compositionInfo);
                 }
                             
-                data.ProductInfos.Add(MapProductInfo(userProduct));
+                // data.ProductInfos.Add(MapProductInfo(userProduct));
                 StoreProduct(userId, composition);
                 AddDisplayingComposition(userId, compositionInfo);
-                RemoveUserProduct(userId, composition.ProductId);
+                RemoveUserProduct(userId, composition.ProductId, composition.Count);
             }
         }
         
@@ -225,7 +230,7 @@ public class ProductClaimService
         return result;
     }    
     
-    public Dictionary<ProductOpenType, List<ProductComposition>> ClassifyProducts(int userId, int[] productIds)
+    public Dictionary<ProductOpenType, List<ProductComposition>> ClassifyProducts(int userId)
     {
         var result = new Dictionary<ProductOpenType, List<ProductComposition>>();
         
@@ -263,6 +268,7 @@ public class ProductClaimService
             .ToList();
         var probList = _cachedDataProvider.GetProbabilities();
 
+        // unit, spinel 등 productType가 None이 아닌 경우
         if (compositionList.Count == 0 || compositionList.All(pc => pc.ProductType != ProductType.None))
         {
             var composition = new ProductComposition

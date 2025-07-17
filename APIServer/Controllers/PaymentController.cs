@@ -262,9 +262,7 @@ public class PaymentController : ControllerBase
     {
         var userId = _tokenValidator.Authorize(required.AccessToken);
         if (userId == -1) return Unauthorized();
-        
-        var allCompositions = _cachedDataProvider.GetProductCompositions();
-        var productCompositionStored = allCompositions
+        var productCompositionStored = _cachedDataProvider.GetProductCompositions()
             .First(pc => 
                 pc.CompositionId == required.SelectedCompositionInfo.CompositionId &&
                 pc.ProductId == required.SelectedCompositionInfo.ProductId &&
@@ -274,14 +272,10 @@ public class PaymentController : ControllerBase
         _claimService.AddDisplayingComposition(userId, required.SelectedCompositionInfo);
         _claimService.RemoveUserProduct(userId, required.SelectedCompositionInfo.ProductId);
         
-        var userProductList = await _context.UserProduct
-            .Where(up => up.UserId == userId && up.AcquisitionPath == AcquisitionPath.Open)
-            .ToListAsync();
-        var productList = userProductList.Select(up => up.ProductId).ToList();
-        var data = await _claimService.ClassifyAndClaim(userId, productList);
+        var data = await _claimService.ClassifyAndClaim(userId);
         await _context.SaveChangesExtendedAsync();
         
-        var res = new SelectProductPacketResponse
+        var res = new ClaimProductPacketResponse
         {
             ProductInfos = data.ProductInfos,
             RandomProductInfos = data.RandomProductInfos,
@@ -291,10 +285,10 @@ public class PaymentController : ControllerBase
 
         if (data.CompositionInfos.Count == 0 && data.RandomProductInfos.Count == 0 && data.ProductInfos.Count == 0)
         {
-            res.SelectOk = false;
+            res.ClaimOk = false;
         }
 
-        res.SelectOk = true;
+        res.ClaimOk = true;
 
         return Ok(res);
     }
@@ -305,74 +299,51 @@ public class PaymentController : ControllerBase
     {
         var userId = _tokenValidator.Authorize(required.AccessToken);
         if (userId == -1) return Unauthorized();
-        
-        var userProducts = _context.UserProduct
-            .Where(up => up.UserId == userId && up.AcquisitionPath == AcquisitionPath.Open)
-            .ToList();
-        var allProducts = _cachedDataProvider.GetProducts();
-        var allCompositions = _cachedDataProvider.GetProductCompositions();
-        var fixedProductIds = allProducts
-            .Where(p => p.IsFixed)
-            .Select(p => p.ProductId)
-            .ToHashSet();
 
-        var data = new ClaimData();
-
+        List<Mail> mails;
         if (required.ClaimAll)
         {
-            var userMails = await _context.Mail
+            mails = await _context.Mail
                 .Where(m => m.UserId == userId && m.Type == MailType.Product && m.Claimed == false)
                 .ToListAsync();
-            var productIdList = userMails.Where(m => m.ProductId.HasValue)
-                .Select(m => m.ProductId!.Value)
-                .ToList();
-
-            _context.Mail.RemoveRange(userMails);
-            _claimService.UnpackPackages(userId, userMails);
-            data = await _claimService.ClassifyAndClaim(userId, productIdList);
-            await _context.SaveChangesExtendedAsync();
         }
         // Claim individual product in mail
         else if (required.MailId != 0)
         {
-            var mail = await _context.Mail
-                .FirstOrDefaultAsync(m => m.MailId == required.MailId && m.UserId == userId && m.Claimed == false);
-            if (mail?.ProductId == null)
-            {
-                return BadRequest("Invalid mail ID or already claimed.");
-            }
-            
-            _context.Mail.Remove(mail);
-            _claimService.UnpackPackages(userId, new List<Mail> { mail });
-            data = await _claimService.ClassifyAndClaim(userId, new List<int> { (int)mail.ProductId });
-            await _context.SaveChangesExtendedAsync();
+            mails = await _context.Mail
+                .Where(m => m.MailId == required.MailId && m.UserId == userId && m.Claimed == false)
+                .ToListAsync();
         }
-        // fixed products by Single, Rank, Event, Tutorial, other products will be sent to mailbox.
         else
         {
-            // foreach (var userProduct in userProducts)
-            // {
-            //     if (fixedProductIds.Contains(userProduct.ProductId))
-            //     {
-            //         var compositions = allCompositions
-            //             .Where(pc => pc.ProductId == userProduct.ProductId)
-            //             .ToList();
-            //         
-            //         foreach (var composition in compositions)
-            //         {
-            //             data.ProductInfos.Add(_claimService.MapProductInfo(userProduct));
-            //             _claimService.StoreProduct(userId, composition);
-            //         }
-            //     }
-            //     else
-            //     {
-            //         _userService.SendProductMail(userId, MailType.Product, "Product Purchased", userProduct.ProductId);
-            //     }
-            // }
+            return BadRequest();
         }
-
-        await _context.SaveChangesAsync();
         
+        await _claimService.UnpackPackages(userId, mails);
+        var data = await _claimService.ClassifyAndClaim(userId);
+        await _context.SaveChangesExtendedAsync();
+        
+        var res = new ClaimProductPacketResponse
+        {
+            ProductInfos = data.ProductInfos,
+            RandomProductInfos = data.RandomProductInfos,
+            CompositionInfos = data.CompositionInfos,
+            RewardPopupType = data.RewardPopupType,
+            ClaimOk = true
+        };
+        
+        return Ok(res);
+    }
+
+    [HttpPut]
+    [Route("DisplayClaimedProduct")]
+    public async Task<IActionResult> DisplayClaimedProduct([FromBody] DisplayClaimedProductPacketRequired required)
+    {
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
+        var data = await _claimService.ClassifyAndClaim(userId);
+        await _context.SaveChangesExtendedAsync();
+    
         var res = new ClaimProductPacketResponse
         {
             ProductInfos = data.ProductInfos,

@@ -202,7 +202,7 @@ public class TestController : ControllerBase
             Compositions = new List<ProductComposition>()
         };
         
-        var dict = _claimService.ClassifyProducts(1, required.ProductIds.ToArray());
+        var dict = _claimService.ClassifyProducts(1);
         foreach (var value in dict.Values)
         {
             res.Compositions.AddRange(value);

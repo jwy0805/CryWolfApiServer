@@ -900,25 +900,20 @@ public class ClaimProductPacketRequired
     public int MailId { get; set; }
 }
 
-public class ClaimProductPacketResponse
-{
-    public bool ClaimOk { get; set; }
-    public List<ProductInfo> ProductInfos { get; set; }
-    public List<RandomProductInfo> RandomProductInfos { get; set; }
-    public List<CompositionInfo> CompositionInfos { get; set; }
-    public RewardPopupType RewardPopupType { get; set; }
-}
-
 public class SelectProductPacketRequired
 {
     public string AccessToken { get; set; }
-    public ProductInfo OriginalProductInfo { get; set; }
     public CompositionInfo SelectedCompositionInfo { get; set; }
 }
 
-public class SelectProductPacketResponse
+public class DisplayClaimedProductPacketRequired
 {
-    public bool SelectOk { get; set; }
+    public string AccessToken { get; set; }
+}
+
+public class ClaimProductPacketResponse
+{
+    public bool ClaimOk { get; set; }
     public List<ProductInfo> ProductInfos { get; set; }
     public List<RandomProductInfo> RandomProductInfos { get; set; }
     public List<CompositionInfo> CompositionInfos { get; set; }

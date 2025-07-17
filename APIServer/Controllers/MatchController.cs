@@ -491,7 +491,7 @@ public class MatchController : ControllerBase
     {
         var productList = _cachedDataProvider.GetProducts();
         var productIds = rewards.Select(ri => ri.ItemId).ToArray();
-        var productDictionary = _claimService.ClassifyProducts(userId, productIds);
+        var productDictionary = _claimService.ClassifyProducts(userId);
         var userMail = _context.Mail;
 
         // Selectable or random product will be sent to mailbox, other products immediately added to user inventory.

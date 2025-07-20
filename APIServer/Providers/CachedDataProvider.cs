@@ -122,6 +122,11 @@ public class CachedDataProvider
     {
         return _dailyProductSnapshots.FirstOrDefault(dp => dp.ProductId == productId)?.Price ?? int.MaxValue;
     }
+    
+    public void ClearDisplayingCompositions(int userId)
+    {
+        DisplayingCompositions.TryRemove(userId, out _);
+    }
 }
 
 public class DisplayingCompositions

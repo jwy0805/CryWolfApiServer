@@ -343,7 +343,13 @@ public class PaymentController : ControllerBase
         if (userId == -1) return Unauthorized();
         var data = await _claimService.ClassifyAndClaim(userId);
         await _context.SaveChangesExtendedAsync();
-    
+        
+        if (_cachedDataProvider.DisplayingCompositions.TryRemove(userId, out var dispCompositions))
+        {
+            data.CompositionInfos = dispCompositions.Items.ToList();
+            data.RewardPopupType = RewardPopupType.Item;
+        }
+        
         var res = new ClaimProductPacketResponse
         {
             ProductInfos = data.ProductInfos,

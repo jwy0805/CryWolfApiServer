@@ -186,30 +186,30 @@ public class ProductClaimService
                 .FirstOrDefault(up => up.ProductId == composition.ProductId);
             if (userProduct != null)
             {
-                var compositionInfo = MapCompositionInfo(composition);
+                var pc = new ProductComposition
+                {
+                    CompositionId = composition.ProductId,
+                    ProductType = composition.ProductType,
+                    Count = composition.Count
+                };
+                var compositionInfo = MapCompositionInfo(pc);
                 var existingComposition = data.CompositionInfos
                     .FirstOrDefault(ci => ci.CompositionId == composition.CompositionId &&
                                           ci.ProductType == composition.ProductType);
                             
                 if (existingComposition != null)
                 {
-                    existingComposition.Count += composition.Count;
+                    existingComposition.Count += pc.Count;
                 }
                 else
                 {
                     data.CompositionInfos.Add(compositionInfo);
                 }
                             
-                // data.ProductInfos.Add(MapProductInfo(userProduct));
-                StoreProduct(userId, composition);
+                StoreProduct(userId, pc);
                 AddDisplayingComposition(userId, compositionInfo);
                 RemoveUserProduct(userId, composition.ProductId, composition.Count);
             }
-        }
-        
-        if (_cachedDataProvider.DisplayingCompositions.TryRemove(userId, out var dispCompositions))
-        {
-            data.CompositionInfos = dispCompositions.Items.ToList();
         }
         
         data.RewardPopupType = RewardPopupType.Item;
@@ -603,6 +603,21 @@ public class ProductClaimService
                 }
                 break;
 
+            
+            case ProductType.Exp:
+                var userStatExp = _context.UserStats
+                    .FirstOrDefault(us => us.UserId == userId);
+                if (userStatExp != null)
+                {
+                    var level = userStatExp.UserLevel;
+                    userStatExp.Exp += pc.Count;
+                    if (userStatExp.Exp >= _cachedDataProvider.GetExpSnapshots()[level])
+                    {
+                        userStatExp.UserLevel++;
+                        userStatExp.Exp -= _cachedDataProvider.GetExpSnapshots()[level];
+                    }
+                }
+                break;
             case ProductType.None:
                 
                 break;

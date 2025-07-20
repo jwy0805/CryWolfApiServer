@@ -429,36 +429,42 @@ public class MatchController : ControllerBase
         
         res.GetGameRewardOk = true;
         res.Rewards = new List<RewardInfo> { reward };
-        _context.SaveChangesExtended();
         
         return Ok(res);
     }
 
     private RewardInfo AddTutorialRewardUnit(Faction faction, List<UnitId> userUnits, int userId)
     {
-        var knightUnits = _context.Unit.AsNoTracking().Where(u => u.Class == UnitClass.Knight).ToList();
+        var knightUnits = _context.Unit.AsNoTracking()
+            .Where(u => u.Class == UnitClass.Knight && u.Level == 3).ToList();
         var rewardUnit = knightUnits
             .Where(ku => ku.Faction == faction)
             .Select(ku => ku.UnitId).ToList()
             .Except(userUnits).FirstOrDefault();
 
+        UserUnit newUnit;
         if (rewardUnit == UnitId.UnknownUnit)
         {
-            return new RewardInfo
+            newUnit = new UserUnit
             {
-                ItemId = faction == Faction.Wolf ? 518 : 112,
-                ProductType = ProductType.Unit,
-                Count = 1
+                UserId = userId,
+                UnitId = faction == Faction.Wolf ? UnitId.Cactus : UnitId.Bloom,
+                Count = 1,
             };
-        };
-        
-        var newUnit = new UserUnit
+        }
+        else
         {
-            UserId = userId,
-            UnitId = rewardUnit
-        };
+            newUnit = new UserUnit
+            {
+                UserId = userId,
+                UnitId = rewardUnit - 1,
+                Count = 1,
+            };
+        }
         
-        var userUnit = _context.UserUnit.FirstOrDefault(uu => uu.UserId == userId && uu.UnitId == rewardUnit);
+        var userUnit = _context.UserUnit.FirstOrDefault(uu => uu.UserId == userId && uu.UnitId == newUnit.UnitId);
+
+        Console.WriteLine($"unit : id - {userUnit?.UnitId}, count - {userUnit?.Count}");
 
         if (userUnit == null)
         {
@@ -468,10 +474,12 @@ public class MatchController : ControllerBase
         {
             userUnit.Count++;
         }
+
+        _context.SaveChangesExtended();
         
         return new RewardInfo
         {
-            ItemId = (int)rewardUnit,
+            ItemId = (int)newUnit.UnitId,
             ProductType = ProductType.Unit,
             Count = 1
         };
@@ -490,17 +498,12 @@ public class MatchController : ControllerBase
     private void AddGameRewards(int userId, List<RewardInfo> rewards)
     {
         var productList = _cachedDataProvider.GetProducts();
-        var productIds = rewards.Select(ri => ri.ItemId).ToArray();
-        var productDictionary = _claimService.ClassifyProducts(userId);
         var userMail = _context.Mail;
 
         // Selectable or random product will be sent to mailbox, other products immediately added to user inventory.
         foreach (var reward in rewards)
         {
-            if ((productDictionary.TryGetValue(ProductOpenType.Select, out var selectableList) &&
-                 selectableList.Select(pc => pc.CompositionId).Contains(reward.ItemId)) ||
-                (productDictionary.TryGetValue(ProductOpenType.Random, out var randomList) &&
-                 randomList.Select(pc => pc.CompositionId).Contains(reward.ItemId)))
+            if (reward.ProductType == ProductType.None)
             {
                 for (int i = 0; i < reward.Count; i++)
                 {

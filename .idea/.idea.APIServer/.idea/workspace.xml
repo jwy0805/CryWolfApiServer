@@ -12,7 +12,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="FEAT Website and Database column added" />
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="FEAT DB">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,6 +47,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/WebSite/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ClientPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ServerPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fb89205e8aea414c9666c6d48c26e0e67290/83/0fde8049/IConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
@@ -596,15 +599,7 @@
       <workItem from="1764375805932" duration="6914000" />
       <workItem from="1764512321987" duration="2334000" />
       <workItem from="1764519510387" duration="653000" />
-      <workItem from="1764555505393" duration="44476000" />
-    </task>
-    <task id="LOCAL-00066" summary=".">
-      <option name="closed" value="true" />
-      <created>1745550725536</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1745550725536</updated>
+      <workItem from="1764555505393" duration="45408000" />
     </task>
     <task id="LOCAL-00067" summary="Summary 250427&#10;&#10;DB version upgraded to 0.2v&#10; - User table has been divided into User and User Auth.&#10; - Friend table has only one row.&#10; - Daily product table will be added.">
       <option name="closed" value="true" />
@@ -990,7 +985,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764752721061</updated>
     </task>
-    <option name="localTasksCounter" value="115" />
+    <task id="LOCAL-00115" summary="FEAT DB">
+      <option name="closed" value="true" />
+      <created>1764752985385</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1764752985385</updated>
+    </task>
+    <option name="localTasksCounter" value="116" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1000,7 +1003,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat(DB) User Tutorial Table Changed.&#10;&#10;PK has been changed to 'UserTutorialId'.&#10;One of exist Key 'TutorialType' is mutable if new type of tutorial added." />
     <MESSAGE value="0517" />
     <MESSAGE value="feat-DailyProductService.cs" />
     <MESSAGE value="feat(Build) - first product build" />
@@ -1025,7 +1027,8 @@
     <MESSAGE value="[feat. Controller] Reward Claim Logic" />
     <MESSAGE value="feat database &#10;Applying migration '20250724161032_Add_Column_ReqeustReceiverId_To_Friends'." />
     <MESSAGE value="FEAT Website and Database column added" />
-    <option name="LAST_COMMIT_MESSAGE" value="FEAT Website and Database column added" />
+    <MESSAGE value="FEAT DB" />
+    <option name="LAST_COMMIT_MESSAGE" value="FEAT DB" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

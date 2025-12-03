@@ -38,7 +38,8 @@ public class RelationController : ControllerBase
         }
         
         var friendsList = _context.Friend.AsNoTracking()
-            .Where(friend => friend.UserId == userId && friend.Status == FriendStatus.Accepted)
+            .Where(friend => (friend.UserId == userId || friend.FriendId == userId) 
+                             && friend.Status == FriendStatus.Accepted)
             .Join(_context.User,
                 friend => friend.FriendId,
                 user => user.UserId,
@@ -49,6 +50,7 @@ public class RelationController : ControllerBase
                 (combined, userStat) => new FriendUserInfo
                 {
                     UserName = combined.user.UserName,
+                    UserTag = combined.user.UserTag,
                     Level = userStat.UserLevel,
                     Act = combined.user.Act,
                     RankPoint = userStat.RankPoint,
@@ -65,34 +67,45 @@ public class RelationController : ControllerBase
     [Route("LoadPendingFriends")]
     public IActionResult LoadPendingFriends([FromBody] LoadPendingFriendPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null)
-        {
-            _logger.LogWarning("Requested Username Unauthorized");
-            return Unauthorized();
-        }
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
+
+        var friends = _context.Friend.AsNoTracking()
+            .Where(f => (f.UserId == userId || f.FriendId == userId) && f.Status == FriendStatus.Pending)
+            .ToList();
         
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userId == null)
-        {
-            _logger.LogWarning("Requested Username Unauthorized");
-            return Unauthorized();
-        }
-        
-        var pendingFriends = _context.Friend.AsNoTracking()
-            .Where(friend => friend.FriendId == userId && friend.Status == FriendStatus.Pending)
-            .Join(
-                _context.User,
-                friend => friend.UserId,
+        var pendingFriends = friends
+            .Where(f => f.RequestReceiverId != userId)
+            .Join(_context.User,
+                friend => friend.RequestReceiverId,
                 user => user.UserId,
                 (friend, user) => new { friend, user })
-            .Join(
-                _context.UserStats,
+            .Join(_context.UserStats,
                 combined => combined.user.UserId,
                 userStat => userStat.UserId,
                 (combined, userStat) => new FriendUserInfo
                 {
                     UserName = combined.user.UserName,
+                    UserTag = combined.user.UserTag,
+                    Level = userStat.UserLevel,
+                    RankPoint = userStat.RankPoint,
+                    FriendStatus = FriendStatus.Pending,
+                })
+            .ToList();
+        
+        var sendingFriends = friends
+            .Where(f => f.RequestReceiverId == userId)
+            .Join(_context.User,
+                friend => friend.UserId == userId ? friend.FriendId : friend.UserId,
+                user => user.UserId,
+                (friend, user) => new { friend, user })
+            .Join(_context.UserStats,
+                combined => combined.user.UserId,
+                userStat => userStat.UserId,
+                (combined, userStat) => new FriendUserInfo
+                {
+                    UserName = combined.user.UserName,
+                    UserTag = combined.user.UserTag,
                     Level = userStat.UserLevel,
                     RankPoint = userStat.RankPoint,
                     FriendStatus = FriendStatus.Pending,
@@ -102,6 +115,7 @@ public class RelationController : ControllerBase
         var res = new LoadPendingFriendPacketResponse
         {
             PendingFriendList = pendingFriends,
+            SendingFriendList = sendingFriends,
             LoadPendingFriendOk = true,
         };
         
@@ -112,19 +126,8 @@ public class RelationController : ControllerBase
     [Route("AcceptFriend")]
     public IActionResult AcceptFriend([FromBody] AcceptFriendPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null)
-        {
-            _logger.LogWarning("SearchUsername Unauthorized");
-            return Unauthorized();
-        }
-        
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userId == null)
-        {
-            _logger.LogWarning("SearchUsername Unauthorized");
-            return Unauthorized();
-        }
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
         
         var friendId = _context.User.AsNoTracking()
             .FirstOrDefault(user => user.UserName == required.FriendUsername)?.UserId;
@@ -134,9 +137,11 @@ public class RelationController : ControllerBase
             return Ok(new AcceptFriendPacketResponse { AcceptFriendOk = false });
         }
         
+        var low = Math.Min(userId, friendId.Value);
+        var high = Math.Max(userId, friendId.Value);
         var friend = _context.Friend
-            .FirstOrDefault(friend =>
-                friend.UserId == friendId && friend.FriendId == userId && friend.Status == FriendStatus.Pending);
+            .FirstOrDefault(f => f.UserId == low && f.FriendId == high && f.Status == FriendStatus.Pending);
+        
         if (friend == null)
         {
             _logger.LogWarning("SearchUsername Unauthorized");
@@ -146,18 +151,7 @@ public class RelationController : ControllerBase
         if (required.Accept)
         {
             friend.Status = FriendStatus.Accepted;
-            _context.Friend.Update(friend);
-            
-            var newFriend = new Friend
-            {
-                UserId = userId.Value,
-                FriendId = friendId.Value,
-                Status = FriendStatus.Accepted,
-                CreatedAt = DateTime.Now,
-            };
-            
-            _context.Friend.Add(newFriend);
-            _context.SaveChanges();
+            _context.SaveChangesExtended();
             
             return Ok(new AcceptFriendPacketResponse
             {
@@ -168,7 +162,7 @@ public class RelationController : ControllerBase
         else
         {
             _context.Friend.Remove(friend);
-            _context.SaveChanges();
+            _context.SaveChangesExtended();
             
             return Ok(new AcceptFriendPacketResponse
             {
@@ -182,14 +176,9 @@ public class RelationController : ControllerBase
     [Route("SearchUsername")]
     public IActionResult SearchUsername([FromBody] SearchUsernamePacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null)
-        {
-            _logger.LogWarning("SearchUsername Unauthorized");
-            return Unauthorized();
-        }
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
         
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         var res = new SearchUsernamePacketResponse
         {
             FriendUserInfos = new List<FriendUserInfo>()
@@ -223,6 +212,7 @@ public class RelationController : ControllerBase
             .Select(result => new FriendUserInfo
             {
                 UserName = result.friendUser.UserName,
+                UserTag = result.friendUser.UserTag,
                 Level = result.friendUserStat?.UserLevel ?? 0,
                 RankPoint = result.friendUserStat?.RankPoint ?? 0,
                 FriendStatus = result.Friend?.Status ?? FriendStatus.None
@@ -245,22 +235,11 @@ public class RelationController : ControllerBase
     [Route("DeleteFriend")]
     public IActionResult DeleteFriend([FromBody] FriendRequestPacketRequired required)
     {
-        var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        if (principal == null)
-        {
-            _logger.LogWarning("Requested Username Unauthorized");
-            return Unauthorized();
-        }
-        
-        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userId == null)
-        {
-            _logger.LogWarning("Requested Username Unauthorized");
-            return Unauthorized();
-        }
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
         
         var friendId = _context.User.AsNoTracking()
-            .FirstOrDefault(user => user.UserName == required.FriendUsername)?.UserId;
+            .FirstOrDefault(user => user.UserTag == required.FriendUserTag)?.UserId;
         if (friendId == null)
         {
             _logger.LogWarning("Requested Username Unauthorized");

@@ -17,6 +17,8 @@ public class UserService
 {
     private readonly IConfiguration _configuration;
     private readonly AppDbContext _context;
+    private readonly Random _random = new();
+    private readonly char[] _tagChars = "abcdefghijklmnopqrstuvwxyz0123456789".ToCharArray();
     
     public UserService(IConfiguration configuration, AppDbContext context)
     {
@@ -72,44 +74,16 @@ public class UserService
         {
             return false;
         }
-        
-        var newUser = new User
-        {
-            UserName = string.Empty,
-            Role = UserRole.User,
-            State = UserState.Deactivate,
-        };
 
-        var newUserAuth = new UserAuth
-        {
-            UserAccount = userAccount,
-            PasswordHash = password ?? string.Empty,
-            LinkedAt = DateTime.UtcNow,
-            Provider = provider,
-            User = newUser,  
-        };
+        var uniqueTag = await GenerateUniqueUserTag();
+        var newUser = InitUser(uniqueTag);
+        var newUserAuth = InitUserAuth(newUser, userAccount, provider, password);
         
         _context.UserAuth.Add(newUserAuth);
         await _context.SaveChangesExtendedAsync(); // 이 때 UserId가 생성
         
-        var newUserStat = new UserStats
-        {
-            UserId = newUser.UserId,
-            UserLevel = 1,
-            RankPoint = 500,
-            Exp = 0,
-            Gold = 1000,
-            Spinel = 50
-        };
-            
-        var newUserMatch = new UserMatch
-        {
-            UserId = newUser.UserId,
-            WinRankMatch = 0,
-            LoseRankMatch = 0,
-            WinFriendlyMatch = 0,
-            LoseFriendlyMatch = 0,
-        };
+        var newUserStat = InitUserStats(newUser);
+        var newUserMatch = InitUserMatch(newUser);
             
         _context.UserStats.Add(newUserStat);
         _context.UserMatch.Add(newUserMatch);
@@ -133,6 +107,78 @@ public class UserService
         return true;
     }
 
+    private User InitUser(string uniqueTag) => new()
+    {
+        UserName = string.Empty,
+        UserTag = uniqueTag,
+        Role = UserRole.User,
+        State = UserState.Deactivate,
+    };
+    
+    private UserAuth InitUserAuth(User user, string userAccount, AuthProvider provider, string? password = null) =>
+        new()
+        {
+            UserAccount = userAccount,
+            PasswordHash = password ?? string.Empty,
+            LinkedAt = DateTime.UtcNow,
+            Provider = provider,
+            User = user,
+        };
+    
+    private UserStats InitUserStats(User user) => new()
+    {
+        UserId = user.UserId,
+        UserLevel = 1,
+        Exp = 0,
+        Gold = 0,
+        Spinel = 0,
+        RankPoint = 500,
+    };
+
+    private UserMatch InitUserMatch(User user) => new()
+    {
+        UserId = user.UserId,
+        WinRankMatch = 0,
+        LoseRankMatch = 0,
+        WinFriendlyMatch = 0,
+        LoseFriendlyMatch = 0,
+    };
+    
+    private async Task<string> GenerateUniqueUserTag()
+    {
+        string? uniqueTag = null;
+        const int maxAttempts = 30;
+        for (int i = 0; i < maxAttempts; i++)
+        {
+            var tag = GenerateTag();
+            var exists = await _context.User
+                .AsNoTracking()
+                .AnyAsync(u => u.UserTag == tag);
+
+            if (!exists)
+            {
+                uniqueTag = tag;
+                break;
+            }
+        }
+        
+        if (uniqueTag == null) throw new Exception("Failed to generate unique user tag.");
+
+        return uniqueTag;
+    }
+    
+    private string GenerateTag()
+    {
+        var chars = new char[5];
+        for (int i = 0; i < chars.Length; i++)
+        {
+            var idx = _random.Next(0, _tagChars.Length);
+            chars[i] = _tagChars[idx];
+        }
+
+        return new string(chars);
+    }
+    
     public void SendProductMail(int userId, MailType type, string? message = null, int? productId = null)
     {
         var mail = new Mail

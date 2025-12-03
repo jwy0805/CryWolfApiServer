@@ -52,6 +52,7 @@ public class AppDbContext : DbContext
         builder.Entity<TempUser>().HasKey(user => new { user.TempUserAccount, user.CreatedAt });
         
         builder.Entity<User>().Property(u => u.LastPingTime).IsRequired(false);
+        builder.Entity<User>().HasIndex(u => u.UserTag).IsUnique();
         
         builder.Entity<UserAuth>().Property(u => u.LinkedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
         builder.Entity<UserAuth>().HasIndex(ua => new { ua.Provider, ua.UserAccount }).IsUnique();

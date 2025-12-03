@@ -46,13 +46,15 @@ public class DailyProductService : IDailyProductService
     public async Task<bool> RefreshByAdsAsync(int userId, CancellationToken token = default)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        
+        // 최신 SeedDate 기준으로만 조회
         var snaps = await _context.UserDailyProduct
-            .Where(udp => udp.UserId == userId).ToListAsync(token);
+            .Where(udp => udp.UserId == userId).OrderByDescending(udp => udp.SeedDate).ToListAsync(token);
 
         if (snaps.Count == 0) return false;
-        if (DateTime.UtcNow - snaps[0].RefreshAt < TimeSpan.FromHours(6)) return false;
+        if (snaps[0].RefreshIndex > 0 && DateTime.UtcNow - snaps[0].RefreshAt < TimeSpan.FromHours(6)) return false;
         
-        var newIndex = (byte)(snaps[0].RefreshIndex + 1);
+        var newIndex = (byte)(snaps.Max(udp => udp.RefreshIndex) + 1);
         _context.UserDailyProduct.RemoveRange(snaps);
         
         await CreateUserDailyProductSnapshotAsync(userId, today, newIndex, token);

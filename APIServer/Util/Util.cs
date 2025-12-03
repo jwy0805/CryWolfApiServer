@@ -34,4 +34,15 @@ public class Util
         
         return _engRx.IsMatch(name) || _cjkrx.IsMatch(name);
     }
+    
+    public static string ExtractUserTag(string username)
+    {
+        if (string.IsNullOrWhiteSpace(username)) return string.Empty;
+        username = username.Trim();
+        
+        var hashIndex = username.LastIndexOf('#');
+        if (hashIndex < 0 || hashIndex == username.Length - 1) return string.Empty;
+        
+        return username[(hashIndex + 1)..].Trim();
+    }
 }

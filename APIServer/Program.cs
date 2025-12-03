@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var isLocal = Environment.GetEnvironmentVariable("ENVIRONMENT") == "Local";
 var certPath = Environment.GetEnvironmentVariable("CERT_PATH");
 var certPwd = Environment.GetEnvironmentVariable("CERT_PASSWORD");
 
@@ -23,6 +22,28 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
     options.JsonSerializerOptions.DictionaryKeyPolicy = null;
 });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+    {
+        policy
+            .WithOrigins("https://localhost:7083")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+
+    options.AddPolicy("ProdCors", policy =>
+    {
+        policy
+            .WithOrigins("https://hamonstudio.net")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 builder.Services.AddSignalR();
 
 builder.Services.AddScoped<TokenService>(provider => new TokenService(jwtSecret, 
@@ -41,9 +62,11 @@ builder.Services.AddSingleton<ConfigService>();
 builder.Services.AddSingleton<ApiService>();
 builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<TaskQueueService>();
+builder.Services.AddScoped<WebSocketService>();
 builder.Services.AddScoped<SinglePlayService>();
 builder.Services.AddScoped<RewardService>();
 builder.Services.AddScoped<ProductClaimService>();
+builder.Services.AddScoped<MailService>();
 builder.Services.AddScoped<IDailyProductService, DailyProductService>();
 builder.Services.AddTransient<UserService>();
 
@@ -60,17 +83,14 @@ builder.Services.AddRazorPages();
 builder.Logging.AddConsole();
 
 // -- StartUp.cs - Configure
-if (isLocal == false)
+if (!builder.Environment.IsDevelopment() && certPath != null && certPwd != null)
 {   
     // Data Protection
-    if (certPath != null && certPwd != null)
-    {
-        #pragma warning disable CA1416
-        builder.Services.AddDataProtection()
-            .PersistKeysToFileSystem(new DirectoryInfo("/root/.aspnet/DataProtection-Keys"))
-            .ProtectKeysWithCertificate(new X509Certificate2(certPath, certPwd));
-        #pragma warning restore CA1416
-    }
+    #pragma warning disable CA1416
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo("/root/.aspnet/DataProtection-Keys"))
+        .ProtectKeysWithCertificate(new X509Certificate2(certPath, certPwd));
+    #pragma warning restore CA1416
 }
 
 builder.Services.AddEndpointsApiExplorer();
@@ -95,6 +115,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCors(app.Environment.IsDevelopment() ? "DevCors" : "ProdCors");
 app.MapRazorPages();
 
 app.UseHttpsRedirection();

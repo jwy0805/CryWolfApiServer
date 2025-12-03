@@ -1,0 +1,35 @@
+@page
+@model PrivacyModel
+@{
+    ViewData["Title"] = "Privacy Policy";
+
+    var lang = (Request.Query["lang"].ToString() ?? "").ToLowerInvariant();
+    var langMap = new Dictionary<string, string>
+    {
+        ["en"] = "privacy_20250510_en.html",
+        ["ko"] = "privacy_20250510_kr.html",
+        ["ja"] = "privacy_20250510_ja.html"
+    };
+    var currentLang = langMap.ContainsKey(lang) ? lang : "en";
+    var iframeSrc = Url.Content($"~/policy/{langMap[currentLang]}");
+    string? LangLink(string code) => Url.Page("/Privacy", new { lang = code });
+}
+
+<section class="policy-shell">
+    <div class="policy-header">
+        <div>
+            <p class="pill">Privacy</p>
+            <h1>@ViewData["Title"]</h1>
+            <p class="muted">Select your language to view the latest Cry Wolf privacy policy.</p>
+        </div>
+        <div class="lang-switch">
+            <a class="link-pill @(currentLang == "en" ? "active" : "")" href="@LangLink("en")">English</a>
+            <a class="link-pill @(currentLang == "ko" ? "active" : "")" href="@LangLink("ko")">한국어</a>
+            <a class="link-pill @(currentLang == "ja" ? "active" : "")" href="@LangLink("ja")">日本語</a>
+        </div>
+    </div>
+
+    <div class="policy-frame">
+        <iframe src="@iframeSrc" title="Privacy Policy (@currentLang)" sandbox></iframe>
+    </div>
+</section>

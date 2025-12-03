@@ -601,7 +601,15 @@ namespace ApiServer.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("varchar(30)");
 
+                    b.Property<string>("UserTag")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("varchar(6)");
+
                     b.HasKey("UserId");
+
+                    b.HasIndex("UserTag")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });

@@ -118,9 +118,7 @@ public class UserAccountController : ControllerBase
         }
         else
         {
-            var user = _context.User
-                .AsNoTracking()
-                .FirstOrDefault(u => u.UserId == userAuth.UserId);
+            var user = _context.User.FirstOrDefault(u => u.UserId == userAuth.UserId);
             if (user == null)
             {
                 res.LoginOk = false;
@@ -151,7 +149,7 @@ public class UserAccountController : ControllerBase
         
         return res;
     }
-
+    
     [HttpPost]
     [Route("LoginApple")]
     public async Task<IActionResult> LoginApple([FromBody] LoginApplePacketRequired required)
@@ -172,24 +170,35 @@ public class UserAccountController : ControllerBase
             return Ok(res);
         }
         
-        var user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+        var userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
         
         // Check if the user exists in the database
-        if (user == null)
+        if (userAuth == null)
         {
             await _userService.CreateAccount(sub, AuthProvider.Apple);
-            user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
-            if (user == null)
+            userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
+            if (userAuth == null)
             {
                 res.LoginOk = false;
                 return Ok(res);
             }
         }
         
-        var tokens = _tokenService.GenerateTokens(user.UserId);
+        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
         res.LoginOk = true;
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
+        
+        var user = _context.User.FirstOrDefault(u => u.UserId == userAuth.UserId);
+        if (user == null)
+        {
+            res.LoginOk = false;
+            return Ok(res);
+        }
+        
+        user.State = UserState.Activate;
+        user.Act = UserAct.InLobby;
+        await _context.SaveChangesExtendedAsync();
         
         return Ok(res);
     }
@@ -214,26 +223,37 @@ public class UserAccountController : ControllerBase
             return Ok(res);
         }
         
-        var user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+        var userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
 
         // Check if the user exists in the database
-        if (user == null)
+        if (userAuth == null)
         {
             await _userService.CreateAccount(sub, AuthProvider.Google);
             Console.WriteLine("Create Account");
-            user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == sub);
+            userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
             
-            if (user == null)
+            if (userAuth == null)
             {
                 res.LoginOk = false;
                 return Ok(res);
             }
         }
 
-        var tokens = _tokenService.GenerateTokens(user.UserId);
+        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
         res.LoginOk = true;
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
+        
+        var user = _context.User.FirstOrDefault(u => u.UserId == userAuth.UserId);
+        if (user == null)
+        {
+            res.LoginOk = false;
+            return Ok(res);
+        }
+        
+        user.State = UserState.Activate;
+        user.Act = UserAct.InLobby;
+        await _context.SaveChangesExtendedAsync();
         
         return Ok(res);
     }
@@ -264,6 +284,165 @@ public class UserAccountController : ControllerBase
         return Ok(res);
     }
 
+    [HttpPost]
+    [Route("LoginFromWeb")]
+    public IActionResult LoginFromWeb([FromBody] LoginUserAccountPacketRequired required)
+    {
+        var userAuth = _context.UserAuth
+            .AsNoTracking()
+            .FirstOrDefault(u => u.UserAccount == required.UserAccount);
+
+        if (userAuth == null)
+            return Unauthorized(new { message = "Invalid email or password" });
+
+        var user = _context.User
+            .AsNoTracking()
+            .FirstOrDefault(u => u.UserId == userAuth.UserId);
+
+        if (user == null)
+            return Unauthorized(new { message = "Invalid email or password" });
+
+        if (string.IsNullOrEmpty(userAuth.PasswordHash))
+            return Unauthorized(new { message = "Invalid email or password" });
+
+        if (_tokenValidator.VerifyPassword(required.Password, userAuth.PasswordHash) == false)
+            return Unauthorized(new { message = "Invalid email or password" });
+
+        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+
+        SetAuthCookies(tokens.AccessToken, tokens.RefreshToken);
+        
+        return Ok(new { success = true, userName = user.UserName, userTag = user.UserTag, userRole = user.Role });
+    }
+    
+    [HttpPost]
+    [Route("LoginGoogleFromWeb")]
+    public async Task<IActionResult> LoginGoogleFromWeb([FromBody] LoginGooglePacketRequired required)
+    {
+        var res = new LoginGooglePacketResponse();
+
+        var audience = _configService.GetGoogleClientId(); // 🔥 Web용 Client ID 넣기
+        if (string.IsNullOrEmpty(audience))
+        {
+            Console.WriteLine("Google Client ID is not set.");
+            res.LoginOk = false;
+            return Ok(new { success = false });
+        }
+
+        var sub = await _tokenValidator.ValidateAndExtractAccountFromGoogleToken(required.IdToken, audience);
+        if (string.IsNullOrEmpty(sub))
+            return Ok(new { success = false });
+
+        var userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
+        if (userAuth == null)
+        {
+            await _userService.CreateAccount(sub, AuthProvider.Google);
+            userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
+            if (userAuth == null)
+                return Ok(new { success = false });
+        }
+
+        var user = _context.User
+            .AsNoTracking()
+            .FirstOrDefault(u => u.UserId == userAuth.UserId);
+
+        if (user == null)
+            return Unauthorized(new { message = "Invalid email or password" });
+        
+        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Lax,
+            Path = "/"
+        };
+
+        Response.Cookies.Append("access_token", tokens.AccessToken, cookieOptions);
+        Response.Cookies.Append("refresh_token", tokens.RefreshToken, cookieOptions);
+
+        return Ok(new { success = true, userName = user.UserName, userTag = user.UserTag, userRole = user.Role });
+    }
+    
+    [HttpPost]
+    [Route("LoginAppleFromWeb")]
+    public async Task<IActionResult> LoginAppleFromWeb([FromBody] LoginApplePacketRequired required)
+    {
+        var res = new LoginGooglePacketResponse();
+
+        var audience = _configService.GetGoogleClientId(); // 🔥 Web용 Client ID 넣기
+        if (string.IsNullOrEmpty(audience))
+        {
+            Console.WriteLine("Google Client ID is not set.");
+            res.LoginOk = false;
+            return Ok(new { success = false });
+        }
+
+        var sub = await _tokenValidator.ValidateAndExtractAccountFromAppleToken(required.IdToken, audience);
+        if (string.IsNullOrEmpty(sub))
+            return Ok(new { success = false });
+
+        var userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
+        if (userAuth == null)
+        {
+            await _userService.CreateAccount(sub, AuthProvider.Google);
+            userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
+            if (userAuth == null)
+                return Ok(new { success = false });
+        }
+        
+        var user = _context.User
+            .AsNoTracking()
+            .FirstOrDefault(u => u.UserId == userAuth.UserId);
+
+        if (user == null)
+            return Unauthorized(new { message = "Invalid email or password" });
+
+        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Lax,
+            Path = "/"
+        };
+
+        Response.Cookies.Append("access_token", tokens.AccessToken, cookieOptions);
+        Response.Cookies.Append("refresh_token", tokens.RefreshToken, cookieOptions);
+
+        return Ok(new { success = true, userName = user.UserName, userTag = user.UserTag, userRole = user.Role });
+    }
+    
+    private void SetAuthCookies(string accessToken, string refreshToken)
+    {
+        var accessCookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure   = true,                 
+            SameSite = SameSiteMode.Lax,
+            Expires  = DateTimeOffset.UtcNow.AddMinutes(60)
+        };
+        Response.Cookies.Append("access_token", accessToken, accessCookieOptions);
+
+        var refreshCookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure   = true,
+            SameSite = SameSiteMode.Lax,
+            Expires  = DateTimeOffset.UtcNow.AddHours(24)
+        };
+        Response.Cookies.Append("refresh_token", refreshToken, refreshCookieOptions);
+    }
+
+    private void ClearAuthCookies()
+    {
+        Response.Cookies.Delete("access_token");
+        Response.Cookies.Delete("refresh_token");
+    }
+
+    
     [HttpPost]
     [Route("PolicyAgreed")]
     public async Task<IActionResult> PolicyAgreed([FromBody] PolicyAgreedPacketRequired required)
@@ -310,13 +489,46 @@ public class UserAccountController : ControllerBase
     }
 
     [HttpPost]
+    [Route("RefreshTokenFromWeb")]
+    public IActionResult RefreshTokenFromWeb()
+    {
+        if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken) ||
+            string.IsNullOrEmpty(refreshToken))
+        {
+            _logger.LogInformation("RefreshFromWeb: No refresh token cookie found.");
+            ClearAuthCookies();
+            return Unauthorized(new { message = "No Refresh Token " });
+        }
+
+        try
+        {
+            var tokens = _tokenValidator.RefreshAccessToken(refreshToken);
+            SetAuthCookies(tokens.AccessToken, tokens.RefreshToken);
+            return Ok(new { success = true });
+        }
+        catch (SecurityTokenException ex)
+        {
+            // 유효하지 않거나 만료된 리프레시 토큰
+            _logger.LogWarning(ex, "RefreshFromWeb: invalid refresh token");
+            ClearAuthCookies();
+            return Unauthorized(new { message = "Invalid refresh token" });
+        }
+        catch (Exception ex)
+        {
+            // 예기치 않은 오류
+            _logger.LogError(ex, "RefreshFromWeb: unexpected error");
+            ClearAuthCookies();
+            return StatusCode(500, new { message = "Refresh failed" });
+        }
+    }
+    
+    [HttpPost]
     [Route("LoadUserInfo")]
     public IActionResult LoadUserInfo([FromBody] LoadUserInfoPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
 
-        var res = new LoadUserInfoPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
         if (userId == null) return Unauthorized();
         
@@ -361,35 +573,62 @@ public class UserAccountController : ControllerBase
                 }).ToList();
         }
         
-        res.UserInfo = new UserInfo
+        var res = new LoadUserInfoPacketResponse
         {
-            UserAccount = userAuth.UserAccount,
-            UserName = user.UserName,
-            Level = userStat.UserLevel,
-            Exp = userStat.Exp,
-            ExpToLevelUp = exp.Exp,
-            RankPoint = userStat.RankPoint,
-            HighestRankPoint = userStat.HighestRankPoint,
-            Victories = userMatch.WinRankMatch,
-            WinRate = winRate,
-            Gold = userStat.Gold,
-            Spinel = userStat.Spinel,
-            NameInitialized = user.NameInitialized,
-            Subscriptions = subscriptionInfos,
+            UserInfo = new UserInfo
+            {
+                UserAccount = userAuth.UserAccount,
+                UserName = user.UserName,
+                Level = userStat.UserLevel,
+                Exp = userStat.Exp,
+                ExpToLevelUp = exp.Exp,
+                RankPoint = userStat.RankPoint,
+                HighestRankPoint = userStat.HighestRankPoint,
+                Victories = userMatch.WinRankMatch,
+                WinRate = winRate,
+                Gold = userStat.Gold,
+                Spinel = userStat.Spinel,
+                NameInitialized = user.NameInitialized,
+                Subscriptions = subscriptionInfos,
+            },
+            UserTutorialInfo = new UserTutorialInfo
+            {
+                WolfTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done,
+                SheepTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
+                ChangeFactionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.ChangeFaction).Done,
+                CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
+                ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
+            },
+            ExpTable = _cachedDataProvider.GetExpSnapshots(),
+            LoadUserInfoOk = true
         };
 
-        res.UserTutorialInfo = new UserTutorialInfo
+        return Ok(res);
+    }
+
+    [HttpGet]
+    [Route("LoadUserInfoFromWeb")]
+    public IActionResult LoadUserInfoFromWeb()
+    {
+        var accessToken = Request.Cookies["access_token"];
+        if (string.IsNullOrEmpty(accessToken)) return Unauthorized();
+
+        var userId = _tokenValidator.Authorize(accessToken);
+        if (userId <= 0) return Unauthorized();
+
+        var user = _context.User
+            .AsNoTracking()
+            .FirstOrDefault(u => u.UserId == userId);
+        if (user == null) return NotFound();
+
+        var res = new LoadUserInfoPacketResponse
         {
-            WolfTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleWolf).Done,
-            SheepTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.BattleSheep).Done,
-            ChangeFactionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.ChangeFaction).Done,
-            CollectionTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Collection).Done,
-            ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
+            UserInfo = new UserInfo
+            {
+                UserName = user.UserName,
+            }
         };
-        
-        res.ExpTable = _cachedDataProvider.GetExpSnapshots();
-        res.LoadUserInfoOk = true;
-        
+
         return Ok(res);
     }
     

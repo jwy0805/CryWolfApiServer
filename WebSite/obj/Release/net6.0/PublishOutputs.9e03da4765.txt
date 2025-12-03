@@ -1,7 +1,0 @@
-/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/app/out/WebSite
-/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/app/out/appsettings.Development.json
-/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/app/out/appsettings.json
-/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/app/out/WebSite.dll
-/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/app/out/WebSite.deps.json
-/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/app/out/WebSite.runtimeconfig.json
-/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/app/out/WebSite.pdb

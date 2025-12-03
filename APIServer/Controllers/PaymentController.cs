@@ -171,7 +171,16 @@ public class PaymentController : ControllerBase
                 return BadRequest("지원하지 않는 화폐입니다.");
         }
 
-        await PurchaseComplete(userId, required.ProductCode);
+        if (product.ProductType == ProductType.Subscription)
+        {
+            await SubscriptionComplete(userId, required.ProductCode);
+            response.PaymentCode = VirtualPaymentCode.Subscription;
+        }
+        else
+        {
+            await PurchaseComplete(userId, required.ProductCode);
+            response.PaymentCode = VirtualPaymentCode.Product;
+        }
         
         response.PaymentOk = true;
         return Ok(response);
@@ -228,7 +237,7 @@ public class PaymentController : ControllerBase
 
         if (res.PaymentOk)
         {
-            await PurchaseComplete(userId, required.ProductCode);
+            await SubscriptionComplete(userId, required.ProductCode);
         }
         
         return Ok(res);
@@ -236,7 +245,8 @@ public class PaymentController : ControllerBase
 
     public async Task PurchaseComplete(int userId, string productCode)
     {
-        var product = await _context.Product.FirstOrDefaultAsync(p => p.ProductCode == productCode);
+        var product = await _context.Product.AsNoTracking().
+            FirstOrDefaultAsync(p => p.ProductCode == productCode);
         if (product == null) return;
         
         var mail = new Mail
@@ -256,6 +266,20 @@ public class PaymentController : ControllerBase
         await _context.SaveChangesExtendedAsync();
     }
 
+    // 구독 상품, 스피넬 상품에 적용
+    public async Task SubscriptionComplete(int userId, string productCode)
+    {
+        var product = await _context.Product.AsNoTracking()
+            .FirstOrDefaultAsync(p => p.ProductCode == productCode);
+        if (product == null) return;
+        
+        var composition = _context.ProductComposition.AsNoTracking()
+            .FirstOrDefault(pc => pc.ProductId == product.ProductId);
+        if (composition == null) return;
+        
+        await _claimService.StoreProductAsync(userId, composition);
+    }
+
     [HttpPut]
     [Route("SelectProduct")]
     public async Task<IActionResult> SelectProduct([FromBody] SelectProductPacketRequired required)
@@ -268,7 +292,7 @@ public class PaymentController : ControllerBase
                 pc.ProductId == required.SelectedCompositionInfo.ProductId &&
                 pc.ProductType == required.SelectedCompositionInfo.ProductType);
         
-        _claimService.StoreProduct(userId, productCompositionStored);
+        await _claimService.StoreProductAsync(userId, productCompositionStored);
         _claimService.AddDisplayingComposition(userId, required.SelectedCompositionInfo);
         _claimService.RemoveUserProduct(userId, required.SelectedCompositionInfo.ProductId);
         

@@ -18,8 +18,8 @@ public enum MatchType
 
 public enum UserRole
 {
-    Admin,
-    User
+    User,
+    Admin
 }
 
 public enum UserState
@@ -259,6 +259,7 @@ public enum ProductType
     Gold = 6,
     Spinel = 7,
     Exp = 8,
+    Subscription = 9,
 }
 
 public enum SubscriptionType
@@ -299,6 +300,7 @@ public enum ProductOpenType
     Single = 1,
     Random = 2,
     Select = 3,
+    Subscription = 4,
 }
 
 public enum AcquisitionPath
@@ -368,6 +370,13 @@ public enum TransactionStatus
     Pending,
     Expired,
     PartiallyRefunded,
+}
+
+public enum VirtualPaymentCode
+{
+    None,
+    Product,
+    Subscription
 }
 
 #endregion

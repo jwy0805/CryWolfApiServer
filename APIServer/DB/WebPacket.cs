@@ -66,6 +66,7 @@ public class UserTutorialInfo
 public class FriendUserInfo
 {
     public string UserName { get; set; }
+    public string UserTag { get; set; }
     public int Level { get; set; }
     public int RankPoint { get; set; }
     public UserAct Act { get; set; }
@@ -759,7 +760,7 @@ public class SearchUsernamePacketResponse
 public class FriendRequestPacketRequired
 {
     public string AccessToken { get; set; }
-    public string FriendUsername { get; set; }
+    public string FriendUserTag { get; set; }
     public FriendStatus CurrentFriendStatus { get; set; }
 }
 
@@ -778,6 +779,7 @@ public class LoadPendingFriendPacketResponse
 {
     public bool LoadPendingFriendOk { get; set; }
     public List<FriendUserInfo> PendingFriendList { get; set; }
+    public List<FriendUserInfo> SendingFriendList { get; set; }
 }
 
 public class AcceptFriendPacketRequired
@@ -817,13 +819,22 @@ public class ClaimMailPacketResponse
     public int ProductId { get; set; }
 }
 
+public class LoadInvitableFriendPacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class LoadInvitableFriendPacketResponse
+{
+    public bool LoadInvitableFriendOk { get; set; }
+    public List<FriendUserInfo> InvitableFriends { get; set; }
+    public List<FriendUserInfo> Others { get; set; }
+}
+
 public class InviteFriendlyMatchPacketRequired
 {
     public string AccessToken { get; set; }
-    public string InviterName { get; set; }
-    public string InviteeName { get; set; }
-    public Faction InviterFaction { get; set; }
-    public Faction InviteeFaction { get; set; }
+    public string InviteeTag { get; set; }
 }
 
 public class InviteFriendlyMatchPacketResponse
@@ -835,7 +846,7 @@ public class AcceptInvitationPacketRequired
 {
     public string AccessToken { get; set; }
     public bool Accept { get; set; }
-    public string InviterName { get; set; }
+    public int MailId { get; set; }
 }
 
 public class AcceptInvitationPacketResponse
@@ -866,6 +877,7 @@ public class VirtualPaymentPacketRequired
 public class VirtualPaymentPacketResponse
 {
     public bool PaymentOk { get; set; }
+    public VirtualPaymentCode PaymentCode { get; set; }
 }
 
 public class DailyPaymentPacketRequired
@@ -931,6 +943,17 @@ public class LoadStageInfoPacketResponse
     public List<UserStageInfo> UserStageInfos { get; set; }
     public List<StageEnemyInfo> StageEnemyInfos { get; set; }
     public List<StageRewardInfo> StageRewardInfos { get; set; }
+}
+
+public class GetDailyProductRefreshTimePacketRequired
+{
+    public string AccessToken { get; set; }
+}
+
+public class GetDailyProductRefreshTimePacketResponse
+{
+    public bool GetRefreshTimeOk { get; set; }
+    public DateTime RefreshAt { get; set; }
 }
 
 public class RevealDailyProductPacketRequired
@@ -1031,6 +1054,28 @@ public class SendMatchInfoPacketRequired
 public class SendMatchInfoPacketResponse
 {
     public bool SendMatchInfoOk { get; set; }
+}
+
+public class FriendlyMatchPacketRequired
+{
+    public int SheepUserId { get; set; }
+    public int SheepSessionId { get; set; }
+    public string SheepUserName { get; set; }
+    public int WolfUserId { get; set; }
+    public int WolfSessionId { get; set; }
+    public string WolfUserName { get; set; }
+    public int MapId { get; set; }
+    public CharacterId SheepCharacterId { get; set; }
+    public CharacterId WolfCharacterId { get; set; }
+    public SheepId SheepId { get; set; }
+    public EnchantId EnchantId { get; set; }
+    public UnitId[] SheepUnitIds { get; set; }
+    public UnitId[] WolfUnitIds { get; set; }
+}
+
+public class FriendlyMatchPacketResponse
+{
+    public bool IsSuccess { get; set; }
 }
 
 public class SinglePlayStartPacketRequired

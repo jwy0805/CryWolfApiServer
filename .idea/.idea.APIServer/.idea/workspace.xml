@@ -6,17 +6,113 @@
     <projectFile profileName="MatchMakingServer">MatchMakingServer/MatchMakingServer.csproj</projectFile>
     <projectFile>PacketGenerator/PacketGenerator.csproj</projectFile>
     <projectFile profileName="WebSite">WebSite/WebSite.csproj</projectFile>
+    <projectFile profileName="WebSite">WebSiteBack/WebSiteBack.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="[feat. Controller] Reward Claim Logic">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/APIServer/Services/MailService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Services/WebSocketService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Index.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Index.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Privacy.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Privacy.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Shared/_Layout.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Shared/_Layout.cshtml.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Shared/_ValidationScriptsPartial.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Terms.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/Terms.cshtml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/_ViewImports.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/Pages/_ViewStart.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/images/AppLogo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/images/Apple.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/images/CompanyLogo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/images/Google.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/js/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/js/login-modal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/js/login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery-validation/dist/additional-methods.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery-validation/dist/additional-methods.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery-validation/dist/jquery.validate.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery/LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery/dist/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery/dist/jquery.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery/dist/jquery.min.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/RelationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/RelationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/ProductClaimService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/ProductClaimService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/TaskQueueService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/TaskQueueService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/TokenValidator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/TokenValidator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Util/Util.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Util/Util.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
@@ -31,8 +127,142 @@
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/App.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Error.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Error.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Error.cshtml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Error.cshtml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Main.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Main.razor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Privacy.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Privacy.razor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Terms.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Terms.razor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/_Host.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/_Layout.cshtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Properties/launchSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/MainLayout.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/MainLayout.razor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/NavMenu.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/NavMenu.razor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/PolicyLayout.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/PolicyLayout.razor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/TopBar.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/TopBar.razor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Shared/TopBar.razor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/WebSite.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/_Imports.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.deps.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.runtimeconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.staticwebassets.runtime.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Release/net6.0/WebSite" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Release/net6.0/WebSite.deps.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Release/net6.0/WebSite.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Release/net6.0/WebSite.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Release/net6.0/WebSite.runtimeconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Release/net6.0/WebSite.staticwebassets.runtime.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Release/net6.0/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/bin/Release/net6.0/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.GlobalUsings.g.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.MvcApplicationPartsAssemblyInfo.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.RazorAssemblyInfo.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.RazorAssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.assets.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.csproj.CoreCompileInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.csproj.FileListAbsolute.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.genruntimeconfig.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/apphost" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Pages/Main.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Pages/Privacy.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Pages/Terms.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Shared/MainLayout.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Shared/NavMenu.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Shared/PolicyLayout.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/Shared/TopBar.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/bundle/WebSite.styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/WebSite.bundle.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.build.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.pack.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets/msbuild.WebSite.Microsoft.AspNetCore.StaticWebAssets.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets/msbuild.build.WebSite.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets/msbuild.buildMultiTargeting.WebSite.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets/msbuild.buildTransitive.WebSite.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/PublishOutputs.9e03da4765.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.GlobalUsings.g.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.MvcApplicationPartsAssemblyInfo.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.RazorAssemblyInfo.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.RazorAssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.assets.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.csproj.CoreCompileInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.csproj.FileListAbsolute.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.genruntimeconfig.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/WebSite.sourcelink.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/apphost" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/ref/WebSite.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/refint/WebSite.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/scopedcss/Pages/Main.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/scopedcss/Shared/MainLayout.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/scopedcss/Shared/NavMenu.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/scopedcss/Shared/TopBar.razor.rz.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/scopedcss/bundle/WebSite.styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/scopedcss/projectbundle/WebSite.bundle.scp.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/staticwebassets.build.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/staticwebassets.development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/staticwebassets.pack.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/staticwebassets.publish.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/staticwebassets/msbuild.WebSite.Microsoft.AspNetCore.StaticWebAssets.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/staticwebassets/msbuild.build.WebSite.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/staticwebassets/msbuild.buildMultiTargeting.WebSite.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Release/net6.0/staticwebassets/msbuild.buildTransitive.WebSite.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.dgspec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.g.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.g.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/project.assets.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/project.nuget.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/project.packagespec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/rider.project.model.nuget.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/rider.project.restore.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/bootstrap/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/bootstrap/bootstrap.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/FONT-LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/ICON-LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/lib/jquery-validation/LICENSE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/font/css/open-iconic-bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/font/fonts/open-iconic.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/font/fonts/open-iconic.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/font/fonts/open-iconic.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/font/fonts/open-iconic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/open-iconic/font/fonts/open-iconic.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/css/site.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_en.html" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_en.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_ja.html" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_ja.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_kr.html" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/privacy_20250510_kr.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_en.html" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_en.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_ja.html" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_ja.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_kr.html" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/policy/term_20250510_kr.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,17 +296,19 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/css/bootstrap/bootstrap.min.css.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ClientPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ServerPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fb89205e8aea414c9666c6d48c26e0e67290/83/0fde8049/IConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/0a588667d4982a931eac28c74bdbfaa7ee5868ed8bc644e4f418acc71f1ee6/JwtRegisteredClaimNames.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/134622bcf8ad016d3faf7776eb0457b76a5798c537458aa82651ab2cee6e1/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/19ba5a289f2afd3f4d5e862cb3f3efee6181683a31ee31b86c2298b1f51114b/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2ff32d9e6a8ae52479379f35545f9a152fde5adb58a20dc4526c1c59bafe3/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/37d788e427b962335e278648756caa4ce63ba87c51e7057b227743df83ce1d8/ConcurrentDictionary.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3b526121ad76ddf1f0a6cdbb4d412db36f3927d17f728af567a7e54b2f416a/EntityGraphAttacher.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/621526284d3e4868b98948aff942206525763e57e194a27623b66c384466/ServiceProviderServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/70df3e5caa697356d2da36622f77875efdb4473eafb5bfb84fe07e71a22b9499/EntityFrameworkServiceCollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7262732eee179af215faab36a7f3c3cfac93ba12af52a3888d839fe7e53420/ActionMethodExecutor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7733bdb26b2be012c4266979a95d3728e74790201f91a02df4529ee6c2f37/ControllerBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7b3b6985aad11c5d633d75b545f5f5f4fc7e50918ad1cb9f6b615682f5bfb76d/SingleQueryingEnumerable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7fe79a50e72b83d86bcb87e6e177c55c4e64595e94e8591a17f6ec586ffc9f71/Interop.IOErrors.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8ea21ac773d9dbb35bda81e94336d7efbd03459b6fc241fcdb64737e5c1/NavigationExpandingExpressionVisitor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -89,11 +321,13 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c2ea553f90a3e592edd923521ab8d4062601b81539ab589f5419dde26e251/Assembly.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c99c5e6e596f2669e8f5e609a7f88fd43814c0965d9c6eae44efafb31e5d/NameValueConfigurationCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c9e6ebf51a89e6989486513df713e9efcb20f423a98b12ccfab69966d4bf4/Int32.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/da417776dc650f2c96cfda1f964ec92646f7ae80786125c02b354a8d76e4/ValueType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/de1dc94e26de2eb8cdb9b19e9451c6a0738025b875978dc863de7ba87ee78c4/ServiceCollectionServiceExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eac217589439673846d1695b6e3ca1dba9490abb03c35edb0f189479c7e77af/JwtSecurityTokenHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ecdfa86eabbda4d23a0b68297d68e84c1adddb9ca2fda577ba181437343730/Where.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9daeeaab8409865442b5e80e634dc64dae9a14892fe81e0f17b46f51b2c48f8/DbSet.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fdd0283b73c6b27c4cc6059adbe7dd937dc4725c8256542f20457947af1b8/ServerSession.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe765148c82eb785877dcf89a4206ad54969b2bd5fff9cc88e3f9a7e2489/Object.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/local/share/dotnet/sdk/8.0.303/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_6_default.globalconfig" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -119,13 +353,12 @@
   "keyToString": {
     ".NET 실행 설정 프로파일.APIServer: AccountServer.executor": "Debug",
     ".NET 실행 설정 프로파일.MatchMakingServer.executor": "Debug",
-    ".NET 실행 설정 프로파일.WebSite.executor": "Debug",
+    ".NET 실행 설정 프로파일.WebSite.executor": "Run",
     ".NET 프로젝트.PacketGenerator.executor": "Debug",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "XThreadsFramesViewSplitterKey": "0.54347825",
     "git-widget-placeholder": "main",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -133,7 +366,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.webpack",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -254,6 +487,21 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="WebSiteBack: WebSite" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebSiteBack/WebSiteBack.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net6.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="WebSite" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
     <configuration name="BothServers" type="com.intellij.execution.configurations.multilaunch" factoryName="MultiLaunchConfiguration">
       <rows>
         <ExecutableRowSnapshot>
@@ -331,6 +579,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue=".NET 실행 설정 프로파일.WebSiteBack: WebSite" />
       <item itemvalue=".NET 실행 설정 프로파일.APIServer: AccountServer" />
       <item itemvalue=".NET 실행 설정 프로파일.MatchMakingServer" />
       <item itemvalue=".NET 실행 설정 프로파일.WebSite" />
@@ -571,15 +820,34 @@
       <workItem from="1752918610672" duration="15016000" />
       <workItem from="1752977520309" duration="10839000" />
       <workItem from="1753021762339" duration="5403000" />
-      <workItem from="1753154150943" duration="17087000" />
-    </task>
-    <task id="LOCAL-00064" summary="DB sync">
-      <option name="closed" value="true" />
-      <created>1745465234892</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1745465234892</updated>
+      <workItem from="1753154150943" duration="17698000" />
+      <workItem from="1753407470469" duration="17178000" />
+      <workItem from="1753613647764" duration="29932000" />
+      <workItem from="1753784882116" duration="50813000" />
+      <workItem from="1754099759065" duration="1831000" />
+      <workItem from="1754148625765" duration="906000" />
+      <workItem from="1754193323298" duration="798000" />
+      <workItem from="1754202140120" duration="11477000" />
+      <workItem from="1754273304173" duration="30434000" />
+      <workItem from="1754613682127" duration="4683000" />
+      <workItem from="1754892067658" duration="22055000" />
+      <workItem from="1755618040564" duration="25340000" />
+      <workItem from="1756786817767" duration="3708000" />
+      <workItem from="1757930111302" duration="1522000" />
+      <workItem from="1760014729432" duration="958000" />
+      <workItem from="1761383541615" duration="15000" />
+      <workItem from="1761750682814" duration="1216000" />
+      <workItem from="1762685358700" duration="12418000" />
+      <workItem from="1762757376348" duration="52244000" />
+      <workItem from="1763271412756" duration="7283000" />
+      <workItem from="1763710686246" duration="3521000" />
+      <workItem from="1763772457219" duration="15537000" />
+      <workItem from="1764125961205" duration="4816000" />
+      <workItem from="1764286540081" duration="6588000" />
+      <workItem from="1764375805932" duration="6914000" />
+      <workItem from="1764512321987" duration="2334000" />
+      <workItem from="1764519510387" duration="653000" />
+      <workItem from="1764555505393" duration="44028000" />
     </task>
     <task id="LOCAL-00065" summary="250425&#10;&#10;User Account Delete Method Added.&#10; - Hard delete&#10; - With cascade delete enabled, all keys associated with the user are automatically deleted when the user is removed.&#10; &#10;A new property has been added to the User table.&#10; - The 'Login Method' property has been added.&#10; - It specifies how the user logged in (e.g., Apple, Google).">
       <option name="closed" value="true" />
@@ -965,7 +1233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752991558664</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="feat database &#10;Applying migration '20250724161032_Add_Column_ReqeustReceiverId_To_Friends'.">
+      <option name="closed" value="true" />
+      <created>1753373468866</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1753373468866</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -975,7 +1251,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="1" />
     <MESSAGE value="feat(DB, Controller) Applying ads remover&#10;&#10;New column added&#10; - Column 'Price' to table 'DailyProduct'&#10; &#10;Some methods&#10; - Methods related ads remover are added.&#10; - Refreshing daily products&#10; - Timer for refreshing button has been created." />
     <MESSAGE value="feat(DB) User Tutorial Table Changed.&#10;&#10;PK has been changed to 'UserTutorialId'.&#10;One of exist Key 'TutorialType' is mutable if new type of tutorial added." />
     <MESSAGE value="0517" />
@@ -1000,7 +1275,8 @@
     <MESSAGE value="feat) payment and open box logic" />
     <MESSAGE value="feat controller, shop logic" />
     <MESSAGE value="[feat. Controller] Reward Claim Logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="[feat. Controller] Reward Claim Logic" />
+    <MESSAGE value="feat database &#10;Applying migration '20250724161032_Add_Column_ReqeustReceiverId_To_Friends'." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat database &#10;Applying migration '20250724161032_Add_Column_ReqeustReceiverId_To_Friends'." />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

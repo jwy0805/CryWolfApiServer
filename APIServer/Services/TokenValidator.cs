@@ -157,7 +157,7 @@ public class TokenValidator
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 NameClaimType = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Sub,
                 RoleClaimType = ClaimTypes.Role
-            }, out SecurityToken validatedToken);
+            }, out var validatedToken);
 
             if (validatedToken.ValidTo < DateTime.UtcNow)
             {
@@ -178,7 +178,7 @@ public class TokenValidator
         }
     }
     
-    public int? ValidateRefreshToken(string refreshToken)
+    private int? ValidateRefreshToken(string refreshToken)
     {
         var hashedToken = _tokenService.HashToken(refreshToken);
         var storedToken = _dbContext.RefreshTokens.SingleOrDefault(rt => rt.Token == hashedToken);

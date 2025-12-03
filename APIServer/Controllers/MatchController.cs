@@ -310,7 +310,7 @@ public class MatchController : ControllerBase
 
     [HttpPut]
     [Route("RankGameReward")]
-    public IActionResult RankGamReward([FromBody] RankGameRewardPacketRequired required)
+    public async Task<IActionResult> RankGamReward([FromBody] RankGameRewardPacketRequired required)
     {
         if (required.WinUserId == -1 || required.LoseUserId == -1) return Ok();
         
@@ -347,9 +347,10 @@ public class MatchController : ControllerBase
             LoserRewards = loserRewardsList 
         };
     
-        AddGameRewards(winUser.UserId, winnerRewardsList);
-        AddGameRewards(loseUser.UserId, loserRewardsList);
-        _context.SaveChangesExtended();
+        await Task.WhenAll(
+            AddGameRewards(winUser.UserId, winnerRewardsList),
+            AddGameRewards(loseUser.UserId, loserRewardsList));
+        await _context.SaveChangesExtendedAsync();
     
         return Ok(res);  
     }
@@ -375,7 +376,12 @@ public class MatchController : ControllerBase
             var prevRewards = _rewardService.GetSingleRewards(required.StageId, prevStar);
             var newStar = required.Star;
             var newRewards = _rewardService.GetSingleRewards(required.StageId, newStar);
-            var rewards = newRewards.Except(prevRewards).ToList();
+            var prevKeys = prevRewards
+                .Select(r => (r.ItemId, r.ProductType, r.Star))
+                .ToHashSet();
+            var rewards = newRewards
+                .Where(r => !prevKeys.Contains((r.ItemId, r.ProductType, r.Star)))
+                .ToList();            
             var rewardInfo = rewards.Select(reward => new RewardInfo
             {
                 ItemId = reward.ItemId,
@@ -495,7 +501,7 @@ public class MatchController : ControllerBase
         return _rewardService.GetRankRewards(userId, rankPoint, rankPointBefore, false);
     }
 
-    private void AddGameRewards(int userId, List<RewardInfo> rewards)
+    private async Task AddGameRewards(int userId, List<RewardInfo> rewards)
     {
         var productList = _cachedDataProvider.GetProducts();
         var userMail = _context.Mail;
@@ -532,7 +538,7 @@ public class MatchController : ControllerBase
                     Count = reward.Count,
                 };
                 
-                _claimService.StoreProduct(userId, productComposition);
+                await _claimService.StoreProductAsync(userId, productComposition);
             }
         }
         

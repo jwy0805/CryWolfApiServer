@@ -21,9 +21,36 @@ public class AdsController : ControllerBase
         _dailyProductService = dailyProductService;
     }
 
+    [HttpPost]
+    [Route("GetDailyProductRefreshTime")]
+    public async Task<IActionResult> GetDailyProductRefreshTime([FromBody] GetDailyProductRefreshTimePacketRequired required)
+    {
+        var principal = _tokenValidator.ValidateToken(required.AccessToken);
+        if (principal == null) return Unauthorized();
+
+        var res = new GetDailyProductRefreshTimePacketResponse();
+        var userIdN = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userIdN == null) return BadRequest(res);
+        
+        var userId = userIdN.Value;
+        var userDailyProduct = await _context.UserDailyProduct.Where(udp => udp.UserId == userId).FirstOrDefaultAsync();
+        
+        if (userDailyProduct == null)
+        {
+            res.GetRefreshTimeOk = false;
+        }
+        else
+        {
+            res.GetRefreshTimeOk = true;
+            res.RefreshAt = userDailyProduct.RefreshAt;
+        }
+        
+        return Ok(res);
+    }
+    
     [HttpPut]
     [Route("RevealDailyProduct")]
-    public async Task<IActionResult> CheckDailyProduct(RevealDailyProductPacketRequired required)
+    public async Task<IActionResult> CheckDailyProduct([FromBody] RevealDailyProductPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
@@ -48,7 +75,7 @@ public class AdsController : ControllerBase
 
     [HttpPut]
     [Route("RefreshDailyProduct")]
-    public async Task<IActionResult> RefreshDailyProduct(RefreshDailyProductPacketRequired required)
+    public async Task<IActionResult> RefreshDailyProduct([FromBody] RefreshDailyProductPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
         if (principal == null) return Unauthorized();
@@ -67,7 +94,7 @@ public class AdsController : ControllerBase
             res.DailyProducts = await _dailyProductService.GetDailyProductInfos(
                 userId, products, compositions, probabilities);
             res.RefreshDailyProductOk = true;
-            res.RefreshTime = DateTime.Now;
+            res.RefreshTime = DateTime.UtcNow;
         }
         else
         {

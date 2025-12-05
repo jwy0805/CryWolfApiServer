@@ -40,6 +40,8 @@ public class UserInfo
 {
     public string UserAccount { get; set; }
     public string UserName { get; set; }
+    public string UserTag { get; set; }
+    public UserRole UserRole { get; set; }
     public int Level { get; set; }
     public int Exp { get; set; }
     public int ExpToLevelUp { get; set; }
@@ -785,7 +787,7 @@ public class LoadPendingFriendPacketResponse
 public class AcceptFriendPacketRequired
 {
     public string AccessToken { get; set; }
-    public string FriendUsername { get; set; }
+    public string FriendUserTag { get; set; }
     public bool Accept { get; set; }
 }
 

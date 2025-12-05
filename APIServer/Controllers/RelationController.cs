@@ -130,7 +130,7 @@ public class RelationController : ControllerBase
         if (userId == -1) return Unauthorized();
         
         var friendId = _context.User.AsNoTracking()
-            .FirstOrDefault(user => user.UserName == required.FriendUsername)?.UserId;
+            .FirstOrDefault(user => user.UserTag == required.FriendUserTag)?.UserId;
         if (friendId == null)
         {
             _logger.LogWarning("SearchUsername Unauthorized");
@@ -185,7 +185,8 @@ public class RelationController : ControllerBase
         };
 
         var friendUsers = _context.User.AsNoTracking()
-            .Where(user => user.UserId != userId && user.UserName.Contains(required.Username))
+            .Where(user => user.UserId != userId && 
+                           (user.UserName.Contains(required.Username) || user.UserTag.Contains(required.Username)))
             .Take(10);
 
         var friendUserStats = friendUsers

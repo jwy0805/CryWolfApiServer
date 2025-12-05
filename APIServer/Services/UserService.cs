@@ -70,41 +70,40 @@ public class UserService
     {
         var account = _context.UserAuth.AsNoTracking()
             .FirstOrDefault(u => u.UserAccount == userAccount);
-        if (account != null)
+        if (account != null) return false;
+
+        for (var i = 0; i < 3; i++)
         {
-            return false;
+            var uniqueTag = await GenerateUniqueUserTag();
+            var newUser = InitUser(uniqueTag);
+            var newUserAuth = InitUserAuth(newUser, userAccount, provider, password);
+        
+            _context.UserAuth.Add(newUserAuth);
+
+            try
+            {
+                await _context.SaveChangesExtendedAsync(); // 이 때 UserId, UserTag가 생성
+            }
+            catch (DbUpdateException e) when (e.InnerException?.Message.Contains("IX_User_UserTag") == true)
+            {
+                _context.Entry(newUser).State = EntityState.Detached;
+                _context.Entry(newUserAuth).State = EntityState.Detached;
+                continue;            
+            }
+        
+            var newUserStat = InitUserStats(newUser);
+            var newUserMatch = InitUserMatch(newUser);
+            
+            _context.UserStats.Add(newUserStat);
+            _context.UserMatch.Add(newUserMatch);
+            newUser.UserName = $"Player{newUser.UserId}";
+            InitPlayerDeck(newUser);
+
+            await _context.SaveChangesExtendedAsync();
+            return true;   
         }
 
-        var uniqueTag = await GenerateUniqueUserTag();
-        var newUser = InitUser(uniqueTag);
-        var newUserAuth = InitUserAuth(newUser, userAccount, provider, password);
-        
-        _context.UserAuth.Add(newUserAuth);
-        await _context.SaveChangesExtendedAsync(); // 이 때 UserId가 생성
-        
-        var newUserStat = InitUserStats(newUser);
-        var newUserMatch = InitUserMatch(newUser);
-            
-        _context.UserStats.Add(newUserStat);
-        _context.UserMatch.Add(newUserMatch);
-        newUser.UserName = $"Player{newUser.UserId}";
-        
-        // Create Initial Deck and Collection
-        CreateInitDeckAndCollection(newUser.UserId);
-        
-        // Create Initial Sheep and Enchant
-        CreateInitSheepAndEnchant(newUser.UserId, new [] { SheepId.PrimeSheepWhite }, new [] { EnchantId.Wind });
-        CreateInitCharacter(newUser.UserId, new [] { CharacterId.PlayerCharacterBasic });
-        CreateInitBattleSetting(newUser.UserId);
-        CreateInitStageInfo(newUser.UserId);
-        CreateInitTutorialInfo(newUser.UserId);
-        
-        // For closed test
-        SendMailClosedTest(newUser.UserId);
-        await CreateAssetsClosedTest(newUser.UserId);
-
-        await _context.SaveChangesExtendedAsync();
-        return true;
+        return false;
     }
 
     private User InitUser(string uniqueTag) => new()
@@ -177,6 +176,22 @@ public class UserService
         }
 
         return new string(chars);
+    }
+
+    private void InitPlayerDeck(User newUser)
+    {
+        // Create Initial Deck and Collection
+        CreateInitDeckAndCollection(newUser.UserId);
+        
+        // Create Initial Sheep and Enchant
+        CreateInitSheepAndEnchant(newUser.UserId, new [] { SheepId.PrimeSheepWhite }, new [] { EnchantId.Wind });
+        CreateInitCharacter(newUser.UserId, new [] { CharacterId.PlayerCharacterBasic });
+        CreateInitBattleSetting(newUser.UserId);
+        CreateInitStageInfo(newUser.UserId);
+        CreateInitTutorialInfo(newUser.UserId);
+        
+        // For closed test
+        SendMailClosedTest(newUser.UserId);
     }
     
     public void SendProductMail(int userId, MailType type, string? message = null, int? productId = null)

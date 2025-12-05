@@ -353,6 +353,24 @@ a {
   font-weight: 700;
 }
 
+.admin-link {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f6f8ff;
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
+}
+
+.admin-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.32);
+  background: rgba(0, 0, 0, 0.72);
+}
+
 .btn-logout {
   padding: 8px 12px;
   border-radius: 10px;
@@ -566,4 +584,138 @@ a {
     min-width: 140px;
     flex: 1 1 100%;
   }
+}
+
+/* Admin page */
+.admin-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: calc(var(--header-height, 80px) + 32px) 18px 120px;
+  display: grid;
+  gap: 18px;
+}
+
+.admin-header h1 {
+  margin: 0;
+}
+
+.admin-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 14px 45px rgba(0, 0, 0, 0.3);
+  display: grid;
+  gap: 16px;
+}
+
+.field-row {
+  display: grid;
+  gap: 10px;
+}
+
+.field-label {
+  font-weight: 700;
+  color: #f6f8ff;
+}
+
+.toggle-group {
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f6f8ff;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.toggle-btn.is-active {
+  background: linear-gradient(135deg, #cff4fc, #f2f4ff);
+  color: #0b0d17;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.range-inputs {
+  align-items: flex-start;
+}
+
+.range-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.range-pair {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.range-input {
+  width: 120px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #dfe5f5;
+  background: #f4f7ff;
+  color: #0b0d17;
+}
+
+.range-tilde {
+  font-weight: 700;
+  color: #f6f8ff;
+}
+
+.btn-add-range {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #dfe5f5;
+  background: #0b0d17;
+  color: #f6f8ff;
+  cursor: pointer;
+}
+
+.selection-summary {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.35);
+  color: #f6f8ff;
+}
+
+.admin-textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #dfe5f5;
+  background: #f4f7ff;
+  color: #0b0d17;
+  min-height: 160px;
+}
+
+.actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-send {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #dfe5f5;
+  background: linear-gradient(135deg, #8fa9c7, #f2f4ff);
+  color: #0b0d17;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.send-status {
+  color: #f6f8ff;
 }

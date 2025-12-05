@@ -201,6 +201,23 @@ public class ExpReward
     public int Count { get; set; }
 }
 
+[Table("EventNotice")]
+public class EventNotice
+{
+    public int EventNoticeId { get; set; }
+    public int NoticeType { get; set; }
+    [MaxLength(100)]
+    public string Title { get; set; } = string.Empty;
+    [MaxLength(2000)]
+    public string Content { get; set; } = string.Empty;
+    public bool IsPinned { get; set; }
+    public bool IsActive { get; set; } = true;
+    public DateTime? StartAt { get; set; } // null = 항상 노출
+    public DateTime? EndAt { get; set; } // null = 무기한
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public int? CreatedBy { get; set; } // Admin UserId
+}
+
 [Table("Unit")]
 public class Unit
 {

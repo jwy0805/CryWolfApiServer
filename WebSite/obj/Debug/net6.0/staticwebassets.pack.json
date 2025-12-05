@@ -33,6 +33,10 @@
       "PackagePath": "staticwebassets/images/Google.png"
     },
     {
+      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/admin.js",
+      "PackagePath": "staticwebassets/js/admin.js"
+    },
+    {
       "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/config.js",
       "PackagePath": "staticwebassets/js/config.js"
     },

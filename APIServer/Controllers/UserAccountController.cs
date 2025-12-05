@@ -438,10 +438,60 @@ public class UserAccountController : ControllerBase
 
     private void ClearAuthCookies()
     {
-        Response.Cookies.Delete("access_token");
-        Response.Cookies.Delete("refresh_token");
+        var options = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure   = true,
+            SameSite = SameSiteMode.Lax,
+            Path     = "/"
+        };
+        
+        Response.Cookies.Delete("access_token", options);
+        Response.Cookies.Delete("refresh_token", options);
     }
 
+    [HttpGet]
+    [Route("KeepInfoFromWeb")]
+    public IActionResult MeFromWeb()
+    {
+        const string accessCookieName = "access_token";
+
+        if (!Request.Cookies.TryGetValue(accessCookieName, out var accessToken) ||
+            string.IsNullOrWhiteSpace(accessToken))
+        {
+            // 프론트에서 callApiWithRefresh가 이 401을 보고 refresh 시도함
+            return Unauthorized(new { message = "No access token" });
+        }
+
+        var principal = _tokenValidator.ValidateToken(accessToken);
+        if (principal == null)
+        {
+            return Unauthorized(new { message = "Invalid or expired token" });
+        }
+
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null)
+        {
+            return Unauthorized(new { message = "Invalid token payload" });
+        }
+
+        var user = _context.User
+            .AsNoTracking()
+            .FirstOrDefault(u => u.UserId == userId.Value);
+
+        if (user == null)
+        {
+            return NotFound(new { message = "User not found" });
+        }
+
+        return Ok(new
+        {
+            success = true,
+            userName = user.UserName,
+            userTag = user.UserTag,
+            userRole = user.Role
+        });
+    }
     
     [HttpPost]
     [Route("PolicyAgreed")]
@@ -579,6 +629,8 @@ public class UserAccountController : ControllerBase
             {
                 UserAccount = userAuth.UserAccount,
                 UserName = user.UserName,
+                UserTag = user.UserTag,
+                UserRole = user.Role,
                 Level = userStat.UserLevel,
                 Exp = userStat.Exp,
                 ExpToLevelUp = exp.Exp,
@@ -626,6 +678,8 @@ public class UserAccountController : ControllerBase
             UserInfo = new UserInfo
             {
                 UserName = user.UserName,
+                UserTag = user.UserTag,
+                UserRole = user.Role
             }
         };
 
@@ -684,6 +738,8 @@ public class UserAccountController : ControllerBase
         {
             UserAccount = userAuth.UserAccount,
             UserName = user.UserName,
+            UserTag = user.UserTag,
+            UserRole = user.Role,
             Level = userStat.UserLevel,
             Exp = userStat.Exp,
             ExpToLevelUp = exp.Exp,
@@ -855,26 +911,86 @@ public class UserAccountController : ControllerBase
 
         var userIdNull = _tokenValidator.GetUserIdFromAccessToken(principal);
         if (userIdNull == null) return Unauthorized();
+        
         var userId = userIdNull.Value;
-        
         var res = new LogoutPacketResponse();
-        var user = _context.User.AsNoTracking().FirstOrDefault(u => u.UserId == userId);
-        var refreshToken = _context.RefreshTokens.AsNoTracking().Where(rt => rt.UserId == userId);
+        var user = _context.User.FirstOrDefault(u => u.UserId == userId);
         if (user == null) return NotFound();
+
+        var refreshTokens = _context.RefreshTokens.Where(rt => rt.UserId == userId);
         
-        if (refreshToken.Any())
-        {
-            foreach (var token in refreshToken)
-            {
-                _context.RefreshTokens.Remove(token);
-            }
-        }
-        
+        _context.RefreshTokens.RemoveRange(refreshTokens);
         user.Act = UserAct.Offline;
+        
         await _context.SaveChangesExtendedAsync();
         res.LogoutOk = true;
         
         return Ok(res);
+    }
+
+    [HttpPost]
+    [Route("LogoutFromWeb")]
+    public async Task<IActionResult> LogoutFromWeb()
+    {
+        string? accessToken = null;
+        string? refreshToken = null;
+        
+        if (Request.Cookies.TryGetValue("access_token", out var at))
+        {
+            accessToken = at;
+        }
+
+        if (Request.Cookies.TryGetValue("refresh_token", out var rt))
+        {
+            refreshToken = rt;
+        }
+
+        int? userId = null;
+
+        // Extract user ID from access token if available
+        if (!string.IsNullOrWhiteSpace(accessToken))
+        {
+            var principal = _tokenValidator.ValidateToken(accessToken);
+            if (principal != null)
+            {
+                userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+            }
+        }
+        
+        // Remove refresh tokens from database
+        if (!string.IsNullOrWhiteSpace(refreshToken))
+        {
+            var hashed = _tokenService.HashToken(refreshToken);
+            var query = _context.RefreshTokens.Where(rtEntity => rtEntity.Token == hashed);
+
+            if (userId.HasValue)
+            {
+                query = query.Where(rtEntity => rtEntity.UserId == userId.Value);
+            }
+
+            var tokens = await query.ToListAsync();
+            if (tokens.Count > 0)
+            {
+                _context.RefreshTokens.RemoveRange(tokens);
+            }
+        }
+        
+        // Update user status to offline
+        if (userId.HasValue)
+        {
+            var user = await _context.User.FirstOrDefaultAsync(u => u.UserId == userId.Value);
+
+            if (user != null)
+            {
+                user.Act = UserAct.Offline;
+            }
+        }
+
+        await _context.SaveChangesExtendedAsync();
+        
+        ClearAuthCookies();
+
+        return Ok(new { success = true });
     }
     
     [HttpDelete]

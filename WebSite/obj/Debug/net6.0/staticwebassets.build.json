@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "B9otzVKIZAM73iEodUYmT+Vf5IVMGtg0crS6CWcK8+g=",
+  "Hash": "bT12rB+T9yOrjqVL10sx6Dz5IIG5EP1idllxFOkXrqY=",
   "Source": "WebSite",
   "BasePath": "_content/WebSite",
   "Mode": "Default",
@@ -186,6 +186,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/Google.png"
+    },
+    {
+      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/admin.js",
+      "SourceId": "WebSite",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "BasePath": "_content/WebSite",
+      "RelativePath": "js/admin.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/admin.js"
     },
     {
       "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/config.js",

@@ -268,10 +268,10 @@ public class SignalRHub: Hub
         var tasks = new List<Task>(2);
         if (guestDeckInfo != null)
         {
-            tasks.Add(Clients.OthersInGroup(roomId).SendAsync("SwitchFaction", guestDeckInfo, hostDeckInfo));
+            tasks.Add(Clients.OthersInGroup(roomId).SendAsync("SwitchFaction", guestDeckInfo, hostDeckInfo, true));
         }
 
-        tasks.Add(Clients.Caller.SendAsync("SwitchFaction", hostDeckInfo, guestDeckInfo));
+        tasks.Add(Clients.Caller.SendAsync("SwitchFaction", hostDeckInfo, guestDeckInfo, false));
         await Task.WhenAll(tasks);
     }
     
@@ -304,7 +304,7 @@ public class SignalRHub: Hub
                 Act = friendUser.Act,
             };
             
-            if (LobbyUserConnections.ContainsKey(friendUser.UserName))
+            if (LobbyUserConnections.ContainsKey(friendUser.UserTag))
             {
                 res.InvitableFriends.Add(friendUserInfo);
             }
@@ -381,13 +381,14 @@ public class SignalRHub: Hub
                 return;
             }
 
-            if (!string.IsNullOrEmpty(room.Username2) && room.Username2 != inviteeTag)
+            if (!string.IsNullOrEmpty(room.UserTag2) && room.UserTag2 != inviteeTag)
             {
                 await Clients.Caller.SendAsync("InvitationFailed", "notify_game_room_full");
                 return;
             }
 
             room.Username2 = invitee.UserName;
+            room.UserTag2 = inviteeTag;
             GameUserRooms.TryAdd(inviteeTag, roomId);
             GameUserConnections.TryAdd(inviteeTag, Context.ConnectionId);
             GameConnectionRooms.TryAdd(Context.ConnectionId, roomId);
@@ -401,7 +402,7 @@ public class SignalRHub: Hub
                     throw new HubException("Inviter not found in GameUserConnections");
                 }
                 
-                // 상대의 덱 정보를 보내야 하므로 상대의 이름을 인자로 넘겨준다.
+                // 상대의 덱 정보를 보내야 하므로 상대의 태그를 인자로 넘겨준다
                 var inviteeFaction = hostFaction == Faction.Sheep ? Faction.Wolf : Faction.Sheep;
                 var responseInviter = _webSocketService.CreateAcceptInvitationPacket(inviteeTag, hostFaction);
                 var responseInvitee = _webSocketService.CreateAcceptInvitationPacket(inviterTag, inviteeFaction);
@@ -598,19 +599,19 @@ public class SignalRHub: Hub
         await Groups.AddToGroupAsync(connId, roomId);
 
         // 호스트 여부 계산 후 반환
-        var isHost = string.Equals(room.Username1, userTag, StringComparison.Ordinal);
+        var isHost = string.Equals(room.UserTag1, userTag, StringComparison.Ordinal);
         var res = new AcceptInvitationPacketResponse();
         if (!HostFaction.TryGetValue(roomId, out var hostFaction))
             return new Tuple<bool, AcceptInvitationPacketResponse>(isHost, res);
         
         if (isHost)
         {
-            res = _webSocketService.CreateAcceptInvitationPacket(room.Username2, hostFaction);
+            res = _webSocketService.CreateAcceptInvitationPacket(room.UserTag2, hostFaction);
             _logger.LogInformation($"Re-entry: {userTag} is host in room {roomId}", userTag, roomId);
         }
         else
         {
-            res = _webSocketService.CreateAcceptInvitationPacket(room.Username1, 
+            res = _webSocketService.CreateAcceptInvitationPacket(room.UserTag1, 
                 hostFaction == Faction.Sheep ? Faction.Wolf : Faction.Sheep);
             _logger.LogInformation($"Re-entry: {userTag} is guest in room {roomId}", userTag, roomId);
         }

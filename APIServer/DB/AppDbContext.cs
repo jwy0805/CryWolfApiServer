@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<Friend> Friend { get; set; }
     public DbSet<Mail> Mail { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<EventNotice> EventNotice { get; set; }
     public DbSet<Unit> Unit { get; set; }
     public DbSet<UserUnit> UserUnit { get; set; }
     public DbSet<Deck> Deck { get;set; }
@@ -105,6 +106,16 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(f => f.FriendId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<EventNotice>(entity =>
+        {
+            entity.HasKey(e => e.EventNoticeId);
+            entity.Property(e => e.Title).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.Content).IsRequired();
+            entity.Property(e => e.IsActive).IsRequired();
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+            entity.HasIndex(e => new { e.IsActive, e.NoticeType, e.CreatedAt });
+        });
         
         builder.Entity<Unit>(entity =>
         {

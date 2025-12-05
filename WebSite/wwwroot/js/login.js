@@ -1,4 +1,14 @@
 // wwwroot/js/login.js
+/**
+ * @typedef {Object} LoginResponse
+ * @property {boolean} success
+ * @property {string} userName
+ * @property {string} userTag
+ * @property {number} userRole
+ */
+
+/** @type {LoginResponse} */
+
 document.addEventListener("DOMContentLoaded", () => {
     const {API_BASE_URL, callApiWithRefresh} = window.CryWolfConfig || {};
     const modalApi = window.CryWolfLoginModal?.createLoginModal();
@@ -7,9 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginPanel = loginUi?.querySelector("[data-login-panel]");
     const userPanel = loginUi?.querySelector("[data-user-panel]");
     const nicknameEl = loginUi?.querySelector("[data-user-nickname]");
+    const adminLink = loginUi?.querySelector("[data-admin-link]");
     const logoutButton = loginUi?.querySelector("[data-logout-button]");
     const emailInput = loginUi?.querySelector(".login-input");
     const loginButton = loginUi?.querySelector(".btn-login");
+    
+    const UserRole = Object.freeze({
+        User: 0,
+        Admin: 1
+    })
 
     if (!loginUi || !loginPanel || !userPanel || !emailInput || !loginButton || !modalApi) {
         console.warn("Login init skipped: missing elements or modalApi.");
@@ -17,42 +33,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const {modalForm, modalSubmit, shake, openModal, getEmail, getPassword, setStatus, closeModal} = modalApi;
-    const normalizeNickname = (payload, fallback) => {
-        if (!payload) return fallback || "Player";
-        if (typeof payload === "string") {
-            return payload.trim() || fallback || "Player";
-        }
 
-        const candidates = [
-            payload.nickname,
-            payload.nickName,
-            payload.NickName,
-            payload.name,
-            payload.userName,
-            payload.user_name,
-            payload.userAccount,
-            payload.user_account,
-            payload.email,
-            payload.Email,
-            fallback
-        ];
+    const parseUser = (raw) => {
+        const userName = raw.userName;
+        const userTag = raw.userTag;
+        const userRole = raw.userRole;
 
-        const found = candidates.find((value) => typeof value === "string" && value.trim());
-        return found ? found.trim() : "Player";
+        return {userName, userTag, userRole};
     };
 
-    const setLoggedInUi = (nickname) => {
+    const setLoggedInUi = (rawUser) => {
+        const {userName, userTag, userRole} = parseUser(rawUser);
+        console.log(`userRole ${userRole} detected`);
         if (!loginPanel || !userPanel || !nicknameEl) return;
         loginPanel.hidden = true;
         userPanel.hidden = false;
-        nicknameEl.textContent = normalizeNickname(nickname);
+        nicknameEl.textContent = `${userName} #${userTag}`;
+        if (adminLink) adminLink.hidden = userRole !== UserRole.Admin;
         loginUi.classList.remove("shake");
+        
+        if (userRole === UserRole.Admin) {
+            console.log(`${userRole} is logged in`);
+        }
     };
 
     const setLoggedOutUi = () => {
         if (!loginPanel || !userPanel) return;
         userPanel.hidden = true;
         loginPanel.hidden = false;
+        if (adminLink) adminLink.hidden = true;
         if (nicknameEl) nicknameEl.textContent = "";
     };
 
@@ -73,15 +82,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    const hydrateSession = async () => {
+    const restoreSession = async () => {
         if (!callApiWithRefresh || !API_BASE_URL) return;
         try {
-            const response = await callApiWithRefresh(`${API_BASE_URL}/api/UserAccount/MeFromWeb`);
+            const response = await callApiWithRefresh(`${API_BASE_URL}/api/UserAccount/KeepInfoFromWeb`);
             if (!response.ok) return;
             const result = await response.json();
-            setLoggedInUi(normalizeNickname(result?.data ?? result));
+            setLoggedInUi(result?.data ?? result);
         } catch (error) {
-            console.debug("Session hydrate skipped:", error);
+            console.debug("Session restore skipped:", error);
         }
     };
 
@@ -134,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 shake();
                 return;
             }
-
+            
             const result = await response.json();
             if (!result.success) {
                 setStatus("Failed to login.");
@@ -143,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             setStatus("Login successful");
-            setLoggedInUi(normalizeNickname(result?.data ?? result, getEmail()));
+            setLoggedInUi(result?.data ?? result);
             closeModal?.();
         } catch (error) {
             console.error("Network error:", error);
@@ -180,5 +189,5 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     setLoggedOutUi();
-    hydrateSession();
+    void restoreSession();
 });

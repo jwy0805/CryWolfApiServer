@@ -162,6 +162,52 @@ namespace ApiServer.Migrations
                     b.ToTable("Enchant");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.EventNotice", b =>
+                {
+                    b.Property<int>("EventNoticeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsPinned")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("NoticeType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StartAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("EventNoticeId");
+
+                    b.HasIndex("IsActive", "NoticeType", "CreatedAt");
+
+                    b.ToTable("EventNotice");
+                });
+
             modelBuilder.Entity("ApiServer.DB.ExpReward", b =>
                 {
                     b.Property<int>("Level")

@@ -379,4 +379,12 @@ public enum VirtualPaymentCode
     Subscription
 }
 
+public enum NoticeType
+{
+    None,
+    Notice,
+    Event,
+    Emergency
+}
+
 #endregion

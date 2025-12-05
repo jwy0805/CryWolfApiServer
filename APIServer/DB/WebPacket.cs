@@ -1181,3 +1181,17 @@ public class SessionDisconnectPacketResponse
 }
 
 #endregion
+
+#region For Web
+
+public class CreateEventNoticeRequired
+{
+    public NoticeType NoticeType { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+    public bool IsPinned { get; set; }
+    public DateTime? StartAt { get; set; }
+    public DateTime? EndAt { get; set; }
+}
+
+#endregion

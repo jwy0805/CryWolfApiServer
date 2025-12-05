@@ -205,7 +205,7 @@ public class ExpReward
 public class EventNotice
 {
     public int EventNoticeId { get; set; }
-    public int NoticeType { get; set; }
+    public NoticeType NoticeType { get; set; }
     [MaxLength(100)]
     public string Title { get; set; } = string.Empty;
     [MaxLength(2000)]

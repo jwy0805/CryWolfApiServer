@@ -12,45 +12,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="FEAT add migration files">
+      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/AdminController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/EventController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/RelationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/RelationController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Migrations/AppDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/SignalRHub/SignalRHub.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.staticwebassets.runtime.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.staticwebassets.runtime.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.build.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.pack.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets.pack.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets/msbuild.WebSite.Microsoft.AspNetCore.StaticWebAssets.props" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/staticwebassets/msbuild.WebSite.Microsoft.AspNetCore.StaticWebAssets.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/css/site.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/js/login.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -637,23 +605,7 @@
       <workItem from="1764375805932" duration="6914000" />
       <workItem from="1764512321987" duration="2334000" />
       <workItem from="1764519510387" duration="653000" />
-      <workItem from="1764555505393" duration="83563000" />
-    </task>
-    <task id="LOCAL-00068" summary="...">
-      <option name="closed" value="true" />
-      <created>1745757283371</created>
-      <option name="number" value="00068" />
-      <option name="presentableId" value="LOCAL-00068" />
-      <option name="project" value="LOCAL" />
-      <updated>1745757283371</updated>
-    </task>
-    <task id="LOCAL-00069" summary="AppDbContext DailyProduct Model Created.">
-      <option name="closed" value="true" />
-      <created>1745759830102</created>
-      <option name="number" value="00069" />
-      <option name="presentableId" value="LOCAL-00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1745759830102</updated>
+      <workItem from="1764555505393" duration="85142000" />
     </task>
     <task id="LOCAL-00070" summary=".">
       <option name="closed" value="true" />
@@ -1031,7 +983,23 @@
       <option name="project" value="LOCAL" />
       <updated>1764754165362</updated>
     </task>
-    <option name="localTasksCounter" value="117" />
+    <task id="LOCAL-00117" summary="[FEAT] new table 'EventNotice'">
+      <option name="closed" value="true" />
+      <created>1764918873826</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1764918873826</updated>
+    </task>
+    <task id="LOCAL-00118" summary="FEAT add migration files">
+      <option name="closed" value="true" />
+      <created>1764918887167</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1764918887167</updated>
+    </task>
+    <option name="localTasksCounter" value="119" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1041,8 +1009,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat-DailyProductService.cs" />
-    <MESSAGE value="feat(Build) - first product build" />
     <MESSAGE value="feat - 1.0.0 production" />
     <MESSAGE value="feat 1.0.0 -&gt; Loading User Daily Product Error Fixed." />
     <MESSAGE value="feat - 1.0.1 Deck Number&#10;The number of available decks has increased from 3 to 5." />
@@ -1066,7 +1032,9 @@
     <MESSAGE value="FEAT Website and Database column added" />
     <MESSAGE value="FEAT DB" />
     <MESSAGE value="new migrations" />
-    <option name="LAST_COMMIT_MESSAGE" value="new migrations" />
+    <MESSAGE value="[FEAT] new table 'EventNotice'" />
+    <MESSAGE value="FEAT add migration files" />
+    <option name="LAST_COMMIT_MESSAGE" value="FEAT add migration files" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

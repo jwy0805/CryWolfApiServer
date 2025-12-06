@@ -4,37 +4,7 @@ namespace ApiServer.DB;
 
 #pragma warning disable CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
 
-#region External
-
-public class DeleteUserAccountHardPacketRequired
-{
-    public int UserId { get; set; }
-    public string AdminPassword { get; set; }
-}
-
-public class DeleteUserAccountHardPacketResponse
-{
-    public bool DeleteOk { get; set; }
-}
-
-public class SendMailByAdminPacketRequired
-{
-    public int[] UserIds { get; set; }
-    public MailType Type { get; set; }
-    public int? ProductId { get; set; }
-    public string Message { get; set; }
-    [MaxLength(20)]
-    public string Sender { get; set; }
-}
-
-public class SendMailByAdminPacketResponse
-{
-    public bool SendMailOk { get; set; }
-}
-
-#endregion
-
-#region For Client
+#region DTO
 
 public class UserInfo
 {
@@ -283,6 +253,63 @@ public class RewardInfo
     public int Count { get; set; }
 }
 
+public class NoticeInfo
+{
+    public int EventNoticeId { get; set; }
+    public NoticeType NoticeType { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+    public bool IsPinned { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+public class EventNoticeLocalizationInfo
+{
+    public string Lang { get; set; } = "en";
+    public string Title { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
+}
+
+public class EventInfo
+{
+    public NoticeInfo NoticeInfo { get; set; }
+    public List<RewardInfo> Rewards { get; set; }
+}
+
+#endregion
+
+#region External
+
+public class DeleteUserAccountHardPacketRequired
+{
+    public int UserId { get; set; }
+    public string AdminPassword { get; set; }
+}
+
+public class DeleteUserAccountHardPacketResponse
+{
+    public bool DeleteOk { get; set; }
+}
+
+public class SendMailByAdminPacketRequired
+{
+    public int[] UserIds { get; set; }
+    public MailType Type { get; set; }
+    public int? ProductId { get; set; }
+    public string Message { get; set; }
+    [MaxLength(20)]
+    public string Sender { get; set; }
+}
+
+public class SendMailByAdminPacketResponse
+{
+    public bool SendMailOk { get; set; }
+}
+
+#endregion
+
+#region For Client
+
 public class ValidateNewAccountPacketRequired
 {
     public string UserAccount { get; set; }
@@ -524,6 +551,19 @@ public class UpdateTutorialRequired
 public class UpdateTutorialResponse
 {
     public bool UpdateTutorialOk { get; set; }
+}
+
+public class ListEventNoticeRequired
+{
+    public string AccessToken { get; set; }
+    public string LanguageCode { get; set; }
+}
+
+public class ListEventNoticeResponse
+{
+    public bool ListNoticeOk { get; set; }
+    public List<NoticeInfo> NoticeInfos { get; set; }
+    public List<EventInfo> EventInfos { get; set; }
 }
 
 public class RefreshTokenRequired
@@ -1187,11 +1227,11 @@ public class SessionDisconnectPacketResponse
 public class CreateEventNoticeRequired
 {
     public NoticeType NoticeType { get; set; }
-    public string Title { get; set; }
-    public string Content { get; set; }
     public bool IsPinned { get; set; }
     public DateTime? StartAt { get; set; }
     public DateTime? EndAt { get; set; }
+    
+    public List<EventNoticeLocalization> Localizations { get; set; } = new List<EventNoticeLocalization>();
 }
 
 #endregion

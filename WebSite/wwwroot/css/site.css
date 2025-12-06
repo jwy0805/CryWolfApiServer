@@ -689,6 +689,31 @@ a {
   color: #f6f8ff;
 }
 
+.admin-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #dfe5f5;
+  background: #f4f7ff;
+  color: #0b0d17;
+}
+
+.notice-schedule .schedule-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.schedule-field {
+  display: grid;
+  gap: 6px;
+  color: #f6f8ff;
+}
+
+.admin-datetime {
+  background: #f4f7ff;
+}
+
 .admin-textarea {
   width: 100%;
   padding: 12px;

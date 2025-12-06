@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<Mail> Mail { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<EventNotice> EventNotice { get; set; }
+    public DbSet<EventNoticeLocalization> EventNoticeLocalization { get; set; }
     public DbSet<Unit> Unit { get; set; }
     public DbSet<UserUnit> UserUnit { get; set; }
     public DbSet<Deck> Deck { get;set; }
@@ -110,11 +111,22 @@ public class AppDbContext : DbContext
         builder.Entity<EventNotice>(entity =>
         {
             entity.HasKey(e => e.EventNoticeId);
-            entity.Property(e => e.Title).HasMaxLength(100).IsRequired();
-            entity.Property(e => e.Content).IsRequired();
             entity.Property(e => e.IsActive).IsRequired();
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
             entity.HasIndex(e => new { e.IsActive, e.NoticeType, e.CreatedAt });
+        });
+
+        builder.Entity<EventNoticeLocalization>(entity =>
+        {
+            entity.HasKey(enl => enl.EventNoticeLocalizationId);
+            entity.Property(enl => enl.LanguageCode).HasMaxLength(5).IsRequired();
+            entity.Property(enl => enl.Title).HasMaxLength(100).IsRequired();
+            entity.Property(enl => enl.Content).HasMaxLength(2000).IsRequired();
+            entity.HasIndex(enl => new { enl.EventNoticeId, enl.LanguageCode });
+            entity.HasOne(enl => enl.EventNotice)
+                .WithMany(en => en.Localizations)
+                .HasForeignKey(enl => enl.EventNoticeId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
         
         builder.Entity<Unit>(entity =>

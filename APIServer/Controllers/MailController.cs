@@ -14,7 +14,7 @@ public class MailController : ControllerBase
     private readonly RewardService _rewardService;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
-    private readonly ILogger<UserAccountController> _logger;
+    private readonly ILogger<MailController> _logger;
     
     public MailController(
         AppDbContext context, 
@@ -22,7 +22,7 @@ public class MailController : ControllerBase
         RewardService rewardService,
         TokenService tokenService, 
         TokenValidator validator,
-        ILogger<UserAccountController> logger)
+        ILogger<MailController> logger)
     {
         _context = context;
         _userService = userService;

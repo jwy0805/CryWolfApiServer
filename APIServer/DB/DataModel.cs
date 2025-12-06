@@ -206,16 +206,29 @@ public class EventNotice
 {
     public int EventNoticeId { get; set; }
     public NoticeType NoticeType { get; set; }
-    [MaxLength(100)]
-    public string Title { get; set; } = string.Empty;
-    [MaxLength(2000)]
-    public string Content { get; set; } = string.Empty;
+
     public bool IsPinned { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime? StartAt { get; set; } // null = 항상 노출
     public DateTime? EndAt { get; set; } // null = 무기한
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public int? CreatedBy { get; set; } // Admin UserId
+    public ICollection<EventNoticeLocalization> Localizations { get; set; } = new List<EventNoticeLocalization>();
+}
+
+[Table("EventNoticeLocalization")]
+public class EventNoticeLocalization
+{
+    public int EventNoticeLocalizationId { get; set; }
+    public int EventNoticeId { get; set; }
+    [MaxLength(5)] 
+    public string LanguageCode { get; set; } = "en";
+    [MaxLength(100)]
+    public string Title { get; set; } = string.Empty;
+    [MaxLength(2000)]
+    public string Content { get; set; } = string.Empty;
+
+    public EventNotice EventNotice { get; set; } = null!;
 }
 
 [Table("Unit")]

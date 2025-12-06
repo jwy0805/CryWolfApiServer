@@ -14,7 +14,7 @@
         <div class="field-row">
             <span class="field-label">타입</span>
             <div class="toggle-group" data-message-toggle>
-                <button type="button" class="toggle-btn is-active" data-message-type="message">메시지</button>
+                <button type="button" class="toggle-btn is-active" data-message-type="message">메일</button>
                 <button type="button" class="toggle-btn" data-message-type="notice">공지사항</button>
             </div>
         </div>
@@ -22,7 +22,7 @@
         <div class="field-row">
             <span class="field-label">대상</span>
             <div class="toggle-group" data-target-toggle>
-                <button type="button" class="toggle-btn is-active" data-target-type="all">모든 유저</button>
+                <button type="button" class="toggle-btn is-active" data-target-type="all">모두에게</button>
                 <button type="button" class="toggle-btn" data-target-type="select">선택</button>
             </div>
         </div>
@@ -43,6 +43,25 @@
         <div class="field-row">
             <span class="field-label">선택된 대상</span>
             <div class="selection-summary" data-selection-summary>모든 유저에게 전송됩니다.</div>
+        </div>
+
+        <div class="field-row">
+            <span class="field-label">제목</span>
+            <input type="text" class="admin-input" placeholder="제목을 입력하세요" data-message-title />
+        </div>
+
+        <div class="field-row notice-schedule" data-notice-schedule hidden>
+            <span class="field-label">공지 기간</span>
+            <div class="schedule-grid">
+                <label class="schedule-field">
+                    <span>Start At</span>
+                    <input type="datetime-local" class="admin-input admin-datetime" data-start-at />
+                </label>
+                <label class="schedule-field">
+                    <span>End At</span>
+                    <input type="datetime-local" class="admin-input admin-datetime" data-end-at />
+                </label>
+            </div>
         </div>
 
         <div class="field-row">

@@ -228,7 +228,7 @@ public class EventNoticeLocalization
     [MaxLength(2000)]
     public string Content { get; set; } = string.Empty;
 
-    public EventNotice EventNotice { get; set; }
+    public EventNotice? EventNotice { get; set; }
 }
 
 [Table("Unit")]

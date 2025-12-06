@@ -265,7 +265,7 @@ public class NoticeInfo
 
 public class EventNoticeLocalizationInfo
 {
-    public string Lang { get; set; } = "en";
+    public string LanguageCode { get; set; } = "en";
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
 }
@@ -1231,7 +1231,7 @@ public class CreateEventNoticeRequired
     public DateTime? StartAt { get; set; }
     public DateTime? EndAt { get; set; }
     
-    public List<EventNoticeLocalization> Localizations { get; set; } = new();
+    public List<EventNoticeLocalizationInfo> Localizations { get; set; } = new();
 }
 
 #endregion

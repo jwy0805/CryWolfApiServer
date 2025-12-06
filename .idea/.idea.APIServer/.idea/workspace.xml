@@ -12,12 +12,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="[FEAT] Database new table EventNoticeLocalization">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="migrations">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/AppDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
@@ -27,18 +23,6 @@
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Admin.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Admin.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/css/site.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/wwwroot/js/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/wwwroot/js/admin.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +138,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET 실행 설정 프로파일.APIServer: AccountServer">
+  <component name="RunManager" selected=".NET 실행 설정 프로파일.WebSite">
     <configuration name="PacketGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -627,23 +611,7 @@
       <workItem from="1764512321987" duration="2334000" />
       <workItem from="1764519510387" duration="653000" />
       <workItem from="1764555505393" duration="101872000" />
-      <workItem from="1764981141343" duration="13559000" />
-    </task>
-    <task id="LOCAL-00072" summary="UserSubscription Table Added.&#10; - Managing user's subscriptions such as GoldenPass, Ads Remover.&#10; - All payment history can be managed by UserSubscriptionHistory table.">
-      <option name="closed" value="true" />
-      <created>1745916188089</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1745916188089</updated>
-    </task>
-    <task id="LOCAL-00073" summary="feat(Database - AbbDbContext): DataModel changed.&#10;&#10; - Rename Column [Probability -&gt; Weight] on DailyProduct Table.&#10; - Add Column 'Class' on DailyProduct Table to distinct card colour by class for client.">
-      <option name="closed" value="true" />
-      <created>1745989573415</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1745989573415</updated>
+      <workItem from="1764981141343" duration="14196000" />
     </task>
     <task id="LOCAL-00074" summary="feat(Database-AppDbContext)&#10;&#10;DailyProduct Table has been divided into 'DailyProduct' and 'DailyFreeProduct'.">
       <option name="closed" value="true" />
@@ -1021,7 +989,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765003606934</updated>
     </task>
-    <option name="localTasksCounter" value="121" />
+    <task id="LOCAL-00121" summary="database">
+      <option name="closed" value="true" />
+      <created>1765008707671</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1765008707672</updated>
+    </task>
+    <task id="LOCAL-00122" summary="migrations">
+      <option name="closed" value="true" />
+      <created>1765008776398</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1765008776398</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1031,8 +1015,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat - 1.0.1 Deck Number&#10;The number of available decks has increased from 3 to 5." />
-    <MESSAGE value="feat UserAccountController.cs&#10;&#10;Supplement code to avoid iOS review rejection.&#10;&#10;User can delete themselves." />
     <MESSAGE value="feat(DB, Controller) Column Added&#10;&#10;User can change username once." />
     <MESSAGE value="feat version 1.0.0 for android" />
     <MESSAGE value="d" />
@@ -1056,9 +1038,28 @@
     <MESSAGE value="FEAT add migration files" />
     <MESSAGE value="alter 'NoticeType' int to NoticeType" />
     <MESSAGE value="[FEAT] Database new table EventNoticeLocalization" />
-    <option name="LAST_COMMIT_MESSAGE" value="[FEAT] Database new table EventNoticeLocalization" />
+    <MESSAGE value="database" />
+    <MESSAGE value="migrations" />
+    <option name="LAST_COMMIT_MESSAGE" value="migrations" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs</url>
+          <line>289</line>
+          <properties documentPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" containingFunctionPresentation="메서드 'LoginFromWeb'">
+            <startOffsets>
+              <option value="9670" />
+            </startOffsets>
+            <endOffsets>
+              <option value="9671" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="Type#ApiServer.DB.InitProductPacketResponse" memberName="DailyProducts" />

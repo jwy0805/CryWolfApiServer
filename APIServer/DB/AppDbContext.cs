@@ -114,6 +114,10 @@ public class AppDbContext : DbContext
             entity.Property(e => e.IsActive).IsRequired();
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
             entity.HasIndex(e => new { e.IsActive, e.NoticeType, e.CreatedAt });
+            entity.HasMany(e => e.Localizations)
+                .WithOne(l => l.EventNotice)
+                .HasForeignKey(l => l.EventNoticeId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         builder.Entity<EventNoticeLocalization>(entity =>
@@ -123,10 +127,6 @@ public class AppDbContext : DbContext
             entity.Property(enl => enl.Title).HasMaxLength(100).IsRequired();
             entity.Property(enl => enl.Content).HasMaxLength(2000).IsRequired();
             entity.HasIndex(enl => new { enl.EventNoticeId, enl.LanguageCode });
-            entity.HasOne(enl => enl.EventNotice)
-                .WithMany(en => en.Localizations)
-                .HasForeignKey(enl => enl.EventNoticeId)
-                .OnDelete(DeleteBehavior.Cascade);
         });
         
         builder.Entity<Unit>(entity =>

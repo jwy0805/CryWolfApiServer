@@ -1231,7 +1231,7 @@ public class CreateEventNoticeRequired
     public DateTime? StartAt { get; set; }
     public DateTime? EndAt { get; set; }
     
-    public List<EventNoticeLocalization> Localizations { get; set; } = new List<EventNoticeLocalization>();
+    public List<EventNoticeLocalization> Localizations { get; set; } = new();
 }
 
 #endregion

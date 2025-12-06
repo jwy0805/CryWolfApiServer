@@ -46,8 +46,14 @@
         </div>
 
         <div class="field-row">
-            <span class="field-label">제목</span>
-            <input type="text" class="admin-input" placeholder="제목을 입력하세요" data-message-title />
+            <span class="field-label">언어</span>
+            <div class="toggle-group lang-toggle" data-lang-toggle></div>
+            <p class="muted lang-hint">언어 탭을 선택하면 언어별 폼이 생성됩니다. (ko/en/ja/vi 기본, 확장 가능)</p>
+        </div>
+
+        <div class="field-row">
+            <span class="field-label">언어별 내용</span>
+            <div class="lang-form-list" data-lang-forms></div>
         </div>
 
         <div class="field-row notice-schedule" data-notice-schedule hidden>
@@ -62,11 +68,6 @@
                     <input type="datetime-local" class="admin-input admin-datetime" data-end-at />
                 </label>
             </div>
-        </div>
-
-        <div class="field-row">
-            <span class="field-label">내용</span>
-            <textarea class="admin-textarea" rows="6" placeholder="보낼 메시지나 공지 내용을 입력하세요" data-message-body></textarea>
         </div>
 
         <div class="actions-row">

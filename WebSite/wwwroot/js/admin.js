@@ -8,25 +8,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const rangeEnd = document.querySelector("[data-range-end]");
     const addRangeBtn = document.querySelector("[data-add-range]");
     const selectionSummary = document.querySelector("[data-selection-summary]");
-    const messageTitle = document.querySelector("[data-message-title]");
+    const langToggle = document.querySelector("[data-lang-toggle]");
+    const langForms = document.querySelector("[data-lang-forms]");
     const startAtInput = document.querySelector("[data-start-at]");
     const endAtInput = document.querySelector("[data-end-at]");
     const noticeSchedule = document.querySelector("[data-notice-schedule]");
     const sendBtn = document.querySelector("[data-send]");
     const sendStatus = document.querySelector("[data-send-status]");
-    const messageBody = document.querySelector("[data-message-body]");
 
     const UserRole = Object.freeze({
         User: 0,
         Admin: 1
     });
-    
-    const NoticeType = Object.freeze( {
-        None : 0,
-        Notice : 1,
-        Event : 2,
-        Emergency : 3
-    })
+
+    const NoticeType = Object.freeze({
+        None: 0,
+        Notice: 1,
+        Event: 2,
+        Emergency: 3
+    });
 
     const ensureAdmin = async () => {
         if (!callApiWithRefresh || !API_BASE_URL) {
@@ -51,11 +51,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    if (!messageToggle || !targetToggle) return;
+    if (!messageToggle || !targetToggle || !langToggle || !langForms) return;
 
     let messageType = "message";
     let targetType = "all";
     const ranges = [];
+    const supportedLangs = [
+        {code: "ko", label: "한국어"},
+        {code: "en", label: "English"},
+        {code: "ja", label: "日本語"},
+        {code: "vi", label: "Tiếng Việt"}
+    ];
+    const activeLangs = new Set();
 
     const setActiveButton = (group, targetAttr, value) => {
         [...group.querySelectorAll(".toggle-btn")].forEach((btn) => {
@@ -90,6 +97,70 @@ document.addEventListener("DOMContentLoaded", () => {
         noticeSchedule.hidden = messageType !== "notice";
     };
 
+    const createLangToggleButtons = () => {
+        langToggle.innerHTML = "";
+        supportedLangs.forEach(({code, label}) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "toggle-btn";
+            btn.textContent = label;
+            btn.setAttribute("data-lang", code);
+            langToggle.appendChild(btn);
+        });
+    };
+
+    const ensureLangForm = (code, label) => {
+        const existing = langForms.querySelector(`[data-lang-form="${code}"]`);
+        if (existing) return existing;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "lang-form";
+        wrapper.setAttribute("data-lang-form", code);
+
+        const header = document.createElement("div");
+        header.className = "lang-form__header";
+        header.innerHTML = `<span>${label}</span><span class="lang-code-pill">${code}</span>`;
+
+        const titleInput = document.createElement("input");
+        titleInput.type = "text";
+        titleInput.className = "admin-input";
+        titleInput.placeholder = `${label} 제목을 입력하세요`;
+        titleInput.setAttribute("data-lang-title", code);
+
+        const bodyInput = document.createElement("textarea");
+        bodyInput.className = "admin-textarea";
+        bodyInput.rows = 4;
+        bodyInput.placeholder = `${label} 내용을 입력하세요`;
+        bodyInput.setAttribute("data-lang-body", code);
+
+        wrapper.appendChild(header);
+        wrapper.appendChild(titleInput);
+        wrapper.appendChild(bodyInput);
+
+        langForms.appendChild(wrapper);
+        return wrapper;
+    };
+
+    const removeLangForm = (code) => {
+        const el = langForms.querySelector(`[data-lang-form="${code}"]`);
+        if (el) el.remove();
+    };
+
+    const toggleLang = (code, label) => {
+        if (activeLangs.has(code)) {
+            activeLangs.delete(code);
+            removeLangForm(code);
+        } else {
+            activeLangs.add(code);
+            ensureLangForm(code, label);
+        }
+
+        [...langToggle.querySelectorAll("[data-lang]")].forEach((btn) => {
+            const isActive = activeLangs.has(btn.getAttribute("data-lang"));
+            btn.classList.toggle("is-active", isActive);
+        });
+    };
+
     messageToggle.addEventListener("click", (event) => {
         const btn = event.target.closest("[data-message-type]");
         if (!btn) return;
@@ -111,6 +182,15 @@ document.addEventListener("DOMContentLoaded", () => {
         renderSummary();
     });
 
+    langToggle.addEventListener("click", (event) => {
+        const btn = event.target.closest("[data-lang]");
+        if (!btn) return;
+        const code = btn.getAttribute("data-lang");
+        const lang = supportedLangs.find((l) => l.code === code);
+        if (!lang) return;
+        toggleLang(lang.code, lang.label);
+    });
+
     addRangeBtn?.addEventListener("click", () => {
         const startVal = parseInt(rangeStart?.value, 10);
         const endVal = parseInt(rangeEnd?.value, 10);
@@ -128,19 +208,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     sendBtn?.addEventListener("click", async () => {
-        if (!messageBody) return;
-        
-        const title = messageTitle ? messageTitle.value.trim() : "";
-        const body = messageBody.value.trim();
-        if (!title) {
-            sendStatus.textContent = "제목을 입력하세요.";
-            messageTitle?.focus();
+        if (activeLangs.size === 0) {
+            sendStatus.textContent = "언어를 선택하세요.";
             return;
         }
-        
-        if (!body) {
-            sendStatus.textContent = "내용을 입력하세요.";
-            return;
+
+        const contents = [];
+        for (const code of activeLangs) {
+            const titleInput = langForms.querySelector(`[data-lang-title="${code}"]`);
+            const bodyInput = langForms.querySelector(`[data-lang-body="${code}"]`);
+            const title = titleInput?.value?.trim() || "";
+            const body = bodyInput?.value?.trim() || "";
+            if (!title) {
+                sendStatus.textContent = `${code} 제목을 입력하세요.`;
+                titleInput?.focus();
+                return;
+            }
+            if (!body) {
+                sendStatus.textContent = `${code} 내용을 입력하세요.`;
+                bodyInput?.focus();
+                return;
+            }
+            contents.push({lang: code, title, body});
         }
 
         if (!API_BASE_URL || !callApiWithRefresh) {
@@ -149,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             return;
         }
-        
+
         const targetSummary = targetType === "all"
             ? "모든 유저"
             : ranges.length
@@ -161,33 +250,45 @@ document.addEventListener("DOMContentLoaded", () => {
             startAt: startAtInput?.value?.trim() || null,
             endAt: endAtInput?.value?.trim() || null
         };
-        
+        if (messageType === "notice" && (!schedule.startAt || !schedule.endAt)) {
+            sendStatus.textContent = "공지 기간을 설정하세요 (Start At / End At).";
+            if (!schedule.startAt) startAtInput?.focus();
+            else endAtInput?.focus();
+            return;
+        }
+
         try {
             sendBtn.disabled = true;
             if (sendStatus) {
-                sendStatus.textContent = `[${label}] ${targetSummary}${messageType === "notice" ? ` (${schedule.startAt} ~ ${schedule.endAt})` : ""}에게 전송 중...`;
+                const scheduleText = messageType === "notice" ? ` (${schedule.startAt} ~ ${schedule.endAt})` : "";
+                sendStatus.textContent = `[${label}] ${targetSummary}${scheduleText}에게 전송 중...`;
             }
-            
+
             let url;
             let payload;
-            
+
             if (messageType === "notice") {
                 url = `${API_BASE_URL}/api/Admin/CreateNotice`;
+                const localizations = contents.map(({ lang, title, body }) => ({
+                    LanguageCode: lang,
+                    Title: title,
+                    Content: body
+                }));
+                
                 payload = {
-                    noticeType: NoticeType.Notice,
-                    title: title,
-                    content: body,
-                    isPinned: false,
-                    startAt: schedule.startAt,
-                    endAt: schedule.endAt
-                }
+                    NoticeType: NoticeType.Notice,
+                    IsPinned: false,
+                    StartAt: schedule.startAt,
+                    EndAt: schedule.endAt,
+                    Localizations: localizations,
+                };
             } else {
                 url = `${API_BASE_URL}/api/Admin/SendMail`;
                 payload = {
-                    
-                }
+                    contents
+                };
             }
-            
+
             const res = await callApiWithRefresh(url, {
                 method: "POST",
                 headers: {
@@ -195,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 body: JSON.stringify(payload)
             });
-            
+
             if (!res.ok) {
                 const text = await res.text().catch(() => "");
                 console.error("Admin send failed:", res.status, text);
@@ -204,25 +305,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 return;
             }
-            
-            const result = await res.json().catch(() => ({}))
-            
+
+            const result = await res.json().catch(() => ({}));
+
             if (result.success === false) {
                 if (sendStatus) {
                     sendStatus.textContent = `[${label}] 전송 실패: ${result.message || "알 수 없는 오류"}`;
                 }
+                return;
             }
 
             if (sendStatus) {
-                const titlePart = title ? `제목: ${title} · ` : "";
+                const langsPart = `langs: ${contents.map((c) => c.lang).join(", ")}`;
                 const schedulePart = messageType === "notice" ? ` (${schedule.startAt} ~ ${schedule.endAt})` : "";
                 sendStatus.textContent =
-                    `[${label}] ${titlePart}${targetSummary}${schedulePart} 에게 전송 완료`;
+                    `[${label}] ${langsPart} ${targetSummary}${schedulePart} 에게 전송 완료`;
             }
-            
+
             // 성공 후 폼 초기화
-            messageBody.value = "";
-            if (messageTitle) messageTitle.value = "";
+            contents.forEach(({lang}) => {
+                const titleInput = langForms.querySelector(`[data-lang-title="${lang}"]`);
+                const bodyInput = langForms.querySelector(`[data-lang-body="${lang}"]`);
+                if (titleInput) titleInput.value = "";
+                if (bodyInput) bodyInput.value = "";
+            });
             if (startAtInput) startAtInput.value = "";
             if (endAtInput) endAtInput.value = "";
             ranges.length = 0;
@@ -240,5 +346,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderSummary();
     toggleRangeBlock();
     toggleNoticeSchedule();
+    createLangToggleButtons();
+    const defaultLang = supportedLangs.find((l) => l.code === "ko");
+    if (defaultLang) toggleLang(defaultLang.code, defaultLang.label);
     void ensureAdmin();
 });

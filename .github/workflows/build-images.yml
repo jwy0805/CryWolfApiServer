@@ -37,16 +37,16 @@ jobs:
           docker push ${REGISTRY}/crywolf/api:latest
 
           # ==== Web ====
-          docker build -t ${REGISTRY}/crywolf/web:${TAG} -t ${REGISTRY}/crywolf/web:latest -f HamonWeb/DockerfileWeb .
+          docker build -t ${REGISTRY}/crywolf/web:${TAG} -t ${REGISTRY}/crywolf/web:latest -f WebSite/DockerfileWeb .
           docker push ${REGISTRY}/crywolf/web:${TAG}
           docker push ${REGISTRY}/crywolf/web:latest
 
           # ==== Matchmaking ====
-          docker build -t ${REGISTRY}/crywolf/matchmaking:${TAG} -t ${REGISTRY}/crywolf/matchmaking:latest -f MatchMakingServer/DockerfileMatchMaking .
+          docker build -t ${REGISTRY}/crywolf/matchmaking:${TAG} -t ${REGISTRY}/crywolf/matchmaking:latest -f MatchMaking/DockerfileMatchMaking .
           docker push ${REGISTRY}/crywolf/matchmaking:${TAG}
           docker push ${REGISTRY}/crywolf/matchmaking:latest
 
           # ==== Proxy ====
-          docker build -t ${REGISTRY}/crywolf/proxy:${TAG} -t ${REGISTRY}/crywolf/proxy:latest -f CryWolfProxy/DockerfileProxy .
+          docker build -t ${REGISTRY}/crywolf/proxy:${TAG} -t ${REGISTRY}/crywolf/proxy:latest -f Proxy/DockerfileProxy .
           docker push ${REGISTRY}/crywolf/proxy:${TAG}
           docker push ${REGISTRY}/crywolf/proxy:latest

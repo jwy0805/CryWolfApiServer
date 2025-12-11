@@ -42,7 +42,7 @@ jobs:
           docker push ${REGISTRY}/crywolf/web:latest
 
           # ==== Matchmaking ====
-          docker build -t ${REGISTRY}/crywolf/matchmaking:${TAG} -t ${REGISTRY}/crywolf/matchmaking:latest -f MatchMaking/DockerfileMatchMaking .
+          docker build -t ${REGISTRY}/crywolf/matchmaking:${TAG} -t ${REGISTRY}/crywolf/matchmaking:latest -f MatchMakingServer/DockerfileMatchMaking .
           docker push ${REGISTRY}/crywolf/matchmaking:${TAG}
           docker push ${REGISTRY}/crywolf/matchmaking:latest
 

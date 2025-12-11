@@ -22,7 +22,6 @@ if (!builder.Environment.IsDevelopment() && certPath != null && certPwd != null)
 #pragma warning restore CA1416
 }
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

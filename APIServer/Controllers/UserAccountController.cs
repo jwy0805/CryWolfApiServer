@@ -83,6 +83,7 @@ public class UserAccountController : ControllerBase
             var verificationLink = Environment.GetEnvironmentVariable("ENVIRONMENT") switch
             {
                 "Dev" => $"https://hamonstudio.net/verify/{token}",
+                "Prod" => $"https://hamonstudio.net/verify/{token}",
                 _ => $"https://localhost:7270/verify/{token}"
             };
             

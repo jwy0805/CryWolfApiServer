@@ -201,7 +201,6 @@ public class MatchMakingService : BackgroundService
 
         MatchMakingPacketRequired userPacket;
         MatchSuccessPacketRequired matchSuccessPacket;
-        // required = temp test packet
         if (required.Faction == Faction.Wolf)
         {
             userPacket = _sheepUserQueues[required.MapId].Dequeue();
@@ -268,7 +267,7 @@ public class MatchMakingService : BackgroundService
     {
         if (test)
         {
-            Console.WriteLine($"user {packet.UserId} : session {packet.SessionId} test match");
+            Console.WriteLine($"user {packet.UserId} {packet.Faction} : session {packet.SessionId} test match");
             _ = ProcessTestMatchRequest(packet);
         }
         else

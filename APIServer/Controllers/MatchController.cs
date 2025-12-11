@@ -357,7 +357,7 @@ public class MatchController : ControllerBase
 
     [HttpPut]
     [Route("SingleGameReward")]
-    public IActionResult GetSingleGameReward([FromBody] SingleGameRewardPacketRequired required)
+    public async Task<IActionResult> GetSingleGameReward([FromBody] SingleGameRewardPacketRequired required)
     {
         var user = _context.User.FirstOrDefault(u => u.UserId == required.UserId);
         var userStats = _context.UserStats.FirstOrDefault(us => us.UserId == required.UserId);
@@ -391,7 +391,7 @@ public class MatchController : ControllerBase
             
             res.Rewards = rewards;
             userStage.StageStar = newStar;
-            AddGameRewards(user.UserId, rewardInfo);
+            await AddGameRewards(user.UserId, rewardInfo);
             
             // Add Next Stage on DB
             if (required.StageId != 1009 || required.StageId != 5009)

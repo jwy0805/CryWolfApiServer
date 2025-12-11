@@ -15,6 +15,7 @@ public class ApiService
     {
         "Local" => $"http://localhost:{ApiPortLocal}/api",
         "Dev" => $"http://crywolf-api/api",
+        "Prod" => $"http://crywolf-api/api",
         _ => throw new Exception("Invalid Environment")
     };
 
@@ -22,6 +23,7 @@ public class ApiService
     {
         "Local" => $"http://localhost:{SocketPort}",
         "Dev" => $"http://crywolf-socket:{SocketPort}",
+        "Prod" => $"http://crywolf-socket:{SocketPort}",
         _ => throw new Exception("Invalid Environment")
     };
     

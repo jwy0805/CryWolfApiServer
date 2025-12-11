@@ -12,7 +12,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="[Feat] ready to CI/CD" />
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="[Feat] ready to CI/CD">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -609,7 +612,7 @@
       <workItem from="1764981141343" duration="46877000" />
       <workItem from="1765269373496" duration="8151000" />
       <workItem from="1765323978591" duration="35489000" />
-      <workItem from="1765417031772" duration="6227000" />
+      <workItem from="1765417031772" duration="7757000" />
     </task>
     <task id="LOCAL-00076" summary=".">
       <option name="closed" value="true" />

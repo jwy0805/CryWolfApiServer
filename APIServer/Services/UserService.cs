@@ -15,14 +15,14 @@ namespace ApiServer.Services;
 
 public class UserService
 {
-    private readonly IConfiguration _configuration;
+    private readonly IConfiguration _config;
     private readonly AppDbContext _context;
     private readonly Random _random = new();
     private readonly char[] _tagChars = "abcdefghijklmnopqrstuvwxyz0123456789".ToCharArray();
     
     public UserService(IConfiguration configuration, AppDbContext context)
     {
-        _configuration = configuration;
+        _config = configuration;
         _context = context;
     }
 
@@ -44,17 +44,17 @@ public class UserService
             // Send Email
             var smtpClient = new SmtpClient
             {
-                Host = _configuration["Email:Smtp:Server"] ?? "smtp.gmail.com",
-                Port = int.Parse(Environment.GetEnvironmentVariable("GOOGLE_MAIL_PORT") ?? "587"),
+                Host = _config["Email:Smtp:Server"] ?? "smtp.gmail.com",
+                Port = int.Parse(_config["Google:MailPort"] ?? "587"),
                 Credentials = new NetworkCredential(
-                    _configuration["Email:Smtp:Username"],
-                    Environment.GetEnvironmentVariable("GOOGLE_APP_PASSWORD")),
+                    _config["Email:Smtp:Username"],
+                    _config["Google:AppPassword"]),
                 EnableSsl = true,
             };
         
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(_configuration["Email:Smtp:Username"] ?? string.Empty),
+                From = new MailAddress(_config["Email:Smtp:Username"] ?? string.Empty),
                 Subject = "Cry Wolf Email Verification",
                 Body = emailBody,
                 IsBodyHtml = true,

@@ -944,6 +944,7 @@ public class CashPaymentPacketRequired
 public class CashPaymentPacketResponse
 {
     public bool PaymentOk { get; set; }
+    public CashPaymentErrorCode ErrorCode { get; set; }
 }
 
 public class ClaimProductPacketRequired

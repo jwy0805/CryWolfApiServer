@@ -205,6 +205,9 @@ public class AppDbContext : DbContext
                 .HasConversion(v => (int)v, v => (TransactionStatus)v);
             entity.Property(t => t.CashCurrency)
                 .HasConversion(v => (int)v, v => (CashCurrencyType)v);
+            entity.Property(t => t.StoreType)
+                .HasConversion(v => (int)v, v => (StoreType)v);
+            entity.HasIndex(t => new { t.StoreType, t.StoreTransactionId });
         });
         builder.Entity<Transaction>()
             .HasOne(t => t.User)

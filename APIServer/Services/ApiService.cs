@@ -25,6 +25,7 @@ public class ApiService
     {
         Env.Local => $"http://localhost:{MatchMakingPortLocal}/match",
         Env.Dev => $"http://crywolf-matchmaking/match",
+        Env.Prod => $"http://crywolf-matchmaking/match",
         _ => throw new Exception("Invalid Environment")
     };
     
@@ -32,6 +33,7 @@ public class ApiService
     {
         Env.Local => $"http://localhost:{SocketPort}",
         Env.Dev => $"http://crywolf-socket:{SocketPort}",
+        Env.Prod => $"http://crywolf-socket:{SocketPort}",
         _ => throw new Exception("Invalid Environment")
     };
     

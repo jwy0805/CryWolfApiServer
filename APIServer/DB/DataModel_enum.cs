@@ -372,6 +372,22 @@ public enum TransactionStatus
     PartiallyRefunded,
 }
 
+public enum StoreType
+{
+    None,
+    GooglePlay,
+    AppStore,
+}
+
+public enum CashPaymentErrorCode
+{
+    None = 0,
+    InvalidReceipt = 1,     // 위조/만료/포맷 오류 - 재시도x
+    Unauthorized = 2,       // 토큰 만료/권한 오류 - 재로그인
+    AlreadyProcessed = 3,   // 이미 처리된 영수증 - 멱등성 처리용
+    InternalError = 4,      // 서버 내부 오류 - 재시도
+}
+
 public enum VirtualPaymentCode
 {
     None,

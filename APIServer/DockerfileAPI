@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+WORKDIR /src
+
+# 전체 소스 복사 (GitHub Actions에서 이미 checkout 되어 있음)
+COPY . .
+
+# 프로젝트 폴더로 이동
+WORKDIR /src/APIServer
+
+RUN cat APIServer.csproj | tr -d '\r' | md5sum > /tmp/csproj_hash
+RUN dotnet restore APIServer.csproj
+RUN dotnet publish APIServer.csproj -c Release -o /app/out
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+
+WORKDIR /app
+
+# 빌드 산출물만 런타임 이미지에 복사
+COPY --from=build /app/out .
+
+EXPOSE 80
+
+ENTRYPOINT ["dotnet", "APIServer.dll"]

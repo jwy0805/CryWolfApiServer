@@ -1,0 +1,22 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+WORKDIR /src
+
+ARG BUILD_TIME
+
+COPY . .
+    
+WORKDIR /src/CryWolfApiServer/WebSite
+
+RUN cat WebSite.csproj | tr -d '\r' | md5sum > /tmp/csproj_hash
+RUN dotnet restore WebSite.csproj
+RUN dotnet publish WebSite.csproj -c Release -o /app/out
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+
+WORKDIR /app
+COPY --from=build /app/out .
+
+EXPOSE 80
+
+ENTRYPOINT ["dotnet", "WebSite.dll"]

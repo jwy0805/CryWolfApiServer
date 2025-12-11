@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+WORKDIR /src
+
+ARG BUILD_TIME
+
+COPY . .
+
+WORKDIR /src/CryWolfApiServer/MatchMakingServer
+
+RUN cat MatchMakingServer.csproj | tr -d '\r' | md5sum > /tmp/csproj_hash
+RUN dotnet restore MatchMakingServer.csproj
+RUN dotnet publish MatchMakingServer.csproj -c Release -o /app/out
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+
+WORKDIR /app
+COPY --from=build /app/out .
+
+ENTRYPOINT ["dotnet", "MatchMakingServer.dll"]

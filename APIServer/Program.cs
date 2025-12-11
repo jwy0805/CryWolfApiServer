@@ -9,13 +9,19 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var certPath = Environment.GetEnvironmentVariable("CERT_PATH");
-var certPwd = Environment.GetEnvironmentVariable("CERT_PASSWORD");
+var certPath = builder.Configuration["Cert:Path"];
+var certPwd = builder.Configuration["Cert:Password"];
 
 // Add services to the container. -- StartUp.cs
-var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-// var defaultConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ?? builder.Configuration.GetConnectionString("DefaultConnection");
-var jwtSecret = "QweksldfoqjksdlgSidjSDKgSkdnHGSEISKdndgkseG";
+var defaultConnectionString = 
+    (builder.Environment.IsDevelopment() 
+        ? Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
+        : builder.Configuration["DB:ConnectionString"])
+        ?? throw new InvalidOperationException("DB Connection String is not configured.");
+var jwtSecret =
+    (builder.Environment.IsDevelopment()
+        ? "CexCexCexCexCexCexCexCexCexCexCexCexCexCexCexCexCexCexCexCexCexCex"
+        : builder.Configuration["Jwt:Secret"]) ?? throw new InvalidOperationException("Jwt:Secret is not configured.");
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -58,7 +64,6 @@ builder.Services.AddHostedService<ExpiredTokenCleanupService>();
 builder.Services.AddHostedService<UserManagementService>();
 builder.Services.AddHostedService<DailyJob>();
 builder.Services.AddHttpClient<ApiService>();
-builder.Services.AddSingleton<ConfigService>();
 builder.Services.AddSingleton<ApiService>();
 builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<TaskQueueService>();

@@ -255,6 +255,16 @@ a {
   /* 기존에 있던 배경/패딩/정렬 등은 그대로 두고 여기에만 추가 */
 }
 
+.footer-inner {
+  padding: 2px;
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  color: #f6f8ff;
+}
+
 .nav-shell {
   width: 100%;
   padding: 10px 20px;
@@ -292,6 +302,42 @@ a {
 
 .brand-word {
   font-size: 1rem;
+}
+
+.footer-meta {
+  display: grid;
+  gap: 4px;
+  max-width: 760px;
+}
+
+.company-info {
+  display: grid;
+  gap: 4px;
+  font-size: 0.92rem;
+  color: #e8edf7;
+  line-height: 1.5;
+}
+
+.company-info .copyright {
+  margin: 0;
+  color: var(--muted);
+}
+
+.footer-links {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 0.92rem;
+}
+
+.footer-link {
+  color: #e8edf7;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.footer-link:hover {
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .login-ui {
@@ -766,6 +812,37 @@ a {
   background: #f4f7ff;
   color: #0b0d17;
   min-height: 160px;
+}
+
+.credits-shell {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: calc(var(--header-height, 80px) + 32px) 18px 120px;
+}
+
+.credits-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 14px 45px rgba(0, 0, 0, 0.3);
+  color: #f6f8ff;
+  display: grid;
+  gap: 12px;
+}
+
+.credits-list {
+  display: grid;
+  gap: 12px;
+}
+
+.credits-list dt {
+  font-weight: 700;
+}
+
+.credits-list dd {
+  margin: 4px 0 0;
+  color: #dbe6ff;
 }
 
 .actions-row {

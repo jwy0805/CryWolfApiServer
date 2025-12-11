@@ -17,26 +17,26 @@ public class UserAccountController : ControllerBase
     private readonly UserService _userService;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
-    private readonly ConfigService _configService;
     private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<UserAccountController> _logger;
+    private readonly IConfiguration _config;
     
     public UserAccountController(
         AppDbContext context, 
         UserService userService, 
         TokenService tokenService, 
         TokenValidator validator,
-        ConfigService configService,
         CachedDataProvider cachedDataProvider,
-        ILogger<UserAccountController> logger)
+        ILogger<UserAccountController> logger,
+        IConfiguration config)
     {
         _context = context;
         _userService = userService;
         _tokenService = tokenService;
         _tokenValidator = validator;
-        _configService = configService;
         _cachedDataProvider = cachedDataProvider;
         _logger = logger;
+        _config = config;
     }
     
     /// <summary>
@@ -155,7 +155,7 @@ public class UserAccountController : ControllerBase
     public async Task<IActionResult> LoginApple([FromBody] LoginApplePacketRequired required)
     {
         var res = new LoginApplePacketResponse();
-        var appleBundleId = _configService.GetAppleBundleId();
+        var appleBundleId = _config["BundleId"];
         if (appleBundleId == string.Empty)
         {
             Console.WriteLine("Apple Bundle ID is not set.");
@@ -208,7 +208,7 @@ public class UserAccountController : ControllerBase
     public async Task<IActionResult> LoginGoogle([FromBody] LoginGooglePacketRequired required)
     {
         var res = new LoginGooglePacketResponse();
-        var audience = _configService.GetGoogleClientId();
+        var audience = _config["Google:ClientId"];
         if (audience == string.Empty)
         {
             Console.WriteLine("Google Client ID is not set.");
@@ -321,7 +321,7 @@ public class UserAccountController : ControllerBase
     {
         var res = new LoginGooglePacketResponse();
 
-        var audience = _configService.GetGoogleClientId(); // 🔥 Web용 Client ID 넣기
+        var audience = _config["Google:Web:ClientId"]; // Web용 Client ID
         if (string.IsNullOrEmpty(audience))
         {
             Console.WriteLine("Google Client ID is not set.");
@@ -371,7 +371,7 @@ public class UserAccountController : ControllerBase
     {
         var res = new LoginGooglePacketResponse();
 
-        var audience = _configService.GetGoogleClientId(); // 🔥 Web용 Client ID 넣기
+        var audience = _config["Google:ClientId"]; // Web용 Client ID
         if (string.IsNullOrEmpty(audience))
         {
             Console.WriteLine("Google Client ID is not set.");
@@ -1021,7 +1021,7 @@ public class UserAccountController : ControllerBase
     [Route("DeleteAccountHard")]
     public async Task<IActionResult> DeleteAccountHard([FromBody] DeleteUserAccountHardPacketRequired required)
     {
-        if (required.AdminPassword != _configService.GetAdminPassword())
+        if (required.AdminPassword != _config["AdminPassword"])
         {
             return Unauthorized(new { message = "Invalid Request." });
         }

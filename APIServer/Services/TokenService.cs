@@ -32,7 +32,7 @@ public class TokenService
         return (accessToken, refreshToken);
     }
 
-    public string GenerateAccessToken(int userId)
+    private string GenerateAccessToken(int userId)
     {
         var claims = new[]
         {

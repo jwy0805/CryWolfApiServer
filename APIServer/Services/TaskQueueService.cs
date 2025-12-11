@@ -7,13 +7,13 @@ public class TaskQueueService
     private readonly ConcurrentQueue<Func<Task>> _taskQueue = new();
     private readonly SemaphoreSlim _semaphore = new(1);
     
-    public void Enqueue(Func<Task> task)
+    public async Task Enqueue(Func<Task> task)
     {
         _taskQueue.Enqueue(task);
-        ProcessQueue();
+        await ProcessQueue();
     }
 
-    private async void ProcessQueue()
+    private async Task ProcessQueue()
     {
         await _semaphore.WaitAsync(); // 단일 스레드에서 작업 처리 보장
 

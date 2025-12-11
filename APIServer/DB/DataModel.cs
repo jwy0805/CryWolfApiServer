@@ -510,7 +510,12 @@ public class Transaction
     public CurrencyType Currency { get; set; }
     public TransactionStatus Status { get; set; }
     public CashCurrencyType CashCurrency { get; set; }
+    public StoreType StoreType { get; set; }
+    [MaxLength(256)] public string StoreTransactionId { get; set; } = string.Empty;
+    [MaxLength(1000)] public string ReceiptRaw { get; set; } = string.Empty;
 
+    public Transaction() { }
+    
     public Transaction(int userId, int productId, int count)
     {
         UserId = userId;

@@ -1,11 +1,17 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 using ApiServer.DB;
+using ApiServer.Models;
 using ApiServer.Providers;
 using ApiServer.Services;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -23,6 +29,7 @@ public class PaymentController : ControllerBase
     private readonly IDailyProductService _dailyProductService;
     private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<PaymentController> _logger;
+    private readonly IConfiguration _config;
     
     public PaymentController(
         AppDbContext context,
@@ -32,7 +39,8 @@ public class PaymentController : ControllerBase
         ProductClaimService productClaimService,
         IDailyProductService dailyProductService,
         CachedDataProvider cachedDataProvider,
-        ILogger<PaymentController> logger)
+        ILogger<PaymentController> logger,
+        IConfiguration configuration)
     {
         _context = context;
         _tokenService = tokenService;
@@ -42,8 +50,9 @@ public class PaymentController : ControllerBase
         _dailyProductService = dailyProductService;
         _cachedDataProvider = cachedDataProvider;
         _logger = logger;
+        _config = configuration;
     }
-
+    
     [HttpPost]
     [Route("InitProducts")]
     public async Task<IActionResult> InitProducts([FromBody] InitProductPacketRequired required)
@@ -214,33 +223,119 @@ public class PaymentController : ControllerBase
     [Route("PurchaseSpinel")]
     public async Task<IActionResult> PurchaseSpinel([FromBody] CashPaymentPacketRequired required)
     {
-        var userId = _tokenValidator.Authorize(required.AccessToken);
-        if (userId == -1) return Unauthorized();
-        
-        var isGoogleReceipt = required.Receipt.Contains("purchaseToken");
-        var isAppleReceipt = required.Receipt.Contains("transaction_id");
-        var res = new CashPaymentPacketResponse { PaymentOk = false };
-
-        if (isGoogleReceipt)
+        var res = new CashPaymentPacketResponse
         {
-            var validationResult = await ValidateGoogleReceiptAsync(required.Receipt);
-            if (validationResult.IsValid == false) return BadRequest(validationResult.Message);
-        }
-        else if (isAppleReceipt)
-        {
-            var validationResult = await ValidateAppleReceiptAsync(required.Receipt);
-            if (validationResult.IsValid == false) return BadRequest(validationResult.Message);
-        }
+            PaymentOk = false,
+            ErrorCode = CashPaymentErrorCode.InternalError,
+        };
 
-        // test
-        res.PaymentOk = true;
-
-        if (res.PaymentOk)
+        try
         {
+            var userId = _tokenValidator.Authorize(required.AccessToken);
+            if (userId == -1)
+            {
+                res.ErrorCode = CashPaymentErrorCode.Unauthorized;
+                return Ok(res);
+            }
+            
+            // Store/TransactionId 추출
+            var (storeType, storeTxId) = ExtractStoreInfo(required.Receipt);
+            if (storeType == StoreType.None || string.IsNullOrEmpty(storeTxId))
+            {
+                res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
+                return Ok(res);
+            }
+            
+            // 이미 처리된 영수증인지 확인
+            var alreadyProcess = await _context.Transaction.AnyAsync(t =>
+                t.StoreType == storeType && t.StoreTransactionId == storeTxId &&
+                t.Status == TransactionStatus.Completed);
+            if (alreadyProcess)
+            {
+                res.PaymentOk = true;
+                res.ErrorCode = CashPaymentErrorCode.AlreadyProcessed;
+                return Ok(res);
+            }
+            
+            // 실제 영수증 검증
+            if (storeType == StoreType.GooglePlay)
+            {
+                var validationResult =
+                    await ValidateGoogleReceiptAsync(required.ProductCode, required.Receipt);
+                if (!validationResult.IsValid)
+                {
+                    res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
+                    return Ok(res);
+                }
+            }
+            else if (storeType == StoreType.AppStore)
+            {
+                var validationResult = 
+                    await ValidateAppleReceiptAsync(required.ProductCode, required.Receipt);
+                if (!validationResult.IsValid)
+                {
+                    res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
+                    return Ok(res);
+                }
+            }
+            
             await SubscriptionComplete(userId, required.ProductCode);
+            
+            var productId = _context.Product
+                .AsNoTracking()
+                .Where(p => p.ProductCode == required.ProductCode)
+                .Select(p => p.ProductId)
+                .FirstOrDefault();
+            var count = 1;
+            var transaction = new Transaction(userId, productId, count)
+            {
+                StoreType = storeType,
+                StoreTransactionId = storeTxId,
+                ReceiptRaw = required.Receipt,
+                Currency = CurrencyType.Cash,
+                // TODO: region에 맞게
+                CashCurrency = CashCurrencyType.KRW,
+                Status = TransactionStatus.Completed,
+            };
+            
+            _context.Transaction.Add(transaction);
+            await _context.SaveChangesExtendedAsync();
+            
+            res.PaymentOk = true;
+            res.ErrorCode = CashPaymentErrorCode.None;
+            return Ok(res);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "PurchaseSpinel error");
+            res.PaymentOk = false;
+            res.ErrorCode = CashPaymentErrorCode.InternalError;
+            return Ok(res);
+        }
+    }
+
+    private (StoreType storeType, string storeTransactionId) ExtractStoreInfo(string receiptJson)
+    {
+        if (string.IsNullOrWhiteSpace(receiptJson)) return (StoreType.None, string.Empty);
+        
+        UnityIapReceiptWrapper? wrapper;
+        try
+        {
+            wrapper = JsonConvert.DeserializeObject<UnityIapReceiptWrapper>(receiptJson);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to deserialize receipt JSON");;
+            return (StoreType.None, string.Empty);
         }
         
-        return Ok(res);
+        if (wrapper == null) return (StoreType.None, string.Empty);
+        return wrapper.Store switch
+        {
+            "GooglePlay" => (StoreType.GooglePlay, wrapper.TransactionID),
+            "AppleAppStore" => (StoreType.AppStore, wrapper.TransactionID),
+            _ => (StoreType.None, string.Empty)
+        };
     }
 
     public async Task PurchaseComplete(int userId, string productCode)
@@ -386,107 +481,326 @@ public class PaymentController : ControllerBase
         return Ok(res);
     }
     
-    private async Task<(bool IsValid, string Message)> ValidateGoogleReceiptAsync(string receipt)
+    private async Task<(bool IsValid, string Message)> ValidateGoogleReceiptAsync(string productCode, string receipt)
     {
-        var receiptData = JsonConvert.DeserializeObject<GoogleReceiptData>(receipt);
-        var packageName = receiptData.PackageName;
-        var productId = receiptData.ProductId;
-        var purchaseToken = receiptData.PurchaseToken;
+        UnityIapReceiptWrapper? wrapper;
+
+        try
+        {
+            wrapper = JsonConvert.DeserializeObject<UnityIapReceiptWrapper>(receipt);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to deserialize Unity IAP wrapper for Google receipt");
+            return (false, "Invalid receipt format");
+        }
+
+        if (wrapper == null || wrapper.Store != "GooglePlay")
+            return (false, "Not a GooglePlay receipt");
+
+        if (string.IsNullOrWhiteSpace(wrapper.Payload))
+            return (false, "Google receipt payload is empty");
+
+        GooglePlayPayload? payload;
+        GooglePlayPurchaseData? purchaseData;
+
+        try
+        {
+            payload = JsonConvert.DeserializeObject<GooglePlayPayload>(wrapper.Payload);
+            purchaseData = payload != null ? JsonConvert.DeserializeObject<GooglePlayPurchaseData>(payload.Json) : null;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to deserialize Google payload");
+            return (false, "Invalid Google payload");
+        }
+
+        if (purchaseData == null) return (false, "Google receipt payload is empty");
+        
+        var expectedPackageName = _config["BundleId"];
+        if (string.IsNullOrWhiteSpace(expectedPackageName))
+        {
+            throw new InvalidOperationException("Google:PackageName is not configured.");    
+        }
+        
+        // Validate Package Name
+        if (!string.Equals(purchaseData.PackageName, expectedPackageName, StringComparison.Ordinal))
+        {
+            _logger.LogWarning("Google receipt package name mismatch. Expected: {Expected}, Actual: {Actual}",
+                expectedPackageName, purchaseData.PackageName);
+            return (false, "Google receipt package name mismatch");
+        }
+        
+        // Validate Product ID
+        if (!string.Equals(purchaseData.ProductId, productCode, StringComparison.Ordinal))
+        {
+            _logger.LogWarning("Google receipt product ID mismatch. Expected: {Expected}, Actual: {Actual}",
+                productCode, purchaseData.ProductId);
+            return (false, "Google receipt product ID mismatch");
+        }
         
         // Get Google API Access Token (OAuth2)
         var accessToken = await GetGoogleAccessTokenAsync();
+        var url = $"https://www.googleapis.com/androidpublisher/v3/applications/{purchaseData.PackageName}/purchases/products/{purchaseData.ProductId}/tokens/{purchaseData.PurchaseToken}";
         
         using var httpClient = new HttpClient();
-        var url = $"https://www.googleapis.com/androidpublisher/v3/applications/{packageName}/purchases/products/{productId}/tokens/{purchaseToken}";
-        
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        
         var response = await httpClient.GetAsync(url);
-
-        if (response.IsSuccessStatusCode == false)
+        if (!response.IsSuccessStatusCode)
         {
+            var error = await response.Content.ReadAsStringAsync();
+            _logger.LogWarning(
+                "Google purchase validation failed. StatusCode: {Status}, Body: {Body}",
+                response.StatusCode, error);
+
             return (false, "Failed to validate receipt");
         }
-        
-        var content = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<GooglePurchaseValidationResult>(content);
 
-        return result.PurchaseState == 0 
-            ? (true, "Valid receipt") 
-            : (false, "Invalid receipt");
+        var content = await response.Content.ReadAsStringAsync();
+        GoogleProductPurchase? productPurchase;
+
+        try
+        {
+            productPurchase = JsonConvert.DeserializeObject<GoogleProductPurchase>(content);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to deserialize Google ProductPurchase");
+            return (false, "Failed to parse Google validation response");
+        }
+
+        if (productPurchase == null)
+            return (false, "Empty Google ProductPurchase response");
+
+        // purchaseState: 0 = PURCHASED, 1 = CANCELED, 2 = PENDING
+        if (productPurchase.PurchaseState != 0)
+        {
+            _logger.LogWarning("Google purchase state invalid: {State}", productPurchase.PurchaseState);
+            return (false, "Invalid Google purchase state");
+        }
+
+        // 여기서 consumptionState / acknowledgementState 로 중복 처리/미소비 여부 검증도 추가 가능
+        return (true, "Valid Google receipt");
     }
 
     private async Task<string> GetGoogleAccessTokenAsync()
     {
-        var clientId = "";
-        var clientSecret = "";
-
-        using var httpClient = new HttpClient();
-        var requestContent = new FormUrlEncodedContent(new []
+        var serviceAccountJson = _config["Google:ServiceAccountJson"];
+        if (string.IsNullOrEmpty(serviceAccountJson))
         {
-            new KeyValuePair<string?, string?>("client_id", clientId),
-            new KeyValuePair<string?, string?>("client_secret", clientSecret),
-            new KeyValuePair<string?, string?>("grant_type", "client_credentials"),
-        });
+            throw new Exception("Google Service Account not found");
+        }
         
-        var response = await httpClient.PostAsync("https://accounts.google.com/o/oauth2/token", requestContent);
-        var content = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<GoogleTokenResponse>(content);
-
-        return result.AccessToken;
+        var credential = GoogleCredential
+            .FromJson(serviceAccountJson)
+            .CreateScoped("https://www.googleapis.com/auth/androidpublisher");
+        
+        return await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
     }
     
-    private async Task<(bool IsValid, string Message)> ValidateAppleReceiptAsync(string receipt)
+    private async Task<(bool IsValid, string Message)> ValidateAppleReceiptAsync(string productCode, string receipt)
     {
-        var requestData = new
+        // parse Unity IAP Receipt Wrapper
+        UnityIapReceiptWrapper? wrapper;
+        try
+        {   
+            wrapper = JsonConvert.DeserializeObject<UnityIapReceiptWrapper>(receipt);
+        }
+        catch (Exception e)
         {
-            receipt_data = receipt,
-            password = "password"
-        };
+            _logger.LogError(e, "Failed to deserialize Apple receipt JSON");
+            return (false, $"Failed to deserialize Apple receipt JSON");
+        }
+
+        if (wrapper == null || string.IsNullOrEmpty(wrapper.Payload))
+        {
+            _logger.LogWarning("Invalid Apple receipt: missing payload");
+            return (false, "Invalid Apple receipt: missing payload");
+        }
+
+        if (string.IsNullOrWhiteSpace(wrapper.TransactionID))
+        {
+            return (false, "Apple transactionId is empty");
+        }
+
+        var jwt = CreateAppStoreJwt();
         
-        using var httpClient = new HttpClient();
-        var response = await httpClient.PostAsync("https://sandbox.itunes.apple.com/verifyReceipt",
-            new StringContent(JsonConvert.SerializeObject(requestData), Encoding.UTF8, "application/json"));
-        var content = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<AppleReceiptValidationResult>(content);
+        // 1st call to production
+        var prodResult = 
+            await CallAppStoreTransactionEndpointAsync(wrapper.TransactionID, jwt, false);
+        AppleTransactionResponse? tx = null;
+        var env = "Production";
+
+        if (prodResult.IsSuccess)
+        {
+            tx = prodResult.Payload;
+        }
+        else if (prodResult.ShouldRetrySandbox)
+        {
+            // retry sandbox
+            var sandboxResult = 
+                await CallAppStoreTransactionEndpointAsync(wrapper.TransactionID, jwt, true);
+            env = "Sandbox";
+
+            if (!sandboxResult.IsSuccess || sandboxResult.Payload == null)
+            {
+                _logger.LogWarning("Apple sandbox validation failed. Raw");
+                return (false, "Failed to validate Apple receipt (sandbox)");
+            }
+            
+            tx = sandboxResult.Payload;
+        }
+        else
+        {
+            _logger.LogWarning("Apple production validation failed.");
+            return (false, "Failed to validate Apple receipt (production)");
+        }
         
-        return result.Status == 0 
-            ? (true, "Valid receipt") 
-            : (false, "Invalid receipt");
+        if (tx == null)
+        {
+            return (false, "Apple transaction data is null");
+        }
+        
+        var expectedBundleId = _config["BundleId"];
+        if (!string.Equals(tx.BundleId, expectedBundleId, StringComparison.Ordinal))
+        {
+            _logger.LogWarning("Apple receipt bundle ID mismatch. Expected: {Expected}, Actual: {Actual}",
+                expectedBundleId, tx.BundleId);
+            return (false, "Apple receipt bundle ID mismatch");
+        }
+        
+        if (!string.Equals(tx.ProductId, productCode, StringComparison.Ordinal))
+        {
+            _logger.LogWarning("Apple receipt product ID mismatch. Expected: {Expected}, Actual: {Actual}",
+                productCode, tx.ProductId);
+            return (false, "Apple receipt product ID mismatch");
+        }
+        
+        if (tx.RevocationReason.HasValue)
+        {
+            _logger.LogWarning("Apple transaction revoked. Reason={Reason}, Env={Env}, TxId={TxId}",
+                tx.RevocationReason.Value, env, tx.TransactionId);
+            return (false, "Revoked transaction");
+        }
+
+        return (true, $"Valid Apple receipt ({env})");
     }
-}
 
-public struct GoogleTokenResponse
-{
-    [JsonProperty("access_token")]
-    public string AccessToken { get; set; }
+    private async Task<(bool IsSuccess, bool ShouldRetrySandbox, AppleTransactionResponse? Payload, string Raw)>
+        CallAppStoreTransactionEndpointAsync(string transactionId, string jwt, bool sandbox)
+    {
+        var baseUrl = sandbox
+            ? "https://api.storekit-sandbox.itunes.apple.com"
+            : "https://api.storekit.itunes.apple.com";
 
-    [JsonProperty("expires_in")]
-    public int ExpiresIn { get; set; }
+        var url = $"{baseUrl}/inApps/v1/transactions/{transactionId}";
 
-    [JsonProperty("token_type")]
-    public string TokenType { get; set; }
-}
+        using var httpClient = new HttpClient();
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
 
-public struct GoogleReceiptData
-{
-    public string PackageName { get; set; }
-    public string ProductId { get; set; }
-    public string PurchaseToken { get; set; }
-}
+        var response = await httpClient.SendAsync(request);
+        var body = await response.Content.ReadAsStringAsync();
 
-public struct GooglePurchaseValidationResult
-{
-    public int PurchaseState { get; set; }
-}
+        if (response.IsSuccessStatusCode)
+        {
+            try
+            {
+                var tx = JsonConvert.DeserializeObject<AppleTransactionResponse>(body);
+                return (tx != null, false, tx, body);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to deserialize AppleTransactionResponse. Body: {Body}", body);
+                return (false, false, null, body);
+            }
+        }
 
-public struct AppleReceiptValidationResult
-{
-    public int Status { get; set; }
-    public AppleReceipt Receipt { get; set; }
-}
+        if (!sandbox && response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            try
+            {
+                var error = JsonConvert.DeserializeObject<AppleErrorResponse>(body);
+                if (error != null && error.ErrorCode == 4040010) // TransactionIdNotFoundError
+                {
+                    // sandbox로 재시도
+                    return (false, true, null, body);
+                }
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+        }
+        
+        _logger.LogWarning(
+            "App Store Server API call failed. Sandbox={Sandbox}, StatusCode={Status}, Body={Body}",
+            sandbox, response.StatusCode, body);
 
-public struct AppleReceipt
-{
-    public string bundle_id { get; set; }
-    public string product_id { get; set; }
+        return (false, false, null, body);
+    }
+    
+    private string CreateAppStoreJwt()
+    {
+        var issuerId = _config["Apple:IssuerId"];
+        var keyId = _config["Apple:KeyId"];
+        var bundleId = _config["BundleId"];
+        var privateKeyBase64 = _config["Apple:PrivateKey"];
+
+        if (string.IsNullOrWhiteSpace(issuerId) ||
+            string.IsNullOrWhiteSpace(keyId) ||
+            string.IsNullOrWhiteSpace(bundleId) ||
+            string.IsNullOrWhiteSpace(privateKeyBase64))
+        {
+            throw new InvalidOperationException("Apple App Store Server API config is not complete.");
+        }
+
+        var keyBytes = ParseApplePrivateKey(privateKeyBase64);
+        var ecdsa = ECDsa.Create();
+        ecdsa.ImportPkcs8PrivateKey(keyBytes, out _);
+
+        var securityKey = new ECDsaSecurityKey(ecdsa)
+        {
+            KeyId = keyId
+        };
+
+        var now = DateTimeOffset.UtcNow;
+        var descriptor = new SecurityTokenDescriptor
+        {
+            Issuer = issuerId,
+            IssuedAt = now.UtcDateTime,
+            Expires = now.AddMinutes(5).UtcDateTime,
+            Audience = "appstoreconnect-v1",
+            Claims = new Dictionary<string, object>
+            {
+                ["bid"] = bundleId
+            },
+            SigningCredentials = new SigningCredentials(
+                securityKey,
+                SecurityAlgorithms.EcdsaSha256)
+        };
+
+        var handler = new JsonWebTokenHandler();
+        return handler.CreateToken(descriptor);
+    }
+
+    private byte[] ParseApplePrivateKey(string raw)
+    {
+        raw = raw.Trim();
+        
+        if (raw.Contains("BEGIN PRIVATE KEY"))
+        {
+            // PEM -> base64 추출
+            var lines = raw
+                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(l => !l.StartsWith("-----"))
+                .ToArray();
+            var base64 = string.Join("", lines);
+            return Convert.FromBase64String(base64);
+        }
+
+        // 이미 base64만 들어온 경우
+        return Convert.FromBase64String(raw);
+    }
 }

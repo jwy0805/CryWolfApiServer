@@ -47,6 +47,6 @@ jobs:
           docker push ${REGISTRY}/crywolf/matchmaking:latest
 
           # ==== Proxy ====
-          docker build -t ${REGISTRY}/crywolf/proxy:${TAG} -t ${REGISTRY}/crywolf/proxy:latest -f Proxy/DockerfileProxy .
+          docker build -t ${REGISTRY}/crywolf/proxy:${TAG} -t ${REGISTRY}/crywolf/proxy:latest -f Proxy/DockerfileProxy Proxy
           docker push ${REGISTRY}/crywolf/proxy:${TAG}
           docker push ${REGISTRY}/crywolf/proxy:latest

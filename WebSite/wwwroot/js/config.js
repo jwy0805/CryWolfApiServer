@@ -7,7 +7,7 @@
 
     const API_BASE_URL = IS_LOCAL
         ? "https://localhost:7270"
-        : "https://hamonstudio.net";
+        : "";
 
     async function callApiWithRefresh(url, options = {}) {
         const opts = {

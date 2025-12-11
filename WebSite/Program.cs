@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var certPath = Environment.GetEnvironmentVariable("CERT_PATH");
-var certPwd = Environment.GetEnvironmentVariable("CERT_PASSWORD");
+var certPath = builder.Configuration["Cert:Path"];
+var certPwd = builder.Configuration["Cert:Password"];
 
 // Add services to the container.
 builder.Services.AddRazorPages();

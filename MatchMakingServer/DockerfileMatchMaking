@@ -6,7 +6,7 @@ ARG BUILD_TIME
 
 COPY . .
 
-WORKDIR /src/CryWolfApiServer/MatchMakingServer
+WORKDIR /src/MatchMakingServer
 
 RUN cat MatchMakingServer.csproj | tr -d '\r' | md5sum > /tmp/csproj_hash
 RUN dotnet restore MatchMakingServer.csproj

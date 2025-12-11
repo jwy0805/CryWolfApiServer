@@ -6,7 +6,7 @@ ARG BUILD_TIME
 
 COPY . .
     
-WORKDIR /src/CryWolfApiServer/WebSite
+WORKDIR /src/WebSite
 
 RUN cat WebSite.csproj | tr -d '\r' | md5sum > /tmp/csproj_hash
 RUN dotnet restore WebSite.csproj

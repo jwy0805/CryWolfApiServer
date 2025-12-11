@@ -12,7 +12,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="conf">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="[Update] Proxy Docker file settings">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -611,15 +611,7 @@
       <workItem from="1764981141343" duration="46877000" />
       <workItem from="1765269373496" duration="8151000" />
       <workItem from="1765323978591" duration="35489000" />
-      <workItem from="1765417031772" duration="10650000" />
-    </task>
-    <task id="LOCAL-00078" summary="feat(Services) DailyJob Error">
-      <option name="closed" value="true" />
-      <created>1746430534681</created>
-      <option name="number" value="00078" />
-      <option name="presentableId" value="LOCAL-00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1746430534681</updated>
+      <workItem from="1765417031772" duration="16074000" />
     </task>
     <task id="LOCAL-00079" summary="feat(DB) New Column&#10;&#10;NeedAds column has been added into table UserDailyProduct">
       <option name="closed" value="true" />
@@ -1005,7 +997,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765432675196</updated>
     </task>
-    <option name="localTasksCounter" value="127" />
+    <task id="LOCAL-00127" summary="[Update] Proxy Docker file settings">
+      <option name="closed" value="true" />
+      <created>1765434594821</created>
+      <option name="number" value="00127" />
+      <option name="presentableId" value="LOCAL-00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1765434594821</updated>
+    </task>
+    <option name="localTasksCounter" value="128" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1015,7 +1015,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat - logging system" />
     <MESSAGE value="feat start game logs" />
     <MESSAGE value="feat - Deck Creating" />
     <MESSAGE value="feat - matchcontroller" />
@@ -1040,7 +1039,8 @@
     <MESSAGE value="[Feat] ready to CI/CD" />
     <MESSAGE value="test build images" />
     <MESSAGE value="conf" />
-    <option name="LAST_COMMIT_MESSAGE" value="conf" />
+    <MESSAGE value="[Update] Proxy Docker file settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="[Update] Proxy Docker file settings" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

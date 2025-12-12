@@ -37,12 +37,37 @@ public class ProductClaimService
 
         if (productIds.Length == 0)
         {
+            _logger.LogWarning("No valid ProductIds found in mails for userId {UserId}, marking mails as claimed.", userId);
             foreach (var mail in mails) mail.Claimed = true;
             await _context.SaveChangesExtendedAsync();
             return;
         }
-
-        // 1) 구성 분류 후 전부 집계 (Single/Random/Select 구분 없이 "그대로 옮김")
+        
+        var cachedCompList = _cachedDataProvider.GetProductCompositions()
+            .Where(pc => productIds.Contains(pc.ProductId))
+            .ToList();
+        
+        foreach (var productId in productIds)
+        {
+            var compositions = cachedCompList
+                .Where(pc => pc.ProductId == productId)
+                .ToList();
+            if (compositions.All(pc => pc is { Guaranteed: true, IsSelectable: false }))
+            {
+                // container or single
+                Unpack(compositions);
+            }
+            else
+            {
+                // selectable or random
+                StageUserProduct(productId, 1);
+            }
+        }
+        
+        
+        
+        
+        // 1) 구성 분류 후 전부 집계 (Single/Random/Select 최종 상품 옮김)
         Dictionary<ProductOpenType, List<ProductComposition>> productDictionary = ClassifyProductsById(productIds);
 
         // ProductId -> (누적수량, 타입)
@@ -105,6 +130,29 @@ public class ProductClaimService
         await _context.SaveChangesExtendedAsync();
     }
 
+    // ex) Overpower(1) 같은 single 상품 1 -> 32, 33 .... 4001
+    private void Unpack(List<ProductComposition> compositions)
+    {
+        var table = _context.UserProduct;
+        foreach (var composition in compositions)          
+        {
+            if (composition.ProductType != 0)
+            {
+                
+            }
+            else
+            {
+                
+            }
+        }
+    }
+    
+    // ex) Top Grade Material Box(21) 같은 이번 iteration에 개봉해야 하는 상품
+    private void StageUserProduct(int compositionId, int count)
+    {
+        
+    }
+    
     // 선택 -> 랜덤 -> 싱글 -> 구독 순으로 팝업 우선순위 결정
     public async Task<ClaimData> ClassifyAndClaim(int userId)
     {
@@ -289,7 +337,7 @@ public class ProductClaimService
     }
     
     private Dictionary<ProductOpenType, List<ProductComposition>> ClassifyProduct(
-        int productId, ProductType productType = ProductType.None, int count = 1)
+        int productId, ProductType productType = ProductType.Container, int count = 1)
     {
         var result = new Dictionary<ProductOpenType, List<ProductComposition>>();
         var productList = _cachedDataProvider.GetProducts();
@@ -309,7 +357,7 @@ public class ProductClaimService
         var probList = _cachedDataProvider.GetProbabilities();
 
         // unit, spinel 등 productType가 None이 아닌 경우
-        if (compositionList.Count == 0 || compositionList.All(pc => pc.ProductType != ProductType.None))
+        if (compositionList.Count == 0 || compositionList.All(pc => pc.ProductType != ProductType.Container))
         {
             var composition = new ProductComposition
             {
@@ -370,57 +418,6 @@ public class ProductClaimService
         return result;
     }
     
-    public List<ProductComposition> GetFinalProducts(int productId)
-    {
-        /* Example of GetFinalProducts output for productId
-         한마디로 1번만 깐다
-        Input: [1, 32, 33]
-        ┌─ ProductId──┐
-        │   Select : 32, 33, 38, 39, 32, 33
-        │   Random : 49, 50
-        │   Single : 127, 527, 4001
-        └──────────────────────────
-        Input: [21]
-        ┌─ ProductId──┐
-        │   Random : 57, 58, 59
-        └──────────────────────────
-        */
-        var compositions = _cachedDataProvider.GetProductCompositions()
-            .Where(pc => pc.ProductId == productId)
-            .ToList();
-        var result = new List<ProductComposition>();
-
-        foreach (var composition in compositions)
-        {
-            // None의 경우 또 다른 패키지 아이템 -> 재귀 호출
-            if (composition.ProductType == ProductType.None)
-            {
-                var subResults = GetFinalProducts(composition.CompositionId);
-                result.AddRange(subResults);
-            }
-            else
-            {
-                if (compositions.Count > 1 && composition.Guaranteed == false)
-                {
-                    if (compositions.All(pc => pc.IsSelectable))
-                    {
-                        result.Add(composition);
-                    }
-                    else if (compositions.All(pc => pc.IsSelectable == false))
-                    {
-                        result.Add(composition);
-                    }
-                }
-                else
-                {
-                    result.Add(composition);
-                }
-            }
-        }
-
-        return result;
-    }
-    
     public List<ProductComposition> DrawRandomProduct(Product product, int count = 1)
     {
         var result = new List<ProductComposition>();
@@ -430,7 +427,7 @@ public class ProductClaimService
             .ToList();
         var probList = _cachedDataProvider.GetProbabilities();
 
-        if (compositionList.All(pc => pc.ProductType != ProductType.None))
+        if (compositionList.All(pc => pc.ProductType != ProductType.Container))
         {
             for (var i = 0; i < count; i++)
             {
@@ -440,7 +437,7 @@ public class ProductClaimService
             return result;
         }
 
-        if (compositionList.All(pc => pc.ProductType == ProductType.None))
+        if (compositionList.All(pc => pc.ProductType == ProductType.Container))
         {
             var compositionPairs = compositionList
                 .Select(p => (p.ProductId, p.CompositionId))
@@ -654,18 +651,42 @@ public class ProductClaimService
                 break;
             
             case ProductType.Subscription:
+                var nowUtc = DateTime.UtcNow;
+                var lifetimeUtc = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Utc);
+                var subType = SubscriptionType.AdsRemover; 
+                
+                // 1) 아직 남아있는(만료 안 됐고, 취소도 안 된) 같은 타입 구독이 있으면 무시
+                var existingActiveSub = _context.UserSubscription
+                    .FirstOrDefault(us =>
+                        us.UserId == userId &&
+                        us.SubscriptionType == subType &&
+                        us.IsCanceled == false &&
+                        us.ExpiresAtUtc > nowUtc);
+
+                if (existingActiveSub != null)
+                    break; // 그냥 무시하고 종료
+                
                 _context.UserSubscription.Add(new UserSubscription
                 {
-                    
+                    UserId = userId,
+                    SubscriptionType = subType,
+                    CreatedAtUtc = nowUtc,
+                    ExpiresAtUtc = lifetimeUtc,
+                    IsCanceled = false,
+                    IsTrial = false,
                 });
 
                 _context.UserSubscriptionHistory.Add(new UserSubscriptionHistory
                 {
-
+                    UserId = userId,
+                    SubscriptionType = subType,
+                    FromUtc = nowUtc,
+                    ToUtc = lifetimeUtc,
+                    EventType = SubscriptionEvent.Started
                 });
                 break;
             
-            case ProductType.None:
+            case ProductType.Container:
                 
                 break;
         }

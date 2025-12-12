@@ -509,7 +509,7 @@ public class MatchController : ControllerBase
         // Selectable or random product will be sent to mailbox, other products immediately added to user inventory.
         foreach (var reward in rewards)
         {
-            if (reward.ProductType == ProductType.None)
+            if (reward.ProductType == ProductType.Container)
             {
                 for (int i = 0; i < reward.Count; i++)
                 {

@@ -255,7 +255,7 @@ public class AppDbContext : DbContext
             .HasForeignKey(us => us.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.Entity<UserProduct>().HasKey(up => new { up.UserId, up.ProductId });
+        builder.Entity<UserProduct>().HasKey(up => new { up.UserId, up.ProductId, up.AcquisitionPath });
         builder.Entity<UserProduct>().Property(up => up.ProductType)
             .HasConversion(v => (int)v, v => (ProductType)v);
         builder.Entity<UserProduct>()

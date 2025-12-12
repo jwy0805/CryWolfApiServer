@@ -612,7 +612,7 @@ public class UserAccountController : ControllerBase
         var userSubscription = _context.UserSubscription.AsNoTracking()
             .Where(userSubscription => userSubscription.UserId == userId);
         var subscriptionInfos = new List<SubscriptionInfo>();
-        if (userSubscription.Any() == false)
+        if (userSubscription.Any())
         {
             subscriptionInfos = userSubscription
                 .Where(us => us.ExpiresAtUtc > DateTime.UtcNow)

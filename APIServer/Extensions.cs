@@ -27,7 +27,7 @@ public static class Extensions
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error: {e.Message}");
+            Console.WriteLine($"SaveChangesExtendedError: {e.Message}");
             return false;
         }
     }

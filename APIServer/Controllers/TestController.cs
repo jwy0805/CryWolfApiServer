@@ -165,33 +165,6 @@ public class TestController : ControllerBase
         
         return Ok(res);
     }
-
-    [HttpPost]
-    [Route("Test_GetFinalProducts")]
-    public IActionResult Test_GetFinalProducts([FromBody] TestClassifyProductPacketRequired required)
-    {
-        var res = new TestClassifyProductPacketResponse();
-        var sb  = new StringBuilder();
-        
-        var ids = string.Join("," , required.ProductIds);
-        sb.AppendLine($"┌─ ProductId──┐");
-        var list = new List<ProductComposition>();
-        foreach (var productId in required.ProductIds)
-        {
-            list.AddRange(_claimService.GetFinalProducts(productId));
-        }
-        
-        foreach (var composition in list)
-        {
-            sb.AppendLine($"│   {composition.ProductId,-6} : {composition.CompositionId}");
-        }
-        
-        sb.AppendLine("└──────────────────────────");
-        
-        _logger.LogInformation(sb.ToString());
-        
-        return Ok(res);
-    }
     
     [HttpPost]
     [Route("Test_ClassifyProduct")]
@@ -238,7 +211,7 @@ public class TestController : ControllerBase
 
     [HttpPost]
     [Route("Test_ClaimAllProduct")]
-    public IActionResult Test_ClaimProduct([FromBody] TestClaimAllPacketRequired required)
+    public IActionResult Test_ClaimAllProduct([FromBody] TestClaimAllPacketRequired required)
     {
         return Ok(new ClaimProductPacketResponse());
     }

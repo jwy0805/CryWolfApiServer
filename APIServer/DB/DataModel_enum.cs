@@ -113,43 +113,43 @@ public enum UnitRegion
 
 public enum MaterialId
 {
-    None = 0,
-    Bristles = 1,
-    DownFeather = 2,
-    Feather = 3,
-    GuardHair = 4,
-    Hairball = 5,
-    CardPlatePeasant = 6,
-    CardPlateSquire = 7,
-    CardPlateKnight = 8,
-    CardPlateNobleKnight = 9,
-    CardPlateBaron = 10,
-    CardPlateEarl = 11,
-    CardPlateDuke = 12,
-    ClayDawn = 13,
-    ClayEarth = 14,
-    ClayFire = 15,
-    ClayForest = 16,
-    ClayRock = 17,
-    ClayWater = 18,
-    LeatherLowGrade = 19,
-    LeatherMidGrade = 20,
-    LeatherHighGrade = 21,
-    LeatherTopGrade = 22,
-    PigmentBlack = 23,
-    PigmentBlue = 24,
-    PigmentGreen = 25,
-    PigmentPurple = 26,
-    PigmentRed = 27,
-    PigmentYellow = 28,
-    SoulPowderBysscaligo = 29,
-    SoulPowderGrellude = 30,
-    SoulPowderIscreh = 31,
-    SoulPowderMistykile = 32,
-    SoulPowderSandibreeze = 33,
-    SoulPowderVoltenar = 34,
-    SoulPowderZumarigloom = 35,
-    RainbowEgg = 36,
+    None = 2000,
+    Bristles = 2001,
+    DownFeather = 2002,
+    Feather = 2003,
+    GuardHair = 2004,
+    Hairball = 2005,
+    CardPlatePeasant = 2006,
+    CardPlateSquire = 2007,
+    CardPlateKnight = 2008,
+    CardPlateNobleKnight = 2009,
+    CardPlateBaron = 2010,
+    CardPlateEarl = 2011,
+    CardPlateDuke = 2012,
+    ClayDawn = 2013,
+    ClayEarth = 2014,
+    ClayFire = 2015,
+    ClayForest = 2016,
+    ClayRock = 2017,
+    ClayWater = 2018,
+    LeatherLowGrade = 2019,
+    LeatherMidGrade = 2020,
+    LeatherHighGrade = 2021,
+    LeatherTopGrade = 2022,
+    PigmentBlack = 2023,
+    PigmentBlue = 2024,
+    PigmentGreen = 2025,
+    PigmentPurple = 2026,
+    PigmentRed = 2027,
+    PigmentYellow = 2028,
+    SoulPowderBysscaligo = 2029,
+    SoulPowderGrellude = 2030,
+    SoulPowderIscreh = 2031,
+    SoulPowderMistykile = 2032,
+    SoulPowderSandibreeze = 2033,
+    SoulPowderVoltenar = 2034,
+    SoulPowderZumarigloom = 2035,
+    RainbowEgg = 2036,
 }
 
 public enum CurrencyId
@@ -241,16 +241,16 @@ public enum EnchantId
 
 public enum CharacterId
 {
-    PlayerCharacterBasic = 2001,
-    PlayerCharacter2 = 2002,
-    PlayerCharacter3 = 2003,
-    PlayerCharacter4 = 2004,
-    PlayerCharacter5 = 2005,
+    PlayerCharacterBasic = 1101,
+    PlayerCharacter2 = 1102,
+    PlayerCharacter3 = 1103,
+    PlayerCharacter4 = 1104,
+    PlayerCharacter5 = 1105,
 }
 
 public enum ProductType
 {
-    None = 0, // Other Product e.g. packages
+    Container = 0, // Other Product e.g. packages
     Unit = 1,
     Material = 2,
     Enchant = 3,
@@ -260,22 +260,6 @@ public enum ProductType
     Spinel = 7,
     Exp = 8,
     Subscription = 9,
-}
-
-public enum SubscriptionType
-{
-    None = 0, 
-    SeasonPass = 1,
-    AdsRemover = 2,
-}
-
-public enum SubscriptionEvent
-{
-    None = 0,
-    Started = 1,
-    Renewed = 2,
-    Canceled = 3,
-    Expired = 4,
 }
 
 public enum ProductCategory
@@ -314,8 +298,25 @@ public enum AcquisitionPath
     Tutorial = 6,
     Event = 7,
     // 현재 open중인 패키지
-    // ex) Over Power을 개봉하면 User_Product의 Over Power은 사라지고, 하위 상품들이 AcquisitionPath가 Open으로 변경어 테이블에 추가됨
+    // ex) Beginner's Ambition(7)과 Top Grade Material Box(21) 를 동시 개봉하는 경우
+    // 7-21은 한번 이미 순회했으니 none, 21은 지금 열어야 하니 open
     Open = 8, 
+}
+
+public enum SubscriptionType
+{
+    None = 0, 
+    SeasonPass = 1,
+    AdsRemover = 2,
+}
+
+public enum SubscriptionEvent
+{
+    None = 0,
+    Started = 1,
+    Renewed = 2,
+    Canceled = 3,
+    Expired = 4,
 }
 
 public enum RewardPopupType

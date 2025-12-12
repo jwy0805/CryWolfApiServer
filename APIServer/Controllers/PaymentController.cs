@@ -212,10 +212,19 @@ public class PaymentController : ControllerBase
         var price = dailyProducts.First(dp => dp.ProductId == product.ProductId).Price;
         if (balanceGold < price) return Ok(response);
         
+        var userDaily = _context.UserDailyProduct.FirstOrDefault(udp =>
+            udp.UserId == userId && udp.ProductId == product.ProductId);
+        if (userDaily == null) return BadRequest("User daily product not found");
+        userDaily.Bought = true;
         userStat.Gold -= price;
+
+        _logger.LogInformation("251211 Daily Purchased {ProductCode} - {ProductName}", product.ProductCode, product.ProductName);
+        await _context.SaveChangesExtendedAsync();
+        _logger.LogInformation("251211 Daily");
         await PurchaseComplete(userId, required.ProductCode);
         
         response.PaymentOk = true;
+        response.Slot = userDaily.Slot;
         return Ok(response);
     }
     
@@ -342,6 +351,7 @@ public class PaymentController : ControllerBase
     {
         var product = await _context.Product.AsNoTracking().
             FirstOrDefaultAsync(p => p.ProductCode == productCode);
+        _logger.LogInformation("251211");
         if (product == null) return;
         
         var mail = new Mail
@@ -357,6 +367,7 @@ public class PaymentController : ControllerBase
             Sender = "Cry Wolf"
         };
         
+        _logger.LogInformation($"251211 Purchased {product.ProductCode} - {product.ProductName}");
         _context.Mail.Add(mail);
         await _context.SaveChangesExtendedAsync();
     }

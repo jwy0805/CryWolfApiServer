@@ -166,22 +166,19 @@ public class TestController : ControllerBase
         return Ok(res);
     }
     
-    [HttpPost]
-    [Route("Test_ClassifyProduct")]
-    public IActionResult Test_ClassifyProduct([FromBody] TestClassifyProductPacketRequired required)
+    [HttpPut]
+    [Route("Test_UnpackProducts")]
+    public async Task<IActionResult> Test_UnpackProducts([FromBody] TestUnpackProductsPacketRequired required)
     {
-        var res = new TestClassifyProductPacketResponse
+        var mails = required.MailIdProductId.Select(kv => new Mail
         {
-            Compositions = new List<ProductComposition>()
-        };
-        
-        var dict = _claimService.ClassifyProducts(1);
-        foreach (var value in dict.Values)
-        {
-            res.Compositions.AddRange(value);
-        }
+            MailId = kv.Key,
+            ProductId = kv.Value,
+        }).ToList();
 
-        return Ok(res);
+        await _claimService.UnpackPackages(1, mails);
+        
+        return Ok(new TestUnpackProductsPacketResponse { UnpackOk = true });
     }
 
     [HttpPost]
@@ -192,20 +189,7 @@ public class TestController : ControllerBase
         {
             CompositionInfos = new List<CompositionInfo>()
         };
-
-        var allProductList = _cachedDataProvider.GetProducts();
-        // var allCompositionList = _cachedDataProvider.GetProductCompositions();
-        foreach (var productId in required.ProductIds)
-        {
-            var product = allProductList.FirstOrDefault(p => p.ProductId == productId);
-            if (product != null)
-            {
-                var compositionInfoList = _claimService.DrawRandomProduct(product)
-                    .Select(_claimService.MapCompositionInfo)
-                    .ToList();
-                res.CompositionInfos.AddRange(compositionInfoList);
-            }
-        }
+        
         return Ok(res);
     }
 

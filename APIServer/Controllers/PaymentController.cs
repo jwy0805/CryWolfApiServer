@@ -10,6 +10,7 @@ using ApiServer.Services;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -218,9 +219,7 @@ public class PaymentController : ControllerBase
         userDaily.Bought = true;
         userStat.Gold -= price;
 
-        _logger.LogInformation("251211 Daily Purchased {ProductCode} - {ProductName}", product.ProductCode, product.ProductName);
         await _context.SaveChangesExtendedAsync();
-        _logger.LogInformation("251211 Daily");
         await PurchaseComplete(userId, required.ProductCode);
         
         response.PaymentOk = true;
@@ -351,7 +350,6 @@ public class PaymentController : ControllerBase
     {
         var product = await _context.Product.AsNoTracking().
             FirstOrDefaultAsync(p => p.ProductCode == productCode);
-        _logger.LogInformation("251211");
         if (product == null) return;
         
         var mail = new Mail
@@ -384,114 +382,274 @@ public class PaymentController : ControllerBase
         if (composition == null) return;
         
         await _claimService.StoreProductAsync(userId, composition);
+        await _context.SaveChangesExtendedAsync();
     }
+    
+    [HttpPut]
+    [Route("StartClaim")]
+    public async Task<IActionResult> StartClaim([FromBody] ContinueClaimPacketRequired required)
+    {
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
 
+        // 0) 메일에서 아직 클레임 안 한 Product 메일들 읽기
+        List<Mail> mails;
+        if (required.MailId != 0)
+        {
+            var mail = await _context.Mail.FirstOrDefaultAsync(m =>
+                m.MailId == required.MailId && m.UserId == userId && !m.Claimed);
+            
+            if (mail == null)
+            {
+                return BadRequest("Invalid mail ID");
+            }
+            
+            mails = new List<Mail>
+            {
+                mail
+            };
+        }
+        else
+        {
+            mails = await _context.Mail
+                .Where(m => m.UserId == userId &&
+                            m.Claimed == false &&
+                            m.Type == MailType.Product &&
+                            m.ProductId != null)
+                .ToListAsync();
+        }
+
+        // 1) 있으면 언팩해서 User_Product(Open/None)에 스테이징
+        if (mails.Count > 0)
+            await _claimService.UnpackPackages(userId, mails);
+
+        // 2) 다음 팝업 리턴
+        var data = await _claimService.GetNextPopupAsync(userId);
+
+        return Ok(new ClaimProductPacketResponse
+        {
+            ClaimOk = data.RewardPopupType != RewardPopupType.None,
+            RewardPopupType = data.RewardPopupType,
+            ProductInfos = data.ProductInfos,
+            RandomProductInfos = data.RandomProductInfos,
+            CompositionInfos = data.CompositionInfos
+        });
+    }
+    
+    [HttpPut]
+    [Route("ContinueClaim")]
+    public async Task<IActionResult> ContinueClaim([FromBody] ContinueClaimPacketRequired required)
+    {
+        var userId = _tokenValidator.Authorize(required.AccessToken);
+        if (userId == -1) return Unauthorized();
+
+        var data = await _claimService.GetNextPopupAsync(userId);
+
+        return Ok(new ClaimProductPacketResponse
+        {
+            ClaimOk = data.RewardPopupType != RewardPopupType.None,
+            RewardPopupType = data.RewardPopupType,
+            ProductInfos = data.ProductInfos,
+            RandomProductInfos = data.RandomProductInfos,
+            CompositionInfos = data.CompositionInfos
+        });
+    }
+    
     [HttpPut]
     [Route("SelectProduct")]
     public async Task<IActionResult> SelectProduct([FromBody] SelectProductPacketRequired required)
     {
         var userId = _tokenValidator.Authorize(required.AccessToken);
         if (userId == -1) return Unauthorized();
-        var productCompositionStored = _cachedDataProvider.GetProductCompositions()
-            .First(pc => 
-                pc.CompositionId == required.SelectedCompositionInfo.CompositionId &&
+
+        var strategy = _context.Database.CreateExecutionStrategy();
+
+        string? bad = null;
+
+        await strategy.ExecuteAsync(async () =>
+        {
+            await using var tx = await _context.Database.BeginTransactionAsync();
+
+            var userProduct = await _context.UserProduct.FirstOrDefaultAsync(up =>
+                up.UserId == userId &&
+                up.ProductId == required.SelectedCompositionInfo.ProductId &&
+                up.AcquisitionPath == AcquisitionPath.Open);
+
+            if (userProduct is not { Count: > 0 })
+            {
+                bad = "Selected product not found";
+                await tx.RollbackAsync();
+                return;
+            }
+
+            var selected = _cachedDataProvider.GetProductCompositions().FirstOrDefault(pc =>
                 pc.ProductId == required.SelectedCompositionInfo.ProductId &&
-                pc.ProductType == required.SelectedCompositionInfo.ProductType);
-        
-        await _claimService.StoreProductAsync(userId, productCompositionStored);
-        _claimService.AddDisplayingComposition(userId, required.SelectedCompositionInfo);
-        _claimService.RemoveUserProduct(userId, required.SelectedCompositionInfo.ProductId);
-        
-        var data = await _claimService.ClassifyAndClaim(userId);
-        await _context.SaveChangesExtendedAsync();
-        
+                pc.CompositionId == required.SelectedCompositionInfo.CompositionId &&
+                pc.ProductType == required.SelectedCompositionInfo.ProductType &&
+                pc.IsSelectable);
+
+            if (selected == null)
+            {
+                bad = "Selected composition is not selectable";
+                await tx.RollbackAsync();
+                return;
+            }
+
+            await _claimService.StoreProductAsync(userId, selected);
+
+            _claimService.AddDisplayingComposition(userId, required.SelectedCompositionInfo);
+
+            userProduct.Count -= 1;
+            if (userProduct.Count <= 0)
+                _context.UserProduct.Remove(userProduct);
+
+            await _context.SaveChangesExtendedAsync();
+            await tx.CommitAsync();
+        });
+
+        if (bad != null) return BadRequest(bad);
+
+        // 커밋 이후 “다음 팝업”은 재시도 단위 밖에서 1회만
+        var data = await _claimService.GetNextPopupAsync(userId);
+
         var res = new ClaimProductPacketResponse
         {
+            ClaimOk = data.RewardPopupType != RewardPopupType.None,
             ProductInfos = data.ProductInfos,
             RandomProductInfos = data.RandomProductInfos,
             CompositionInfos = data.CompositionInfos,
-            RewardPopupType = data.RewardPopupType,
+            RewardPopupType = data.RewardPopupType
         };
-
-        if (data.CompositionInfos.Count == 0 && data.RandomProductInfos.Count == 0 && data.ProductInfos.Count == 0)
-        {
-            res.ClaimOk = false;
-        }
-
-        res.ClaimOk = true;
 
         return Ok(res);
     }
 
     [HttpPut]
-    [Route("ClaimProduct")]
-    public async Task<IActionResult> ClaimProduct([FromBody] ClaimProductPacketRequired required)
+    [Route("OpenProduct")]
+    public async Task<IActionResult> OpenProduct([FromBody] OpenProductPacketRequired required)
     {
         var userId = _tokenValidator.Authorize(required.AccessToken);
         if (userId == -1) return Unauthorized();
 
-        List<Mail> mails;
-        if (required.ClaimAll)
-        {
-            mails = await _context.Mail
-                .Where(m => m.UserId == userId && m.Type == MailType.Product && m.Claimed == false)
-                .ToListAsync();
-        }
-        // Claim individual product in mail
-        else if (required.MailId != 0)
-        {
-            mails = await _context.Mail
-                .Where(m => m.MailId == required.MailId && m.UserId == userId && m.Claimed == false)
-                .ToListAsync();
-        }
-        else
-        {
-            return BadRequest();
-        }
-        
-        await _claimService.UnpackPackages(userId, mails);
-        var data = await _claimService.ClassifyAndClaim(userId);
-        await _context.SaveChangesExtendedAsync();
-        
-        var res = new ClaimProductPacketResponse
-        {
-            ProductInfos = data.ProductInfos,
-            RandomProductInfos = data.RandomProductInfos,
-            CompositionInfos = data.CompositionInfos,
-            RewardPopupType = data.RewardPopupType,
-            ClaimOk = true
-        };
-        
-        return Ok(res);
-    }
+        var strategy = _context.Database.CreateExecutionStrategy();
 
-    [HttpPut]
-    [Route("DisplayClaimedProduct")]
-    public async Task<IActionResult> DisplayClaimedProduct([FromBody] DisplayClaimedProductPacketRequired required)
-    {
-        var userId = _tokenValidator.Authorize(required.AccessToken);
-        if (userId == -1) return Unauthorized();
-        var data = await _claimService.ClassifyAndClaim(userId);
-        await _context.SaveChangesExtendedAsync();
-        
-        if (_cachedDataProvider.DisplayingCompositions.TryRemove(userId, out var dispCompositions))
+        int resCount = 0;
+        string? bad = null;
+        List<CompositionInfo> openResultInfos = new(); // 커밋 성공한 최종 결과만 담김
+        List<CompositionInfo> closedResultInfos = new();
+
+        await _context.Database.OpenConnectionAsync();
+        try
         {
-            data.CompositionInfos = dispCompositions.Items.ToList();
-            data.RewardPopupType = RewardPopupType.Item;
+            await strategy.ExecuteAsync(async () =>
+            {
+                bad = null;
+                openResultInfos.Clear();
+                closedResultInfos.Clear();
+
+                await using var tx = await _context.Database.BeginTransactionAsync();
+                var dbTx = tx.GetDbTransaction();
+
+                // 0) 상품 유효성(캐시)
+                var product = _cachedDataProvider.GetProducts().FirstOrDefault(p => p.ProductId == required.ProductId);
+                if (product == null)
+                {
+                    bad = "Invalid product";
+                    return;
+                }
+
+                // 1) 먼저 소비(원자) — 동시 클릭/중복 요청 방지
+                var consume = await _claimService.ConsumeUserProductAsync(
+                    userId,
+                    required.ProductId,
+                    AcquisitionPath.Open,
+                    consumeAll: required.OpenAll,
+                    dbTx);
+
+                if (consume.OpenCount <= 0)
+                {
+                    bad = "Product not found or already opened";
+                    return;
+                }
+                
+                // 2) 1레벨 확정(재귀 금지)
+                var resolved = _claimService.ResolveRandomOpenOneLevel(required.ProductId, consume.OpenCount);
+
+                foreach (var ((compId, type), cnt) in resolved.Resolved)
+                {
+                    var pc = new ProductComposition
+                    {
+                        ProductId = required.ProductId,
+                        CompositionId = compId,
+                        ProductType = type,
+                        Count = cnt
+                    };
+
+                    var info = _claimService.MapCompositionInfo(pc);
+                    openResultInfos.Add(info);
+
+                    if (type == ProductType.Container)
+                    {
+                        for (int i = 0; i < cnt; i++)
+                        {
+                            _context.Mail.Add(new Mail
+                            {
+                                UserId = userId,
+                                Type = MailType.Product,
+                                ProductId = compId,
+                                Claimed = false
+                            });
+                        }
+                        
+                        // var containerInfo = new CompositionInfo
+                        // {
+                        //     ProductId = required.ProductId,
+                        //     CompositionId = compId,
+                        //     ProductType = type,
+                        //     Count = cnt
+                        // };
+                        //
+                        // closedResultInfos.Add(containerInfo);
+                    }
+                    else
+                    {
+                        await _claimService.StoreProductAsync(userId, pc);
+                    }
+                }
+
+                await _context.SaveChangesExtendedAsync();
+                await tx.CommitAsync();
+                resCount = consume.OpenCount;
+            });
         }
-        
+        finally
+        {
+            await _context.Database.CloseConnectionAsync();
+        }
+
+        if (bad != null) return BadRequest(bad);
+        if (openResultInfos.Count == 0) return StatusCode(500, "OpenProduct failed");
+
+        // 커밋 이후 1회만 누적 로그 반영 (재시도/롤백 중복 방지)
+        var allInfos = openResultInfos.Concat(closedResultInfos).ToList();
+        foreach (var info in allInfos)
+            _claimService.AddDisplayingComposition(userId, info);
+
         var res = new ClaimProductPacketResponse
         {
-            ProductInfos = data.ProductInfos,
-            RandomProductInfos = data.RandomProductInfos,
-            CompositionInfos = data.CompositionInfos,
-            RewardPopupType = data.RewardPopupType,
-            ClaimOk = true
+            ClaimOk = true,
+            RewardPopupType = RewardPopupType.OpenResult,
+            CompositionInfos = openResultInfos,
+            ProductInfos = new List<ProductInfo>(),
+            RandomProductInfos = new List<RandomProductInfo>
+            {
+                new() { ProductInfo = new ProductInfo { ProductId = required.ProductId, }, Count = resCount, }
+            }
         };
         
         return Ok(res);
     }
-    
+        
     private async Task<(bool IsValid, string Message)> ValidateGoogleReceiptAsync(string productCode, string receipt)
     {
         UnityIapReceiptWrapper? wrapper;

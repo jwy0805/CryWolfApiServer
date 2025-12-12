@@ -12,14 +12,19 @@ public class CachedDataProvider
     private record FreeProductSnapshot(int ProductId, int Weight, UnitClass Class);
 
     private readonly Dictionary<int, int> _expSnapshots;
-    private readonly List<MaterialInfo> _materialInfos = new();
+    private readonly List<MaterialInfo> _materialInfos;
     private readonly List<Product> _products;
     private readonly List<ProductComposition> _productCompositions;
     private readonly List<CompositionProbability> _probabilities;
-    private readonly Dictionary<(int ProductId, int CompositionId), (int min, int max)> _probabilityLookups;
     private readonly List<DailyProductSnapshot> _dailyProductSnapshots;
     private readonly List<FreeProductSnapshot> _freeProductSnapshots;
     private readonly Random _random = new();
+
+    private readonly Dictionary<int, List<MaterialInfo>> _materialLookup;
+    private readonly Dictionary<int, List<Product>> _productLookup;
+    private readonly Dictionary<int, List<ProductComposition>> _compLookup;
+    private readonly Dictionary<int, List<CompositionProbability>> _probLookup;
+    private readonly Dictionary<(int ProductId, int CompositionId), (int min, int max)> _probDetailLookup;
     
     public int QueueCountsSheep { get; set; } = 0;
     public int QueueCountsWolf { get; set; } = 0;
@@ -29,9 +34,13 @@ public class CachedDataProvider
     public List<Product> GetProducts() => _products;
     public List<ProductComposition> GetProductCompositions() => _productCompositions;
     public List<CompositionProbability> GetProbabilities() => _probabilities;
-    public Dictionary<(int ProductId, int CompositionId), (int min, int max)> GetProbabilityLookups() => _probabilityLookups;
+    public Dictionary<int, List<MaterialInfo>> GetMaterialLookup() => _materialLookup;
+    public Dictionary<int, List<Product>> GetProductLookup() => _productLookup;
+    public Dictionary<int, List<ProductComposition>> GetCompLookup() => _compLookup;
+    public Dictionary<int, List<CompositionProbability>> GetProbLookup() => _probLookup;
+    public Dictionary<(int ProductId, int CompositionId), (int min, int max)> GetProbabilityLookup() => _probDetailLookup;
     public List<DailyProductSnapshot> GetDailyProductSnapshots() => _dailyProductSnapshots;
-    public ConcurrentDictionary<int, DisplayingCompositions> DisplayingCompositions { get; set; } = new();
+    public ConcurrentDictionary<int, DisplayingCompositions> DisplayingCompositions { get; } = new();
     
     public CachedDataProvider(IDbContextFactory<AppDbContext> dbContextFactory)
     {
@@ -49,7 +58,23 @@ public class CachedDataProvider
         _productCompositions = context.ProductComposition.AsNoTracking().ToList();
         _probabilities = context.CompositionProbability.AsNoTracking().ToList();
 
-        _probabilityLookups = _probabilities
+        _materialLookup = _materialInfos
+            .GroupBy(m => m.Id)
+            .ToDictionary(g => g.Key, g => g.ToList());
+        
+        _productLookup = _products
+            .GroupBy(p => p.ProductId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+        
+        _compLookup = _productCompositions
+            .GroupBy(pc => pc.ProductId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+        
+        _probLookup = _probabilities
+            .GroupBy(cp => cp.ProductId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+        
+        _probDetailLookup = _probabilities
             .GroupBy(cp => (cp.ProductId, cp.CompositionId))
             .ToDictionary(
                 grouping => grouping.Key, 
@@ -123,6 +148,14 @@ public class CachedDataProvider
         return _dailyProductSnapshots.FirstOrDefault(dp => dp.ProductId == productId)?.Price ?? int.MaxValue;
     }
     
+    public List<CompositionInfo> DrainDisplayingCompositions(int userId)
+    {
+        if (DisplayingCompositions.TryGetValue(userId, out var disp))
+            return disp.Drain();
+
+        return new List<CompositionInfo>();
+    }
+    
     public void ClearDisplayingCompositions(int userId)
     {
         DisplayingCompositions.TryRemove(userId, out _);
@@ -134,6 +167,9 @@ public class DisplayingCompositions
     public DateTime LastUpdated { get; private set; } = DateTime.UtcNow;
     private readonly Dictionary<(int id, ProductType productType), CompositionInfo> _items = new();
     private readonly object _lock = new();
+
+    // ⚠️ 지금 Items는 lock 없이 Values를 노출합니다.
+    // 가능하면 외부에서 Items를 직접 쓰지 말고, 아래 Snapshot/Drain만 쓰는 걸 권장합니다.
     public IReadOnlyCollection<CompositionInfo> Items => _items.Values;
 
     public void AddOrIncrement(CompositionInfo info)
@@ -141,7 +177,7 @@ public class DisplayingCompositions
         lock (_lock)
         {
             LastUpdated = DateTime.UtcNow;
-            
+
             var key = (info.CompositionId, info.ProductType);
 
             if (_items.TryGetValue(key, out var existInfo))
@@ -150,8 +186,29 @@ public class DisplayingCompositions
             }
             else
             {
-                _items[key] = info;
+                _items[key] = info; // 필요하면 여기서 복사본 생성(불변성 강화)
             }
+        }
+    }
+
+    public List<CompositionInfo> Drain()
+    {
+        lock (_lock)
+        {
+            // 스냅샷
+            var list = _items.Values.ToList();
+            // 비우기
+            _items.Clear();
+            LastUpdated = DateTime.UtcNow;
+            return list;
+        }
+    }
+
+    public List<CompositionInfo> Snapshot()
+    {
+        lock (_lock)
+        {
+            return _items.Values.ToList();
         }
     }
 }

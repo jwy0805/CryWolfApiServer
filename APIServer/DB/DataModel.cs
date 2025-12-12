@@ -120,9 +120,9 @@ public class UserSubscriptionHistory
     public long HistoryId { get; set; }
     public int UserId { get; set; }
     public SubscriptionType SubscriptionType { get; set; }
-    public DateTime         FromUtc          { get; set; }
-    public DateTime         ToUtc            { get; set; }
-    public SubscriptionEvent EventType       { get; set; }   // Started / Renewed / Canceled / Expired …
+    public DateTime FromUtc { get; set; }
+    public DateTime ToUtc { get; set; }
+    public SubscriptionEvent EventType { get; set; }   // Started / Renewed / Canceled / Expired …
 }
 
 [Table("UserTutorial")]

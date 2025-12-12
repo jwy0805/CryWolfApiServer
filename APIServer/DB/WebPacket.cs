@@ -947,23 +947,23 @@ public class CashPaymentPacketResponse
     public CashPaymentErrorCode ErrorCode { get; set; }
 }
 
-public class ClaimProductPacketRequired
-{
-    public string AccessToken { get; set; }
-    public RewardPopupType CurrentState { get; set; }
-    public bool ClaimAll { get; set; }
-    public int MailId { get; set; }
-}
-
 public class SelectProductPacketRequired
 {
     public string AccessToken { get; set; }
     public CompositionInfo SelectedCompositionInfo { get; set; }
 }
 
-public class DisplayClaimedProductPacketRequired
+public class OpenProductPacketRequired
 {
     public string AccessToken { get; set; }
+    public int ProductId { get; set; }
+    public bool OpenAll { get; set; }
+}
+
+public class ContinueClaimPacketRequired
+{
+    public string AccessToken { get; set; }
+    public int MailId { get; set; } = 0;
 }
 
 public class ClaimProductPacketResponse

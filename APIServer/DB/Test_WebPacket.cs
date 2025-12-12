@@ -77,6 +77,16 @@ public class TestMapProductInfoPacketResponse
     public ProductInfo ProductInfo { get; set; }
 }
 
+public class TestUnpackProductsPacketRequired
+{
+    public Dictionary<int, int> MailIdProductId { get; set; }
+}
+
+public class TestUnpackProductsPacketResponse
+{
+    public bool UnpackOk { get; set; }
+}
+
 public class TestClassifyProductPacketRequired
 {
     public List<int> ProductIds { get; set; }

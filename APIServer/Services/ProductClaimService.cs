@@ -1,6 +1,11 @@
+using System.Data;
+using System.Data.Common;
+using System.Text;
 using ApiServer.DB;
 using ApiServer.Providers;
+using Google.Api.Gax.Rest;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 
 namespace ApiServer.Services;
 
@@ -19,653 +24,643 @@ public class ProductClaimService
         _logger = logger;
     }
 
+    public sealed record ConsumeResult(int OpenCount, ProductType ProductType);
+    public sealed class ResolveOneLevelResult
+    {
+        // UI에 보여줄 결과(컨테이너 포함)
+        public Dictionary<(int compId, ProductType type), int> Resolved { get; } = new();
+        
+        // 메일로 보낼 상품들(컨테이너)
+        public Dictionary<int, int> MailBackContainer { get; } = new();
+    }
+    
     /// <summary>
     /// Unpack products in mailbox to user product table.
     /// </summary>
     public async Task UnpackPackages(int userId, List<Mail> mails)
     {
-        // 0) 유효 productId만 추출
-        var productIds = mails
-            .Where(m =>
-            {
-                if (m.ProductId != null) return true;
-                _logger.LogWarning("MailId {MailId} has null ProductId, skipping unpacking.", m.MailId);
-                return false;
-            })
-            .Select(m => m.ProductId!.Value)
-            .ToArray();
+        var mailCounts = mails
+            .Where(m => m.ProductId != null)
+            .GroupBy(m => m.ProductId!.Value)
+            .ToDictionary(grouping => grouping.Key, grouping => grouping.Count());
 
-        if (productIds.Length == 0)
-        {
-            _logger.LogWarning("No valid ProductIds found in mails for userId {UserId}, marking mails as claimed.", userId);
-            foreach (var mail in mails) mail.Claimed = true;
-            await _context.SaveChangesExtendedAsync();
-            return;
-        }
+        if (!mailCounts.Any()) return;
+
+        var compLookup = _cachedDataProvider.GetCompLookup();
+        var staged = new Dictionary<(int productId, AcquisitionPath path), (int deltaCount, ProductType type)>();
         
-        var cachedCompList = _cachedDataProvider.GetProductCompositions()
-            .Where(pc => productIds.Contains(pc.ProductId))
+        void AddStage(int productId, AcquisitionPath path, int deltaCount, ProductType type)
+        {
+            if (deltaCount <= 0) return;
+
+            var key = (productId, path);
+            if (staged.TryGetValue(key, out var cur))
+                staged[key] = (cur.deltaCount + deltaCount, type);
+            else staged[key] = (deltaCount, type);
+        }
+
+        foreach (var (productId, count) in mailCounts)
+        {
+            if (!compLookup.TryGetValue(productId, out var comps) || comps.Count == 0)
+            {
+                _logger.LogError("ProductComposition not found. UserId={UserId}, ProductId={ProductId}, Count={Count}",
+                    userId, productId, count);
+
+                // 이 메일들 claimed 처리하지 말고 실패로 반환/예외
+                throw new InvalidOperationException($"Missing ProductComposition for ProductId={productId}");
+            }
+            
+            if (comps.All(pc => pc is { Guaranteed: true, IsSelectable: false }))
+            {
+                foreach (var comp in comps)
+                {
+                    AddStage(comp.CompositionId,
+                        comp.ProductType == ProductType.Container ? AcquisitionPath.None : AcquisitionPath.Open,
+                        comp.Count * count, 
+                        comp.ProductType);
+                }
+            }
+            else
+            {
+                AddStage(productId, AcquisitionPath.Open, count, ProductType.Container);
+            }
+        }
+
+        var strategy = _context.Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async () =>
+        {
+            await using var tx = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                await UpsertUserProductStageAsync(userId, staged);
+                // 메일 클레임
+                foreach (var mail in mails) mail.Claimed = true;
+
+                await _context.SaveChangesExtendedAsync();
+                await tx.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                await tx.RollbackAsync();
+                throw;
+            }
+        });
+    }
+
+    private async Task UpsertUserProductStageAsync(int userId,
+        Dictionary<(int productId, AcquisitionPath path), (int deltaCount, ProductType type)> staged)
+    {
+        if (staged.Count == 0) return;
+
+        const int batchSize = 200;
+        
+        var items = staged.Where(kv => kv.Value.deltaCount > 0)
+            .Select(kv => (kv.Key.productId, kv.Key.path, kv.Value.deltaCount, kv.Value.type))
             .ToList();
-        
-        foreach (var productId in productIds)
+
+        for (int offset = 0; offset < items.Count; offset += batchSize)
         {
-            var compositions = cachedCompList
-                .Where(pc => pc.ProductId == productId)
-                .ToList();
-            if (compositions.All(pc => pc is { Guaranteed: true, IsSelectable: false }))
+            var batch = items.Skip(offset).Take(batchSize).ToList();
+            var sb = new StringBuilder();
+            var parameters = new List<MySqlParameter>(batch.Count * 5);
+
+            sb.Append(
+                "INSERT INTO `User_Product` (`UserId`,`ProductId`,`AcquisitionPath`,`Count`,`ProductType`) VALUES ");
+
+            for (int i = 0; i < batch.Count; i++)
             {
-                // container or single
-                Unpack(compositions);
+                if (i > 0) sb.Append(',');
+                
+                sb.Append($"(@u{i},@p{i},@a{i},@c{i},@t{i})");
+
+                parameters.Add(new MySqlParameter($"@u{i}", userId));
+                parameters.Add(new MySqlParameter($"@p{i}", batch[i].productId));
+                parameters.Add(new MySqlParameter($"@a{i}", (int)batch[i].path));
+                parameters.Add(new MySqlParameter($"@c{i}", batch[i].deltaCount));
+                parameters.Add(new MySqlParameter($"@t{i}", (int)batch[i].type));
+                
             }
-            else
-            {
-                // selectable or random
-                StageUserProduct(productId, 1);
-            }
+            
+            sb.Append(@"
+ON DUPLICATE KEY UPDATE
+  `Count` = `Count` + VALUES(`Count`)
+  -- ProductType은 원칙적으로 고정이므로 업데이트하지 않는 게 안전
+  -- , `ProductType` = VALUES(`ProductType`)
+;");
+
+            await _context.Database.ExecuteSqlRawAsync(sb.ToString(), parameters.ToArray());
         }
-        
-        
-        
-        
-        // 1) 구성 분류 후 전부 집계 (Single/Random/Select 최종 상품 옮김)
-        Dictionary<ProductOpenType, List<ProductComposition>> productDictionary = ClassifyProductsById(productIds);
+    }
+    
+    public async Task<ClaimData> GetNextPopupAsync(int userId)
+    {
+        var data = new ClaimData();
 
-        // ProductId -> (누적수량, 타입)
-        var deltaByProductId = new Dictionary<int, (int Count, ProductType Type)>();
-        foreach (var composition in productDictionary.Values.SelectMany(list => list))
-        {
-            if (!deltaByProductId.TryGetValue(composition.ProductId, out var cur))
-            {
-                deltaByProductId[composition.ProductId] = (composition.Count, composition.ProductType);
-            }        
-            else
-            {
-                deltaByProductId[composition.ProductId] = (cur.Count + composition.Count, cur.Type);
-            }    
-        }
+        var compLookup = _cachedDataProvider.GetCompLookup();
 
-        if (deltaByProductId.Count == 0)
-        {
-            foreach (var mail in mails) mail.Claimed = true;
-            await _context.SaveChangesExtendedAsync();
-            return;
-        }
+        static bool IsSelectBox(List<ProductComposition> comps)
+            => comps.Count > 0 && comps.All(pc => pc.Guaranteed == false && pc.IsSelectable == true);
 
-        var pidList = deltaByProductId.Keys.ToList();
-
-        // 2) 기존 보유분 로드 (같은 PK 중복 Add 방지)
-        var existing = await _context.UserProduct
-            .Where(up => up.UserId == userId && pidList.Contains(up.ProductId))
+        // 1) Open 큐 스캔(Select/Open 우선 판단용)
+        var openList = await _context.UserProduct
+            .AsNoTracking()
+            .Where(up => up.UserId == userId &&
+                         up.AcquisitionPath == AcquisitionPath.Open &&
+                         up.Count > 0)
             .ToListAsync();
 
-        var map = existing.ToDictionary(up => up.ProductId);
-
-        // 3) 업서트
-        foreach (var (pid, info) in deltaByProductId)
+        // 2) Select 우선
+        foreach (var up in openList)
         {
-            if (map.TryGetValue(pid, out var up))
+            if (!compLookup.TryGetValue(up.ProductId, out var comps) || comps.Count == 0)
+                continue;
+
+            if (IsSelectBox(comps))
             {
-                up.Count += info.Count;
-                up.ProductType = info.Type;             // 필요 시 동기화
-                up.AcquisitionPath = AcquisitionPath.Open;
-            }
-            else
-            {
-                var newUp = new UserProduct
+                data.RewardPopupType = RewardPopupType.Select;
+                data.ProductInfos.Add(MapProductInfo(new UserProduct
                 {
                     UserId = userId,
-                    ProductId = pid,
-                    Count = info.Count,
-                    ProductType = info.Type,
-                    AcquisitionPath = AcquisitionPath.Open
-                };
-                _context.UserProduct.Add(newUp);
-                map[pid] = newUp; // 다음 루프에서 중복 Add 방지
+                    ProductId = up.ProductId,
+                    Count = up.Count,
+                    ProductType = up.ProductType,
+                    AcquisitionPath = up.AcquisitionPath
+                }));
+                data.CompositionInfos.AddRange(comps.Select(MapCompositionInfo));
+                return data;
             }
         }
 
-        // 4) 메일 클레임
-        foreach (var mail in mails) mail.Claimed = true;
-
-        await _context.SaveChangesExtendedAsync();
-    }
-
-    // ex) Overpower(1) 같은 single 상품 1 -> 32, 33 .... 4001
-    private void Unpack(List<ProductComposition> compositions)
-    {
-        var table = _context.UserProduct;
-        foreach (var composition in compositions)          
+        // 3) Random(Open) 우선: Container 1종만
+        var randomUp = openList.FirstOrDefault(up => up.ProductType == ProductType.Container);
+        if (randomUp != null)
         {
-            if (composition.ProductType != 0)
+            data.RewardPopupType = RewardPopupType.Open;
+            data.RandomProductInfos.Add(new RandomProductInfo
             {
-                
-            }
-            else
-            {
-                
-            }
-        }
-    }
-    
-    // ex) Top Grade Material Box(21) 같은 이번 iteration에 개봉해야 하는 상품
-    private void StageUserProduct(int compositionId, int count)
-    {
-        
-    }
-    
-    // 선택 -> 랜덤 -> 싱글 -> 구독 순으로 팝업 우선순위 결정
-    public async Task<ClaimData> ClassifyAndClaim(int userId)
-    {
-        var data = new ClaimData();
-        
-        var productDict = ClassifyProducts(userId);
-        
-        if (productDict.TryGetValue(ProductOpenType.Select, out var selectableProducts))
-        {
-            if (selectableProducts.Count > 0)
-            {
-                data = await ClaimSelectableProduct(userId, selectableProducts);
-            }
-        }
-        else if (productDict.TryGetValue(ProductOpenType.Random, out var randomProducts))
-        {
-            if (randomProducts.Count > 0)
-            {
-                // Go to next random popup
-                data = await ClaimRandomProduct(userId, randomProducts);
-            }
-        }
-        else if (productDict.TryGetValue(ProductOpenType.Single, out var singleProducts))
-        {
-            if (singleProducts.Count > 0)
-            {
-                // Go to next single popup
-                data = await ClaimSingleProduct(userId, singleProducts);
-            }
-        }
-        else
-        {
-            // No products to claim
-            data.RewardPopupType = RewardPopupType.None;
-        }
-
-        return data;
-    }
-    
-    // 하나 받고 userProductSelectable이 남아있으면 다음 선택 팝업으로 이동
-    private async Task<ClaimData> ClaimSelectableProduct(int userId, List<ProductComposition> compositions)
-    {
-        var data = new ClaimData();
-        var userProductList = await _context.UserProduct
-            .Where(up => up.UserId == userId && up.AcquisitionPath == AcquisitionPath.Open)
-            .ToListAsync();
-        var productId = compositions.First().ProductId;
-        var userProductSelectable = userProductList.FirstOrDefault(up => up.ProductId == productId);
-        var pcList = _cachedDataProvider.GetProductCompositions().Where(pc => pc.ProductId == productId).ToList();
-        
-        // Go to next select popup
-        if (userProductSelectable != null)
-        {
-            data.ProductInfos.Add(MapProductInfo(userProductSelectable));
-            data.CompositionInfos.AddRange(pcList.Select(MapCompositionInfo));
-            data.RewardPopupType = RewardPopupType.Select;
-        }
-        
-        return data;
-    }
-    
-    private async Task<ClaimData> ClaimRandomProduct(int userId, List<ProductComposition> compositions)
-    {
-        var data = new ClaimData();
-        foreach (var composition in compositions)
-        {
-            var userProduct = await _context.UserProduct
-                .FirstOrDefaultAsync(up => up.ProductId == composition.ProductId);
-            if (userProduct != null)
-            {
-                data.RandomProductInfos.Add(new RandomProductInfo
+                ProductInfo = MapProductInfo(new UserProduct
                 {
-                    ProductInfo = MapProductInfo(userProduct),
-                    Count = composition.Count
-                });
-                
-                var product = _cachedDataProvider.GetProducts()
-                    .FirstOrDefault(p => p.ProductId == userProduct.ProductId);
-                if (product != null)
+                    UserId = userId,
+                    ProductId = randomUp.ProductId,
+                    Count = randomUp.Count,
+                    ProductType = randomUp.ProductType,
+                    AcquisitionPath = randomUp.AcquisitionPath
+                }),
+                Count = randomUp.Count
+            });
+            return data;
+        }
+
+        // 4) 여기부터는 "정리 단계": 원자(Open atomic) 지급 + None(mailback) 처리 후 Item 반환
+        var strategy = _context.Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async () =>
+        {
+            await using var tx = await _context.Database.BeginTransactionAsync();
+
+            // (A) Open 큐 원자 지급(컨테이너 제외)
+            var atomicRows = await _context.UserProduct
+                .Where(up => up.UserId == userId &&
+                             up.AcquisitionPath == AcquisitionPath.Open &&
+                             up.Count > 0 &&
+                             up.ProductType != ProductType.Container)
+                .ToListAsync();
+
+            if (atomicRows.Count > 0)
+            {
+                var agg = atomicRows
+                    .GroupBy(r => (r.ProductId, r.ProductType))
+                    .Select(g => new { g.Key.ProductId, g.Key.ProductType, Count = g.Sum(x => x.Count) })
+                    .Where(x => x.Count > 0)
+                    .ToList();
+
+                foreach (var row in agg)
                 {
-                    var drawList = DrawRandomProduct(product, userProduct.Count);
-                    foreach (var pc in drawList)
+                    var pc = new ProductComposition
                     {
-                        var compositionInfo = MapCompositionInfo(pc);
-                        var existingComposition = data.CompositionInfos
-                            .FirstOrDefault(ci => ci.CompositionId == pc.CompositionId &&
-                                                  ci.ProductType == pc.ProductType);
-
-                        if (existingComposition != null)
-                        {
-                            existingComposition.Count += pc.Count;
-                        }
-                        else
-                        {
-                            data.CompositionInfos.Add(compositionInfo);
-                        }
-                        
-                        await StoreProductAsync(userId, pc);
-                        AddDisplayingComposition(userId, compositionInfo);
-                    }
-                }
-                
-                RemoveUserProduct(userId, composition.ProductId, composition.Count);
-            }
-        }
-        
-        data.RewardPopupType = RewardPopupType.Open;
-        return data;
-    }
-
-    private async Task<ClaimData> ClaimSingleProduct(int userId, List<ProductComposition> compositions)
-    {
-        var data = new ClaimData();
-        foreach (var composition in compositions)
-        {
-            var userProduct = await _context.UserProduct
-                .FirstOrDefaultAsync(up => up.ProductId == composition.ProductId);
-            if (userProduct != null) await ClaimProduct(userId, composition, data);
-        }
-        
-        data.RewardPopupType = RewardPopupType.Item;
-        return data;
-    }
-    
-    private async Task ClaimProduct(int userId, ProductComposition composition, ClaimData data)
-    {
-        var pc = new ProductComposition
-        {
-            CompositionId = composition.ProductId,
-            ProductType = composition.ProductType,
-            Count = composition.Count
-        };
-        var compositionInfo = MapCompositionInfo(pc);
-        var existingComposition = data.CompositionInfos
-            .FirstOrDefault(ci => ci.CompositionId == composition.CompositionId &&
-                                  ci.ProductType == composition.ProductType);
-                            
-        if (existingComposition != null)
-        {
-            existingComposition.Count += pc.Count;
-        }
-        else
-        {
-            data.CompositionInfos.Add(compositionInfo);
-        }
-                            
-        await StoreProductAsync(userId, pc);
-        AddDisplayingComposition(userId, compositionInfo);
-        RemoveUserProduct(userId, composition.ProductId, composition.Count);
-    }
-    
-    public Dictionary<ProductOpenType, List<ProductComposition>> ClassifyProductsById(int[] productIds)
-    {
-        var result = new Dictionary<ProductOpenType, List<ProductComposition>>();
-        
-        // ex) productIds : { 6, 54 }
-        foreach (var productId in productIds)
-        {
-            var dictionary = ClassifyProduct(productId);
-            result = MergeProductDictionary(result, dictionary);
-        }
-
-        return result;
-    }    
-    
-    public Dictionary<ProductOpenType, List<ProductComposition>> ClassifyProducts(int userId)
-    {
-        var result = new Dictionary<ProductOpenType, List<ProductComposition>>();
-        
-        var userProducts = _context.UserProduct
-            .Where(up => up.UserId == userId)
-            .ToList();
-
-        // ex) productIds : { 6, 54 }
-        foreach (var userProduct in userProducts)
-        {
-            var dictionary = ClassifyProduct(userProduct.ProductId, userProduct.ProductType, userProduct.Count);
-            result = MergeProductDictionary(result, dictionary);
-        }
-
-        return result;
-    }
-    
-    private Dictionary<ProductOpenType, List<ProductComposition>> ClassifyProduct(
-        int productId, ProductType productType = ProductType.Container, int count = 1)
-    {
-        var result = new Dictionary<ProductOpenType, List<ProductComposition>>();
-        var productList = _cachedDataProvider.GetProducts();
-        // ex) productId : { 53 }, compositionId : { 37, ..., 54 }
-        var compositionList = _cachedDataProvider.GetProductCompositions()
-            .Select(pc => new ProductComposition
-            {
-                ProductId = pc.ProductId,
-                CompositionId = pc.CompositionId,
-                ProductType = pc.ProductType,
-                Count = pc.Count,
-                Guaranteed = pc.Guaranteed,
-                IsSelectable = pc.IsSelectable
-            })
-            .Where(pc => pc.ProductId == productId)
-            .ToList();
-        var probList = _cachedDataProvider.GetProbabilities();
-
-        // unit, spinel 등 productType가 None이 아닌 경우
-        if (compositionList.Count == 0 || compositionList.All(pc => pc.ProductType != ProductType.Container))
-        {
-            var composition = new ProductComposition
-            {
-                ProductId = productId,
-                Count = count,
-                ProductType = productType
-            };
-            
-            if (compositionList.All(pc => pc.Guaranteed))
-            {
-                result = AddProductToDictionary(result, ProductOpenType.Single, composition);
-            }
-            else
-            {
-                if (compositionList.All(pc => pc.IsSelectable))
-                {
-                    result = AddProductToDictionary(result, ProductOpenType.Select, composition);
-                }
-                else if (compositionList.All(pc => pc.IsSelectable == false))
-                {
-                    result = AddProductToDictionary(result, ProductOpenType.Random, composition);
-                }
-            }
-        }
-        else
-        {
-            var compositionPairs = compositionList
-                .Select(pc => (pc.ProductId, pc.CompositionId))
-                .ToHashSet();
-            var probPairs = probList
-                .Where(cp => cp.ProductId == productId)
-                .Select(cp => (cp.ProductId, cp.CompositionId))
-                .ToHashSet();
-            // composition쌍과 prob 쌍이 완전 일치 -> Product count가 랜덤인 상황 ex) product id = 52, 54 경우
-            var missing = compositionPairs.Except(probPairs);
-            
-            if (missing.Any() == false)
-            {
-                var compositionInfo = Draw(productId);
-                var rProduct = productList.First(p => p.ProductId == compositionInfo.CompositionId);
-                var dictionary = ClassifyProduct(rProduct.ProductId, rProduct.ProductType, compositionInfo.Count);
-                return MergeProductDictionary(result, dictionary);
-            }
-
-            foreach (var composition in compositionList)
-            {
-                if (composition.Count == 0)
-                {
-                    var compositionInfo = Draw(composition.ProductId);
-                    composition.Count = compositionInfo.Count;
-                }
-                
-                var dictionary = ClassifyProduct(composition.CompositionId, composition.ProductType, composition.Count);
-                result = MergeProductDictionary(result, dictionary);
-            }
-        }
-
-        return result;
-    }
-    
-    public List<ProductComposition> DrawRandomProduct(Product product, int count = 1)
-    {
-        var result = new List<ProductComposition>();
-        var productList = _cachedDataProvider.GetProducts();
-        var compositionList = _cachedDataProvider.GetProductCompositions()
-            .Where(pc => pc.ProductId == product.ProductId)
-            .ToList();
-        var probList = _cachedDataProvider.GetProbabilities();
-
-        if (compositionList.All(pc => pc.ProductType != ProductType.Container))
-        {
-            for (var i = 0; i < count; i++)
-            {
-                result.Add(Draw(product.ProductId));
-            }
-            
-            return result;
-        }
-
-        if (compositionList.All(pc => pc.ProductType == ProductType.Container))
-        {
-            var compositionPairs = compositionList
-                .Select(p => (p.ProductId, p.CompositionId))
-                .ToHashSet();
-            var probPairs = probList
-                .Where(p => p.ProductId == product.ProductId)
-                .Select(p => (p.ProductId, p.CompositionId))
-                .ToHashSet();
-            var missing = compositionPairs.Except(probPairs);
-            
-            // composition쌍과 prob 쌍이 완전 일치 -> Product count가 랜덤인 상황 ex) product id = 54, 52 경우
-            if (missing.Any() == false)
-            {
-                var compositionInfo = Draw(product.ProductId);
-                var rProduct = productList.First(p => p.ProductId == compositionInfo.CompositionId);
-                result.AddRange(DrawRandomProduct(rProduct, compositionInfo.Count));
-                return result;
-            }
-
-            foreach (var pc in compositionList)
-            {
-                var drawCount = pc.Count;
-                var rProduct = productList.First(p => p.ProductId == pc.CompositionId);
-                if (drawCount == 0)
-                {
-                    drawCount = Draw(pc.ProductId).Count;
-                }
-                    
-                result.AddRange(DrawRandomProduct(rProduct, drawCount));
-            }
-        }
-
-        return result;
-    }
-    
-    private ProductComposition Draw(int productId)
-    {
-        var probList = _cachedDataProvider.GetProbabilities().Where(cp => cp.ProductId == productId).ToList();
-        var compositionList = _cachedDataProvider.GetProductCompositions();
-        double randValue = _random.NextDouble();
-        double cumulative = 0.0;
-        foreach (var compositionProb in probList)
-        {
-            cumulative += compositionProb.Probability;
-            if (randValue <= cumulative)
-            {
-                var compositionId = compositionProb.CompositionId;
-                var compositionInfo = compositionList
-                    .FirstOrDefault(pc => pc.ProductId == productId && pc.CompositionId == compositionId);
-                if (compositionInfo != null)
-                {
-                    var compositionCopied = new ProductComposition
-                    {
-                        ProductId = compositionInfo.ProductId,
-                        CompositionId = compositionInfo.CompositionId,
-                        ProductType = compositionInfo.ProductType,
-                        Count = compositionProb.Count, 
-                        Guaranteed = compositionInfo.Guaranteed,
-                        IsSelectable = compositionInfo.IsSelectable
+                        ProductId = row.ProductId,
+                        CompositionId = row.ProductId,
+                        ProductType = row.ProductType,
+                        Count = row.Count
                     };
 
-                    return compositionCopied;
+                    await StoreProductAsync(userId, pc);
+
+                    var info = MapCompositionInfo(pc);
+                    AddDisplayingComposition(userId, info);
                 }
+
+                _context.UserProduct.RemoveRange(atomicRows);
+            }
+
+            // (B) None 큐(mailback 컨테이너) → UI 표시 + 메일 생성 + 큐 제거
+            var noneRows = await _context.UserProduct
+                .Where(up => up.UserId == userId &&
+                             up.AcquisitionPath == AcquisitionPath.None &&
+                             up.Count > 0)
+                .ToListAsync();
+
+            if (noneRows.Count > 0)
+            {
+                foreach (var row in noneRows)
+                {
+                    // 컨테이너 자체를 "획득했다"는 표시(정리팝업에 포함)
+                    AddDisplayingComposition(userId, new CompositionInfo
+                    {
+                        ProductId = row.ProductId,
+                        CompositionId = row.ProductId,
+                        ProductType = ProductType.Container,
+                        Count = row.Count
+                    });
+
+                    // 메일은 count가 없으니 row.Count만큼 row 생성
+                    for (int i = 0; i < row.Count; i++)
+                    {
+                        _context.Mail.Add(new Mail
+                        {
+                            UserId = userId,
+                            Type = MailType.Product,
+                            ProductId = row.ProductId,
+                            Claimed = false
+                        });
+                    }
+                }
+
+                _context.UserProduct.RemoveRange(noneRows);
+            }
+
+            await _context.SaveChangesExtendedAsync();
+            await tx.CommitAsync();
+        });
+
+        // (C) 최종 정리 팝업 구성: 누적 로그 Drain
+        List<CompositionInfo> summary;
+        if (_cachedDataProvider.DisplayingCompositions.TryGetValue(userId, out var disp))
+        {
+            summary = disp.Drain();
+            _cachedDataProvider.DisplayingCompositions.TryRemove(userId, out _); // 권장
+        }
+        else summary = new List<CompositionInfo>();
+
+        if (summary.Count == 0)
+        {
+            data.RewardPopupType = RewardPopupType.None;
+            return data;
+        }
+
+        data.RewardPopupType = RewardPopupType.Item;
+        data.CompositionInfos = summary;
+        return data;
+    }
+    
+    public ResolveOneLevelResult ResolveRandomOpenOneLevel(int productId, int openCount)
+    {
+        if (openCount <= 0) return new ResolveOneLevelResult();
+
+        var compLookup = _cachedDataProvider.GetCompLookup();
+        var probLookup = _cachedDataProvider.GetProbLookup();
+
+        if (!compLookup.TryGetValue(productId, out var comps) || comps.Count == 0)
+            throw new InvalidOperationException($"Missing compositions. pid={productId}");
+
+        var result = new ResolveOneLevelResult();
+        bool hasProb = probLookup.TryGetValue(productId, out var probList) && probList.Count > 0;
+        bool isPureRandomBox = hasProb && comps.All(pc => pc is { Guaranteed: false, IsSelectable: false });
+
+        for (int i = 0; i < openCount; i++)
+        {
+            if (isPureRandomBox)
+            {
+                var drawn = DrawOne(productId, comps, probList!);
+                AddResolved(result, drawn.CompositionId, drawn.ProductType, drawn.Count);
+                continue;
+            }
+
+            // mixed/guaranteed 계열: "각 컴포지션의 수량을 1레벨에서 확정" (재귀 없음)
+            foreach (var c in comps)
+            {
+                // 선택형은 여기 오면 안 됨(SelectProduct로 처리)
+                if (c.IsSelectable) continue;
+                if (c is { Guaranteed: false, Count: > 0 })
+                {
+                    _logger.LogWarning("Non-guaranteed fixed count composition detected. pid={Pid}, compId={CompId}, cnt={Cnt}",
+                        productId, c.CompositionId, c.Count);
+                }
+
+                int cnt = c.Count;
+
+                // Count==0이면 count확률표로 수량 확정 (예: 42가 0~2)
+                if (cnt == 0)
+                {
+                    // 확률표가 없으면 0으로 처리(또는 예외)
+                    if (TryDrawCount(productId, c.CompositionId, probLookup, out var drawnCnt))
+                        cnt = drawnCnt;
+                    else
+                        cnt = 0;
+                }
+
+                if (cnt > 0)
+                    AddResolved(result, c.CompositionId, c.ProductType, cnt);
+            }
+        }
+
+        return result;
+    }
+
+    private void AddResolved(ResolveOneLevelResult res, int compId, ProductType type, int count)
+    {
+        if (count <= 0) return;
+
+        var key = (compId, type);   
+        res.Resolved[key] = res.Resolved.TryGetValue(key, out var cur) ? cur + count : count;
+
+        if (type == ProductType.Container)
+        {
+            res.MailBackContainer[compId] = res.MailBackContainer.TryGetValue(compId, out var c) ? c + count : count;
+        }
+    }
+
+    private bool TryDrawCount(int productId, int compositionId,
+        Dictionary<int, List<CompositionProbability>> probLookup, out int count)
+    {
+        count = 0;
+        if (!probLookup.TryGetValue(productId, out var list) || list.Count == 0) return false;
+
+        var rows = list.Where(cp => cp.CompositionId == compositionId).ToList();
+        if (rows.Count == 0) return false;
+
+        double r = _random.NextDouble();
+        double cum = 0;
+        foreach (var row in rows)
+        {
+            cum += row.Probability;
+            if (r <= cum) { count = row.Count; return true; }
+        }
+        count = rows[^1].Count;
+        return true;
+    }
+    
+    private ProductComposition DrawOne(int productId, List<ProductComposition> compsForPid,
+        List<CompositionProbability> probList)
+    {
+        double random = _random.NextDouble();
+        double cum = 0;
+
+        foreach (var prob in probList)
+        {
+            cum += prob.Probability;
+            if (random <= cum)
+            {
+                var comp = compsForPid.FirstOrDefault(pc => pc.CompositionId == prob.CompositionId);
+                if (comp == null)
+                    throw new InvalidOperationException($"Probability points to missing composition. pid={productId}, compId={prob.CompositionId}");
+
+                return new ProductComposition
+                {
+                    ProductId = productId,
+                    CompositionId = comp.CompositionId,
+                    ProductType = comp.ProductType,
+                    Count = prob.Count,
+                    Guaranteed = comp.Guaranteed,
+                    IsSelectable = comp.IsSelectable
+                };
             }
         }
         
-        var lastCompositionInfo = compositionList
-            .FirstOrDefault(pc => pc.ProductId == productId && pc.CompositionId == probList.Last().CompositionId);
-        return lastCompositionInfo ?? new ProductComposition();
-    }
-
-    public void RemoveUserProduct(int userId, int productId, int count = 1)
-    {
-        var existing = _context.UserProduct
-            .FirstOrDefault(up => up.ProductId == productId && up.UserId == userId);
-
-        if (existing != null)
+        // fallback
+        var last = probList[^1];
+        var lastComp = compsForPid.First(c => c.CompositionId == last.CompositionId);
+        return new ProductComposition
         {
-            if (existing.Count - count > 0) existing.Count -= count;
-            else  _context.UserProduct.Remove(existing);
-        }
-        
-        _context.SaveChangesExtended();
+            ProductId = productId,
+            CompositionId = lastComp.CompositionId,
+            ProductType = lastComp.ProductType,
+            Count = last.Count,
+            Guaranteed = lastComp.Guaranteed,
+            IsSelectable = lastComp.IsSelectable
+        };    
     }
     
-    public async Task StoreProductAsync(int userId, ProductComposition pc)
+    /// <summary>
+    /// User_Product의 특정 (UserId, ProductId, AcquisitionPath) 행을 “소비(consume)”하는 원자적 메서드입니다.
+    /// <para>
+    /// 목적
+    /// - 같은 랜덤박스를 유저가 연타(동시 클릭)하거나, 네트워크 재시도/중복 요청이 발생해도
+    ///   “한 번만” 차감되도록 DB 레벨에서 동시성을 제어합니다.
+    /// </para>
+    /// <para>
+    /// 핵심 원리 (트랜잭션 + Row Lock)
+    /// </para>
+    /// <para>
+    /// 1) SELECT ... FOR UPDATE 로 대상 행을 조회합니다.
+    ///    - InnoDB 기준: 해당 행에 배타 잠금(X lock)이 걸려 같은 행을 다른 트랜잭션이 동시에 수정/삭제/동일 FOR UPDATE 조회를 못합니다.
+    ///    - 따라서 여기서 읽은 Count 값은 현재 트랜잭션이 끝날 때까지 “고정된 판단 근거”가 됩니다.
+    /// </para>
+    /// <para>
+    /// 2) 같은 트랜잭션(dbTx)에서 Count를 차감하거나(Delete/Update) 삭제합니다.
+    ///    - consumeAll=false => 1개만 차감
+    ///    - consumeAll=true  => 현재 Count 전체 차감(=행 삭제)
+    ///    - UPDATE 시 WHERE Count >= @d 조건을 추가하여, 혹시라도 예상 밖 상태에서 음수 차감이 되지 않도록 방어합니다.
+    /// </para>
+    /// <para>
+    /// 반환값
+    /// - OpenCount: 실제로 소비된 개수(0이면 소비 실패: 이미 없음/이미 열림/동시 요청에 의해 먼저 소비됨)
+    /// - ProductType: User_Product에 저장된 ProductType(호출부에서 UI/분기 판단에 활용 가능)
+    /// </para>
+    /// <para>
+    /// 전제 조건
+    /// - 호출부에서 EF의 BeginTransactionAsync로 만든 트랜잭션의 DbTransaction(tx.GetDbTransaction())을 전달해야 합니다.
+    /// - 호출부에서 _context.Database.OpenConnectionAsync()로 같은 커넥션을 열어둔 상태여야 합니다.
+    ///   (본 메서드는 커넥션을 열지 않습니다.)
+    /// </para>
+    /// </summary>
+    public async Task<ConsumeResult> ConsumeUserProductAsync(
+        int userId,
+        int productId,
+        AcquisitionPath path,
+        bool consumeAll,
+        DbTransaction dbTx)
     {
-        switch (pc.ProductType)
-        {
-            case ProductType.Unit:
-                var existingUserUnit = _context.UserUnit
-                    .FirstOrDefault(uu => uu.UserId == userId && uu.UnitId == (UnitId)pc.CompositionId);
-                if (existingUserUnit == null)
-                {
-                    _context.UserUnit.Add(new UserUnit
-                    {
-                        UserId = userId,
-                        UnitId = (UnitId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserUnit.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Material:
-                var existingUserMaterial = _context.UserMaterial
-                    .FirstOrDefault(um => um.UserId == userId && um.MaterialId == (MaterialId)pc.CompositionId);
-                if (existingUserMaterial == null)
-                {
-                    _context.UserMaterial.Add(new UserMaterial
-                    {
-                        UserId = userId,
-                        MaterialId = (MaterialId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserMaterial.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Enchant:
-                var existingUserEnchant = _context.UserEnchant
-                    .FirstOrDefault(ue => ue.UserId == userId && ue.EnchantId == (EnchantId)pc.CompositionId);
-                if (existingUserEnchant == null)
-                {
-                    _context.UserEnchant.Add(new UserEnchant
-                    {
-                        UserId = userId,
-                        EnchantId = (EnchantId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserEnchant.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Sheep:
-                var existingUserSheep = _context.UserSheep
-                    .FirstOrDefault(us => us.UserId == userId && us.SheepId == (SheepId)pc.CompositionId);
-                if (existingUserSheep == null)
-                {
-                    _context.UserSheep.Add(new UserSheep
-                    {
-                        UserId = userId,
-                        SheepId = (SheepId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserSheep.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Character:
-                var existingUserCharacter = _context.UserCharacter
-                    .FirstOrDefault(uc => uc.UserId == userId && uc.CharacterId == (CharacterId)pc.CompositionId);
-                if (existingUserCharacter == null)
-                {
-                    _context.UserCharacter.Add(new UserCharacter
-                    {
-                        UserId = userId,
-                        CharacterId = (CharacterId)pc.CompositionId,
-                        Count = pc.Count
-                    });
-                }
-                else
-                {
-                    existingUserCharacter.Count += pc.Count;
-                }
-                break;
-            
-            case ProductType.Gold:
-                var userStatGold = _context.UserStats
-                    .FirstOrDefault(us => us.UserId == userId);
-                if (userStatGold != null)
-                {
-                    userStatGold.Gold += pc.Count;
-                }
-                break;
-            
-            case ProductType.Spinel:
-                var userStatSpinel = _context.UserStats
-                    .FirstOrDefault(us => us.UserId == userId);
-                if (userStatSpinel != null)
-                {
-                    userStatSpinel.Spinel += pc.Count;
-                }
-                break;
-            
-            case ProductType.Exp:
-                var userStatExp = _context.UserStats
-                    .FirstOrDefault(us => us.UserId == userId);
-                if (userStatExp != null)
-                {
-                    var level = userStatExp.UserLevel;
-                    userStatExp.Exp += pc.Count;
-                    if (userStatExp.Exp >= _cachedDataProvider.GetExpSnapshots()[level])
-                    {
-                        userStatExp.UserLevel++;
-                        userStatExp.Exp -= _cachedDataProvider.GetExpSnapshots()[level];
-                    }
-                }
-                break;
-            
-            case ProductType.Subscription:
-                var nowUtc = DateTime.UtcNow;
-                var lifetimeUtc = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Utc);
-                var subType = SubscriptionType.AdsRemover; 
-                
-                // 1) 아직 남아있는(만료 안 됐고, 취소도 안 된) 같은 타입 구독이 있으면 무시
-                var existingActiveSub = _context.UserSubscription
-                    .FirstOrDefault(us =>
-                        us.UserId == userId &&
-                        us.SubscriptionType == subType &&
-                        us.IsCanceled == false &&
-                        us.ExpiresAtUtc > nowUtc);
+        var conn = _context.Database.GetDbConnection();
+        if (conn.State != ConnectionState.Open)
+            throw new InvalidOperationException("DB connection must be opened by caller before ConsumeUserProductAsync.");
 
-                if (existingActiveSub != null)
-                    break; // 그냥 무시하고 종료
-                
+        // 1) Row 잠금(FOR UPDATE)으로 Count 고정
+        int count;
+        ProductType pType;
+
+        await using (var cmd = conn.CreateCommand())
+        {
+            cmd.Transaction = dbTx;
+            cmd.CommandText = @"
+    SELECT `Count`, `ProductType`
+    FROM `User_Product`
+    WHERE `UserId`=@u AND `ProductId`=@p AND `AcquisitionPath`=@a
+    FOR UPDATE;";
+
+            var pu = cmd.CreateParameter(); pu.ParameterName = "@u"; pu.Value = userId;
+            var pp = cmd.CreateParameter(); pp.ParameterName = "@p"; pp.Value = productId;
+            var pa = cmd.CreateParameter(); pa.ParameterName = "@a"; pa.Value = (int)path;
+            cmd.Parameters.Add(pu); cmd.Parameters.Add(pp); cmd.Parameters.Add(pa);
+
+            await using var reader = await cmd.ExecuteReaderAsync();
+            if (!await reader.ReadAsync())
+                return new ConsumeResult(0, ProductType.Container);
+
+            count = reader.GetInt32(0);
+            pType = (ProductType)reader.GetInt32(1);
+        }
+
+        if (count <= 0) return new ConsumeResult(0, pType);
+
+        var openCount = consumeAll ? count : 1;
+        if (openCount <= 0 || count < openCount) return new ConsumeResult(0, pType);
+
+        // 2) 같은 tx에서 차감(또는 삭제) → 동시 클릭/중복 요청 방지
+        await using (var cmd2 = conn.CreateCommand())
+        {
+            cmd2.Transaction = dbTx;
+
+            if (count == openCount)
+            {
+                cmd2.CommandText = @"
+    DELETE FROM `User_Product`
+    WHERE `UserId`=@u AND `ProductId`=@p AND `AcquisitionPath`=@a;";
+            }
+            else
+            {
+                cmd2.CommandText = @"
+    UPDATE `User_Product`
+    SET `Count` = `Count` - @d
+    WHERE `UserId`=@u AND `ProductId`=@p AND `AcquisitionPath`=@a AND `Count` >= @d;";
+
+                var pd = cmd2.CreateParameter(); pd.ParameterName = "@d"; pd.Value = openCount;
+                cmd2.Parameters.Add(pd);
+            }
+
+            var pu2 = cmd2.CreateParameter(); pu2.ParameterName = "@u"; pu2.Value = userId;
+            var pp2 = cmd2.CreateParameter(); pp2.ParameterName = "@p"; pp2.Value = productId;
+            var pa2 = cmd2.CreateParameter(); pa2.ParameterName = "@a"; pa2.Value = (int)path;
+            cmd2.Parameters.Add(pu2); cmd2.Parameters.Add(pp2); cmd2.Parameters.Add(pa2);
+
+            var affected = await cmd2.ExecuteNonQueryAsync();
+            if (affected == 0) return new ConsumeResult(0, pType);
+        }
+
+        return new ConsumeResult(openCount, pType);
+    }
+    
+public async Task StoreProductAsync(int userId, ProductComposition pc)
+{
+    switch (pc.ProductType)
+    {
+        case ProductType.Unit:
+        {
+            var unitId = (UnitId)pc.CompositionId;
+            var row = await _context.UserUnit.FindAsync(userId, unitId);
+            if (row == null)
+            {
+                _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = unitId, Count = pc.Count });
+            }
+            else
+            {
+                row.Count += pc.Count;
+            }
+            break;
+        }
+
+        case ProductType.Material:
+        {
+            var materialId = (MaterialId)pc.CompositionId;
+            var row = await _context.UserMaterial.FindAsync(userId, materialId);
+            if (row == null)
+                _context.UserMaterial.Add(new UserMaterial { UserId = userId, MaterialId = materialId, Count = pc.Count });
+            else
+                row.Count += pc.Count;
+            break;
+        }
+
+        case ProductType.Enchant:
+        {
+            var enchantId = (EnchantId)pc.CompositionId;
+            var row = await _context.UserEnchant.FindAsync(userId, enchantId);
+            if (row == null)
+                _context.UserEnchant.Add(new UserEnchant { UserId = userId, EnchantId = enchantId, Count = pc.Count });
+            else
+                row.Count += pc.Count;
+            break;
+        }
+
+        case ProductType.Sheep:
+        {
+            var sheepId = (SheepId)pc.CompositionId;
+            var row = await _context.UserSheep.FindAsync(userId, sheepId);
+            if (row == null)
+                _context.UserSheep.Add(new UserSheep { UserId = userId, SheepId = sheepId, Count = pc.Count });
+            else
+                row.Count += pc.Count;
+            break;
+        }
+
+        case ProductType.Character:
+        {
+            var characterId = (CharacterId)pc.CompositionId;
+            var row = await _context.UserCharacter.FindAsync(userId, characterId);
+            if (row == null)
+                _context.UserCharacter.Add(new UserCharacter { UserId = userId, CharacterId = characterId, Count = pc.Count });
+            else
+                row.Count += pc.Count;
+            break;
+        }
+
+        case ProductType.Gold:
+        {
+            var stats = await _context.UserStats.FindAsync(userId);
+            if (stats != null) stats.Gold += pc.Count;
+            break;
+        }
+
+        case ProductType.Spinel:
+        {
+            var stats = await _context.UserStats.FindAsync(userId);
+            if (stats != null) stats.Spinel += pc.Count;
+            break;
+        }
+
+        case ProductType.Exp:
+        {
+            var stats = await _context.UserStats.FindAsync(userId);
+            if (stats != null)
+            {
+                var level = stats.UserLevel;
+                stats.Exp += pc.Count;
+                if (stats.Exp >= _cachedDataProvider.GetExpSnapshots()[level])
+                {
+                    stats.UserLevel++;
+                    stats.Exp -= _cachedDataProvider.GetExpSnapshots()[level];
+                }
+            }
+            break;
+        }
+
+        case ProductType.Subscription:
+        {
+            // 이 케이스는 “유일 키”가 (UserId, SubscriptionType) 같은 형태일 가능성이 높음.
+            // 해당 엔티티 PK/유니크 설정에 맞춰 FindAsync로 바꾸거나,
+            // 지금처럼 조건 조회를 하되 Async로 바꾸는 정도가 최소 수정.
+            var nowUtc = DateTime.UtcNow;
+            var lifetimeUtc = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Utc);
+            var subType = SubscriptionType.AdsRemover;
+
+            var existingActiveSub = await _context.UserSubscription
+                .FirstOrDefaultAsync(us =>
+                    us.UserId == userId &&
+                    us.SubscriptionType == subType &&
+                    us.IsCanceled == false &&
+                    us.ExpiresAtUtc > nowUtc);
+
+            if (existingActiveSub == null)
+            {
                 _context.UserSubscription.Add(new UserSubscription
                 {
                     UserId = userId,
@@ -684,37 +679,14 @@ public class ProductClaimService
                     ToUtc = lifetimeUtc,
                     EventType = SubscriptionEvent.Started
                 });
-                break;
-            
-            case ProductType.Container:
-                
-                break;
+            }
+            break;
         }
-        
-        await _context.SaveChangesExtendedAsync();
-    }
-    
-    private Dictionary<ProductOpenType, List<ProductComposition>> MergeProductDictionary(
-        Dictionary<ProductOpenType, List<ProductComposition>> dict1,
-        Dictionary<ProductOpenType, List<ProductComposition>> dict2)
-    {
-        return dict1.Concat(dict2)
-            .GroupBy(kvp => kvp.Key)
-            .ToDictionary(grouping => grouping.Key, grouping => grouping.SelectMany(kvp => kvp.Value).ToList());
-    }
 
-    private Dictionary<ProductOpenType, List<ProductComposition>> AddProductToDictionary(
-        Dictionary<ProductOpenType, List<ProductComposition>> dict,
-        ProductOpenType openType,
-        ProductComposition composition)
-    {
-        if (!dict.ContainsKey(openType))
-        {
-            dict[openType] = new List<ProductComposition>();
-        }
-        dict[openType].Add(composition);
-        return dict;
+        case ProductType.Container:
+            break;
     }
+}
     
     public ProductInfo MapProductInfo(UserProduct userProduct)
     {
@@ -740,9 +712,9 @@ public class ProductClaimService
         CompositionId = pc.CompositionId,
         ProductType = pc.ProductType,
         Count = pc.Count,
-        MinCount = _cachedDataProvider.GetProbabilityLookups()
+        MinCount = _cachedDataProvider.GetProbabilityLookup()
             .GetValueOrDefault((pc.ProductId, pc.CompositionId), (0, 0)).Item1,
-        MaxCount = _cachedDataProvider.GetProbabilityLookups()
+        MaxCount = _cachedDataProvider.GetProbabilityLookup()
             .GetValueOrDefault((pc.ProductId, pc.CompositionId), (0, 0)).Item2,
         Guaranteed = pc.Guaranteed,
         IsSelectable = pc.IsSelectable

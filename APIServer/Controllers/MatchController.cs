@@ -539,6 +539,7 @@ public class MatchController : ControllerBase
                 };
                 
                 await _claimService.StoreProductAsync(userId, productComposition);
+                await _context.SaveChangesExtendedAsync();
             }
         }
         

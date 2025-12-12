@@ -35,16 +35,6 @@ public class Util
         
         return _engRx.IsMatch(name) || _cjkrx.IsMatch(name);
     }
-
-    public static bool IsContainerProduct(ProductType type)
-    {
-        return type == ProductType.Container;
-    }
-    
-    public static bool IsAtomicProduct(ProductType type)
-    {
-        return type != ProductType.Container;
-    }
     
     public static string ExtractUserTag(string username)
     {

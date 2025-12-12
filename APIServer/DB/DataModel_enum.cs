@@ -325,6 +325,8 @@ public enum RewardPopupType
     Item = 1, // all item popup
     Select = 2, // select popup
     Open = 3, // random open popup 
+    OpenResult = 4,
+    Subscription = 5, // subscription reward popup
 }
 
 public enum CurrencyType

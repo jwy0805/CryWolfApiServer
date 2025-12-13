@@ -348,7 +348,7 @@ public class UserService
     {
         _context.BattleSetting.Add(new BattleSetting
         {
-            UserId = userId, SheepId = 901, EnchantId = 1001, CharacterId = 2001
+            UserId = userId, SheepId = 901, EnchantId = 1001, CharacterId = 1101
         });
     }
 

@@ -153,7 +153,7 @@ public class SinglePlayController: ControllerBase
             StageId = required.StageId
         };
 
-        _logger.LogInformation($"[StartGame] {required.SessionId}");
+        _logger.LogInformation($"[StartGame] {required.SessionId} {singlePlayPacket.CharacterId}, {singlePlayPacket.EnemyCharacterId}");
         await _apiService.SendRequestToSocketAsync<SinglePlayStartPacketRequired>(
             "singlePlay", singlePlayPacket, HttpMethod.Post);
         

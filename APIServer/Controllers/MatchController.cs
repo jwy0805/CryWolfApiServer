@@ -287,7 +287,7 @@ public class MatchController : ControllerBase
             AssetId = required.Faction == Faction.Sheep 
                 ? userInfo.BattleSetting.SheepId 
                 : userInfo.BattleSetting.EnchantId,
-            EnemyCharacterId = 2001,
+            EnemyCharacterId = 1101,
             EnemyAssetId = required.Faction == Faction.Sheep ? 1001 : 901,
             UnitIds = userInfo.DeckUnits
         };

@@ -82,5 +82,5 @@ public enum EnchantId
 
 public enum CharacterId
 {
-    PlayerCharacter = 2001,
+    PlayerCharacter = 1101,
 }

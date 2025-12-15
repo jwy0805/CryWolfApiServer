@@ -105,71 +105,61 @@ public class CollectionController : ControllerBase
     
     [HttpPost]
     [Route("InitCards")]
-    public IActionResult InitCards([FromBody] InitCardsPacketRequired required)
+    public async Task<IActionResult> InitCards([FromBody] InitCardsPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        return principal == null ? Unauthorized() : InitCardsResponse(principal);
+        return principal == null ? Unauthorized() : await InitCardsResponse(principal);
     }
 
-    private IActionResult InitCardsResponse(ClaimsPrincipal principal)
+    private async Task<IActionResult> InitCardsResponse(ClaimsPrincipal principal)
     {
         var res = new InitCardsPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
 
-        if (userId != null)
+        if (userId == null)
         {
-            var units = _context.Unit.AsNoTracking().ToList();
-            var userUnitIds = _context.UserUnit.AsNoTracking()
-                .Where(userUnit => userUnit.UserId == userId && userUnit.Count > 0)
-                .Select(userUnit => userUnit.UnitId)
-                .ToList();
-            var ownedCardList = new List<OwnedUnitInfo>();
-            var notOwnedCardList = new List<UnitInfo>();
-            
-            foreach (var unit in units)
+            return Unauthorized();
+        }
+        
+        var units = await _context.Unit.AsNoTracking().ToListAsync();
+        var ownedDict = await _context.UserUnit.AsNoTracking()
+            .Where(uu => uu.UserId == userId && uu.Count > 0)
+            .Select(uu => new { uu.UnitId, uu.Count })
+            .ToDictionaryAsync(v => v.UnitId, v => v.Count);
+        
+        var ownedCardList = new List<OwnedUnitInfo>(ownedDict.Count);
+        var notOwnedCardList = new List<UnitInfo>(Math.Max(0, units.Count - ownedDict.Count));
+
+        foreach (var u in units)
+        {
+            var unitInfo = new UnitInfo
             {
-                if (userUnitIds.Contains(unit.UnitId))
+                Id = (int)u.UnitId,
+                Class = u.Class,
+                Level = u.Level,
+                Species = (int)u.Species,
+                Role = u.Role,
+                Faction = u.Faction,
+                Region = u.Region
+            };
+
+            if (ownedDict.TryGetValue(u.UnitId, out var count))
+            {
+                ownedCardList.Add(new OwnedUnitInfo
                 {
-                    ownedCardList.Add(new OwnedUnitInfo
-                    {
-                        UnitInfo = new UnitInfo
-                        {
-                            Id = (int)unit.UnitId,
-                            Class = unit.Class,
-                            Level = unit.Level,
-                            Species = (int)unit.Species,
-                            Role = unit.Role,
-                            Faction = unit.Faction,
-                            Region = unit.Region
-                        },
-                        Count = _context.UserUnit.AsNoTracking()
-                            .FirstOrDefault(userUnit => 
-                                userUnit.UserId == userId && userUnit.UnitId == unit.UnitId)?.Count ?? 0
-                    });
-                }
-                else
-                {
-                    notOwnedCardList.Add(new UnitInfo
-                    {
-                        Id = (int)unit.UnitId,
-                        Class = unit.Class,
-                        Level = unit.Level,
-                        Species = (int)unit.Species,
-                        Role = unit.Role,
-                        Faction = unit.Faction,
-                        Region = unit.Region
-                    });
-                }
+                    UnitInfo = unitInfo,
+                    Count = count
+                });
             }
-            
-            res.OwnedCardList = ownedCardList;
-            res.NotOwnedCardList = notOwnedCardList;
-            res.GetCardsOk = true;
+            else
+            {
+                notOwnedCardList.Add(unitInfo);
+            }
         }
-        else
-        {
-            res.GetCardsOk = false;
-        }
+
+        res.OwnedCardList = ownedCardList;
+        res.NotOwnedCardList = notOwnedCardList;
+        res.GetCardsOk = true;
 
         return Ok(res);
     }

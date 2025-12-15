@@ -1022,7 +1022,7 @@ public class UserAccountController : ControllerBase
     [Route("DeleteAccountHard")]
     public async Task<IActionResult> DeleteAccountHard([FromBody] DeleteUserAccountHardPacketRequired required)
     {
-        if (required.AdminPassword != _config["AdminPassword"])
+        if (required.AdminPassword != _config["Admin:Password"])
         {
             return Unauthorized(new { message = "Invalid Request." });
         }

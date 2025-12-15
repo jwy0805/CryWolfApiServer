@@ -9,6 +9,7 @@ public class RewardService
     private readonly AppDbContext _context;
     private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<RewardService> _logger;
+    private readonly Random _random = new();
     
     private readonly Dictionary<(int Min, int Max), List<RewardInfo>> _rankRewardInfos = new()
     {
@@ -109,15 +110,22 @@ public class RewardService
     private List<RewardInfo> GetRandomMaterial(int count)
     {
         // Excepting 0 and rainbow egg
-        var values = Enum.GetValues(typeof(MaterialId)).Cast<int>().ToArray();
-        var min = values.Min();
-        var max = values.Max();
-        var valuesCount = Enumerable.Range(min + 1, max - 1).ToList();
-        var random = new Random();
-        var selectedValues = valuesCount.OrderBy(_ => random.Next()).Take(count).ToList();
+        var candidates = Enum.GetValues(typeof(MaterialId)).Cast<int>()
+            .Where(v => v != 2000 && v != 2036).ToList();
         
-        return selectedValues
-            .Select(materialId => new RewardInfo { ItemId = materialId, ProductType = ProductType.Material, Count = 1 })
-            .ToList();
+        if (count > candidates.Count) count = candidates.Count;
+
+        for (int i = 0; i < count; i++)
+        {
+            int j = _random.Next(i, candidates.Count);
+            (candidates[i], candidates[j]) = (candidates[j], candidates[i]);
+        }
+
+        return candidates.Take(count).Select(id => new RewardInfo
+        {
+            ItemId = id,
+            ProductType = ProductType.Material,
+            Count = 1
+        }).ToList();
     }
 }

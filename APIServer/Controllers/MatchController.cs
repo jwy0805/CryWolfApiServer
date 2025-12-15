@@ -346,10 +346,9 @@ public class MatchController : ControllerBase
             WinnerRewards = winnerRewardsList,
             LoserRewards = loserRewardsList 
         };
-    
-        await Task.WhenAll(
-            AddGameRewards(winUser.UserId, winnerRewardsList),
-            AddGameRewards(loseUser.UserId, loserRewardsList));
+
+        await AddGameRewards(winUser.UserId, winnerRewardsList);
+        await AddGameRewards(loseUser.UserId, loserRewardsList);
         await _context.SaveChangesExtendedAsync();
     
         return Ok(res);  
@@ -533,36 +532,18 @@ public class MatchController : ControllerBase
             {
                 var productComposition = new ProductComposition
                 {
-                    ProductId = reward.ItemId,
+                    CompositionId = reward.ItemId,
                     ProductType = reward.ProductType,
                     Count = reward.Count,
                 };
                 
                 await _claimService.StoreProductAsync(userId, productComposition);
-                await _context.SaveChangesExtendedAsync();
             }
         }
-        
-        var userMaterial = _context.UserMaterial;
-        foreach (var reward in rewards.Where(r => r.ProductType == ProductType.Material))
-        {
-            var existingMaterial = userMaterial
-                .FirstOrDefault(um => um.UserId == userId && (int)um.MaterialId == reward.ItemId);
 
-            if (existingMaterial != null)
-            {
-                existingMaterial.Count += reward.Count;
-            }
-            else
-            {
-                userMaterial.Add(new UserMaterial
-                {
-                    UserId = userId,
-                    MaterialId = (MaterialId)reward.ItemId,
-                    Count = reward.Count,
-                });
-            }
-        }
+        Console.WriteLine($"[MatchController] AddGameRewards called for UserId: {userId} at {DateTime.Now}");
+        
+        await _context.SaveChangesExtendedAsync();
     }
     
     [HttpPut]

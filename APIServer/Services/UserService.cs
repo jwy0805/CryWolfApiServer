@@ -297,7 +297,6 @@ public class UserService
         {
             var deck = new Deck { UserId = userId, Faction = Faction.Sheep, DeckNumber = i + 1, LastPicked = i == 0};
             _context.Deck.Add(deck);
-            _context.SaveChangesExtended();
 
             foreach (var sheepUnit in sheepUnits)
             {
@@ -314,13 +313,14 @@ public class UserService
             }
             
             _context.Deck.Add(deck);
-            _context.SaveChangesExtended();
             
             foreach (var wolfUnit in wolfUnits)
             {
                 _context.DeckUnit.Add(new DeckUnit { DeckId = deck.DeckId, UnitId = wolfUnit });
             }
         }
+        
+        _context.SaveChangesExtended();
     }
     
     private void CreateInitSheepAndEnchant(int userId, SheepId[] sheepIds, EnchantId[] enchantIds)

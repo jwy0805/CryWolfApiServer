@@ -157,7 +157,7 @@ public class UserAccountController : ControllerBase
     {
         var res = new LoginApplePacketResponse();
         var appleBundleId = _config["BundleId"];
-        if (appleBundleId == string.Empty)
+        if (appleBundleId is null or "")
         {
             Console.WriteLine("Apple Bundle ID is not set.");
             res.LoginOk = false;
@@ -189,6 +189,7 @@ public class UserAccountController : ControllerBase
         res.LoginOk = true;
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
+        _logger.LogInformation($"[LoginApple] User {userAuth.UserId} logged in with Apple ID.");
         
         var user = _context.User.FirstOrDefault(u => u.UserId == userAuth.UserId);
         if (user == null)
@@ -244,6 +245,7 @@ public class UserAccountController : ControllerBase
         res.LoginOk = true;
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
+        _logger.LogInformation($"[LoginGoogle] User {userAuth.UserId} logged in with Google ID.");;
         
         var user = _context.User.FirstOrDefault(u => u.UserId == userAuth.UserId);
         if (user == null)

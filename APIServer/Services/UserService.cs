@@ -189,9 +189,6 @@ public class UserService
         CreateInitBattleSetting(newUser.UserId);
         CreateInitStageInfo(newUser.UserId);
         CreateInitTutorialInfo(newUser.UserId);
-        
-        // For closed test
-        SendMailClosedTest(newUser.UserId);
     }
     
     public void SendProductMail(int userId, MailType type, string? message = null, int? productId = null)

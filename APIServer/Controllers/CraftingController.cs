@@ -1,4 +1,5 @@
 using ApiServer.DB;
+using ApiServer.Providers;
 using ApiServer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,17 +14,20 @@ public class CraftingController : ControllerBase
     private readonly AppDbContext _context;
     private readonly TokenService _tokenService;
     private readonly TokenValidator _tokenValidator;
+    private readonly CachedDataProvider _cachedDataProvider;
     
     public CraftingController(
         ILogger<CraftingController> logger,
         AppDbContext context,
         TokenService tokenService,
-        TokenValidator validator)
+        TokenValidator validator,
+        CachedDataProvider cachedDataProvider)
     {
         _logger = logger;
         _context = context;
         _tokenService = tokenService;
         _tokenValidator = validator;
+        _cachedDataProvider = cachedDataProvider;
     }
 
     [HttpPost]
@@ -217,49 +221,24 @@ public class CraftingController : ControllerBase
 
                 // -----------------------------
                 // 3) ReinforcePoint 로드 (번역 실패 방지 버전)
-                //    - DB에서는 IN으로 "superset"만 가져오고
-                //    - (Class,Level) 정확 매칭은 메모리 HashSet에서 처리
                 // -----------------------------
+                var reinforcePoints = _cachedDataProvider.GetReinforcePoints();
+                // 목표 ReinforcePoint(분모) 상수
+                if (!reinforcePoints.TryGetValue((baseUnitClass, targetLevel), out var targetConstant)) return;
+
+                // 희생 카드 상수 lookup (필요한 키만)
                 var candidateKeys = unitsToConsume
-                    .Select(u => new { u.Class, u.Level })
+                    .Select(u => (u.Class, u.Level))
                     .Distinct()
                     .ToList();
 
-                var candClasses = candidateKeys.Select(k => k.Class).Distinct().ToList();
-                var candLevels  = candidateKeys.Select(k => k.Level).Distinct().ToList();
+                var rpDict = new Dictionary<(UnitClass Class, int Level), int>(candidateKeys.Count);
 
-                var reinforcePointsRaw = await _context.ReinforcePoint.AsNoTracking()
-                    .Where(rp =>
-                        (rp.Class == baseUnitClass && rp.Level == targetLevel) ||
-                        (candClasses.Contains(rp.Class) && candLevels.Contains(rp.Level)))
-                    .ToListAsync();
-
-                // 메모리에서 (Class,Level) 정확 페어로 필터
-                var candidateSet = candidateKeys
-                    .Select(k => (k.Class, k.Level))
-                    .ToHashSet();
-
-                var reinforcePoints = reinforcePointsRaw
-                    .Where(rp =>
-                        (rp.Class == baseUnitClass && rp.Level == targetLevel) ||
-                        candidateSet.Contains((rp.Class, rp.Level)))
-                    .ToList();
-
-                // 목표 ReinforcePoint(분모)
-                var targetRp = reinforcePoints
-                    .FirstOrDefault(rp => rp.Class == baseUnitClass && rp.Level == targetLevel);
-
-                if (targetRp == null)
+                foreach (var key in candidateKeys)
                 {
-                    // 강화 테이블 이상(목표 레벨 상수 없음)
-                    await FailAndReturn(errorCode: 2);
-                    return;
+                    if (!reinforcePoints.TryGetValue(key, out var constant)) return;
+                    rpDict[key] = constant;
                 }
-
-                // 희생 카드 상수 lookup
-                var rpDict = reinforcePoints
-                    .GroupBy(rp => (rp.Class, rp.Level))
-                    .ToDictionary(g => g.Key, g => g.First().Constant);
 
                 // -----------------------------
                 // 4) 유저 보유 검증 + 차감 (동일 트랜잭션)
@@ -331,8 +310,6 @@ public class CraftingController : ControllerBase
                 // -----------------------------
                 // 5) 강화 확률 계산
                 // -----------------------------
-                int denominator = targetRp.Constant;
-
                 // numerator = Σ(희생카드 constant * 개수)
                 int numerator = 0;
                 foreach (var g in unitsToConsume.GroupBy(u => (u.Class, u.Level)))
@@ -343,7 +320,7 @@ public class CraftingController : ControllerBase
                     }
                 }
 
-                double p = denominator <= 0 ? 0.0 : (double)numerator / denominator;
+                double p = targetConstant <= 0 ? 0.0 : (double)numerator / targetConstant;
                 if (p < 0) p = 0;
                 if (p > 1) p = 1;
 

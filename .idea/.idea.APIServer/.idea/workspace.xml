@@ -12,10 +12,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="[RELEASE] Reward Error Fixed">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="[UPDATE] UserController, User Service">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/UserAccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/AdsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/CollectionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/CollectionController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/CraftingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/CraftingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyJob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyJob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/DailyProductService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/ProductClaimService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/ProductClaimService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Credits.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Credits.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Privacy.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Privacy.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Terms.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Terms.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +142,7 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "XThreadsFramesViewSplitterKey": "0.6589212",
     "git-widget-placeholder": "main",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -616,15 +639,7 @@
       <workItem from="1765460234983" duration="80541000" />
       <workItem from="1765593195861" duration="2593000" />
       <workItem from="1765611619477" duration="2426000" />
-      <workItem from="1765716081503" duration="30523000" />
-    </task>
-    <task id="LOCAL-00086" summary="feat(DB, Controller) New column added, reward added&#10;&#10;'Price' column has been added to table 'DailyProduct'.&#10;The price of daily product should be cheaper than original price.&#10;&#10;Api logic for reward after watching rewarded video has been created.">
-      <option name="closed" value="true" />
-      <created>1747105941341</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
-      <option name="project" value="LOCAL" />
-      <updated>1747105941341</updated>
+      <workItem from="1765716081503" duration="58556000" />
     </task>
     <task id="LOCAL-00087" summary="1">
       <option name="closed" value="true" />
@@ -1010,7 +1025,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765801448802</updated>
     </task>
-    <option name="localTasksCounter" value="135" />
+    <task id="LOCAL-00135" summary="[UPDATE] UserController, User Service">
+      <option name="closed" value="true" />
+      <created>1765949740516</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1765949740517</updated>
+    </task>
+    <option name="localTasksCounter" value="136" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1020,7 +1043,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="feat-db mig" />
     <MESSAGE value="feat) payment and open box logic" />
     <MESSAGE value="feat controller, shop logic" />
     <MESSAGE value="[feat. Controller] Reward Claim Logic" />
@@ -1045,7 +1067,8 @@
     <MESSAGE value="." />
     <MESSAGE value="[RELEASE]" />
     <MESSAGE value="[RELEASE] Reward Error Fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="[RELEASE] Reward Error Fixed" />
+    <MESSAGE value="[UPDATE] UserController, User Service" />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] UserController, User Service" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

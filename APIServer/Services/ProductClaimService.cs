@@ -353,10 +353,7 @@ ON DUPLICATE KEY UPDATE
                 if (cnt == 0)
                 {
                     // 확률표가 없으면 0으로 처리(또는 예외)
-                    if (TryDrawCount(productId, c.CompositionId, probLookup, out var drawnCnt))
-                        cnt = drawnCnt;
-                    else
-                        cnt = 0;
+                    cnt = TryDrawCount(productId, c.CompositionId, probLookup, out var drawnCnt) ? drawnCnt : 0;
                 }
 
                 if (cnt > 0)
@@ -381,7 +378,7 @@ ON DUPLICATE KEY UPDATE
     }
 
     private bool TryDrawCount(int productId, int compositionId,
-        Dictionary<int, List<CompositionProbability>> probLookup, out int count)
+        IReadOnlyDictionary<int, List<CompositionProbability>> probLookup, out int count)
     {
         count = 0;
         if (!probLookup.TryGetValue(productId, out var list) || list.Count == 0) return false;

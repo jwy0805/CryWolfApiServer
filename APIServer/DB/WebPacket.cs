@@ -587,7 +587,6 @@ public class InitCardsPacketResponse
 {
     public bool GetCardsOk { get; set; }
     public List<OwnedUnitInfo> OwnedCardList { get; set; }
-    public List<UnitInfo> NotOwnedCardList { get; set; }
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
 }
@@ -602,7 +601,6 @@ public class InitSheepPacketResponse
 {
     public bool GetSheepOk { get; set; }
     public List<OwnedSheepInfo> OwnedSheepList { get; set; }
-    public List<SheepInfo> NotOwnedSheepList { get; set; }
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
 }
@@ -617,7 +615,6 @@ public class InitEnchantPacketResponse
 {
     public bool GetEnchantOk { get; set; }
     public List<OwnedEnchantInfo> OwnedEnchantList { get; set; }
-    public List<EnchantInfo> NotOwnedEnchantList { get; set; }
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
 }
@@ -632,7 +629,6 @@ public class InitCharacterPacketResponse
 {
     public bool GetCharacterOk { get; set; }
     public List<OwnedCharacterInfo> OwnedCharacterList { get; set; }
-    public List<CharacterInfo> NotOwnedCharacterList { get; set; }
     public string AccessToken { get; set; }
     public string RefreshToken { get; set; }
 }
@@ -1008,6 +1004,7 @@ public class RevealDailyProductPacketRequired
 public class RevealDailyProductPacketResponse
 {
     public bool RevealDailyProductOk { get; set; }
+    public List<DailyProductInfo> DailyProductInfos { get; set; }
 }
 
 public class RefreshDailyProductPacketRequired

@@ -66,8 +66,6 @@ public class PaymentController : ControllerBase
             .Where(product => product.IsFixed)
             .GroupBy(product => product.Category)
             .ToDictionary(grouping => grouping.Key, grouping => grouping.ToList());
-        var compositions = _cachedDataProvider.GetProductCompositions();
-        var probabilities = _cachedDataProvider.GetProbabilities();
         
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var dailyProductExists = await _context.UserDailyProduct.AsNoTracking()
@@ -87,21 +85,20 @@ public class PaymentController : ControllerBase
         }
         
         // Get
-        var dailyProductInfos = await _dailyProductService
-            .GetDailyProductInfos(userId, products, compositions, probabilities);
+        var dailyProductInfos = await _dailyProductService.GetDailyProductInfos(userId);
             
         var res = new InitProductPacketResponse
         {
             GetProductOk = true,
-            SpecialPackages = GetProductInfoList(ProductCategory.SpecialPackage, productGroups, compositions, probabilities),
-            BeginnerPackages = GetProductInfoList(ProductCategory.BeginnerPackage, productGroups, compositions, probabilities),
-            GoldPackages = GetProductInfoList(ProductCategory.GoldStore, productGroups, compositions, probabilities),
-            SpinelPackages = GetProductInfoList(ProductCategory.SpinelStore, productGroups, compositions, probabilities),
-            GoldItems = GetProductInfoList(ProductCategory.GoldPackage, productGroups, compositions, probabilities),
-            SpinelItems = GetProductInfoList(ProductCategory.SpinelPackage, productGroups, compositions, probabilities),
-            ReservedSales = GetProductInfoList(ProductCategory.ReservedSale, productGroups, compositions, probabilities),
+            SpecialPackages = GetProductInfoList(ProductCategory.SpecialPackage, productGroups),
+            BeginnerPackages = GetProductInfoList(ProductCategory.BeginnerPackage, productGroups),
+            GoldPackages = GetProductInfoList(ProductCategory.GoldStore, productGroups),
+            SpinelPackages = GetProductInfoList(ProductCategory.SpinelStore, productGroups),
+            GoldItems = GetProductInfoList(ProductCategory.GoldPackage, productGroups),
+            SpinelItems = GetProductInfoList(ProductCategory.SpinelPackage, productGroups),
+            ReservedSales = GetProductInfoList(ProductCategory.ReservedSale, productGroups),
             DailyProducts = dailyProductInfos,
-            AdsRemover = GetProductInfoList(ProductCategory.Pass, productGroups, compositions, probabilities)
+            AdsRemover = GetProductInfoList(ProductCategory.Pass, productGroups)
                 .First(pi => pi.ProductCode == "com.hamon.crywolf.non-consumable.ads_remover"),
             RefreshTime = userDailyProducts.First().RefreshAt + TimeSpan.FromHours(6),
         };
@@ -111,27 +108,30 @@ public class PaymentController : ControllerBase
     
     private List<ProductInfo> GetProductInfoList(
         ProductCategory category,
-        Dictionary<ProductCategory, List<Product>> productGroups,
-        List<ProductComposition> compositions,
-        List<CompositionProbability> probabilities)
+        Dictionary<ProductCategory, List<Product>> productGroups)
     {
         return productGroups.TryGetValue(category, out var products)
             ? products.Select(product => new ProductInfo
             {
                 ProductId = product.ProductId,
-                Compositions = compositions.Where(pc => pc.ProductId == product.ProductId)
+                Compositions = _cachedDataProvider.GetProductCompositions()
+                    .Where(pc => pc.ProductId == product.ProductId)
                     .Select(pc => new CompositionInfo
                     {
                         ProductId = pc.ProductId,
                         CompositionId = pc.CompositionId,
                         ProductType = pc.ProductType,
                         Count = pc.Count,
-                        MinCount = pc is { Count: 0, Guaranteed: false } ? probabilities
+                        MinCount = pc is { Count: 0, Guaranteed: false } 
+                            ? _cachedDataProvider.GetProbabilities()
                                 .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
-                                .Min(cp => cp.Count) : 0,
-                        MaxCount = pc is { Count: 0, Guaranteed: false } ? probabilities
+                                .Min(cp => cp.Count) 
+                            : 0,
+                        MaxCount = pc is { Count: 0, Guaranteed: false } 
+                            ? _cachedDataProvider.GetProbabilities()
                                 .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
-                                .Max(cp => cp.Count) : 0,
+                                .Max(cp => cp.Count) 
+                            : 0,
                         Guaranteed = pc.Guaranteed,
                         IsSelectable = pc.IsSelectable,
                     }).ToList(),
@@ -150,49 +150,52 @@ public class PaymentController : ControllerBase
     {
         var userId = _tokenValidator.Authorize(required.AccessToken);
         if (userId == -1) return Unauthorized();
-        
-        var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
-        var product = _context.Product.AsNoTracking().FirstOrDefault(p => p.ProductCode == required.ProductCode);
-        if (product == null || userStat == null) return BadRequest("Invalid product code");
 
         var response = new VirtualPaymentPacketResponse();
-        var balance = product.Currency switch
+        var strategy = _context.Database.CreateExecutionStrategy();
+
+        await strategy.ExecuteAsync(async () =>
         {
-            CurrencyType.Gold => userStat.Gold,
-            CurrencyType.Spinel => userStat.Spinel,
-            _ => 0
-        };
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
+            var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
+            var product = _context.Product.AsNoTracking().FirstOrDefault(p => p.ProductCode == required.ProductCode);
+            if (product == null || userStat == null) return;
         
-        if (balance < product.Price)
-        {
-            response.PaymentOk = false;
-            return Ok(response);
-        }
+            var balance = product.Currency switch
+            {
+                CurrencyType.Gold => userStat.Gold,
+                CurrencyType.Spinel => userStat.Spinel,
+                _ => 0
+            };
+    
+            if (balance < product.Price)
+            {
+                response.PaymentOk = false;
+            }
 
-        switch (product.Currency)
-        {
-            case CurrencyType.Gold:
-                userStat.Gold -= product.Price;
-                break;
-            case CurrencyType.Spinel:
-                userStat.Spinel -= product.Price;
-                break;
-            default:
-                return BadRequest("지원하지 않는 화폐입니다.");
-        }
+            switch (product.Currency)
+            {
+                case CurrencyType.Gold:
+                    userStat.Gold -= product.Price;
+                    break;
+                case CurrencyType.Spinel:
+                    userStat.Spinel -= product.Price;
+                    break;
+                default:
+                    return;
+            }
 
-        if (product.ProductType == ProductType.Subscription)
-        {
-            await SubscriptionComplete(userId, required.ProductCode);
-            response.PaymentCode = VirtualPaymentCode.Subscription;
-        }
-        else
-        {
             await PurchaseComplete(userId, required.ProductCode);
-            response.PaymentCode = VirtualPaymentCode.Product;
-        }
-        
-        response.PaymentOk = true;
+            await _context.SaveChangesExtendedAsync();
+            await transaction.CommitAsync();
+    
+            response.PaymentOk = true;
+            response.PaymentCode = product.ProductType == ProductType.Subscription 
+                ? VirtualPaymentCode.Subscription 
+                : VirtualPaymentCode.Product;
+        });
+
         return Ok(response);
     }
 
@@ -203,27 +206,36 @@ public class PaymentController : ControllerBase
         var userId = _tokenValidator.Authorize(required.AccessToken);
         if (userId == -1) return Unauthorized();
         
-        var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
-        var product = _context.Product.FirstOrDefault(p => p.ProductCode == required.ProductCode);
-        var dailyProducts = _cachedDataProvider.GetDailyProductSnapshots();
-        if (product == null || userStat == null) return BadRequest("Invalid product code");
-        
         var response = new DailyPaymentPacketResponse();
-        var balanceGold = userStat.Gold;
-        var price = dailyProducts.First(dp => dp.ProductId == product.ProductId).Price;
-        if (balanceGold < price) return Ok(response);
-        
-        var userDaily = _context.UserDailyProduct.FirstOrDefault(udp =>
-            udp.UserId == userId && udp.ProductId == product.ProductId);
-        if (userDaily == null) return BadRequest("User daily product not found");
-        userDaily.Bought = true;
-        userStat.Gold -= price;
+        var strategy = _context.Database.CreateExecutionStrategy();
 
-        await _context.SaveChangesExtendedAsync();
-        await PurchaseComplete(userId, required.ProductCode);
+        await strategy.ExecuteAsync(async () =>
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+
+            var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
+            var product = _context.Product.FirstOrDefault(p => p.ProductCode == required.ProductCode);
+            var dailyProducts = _cachedDataProvider.GetDailyProductSnapshots();
+            if (product == null || userStat == null) return;
+    
+            var balanceGold = userStat.Gold;
+            var price = dailyProducts.First(dp => dp.ProductId == product.ProductId).Price;
+            if (balanceGold < price) response.PaymentOk = false;
+    
+            var userDaily = _context.UserDailyProduct.FirstOrDefault(udp =>
+                udp.UserId == userId && udp.ProductId == product.ProductId);
+            if (userDaily == null) return;
+            userDaily.Bought = true;
+            userStat.Gold -= price;
+
+            await PurchaseComplete(userId, required.ProductCode);
+            await _context.SaveChangesExtendedAsync();
+            await transaction.CommitAsync();
+    
+            response.PaymentOk = true;
+            response.Slot = userDaily.Slot;
+        });
         
-        response.PaymentOk = true;
-        response.Slot = userDaily.Slot;
         return Ok(response);
     }
     
@@ -287,7 +299,7 @@ public class PaymentController : ControllerBase
                 }
             }
             
-            await SubscriptionComplete(userId, required.ProductCode);
+            await PurchaseComplete(userId, required.ProductCode);
             
             var productId = _context.Product
                 .AsNoTracking()
@@ -351,40 +363,35 @@ public class PaymentController : ControllerBase
         var product = await _context.Product.AsNoTracking().
             FirstOrDefaultAsync(p => p.ProductCode == productCode);
         if (product == null) return;
-        
-        var mail = new Mail
+
+        if (product.ProductType is
+            ProductType.Gold or ProductType.Spinel or ProductType.Exp or ProductType.Subscription)
         {
-            UserId = userId,
-            Type = MailType.Product,
-            CreatedAt = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddDays(30),
-            ProductId = product.ProductId,
-            ProductCode = product.ProductCode,
-            Claimed = false,
-            Message = "Product Purchased",
-            Sender = "Cry Wolf"
-        };
+            var composition = _cachedDataProvider.GetProductCompositions()
+                .FirstOrDefault(pc => pc.ProductId == product.ProductId);
+            if (composition == null) return;
         
-        _logger.LogInformation($"251211 Purchased {product.ProductCode} - {product.ProductName}");
-        _context.Mail.Add(mail);
-        await _context.SaveChangesExtendedAsync();
+            await _claimService.StoreProductAsync(userId, composition);   
+        }
+        else
+        {
+            var mail = new Mail
+            {
+                UserId = userId,
+                Type = MailType.Product,
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(30),
+                ProductId = product.ProductId,
+                ProductCode = product.ProductCode,
+                Claimed = false,
+                Message = "Product Purchased",
+                Sender = "Cry Wolf"
+            };
+            
+            _context.Mail.Add(mail);
+        }
     }
 
-    // 구독 상품, 스피넬 상품에 적용
-    public async Task SubscriptionComplete(int userId, string productCode)
-    {
-        var product = await _context.Product.AsNoTracking()
-            .FirstOrDefaultAsync(p => p.ProductCode == productCode);
-        if (product == null) return;
-        
-        var composition = _context.ProductComposition.AsNoTracking()
-            .FirstOrDefault(pc => pc.ProductId == product.ProductId);
-        if (composition == null) return;
-        
-        await _claimService.StoreProductAsync(userId, composition);
-        await _context.SaveChangesExtendedAsync();
-    }
-    
     [HttpPut]
     [Route("StartClaim")]
     public async Task<IActionResult> StartClaim([FromBody] ContinueClaimPacketRequired required)
@@ -600,16 +607,6 @@ public class PaymentController : ControllerBase
                                 Claimed = false
                             });
                         }
-                        
-                        // var containerInfo = new CompositionInfo
-                        // {
-                        //     ProductId = required.ProductId,
-                        //     CompositionId = compId,
-                        //     ProductType = type,
-                        //     Count = cnt
-                        // };
-                        //
-                        // closedResultInfos.Add(containerInfo);
                     }
                     else
                     {
@@ -755,16 +752,16 @@ public class PaymentController : ControllerBase
 
     private async Task<string> GetGoogleAccessTokenAsync()
     {
-        var serviceAccountJson = _config["Google:ServiceAccountJson"];
-        if (string.IsNullOrEmpty(serviceAccountJson))
-        {
+        var path = _config["Google:ServiceAccountJsonPath"];
+        if (string.IsNullOrWhiteSpace(path) || !System.IO.File.Exists(path))
             throw new Exception("Google Service Account not found");
-        }
-        
+
+        var json = await System.IO.File.ReadAllTextAsync(path);
+
         var credential = GoogleCredential
-            .FromJson(serviceAccountJson)
+            .FromJson(json)
             .CreateScoped("https://www.googleapis.com/auth/androidpublisher");
-        
+
         return await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
     }
     

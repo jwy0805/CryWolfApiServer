@@ -56,10 +56,9 @@ public class AdsController : ControllerBase
         if (principal == null) return Unauthorized();
 
         var res = new RevealDailyProductPacketResponse();
-        var userIdN = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userIdN == null) return BadRequest(res);
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null) return BadRequest(res);
         
-        var userId = userIdN.Value;
         var userDailyProduct = await _context.UserDailyProduct
             .FirstOrDefaultAsync(x => x.UserId == userId && x.Slot == required.Slot);
         if (userDailyProduct == null) return BadRequest(res);
@@ -68,7 +67,9 @@ public class AdsController : ControllerBase
         _context.UserDailyProduct.Update(userDailyProduct);
         
         await _context.SaveChangesAsync();
+        
         res.RevealDailyProductOk = true;
+        res.DailyProductInfos = await _dailyProductService.GetDailyProductInfos(userId.Value);
         
         return Ok(res);
     }
@@ -81,18 +82,13 @@ public class AdsController : ControllerBase
         if (principal == null) return Unauthorized();
 
         var res = new RefreshDailyProductPacketResponse();
-        var userIdN = _tokenValidator.GetUserIdFromAccessToken(principal);
-        if (userIdN == null) return BadRequest(res);
+        var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null) return BadRequest(res);
         
-        var userId = userIdN.Value;
-        var refreshed = await _dailyProductService.RefreshByAdsAsync(userId);
+        var refreshed = await _dailyProductService.RefreshByAdsAsync(userId.Value);
         if (refreshed)
         {
-            var products = _context.Product.AsNoTracking().ToList();
-            var compositions = _context.ProductComposition.AsNoTracking().ToList();
-            var probabilities = _context.CompositionProbability.AsNoTracking().ToList();
-            res.DailyProducts = await _dailyProductService.GetDailyProductInfos(
-                userId, products, compositions, probabilities);
+            res.DailyProducts = await _dailyProductService.GetDailyProductInfos(userId.Value);
             res.RefreshDailyProductOk = true;
             res.RefreshTime = DateTime.UtcNow;
         }

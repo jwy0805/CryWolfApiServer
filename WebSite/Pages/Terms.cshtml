@@ -12,7 +12,7 @@
     };
     var currentLang = langMap.ContainsKey(lang) ? lang : "en";
     var iframeSrc = Url.Content($"~/policy/{langMap[currentLang]}");
-    string? LangLink(string code) => Url.Page("/Terms", new { lang = code });
+    string? LangLink(string code) => Url.Page("/terms", new { lang = code });
 }
 
 <section class="policy-shell">

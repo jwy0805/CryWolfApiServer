@@ -10,11 +10,7 @@ public interface IDailyProductService
     Task CreateUserDailyProductSnapshotAsync(int userId, DateOnly dateOnly, byte refreshIndex,
         CancellationToken token = default);
     Task<bool> RefreshByAdsAsync(int userId, CancellationToken token = default);
-    Task<List<DailyProductInfo>> GetDailyProductInfos(
-        int userId,
-        List<Product> products,
-        List<ProductComposition> compositions,
-        List<CompositionProbability> probabilities);
+    Task<List<DailyProductInfo>> GetDailyProductInfos(int userId);
 }
 
 public class DailyProductService : IDailyProductService
@@ -109,11 +105,7 @@ public class DailyProductService : IDailyProductService
         });
     }
 
-    public async Task<List<DailyProductInfo>> GetDailyProductInfos(
-        int userId,
-        List<Product> products,
-        List<ProductComposition> compositions,
-        List<CompositionProbability> probabilities)
+    public async Task<List<DailyProductInfo>> GetDailyProductInfos(int userId)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         var userDailyProducts = await _context.UserDailyProduct.AsNoTracking()
@@ -128,7 +120,9 @@ public class DailyProductService : IDailyProductService
 
         return userDailyProducts.Select(udp =>
         {
-            var product = products.FirstOrDefault(p => p.ProductId == udp.ProductId) ?? new Product();
+            var product = _cachedDataProvider.GetProducts()
+                .FirstOrDefault(p => p.ProductId == udp.ProductId) ?? new Product();
+            
             var productInfo = new ProductInfo
             {
                 ProductId = product.ProductId,
@@ -137,7 +131,8 @@ public class DailyProductService : IDailyProductService
                 Category = product.Category,
                 ProductType = product.ProductType,
                 ProductCode = product.ProductCode,
-                Compositions = compositions.Where(pc => pc.ProductId == product.ProductId)
+                Compositions = _cachedDataProvider.GetProductCompositions()
+                    .Where(pc => pc.ProductId == product.ProductId)
                     .Select(pc => new CompositionInfo
                     {
                         ProductId = pc.ProductId,
@@ -145,12 +140,12 @@ public class DailyProductService : IDailyProductService
                         ProductType = pc.ProductType,
                         Count = pc.Count,
                         MinCount = pc is { Count: 0, Guaranteed: false }
-                            ? probabilities
+                            ? _cachedDataProvider.GetProbabilities()
                                 .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
                                 .Min(cp => cp.Count)
                             : 0,
                         MaxCount = pc is { Count: 0, Guaranteed: false }
-                            ? probabilities
+                            ? _cachedDataProvider.GetProbabilities()
                                 .Where(cp => cp.ProductId == pc.ProductId && cp.CompositionId == pc.CompositionId)
                                 .Max(cp => cp.Count)
                             : 0,
@@ -158,6 +153,7 @@ public class DailyProductService : IDailyProductService
                         IsSelectable = pc.IsSelectable
                     }).ToList(),
             };
+            
             return new DailyProductInfo
             {
                 ProductInfo = productInfo,

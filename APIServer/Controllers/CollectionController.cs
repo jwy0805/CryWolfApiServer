@@ -34,68 +34,65 @@ public class CollectionController : ControllerBase
     [Route("LoadInfo")]
     public IActionResult LoadInfo([FromBody] LoadInfoPacketRequired required)
     {
-        var unitList = _context.Unit.AsNoTracking().ToList();
-        var sheepList = _context.Sheep.AsNoTracking().ToList();
-        var enchantList = _context.Enchant.AsNoTracking().ToList();
-        var characterList = _context.Character.AsNoTracking().ToList();
-        var materialList = _context.Material.AsNoTracking().ToList();
-        var reinforcePointList = _context.ReinforcePoint.AsNoTracking().ToList();
-        var unitMaterialList = _context.UnitMaterial.AsNoTracking().ToList();
-        
         var res = new LoadInfoPacketResponse
         {
-            UnitInfos = unitList.Select(unit => new UnitInfo
-            {
-                Id = (int)unit.UnitId,
-                Class = unit.Class,
-                Level = unit.Level,
-                Species = (int)unit.Species,
-                Role = unit.Role,
-                Faction = unit.Faction,
-                Region = unit.Region
-            }).ToList(),
-            
-            SheepInfos = sheepList.Select(sheep => new SheepInfo
-            {
-                Id = (int)sheep.SheepId,
-                Class = sheep.Class
-            }).ToList(),
-            
-            EnchantInfos = enchantList.Select(enchant => new EnchantInfo
-            {
-                Id = (int)enchant.EnchantId,
-                Class = enchant.Class
-            }).ToList(),
-            
-            CharacterInfos = characterList.Select(character => new CharacterInfo
-            {
-                Id = (int)character.CharacterId,
-                Class = character.Class
-            }).ToList(),
-            
-            MaterialInfos = _cachedDataProvider.GetMaterialInfos(),
-            
-            ReinforcePoints = reinforcePointList.Select(reinforcePoint => new ReinforcePointInfo
-            {
-                Class = reinforcePoint.Class,
-                Level = reinforcePoint.Level,
-                Point = reinforcePoint.Constant
-            }).ToList(),
-            
-            CraftingMaterials = unitMaterialList.GroupBy(um => um.UnitId)
-                .Select(group => new UnitMaterialInfo
+            UnitInfos = _cachedDataProvider.GetUnitLookup().Values
+                .Select(unit => new UnitInfo
                 {
-                    UnitId = (int)group.Key,
-                    Materials = group.Select(um => new OwnedMaterialInfo
-                    {
-                        MaterialInfo = new MaterialInfo
-                        {
-                            Id = (int)um.MaterialId,
-                            Class = materialList.First(material => material.MaterialId == um.MaterialId).Class
-                        },
-                        Count = um.Count
-                    }).ToList()
+                    Id = unit.Id,
+                    Class = unit.Class,
+                    Level = unit.Level,
+                    Species = unit.Species,
+                    Role = unit.Role,
+                    Faction = unit.Faction,
+                    Region = unit.Region
                 }).ToList(),
+            
+            SheepInfos = _cachedDataProvider.GetSheepLookup().Values
+                .Select(sheep => new SheepInfo
+                {
+                    Id = sheep.Id,
+                    Class = sheep.Class
+                }).ToList(),
+            
+            EnchantInfos = _cachedDataProvider.GetEnchantLookup().Values
+                .Select(enchant => new EnchantInfo
+                {
+                    Id = enchant.Id,
+                    Class = enchant.Class
+                }).ToList(),
+            
+            CharacterInfos = _cachedDataProvider.GetCharacterLookup().Values
+                .Select(character => new CharacterInfo
+                {
+                    Id = character.Id,
+                    Class = character.Class
+                }).ToList(),
+            
+            MaterialInfos = _cachedDataProvider.GetMaterialLookup().Values
+                .Select(material => new MaterialInfo
+                {
+                    Id = material.Id,
+                    Class = material.Class,
+                })
+                .ToList(),
+            
+            ReinforcePoints = _cachedDataProvider.GetReinforcePoints().Select(kv => new ReinforcePointInfo
+            {
+                Class = kv.Key.Item1,
+                Level = kv.Key.Item2,
+                Point = kv.Value
+            }).ToList(),
+            
+            CraftingMaterials = _cachedDataProvider.GetUnitMaterialLookup().Select(kv => new UnitMaterialInfo
+            {
+                UnitId = kv.Key,
+                Materials = kv.Value.Select(um => new OwnedMaterialInfo
+                {
+                    MaterialInfo = um.MaterialInfo,
+                    Count = um.Count
+                }).ToList()
+            }).ToList(),
             
             LoadInfoOk = true
         };
@@ -108,340 +105,281 @@ public class CollectionController : ControllerBase
     public async Task<IActionResult> InitCards([FromBody] InitCardsPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        return principal == null ? Unauthorized() : await InitCardsResponse(principal);
-    }
-
-    private async Task<IActionResult> InitCardsResponse(ClaimsPrincipal principal)
-    {
+        if (principal == null) return Unauthorized();
+        
         var res = new InitCardsPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-
-        if (userId == null)
-        {
-            return Unauthorized();
-        }
+        if (userId == null) return Unauthorized();
         
-        var units = await _context.Unit.AsNoTracking().ToListAsync();
-        var ownedDict = await _context.UserUnit.AsNoTracking()
+        var unitById = _cachedDataProvider.GetUnitLookup(); 
+        var rows = await _context.UserUnit.AsNoTracking()
             .Where(uu => uu.UserId == userId && uu.Count > 0)
+            .OrderBy(uu => uu.UnitId)
             .Select(uu => new { uu.UnitId, uu.Count })
-            .ToDictionaryAsync(v => v.UnitId, v => v.Count);
-        
-        var ownedCardList = new List<OwnedUnitInfo>(ownedDict.Count);
-        var notOwnedCardList = new List<UnitInfo>(Math.Max(0, units.Count - ownedDict.Count));
+            .ToListAsync();
 
-        foreach (var u in units)
+        var ownedCardList = new List<OwnedUnitInfo>(rows.Count);
+
+        foreach (var row in rows)
         {
-            var unitInfo = new UnitInfo
-            {
-                Id = (int)u.UnitId,
-                Class = u.Class,
-                Level = u.Level,
-                Species = (int)u.Species,
-                Role = u.Role,
-                Faction = u.Faction,
-                Region = u.Region
-            };
+            var unitId = (int)row.UnitId;
+            if (!unitById.TryGetValue(unitId, out var unitInfo)) continue;
 
-            if (ownedDict.TryGetValue(u.UnitId, out var count))
+            ownedCardList.Add(new OwnedUnitInfo
             {
-                ownedCardList.Add(new OwnedUnitInfo
-                {
-                    UnitInfo = unitInfo,
-                    Count = count
-                });
-            }
-            else
-            {
-                notOwnedCardList.Add(unitInfo);
-            }
+                UnitInfo = unitInfo,
+                Count = row.Count
+            });
         }
 
         res.OwnedCardList = ownedCardList;
-        res.NotOwnedCardList = notOwnedCardList;
         res.GetCardsOk = true;
-
+        
         return Ok(res);
     }
     
     [HttpPost]
     [Route("InitSheep")]
-    public IActionResult InitSheep([FromBody] InitSheepPacketRequired required)
+    public async Task<IActionResult> InitSheep([FromBody] InitSheepPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        return principal == null ? Unauthorized() : InitSheepResponse(principal);
-    }
-    
-    public IActionResult InitSheepResponse(ClaimsPrincipal principal)
-    {
+        if (principal == null) return Unauthorized();
+        
         var res = new InitSheepPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null) return Unauthorized();
 
-        if (userId != null)
+        var sheepById = _cachedDataProvider.GetSheepLookup();
+        var rows = await _context.UserSheep.AsNoTracking()
+            .Where(us => us.UserId == userId && us.Count > 0)
+            .OrderBy(us => us.SheepId)
+            .Select(us => new { us.SheepId, us.Count })
+            .ToListAsync();
+
+        var owned = new List<OwnedSheepInfo>(rows.Count);
+
+        foreach (var row in rows)
         {
-            res.OwnedSheepList = _context.UserSheep.AsNoTracking()
-                .Where(userSheep => userSheep.UserId == userId)
-                .Join(_context.Sheep.AsNoTracking(),
-                    userSheep => userSheep.SheepId,
-                    sheep => sheep.SheepId,
-                    (userSheep, sheep) => new OwnedSheepInfo
-                    {
-                        SheepInfo = new SheepInfo
-                        {
-                            Id = (int)sheep.SheepId,
-                            Class = sheep.Class
-                        },
-                        Count = userSheep.Count
-                    }).ToList();
-            
-            var ownedSheepIds = res.OwnedSheepList.Select(info => info.SheepInfo.Id).ToList();
-            res.NotOwnedSheepList = _context.Sheep.AsNoTracking()
-                .Where(sheep => !ownedSheepIds.Contains((int)sheep.SheepId))
-                .Select(sheep => new SheepInfo
-                {
-                    Id = (int)sheep.SheepId,
-                    Class = sheep.Class
-                }).ToList();
-            
-            res.GetSheepOk = true;
+            var sheepId = (int)row.SheepId;
+            if (!sheepById.TryGetValue(sheepId, out var sheepInfo)) continue;
+
+            owned.Add(new OwnedSheepInfo
+            {
+                SheepInfo = sheepInfo,
+                Count = row.Count
+            });
         }
-        else
-        {
-            res.GetSheepOk = false;
-        }
+
+        res.OwnedSheepList = owned;
+        res.GetSheepOk = true;
         
         return Ok(res);
     }
     
     [HttpPost]
     [Route("InitEnchants")]
-    public IActionResult InitEnchants([FromBody] InitEnchantPacketRequired required)
+    public async Task<IActionResult> InitEnchants([FromBody] InitEnchantPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        return principal == null ? Unauthorized() : InitEnchantsResponse(principal);
-    }
-
-    public IActionResult InitEnchantsResponse(ClaimsPrincipal? principal = null)
-    {
+        if (principal == null) return Unauthorized();
+        
         var res = new InitEnchantPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        
-        if (userId != null)
+        if (userId == null) return Unauthorized();
+
+        var enchantById = _cachedDataProvider.GetEnchantLookup();
+        var rows = await _context.UserEnchant.AsNoTracking()
+            .Where(ue => ue.UserId == userId && ue.Count > 0)
+            .OrderBy(ue => ue.EnchantId)
+            .Select(ue => new { ue.EnchantId, ue.Count })
+            .ToListAsync();
+
+        var owned = new List<OwnedEnchantInfo>(rows.Count);
+
+        foreach (var row in rows)
         {
-            res.OwnedEnchantList = _context.UserEnchant.AsNoTracking()
-                .Where(userEnchant => userEnchant.UserId == userId)
-                .Join(_context.Enchant.AsNoTracking(),
-                    userEnchant => userEnchant.EnchantId,
-                    enchant => enchant.EnchantId,
-                    (userEnchant, enchant) => new OwnedEnchantInfo
-                    {
-                        EnchantInfo = new EnchantInfo
-                        {
-                            Id = (int)enchant.EnchantId,
-                            Class = enchant.Class
-                        },
-                        Count = userEnchant.Count
-                    }).ToList();
+            var enchantId = (int)row.EnchantId;
+            if (!enchantById.TryGetValue(enchantId, out var enchantInfo)) continue;
             
-            var ownedEnchantIds = res.OwnedEnchantList.Select(info => info.EnchantInfo.Id).ToList();
-            res.NotOwnedEnchantList = _context.Enchant.AsNoTracking()
-                .Where(enchant => !ownedEnchantIds.Contains((int)enchant.EnchantId))
-                .Select(enchant => new EnchantInfo
-                {
-                    Id = (int)enchant.EnchantId,
-                    Class = enchant.Class
-                }).ToList();
-            
-            res.GetEnchantOk = true;
-        }
-        else
-        {
-            res.GetEnchantOk = false;
+            owned.Add(new OwnedEnchantInfo
+            {
+                EnchantInfo = enchantInfo,
+                Count = row.Count
+            });
         }
 
+        res.OwnedEnchantList = owned;
+        res.GetEnchantOk = true;
+        
         return Ok(res);
     }
     
     [HttpPost]
     [Route("InitCharacters")]
-    public IActionResult InitCharacters([FromBody] InitCharacterPacketRequired required)
+    public async Task<IActionResult> InitCharacters([FromBody] InitCharacterPacketRequired required)
     { 
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        return principal == null ? Unauthorized() : InitCharactersResponse(principal);   
-    }
-
-    public IActionResult InitCharactersResponse(ClaimsPrincipal principal)
-    {
+        if (principal == null) return Unauthorized();
+        
         var res = new InitCharacterPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        
-        if (userId != null)
-        {
-            res.OwnedCharacterList = _context.UserCharacter.AsNoTracking()
-                .Where(userCharacter => userCharacter.UserId == userId)
-                .Join(_context.Character.AsNoTracking(),
-                    userCharacter => userCharacter.CharacterId,
-                    character => character.CharacterId,
-                    (userCharacter, character) => new OwnedCharacterInfo
-                    {
-                        CharacterInfo = new CharacterInfo
-                        {
-                            Id = (int)character.CharacterId,
-                            Class = character.Class
-                        },
-                        Count = userCharacter.Count
-                    }).ToList();
-            
-            var ownedCharacterIds = res.OwnedCharacterList.Select(info => info.CharacterInfo.Id).ToList();
-            res.NotOwnedCharacterList = _context.Character.AsNoTracking()
-                .Where(character => !ownedCharacterIds.Contains((int)character.CharacterId))
-                .Select(character => new CharacterInfo
-                {
-                    Id = (int)character.CharacterId,
-                    Class = character.Class
-                }).ToList();
-            
-            res.GetCharacterOk = true;
-        }
-        else
-        {
-            res.GetCharacterOk = false;
-        }
+        if (userId == null) return Unauthorized();
 
+        var characterById = _cachedDataProvider.GetCharacterLookup();
+        var rows = await _context.UserCharacter.AsNoTracking()
+            .Where(uc => uc.UserId == userId && uc.Count > 0)
+            .OrderBy(uc => uc.CharacterId)
+            .Select(uc => new { uc.CharacterId, uc.Count })
+            .ToListAsync();
+
+        var owned = new List<OwnedCharacterInfo>(rows.Count);
+
+        foreach (var row in rows)
+        {
+            var characterId = (int)row.CharacterId;
+            if (!characterById.TryGetValue(characterId, out var characterInfo)) continue;
+
+            owned.Add(new OwnedCharacterInfo
+            {
+                CharacterInfo = characterInfo,
+                Count = row.Count
+            });
+        }
+        
+        res.OwnedCharacterList = owned;
+        res.GetCharacterOk = true;
+        
         return Ok(res);
     }
     
     [HttpPost]
     [Route("InitMaterials")]
-    public IActionResult InitMaterials([FromBody] InitMaterialPacketRequired required)
+    public async Task<IActionResult> InitMaterials([FromBody] InitMaterialPacketRequired required)
     { 
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        return principal == null ? Unauthorized() : InitMaterialsResponse(principal);
-    }
-
-    public IActionResult InitMaterialsResponse(ClaimsPrincipal principal)
-    {
+        if (principal == null) return Unauthorized();
+        
         var res = new InitMaterialPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
+        if (userId == null) return Unauthorized();
 
-        if (userId != null)
-        {
-            res.OwnedMaterialList = _context.UserMaterial.AsNoTracking()
-                .Where(userMaterial => userMaterial.UserId == userId)
-                .Join(_context.Material.AsNoTracking(),
-                    userMaterial => userMaterial.MaterialId,
-                    material => material.MaterialId,
-                    (userMaterial, material) => new OwnedMaterialInfo
-                    {
-                        MaterialInfo = new MaterialInfo
-                        {
-                            Id = (int)userMaterial.MaterialId,
-                            Class = material.Class
-                        },
-                        Count = userMaterial.Count
-                    }).ToList();
+        var materialById = _cachedDataProvider.GetMaterialLookup();
+        var rows = await _context.UserMaterial.AsNoTracking()
+            .Where(um => um.UserId == userId && um.Count > 0)
+            .OrderBy(um => um.MaterialId)
+            .Select(um => new { um.MaterialId, um.Count })
+            .ToListAsync();
 
-            res.GetMaterialOk = true;
-        }
-        else
+        var owned = new List<OwnedMaterialInfo>(rows.Count);
+        
+        foreach (var row in rows)
         {
-            res.GetMaterialOk = false;
+            var materialId = (int)row.MaterialId;
+            if (!materialById.TryGetValue(materialId, out var materialInfo)) continue;
+
+            owned.Add(new OwnedMaterialInfo
+            {
+                MaterialInfo = materialInfo,
+                Count = row.Count
+            });
         }
 
+        res.OwnedMaterialList = owned;
+        res.GetMaterialOk = true;
+        
         return Ok(res);
     }
-    
+
     [HttpPost]
     [Route("GetDecks")]
-    public IActionResult GetDeck([FromBody] GetInitDeckPacketRequired required)
+    public async Task<IActionResult> GetDeck([FromBody] GetInitDeckPacketRequired required)
     {
         var principal = _tokenValidator.ValidateToken(required.AccessToken);
-        return principal == null ? Unauthorized() : GetDeckResponse(principal);
-    }
-    
-    private IActionResult GetDeckResponse(ClaimsPrincipal principal)
-    {
+        if (principal == null) return Unauthorized();
+        
         var res = new GetInitDeckPacketResponse();
         var userId = _tokenValidator.GetUserIdFromAccessToken(principal);
-        
-        if (userId != null)
-        {
-            var deckInfoList = _context.Deck
-                .AsNoTracking()
-                .Where(deck => deck.UserId == userId)
-                .Select(deck => new DeckInfo
-                {
-                    DeckId = deck.DeckId,
-                    UnitInfo = _context.DeckUnit.AsNoTracking()
-                        .Where(deckUnit => deckUnit.DeckId == deck.DeckId)
-                        .Select(deckUnit => _context.Unit.AsNoTracking()
-                            .FirstOrDefault(unit => unit.UnitId == deckUnit.UnitId))
-                        .Where(unit => unit != null)
-                        .Select(unit => new UnitInfo
-                        {
-                            Id = (int)unit!.UnitId,
-                            Class = unit.Class,
-                            Level = unit.Level,
-                            Species = (int)unit.Species,
-                            Role = unit.Role,
-                            Faction = unit.Faction,
-                            Region = unit.Region
-                        }).ToArray(),
-                    DeckNumber = deck.DeckNumber,
-                    Faction = (int)deck.Faction,
-                    LastPicked = deck.LastPicked
-                }).ToList();
-            
-            var battleSetting = _context.BattleSetting.AsNoTracking()
-                .Where(b => b.UserId == userId)
-                .Join(_context.Sheep.AsNoTracking(),
-                    b => b.SheepId,
-                    s => (int)s.SheepId,
-                    (b, sheep) => new { b, sheep })
-                .Join(_context.Enchant.AsNoTracking(),
-                    bs => bs.b.EnchantId,
-                    e => (int)e.EnchantId,
-                    (bs, enchant) => new { bs.b, bs.sheep, enchant })
-                .Join(_context.Character.AsNoTracking(),
-                    bse => bse.b.CharacterId,
-                    c => (int)c.CharacterId,
-                    (bse, character) => new BattleSettingInfo
-                    {
-                        SheepInfo = new SheepInfo
-                        {
-                            Id = (int)bse.sheep.SheepId,
-                            Class = bse.sheep.Class
-                        },
-                        EnchantInfo = new EnchantInfo
-                        {
-                            Id = (int)bse.enchant.EnchantId,
-                            Class = bse.enchant.Class
-                        },
-                        CharacterInfo = new CharacterInfo
-                        {
-                            Id = (int)character.CharacterId,
-                            Class = character.Class
-                        }
-                    }
-                )
-                .FirstOrDefault();
-            
-            if (battleSetting == null)
+        if (userId == null) return Unauthorized();
+
+        var unitById = _cachedDataProvider.GetUnitLookup();
+        var sheepById = _cachedDataProvider.GetSheepLookup();
+        var enchantById = _cachedDataProvider.GetEnchantLookup();
+        var characterById = _cachedDataProvider.GetCharacterLookup();
+        var decks = await _context.Deck.AsNoTracking()
+            .Where(d => d.UserId == userId)
+            .Select(d => new
             {
-                res.GetDeckOk = false;
-                return Ok(res);
-            }
-            
-            res.DeckList = deckInfoList;
-            res.BattleSetting = battleSetting;
-            res.GetDeckOk = true;
-        }
-        else
+                d.DeckId,
+                d.DeckNumber,
+                d.Faction,
+                d.LastPicked
+            }).ToListAsync();
+
+        if (decks.Count == 0)
         {
-            Console.WriteLine("GetDeckResponse: userId is null");
             res.GetDeckOk = false;
+            return Ok(res);
+        }
+        
+        var deckIds = decks.Select(d => d.DeckId).ToList();
+        var deckUnits = await _context.DeckUnit.AsNoTracking()
+            .Where(du => deckIds.Contains(du.DeckId))
+            .OrderBy(du => deckIds.Contains(du.DeckId))
+            .Select(du => new { du.DeckId, du.UnitId })
+            .ToListAsync();
+        
+        var unitInfosByDeck = deckUnits
+            .GroupBy(x => x.DeckId)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Select(x =>
+                {
+                    var id = (int)x.UnitId;
+                    return unitById.GetValueOrDefault(id) ?? new UnitInfo();
+                }).ToArray()
+            );    
+        
+        var deckInfoList = new List<DeckInfo>(decks.Count);
+        foreach (var d in decks)
+        {
+            unitInfosByDeck.TryGetValue(d.DeckId, out var arr);
+            deckInfoList.Add(new DeckInfo
+            {
+                DeckId = d.DeckId,
+                UnitInfo = arr ?? Array.Empty<UnitInfo>(),
+                DeckNumber = d.DeckNumber,
+                Faction = (int)d.Faction,
+                LastPicked = d.LastPicked
+            });
+        }
+        
+        var battleSettingRow = await _context.BattleSetting.AsNoTracking()
+            .Where(b => b.UserId == userId)
+            .Select(b => new { b.SheepId, b.EnchantId, b.CharacterId })
+            .FirstOrDefaultAsync();
+
+        if (battleSettingRow == null)
+        {
+            res.GetDeckOk = false;
+            return Ok(res);
+        }
+        
+        if (!sheepById.TryGetValue(battleSettingRow.SheepId, out var sheepInfo) ||
+            !enchantById.TryGetValue(battleSettingRow.EnchantId, out var enchantInfo) ||
+            !characterById.TryGetValue(battleSettingRow.CharacterId, out var characterInfo))
+        {
+            res.GetDeckOk = false;
+            return Ok(res);
         }
 
+        res.DeckList = deckInfoList;
+        res.BattleSetting = new BattleSettingInfo
+        {
+            SheepInfo = sheepInfo,
+            EnchantInfo = enchantInfo,
+            CharacterInfo = characterInfo
+        };
+        res.GetDeckOk = true;
         return Ok(res);
     }
 

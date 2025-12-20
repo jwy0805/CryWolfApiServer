@@ -513,6 +513,31 @@ public class Transaction
     
     // Navigation properties
     public User User { get; set; }
+    public TransactionReceiptFailure? Failure { get; set; }
+}
+
+[Table("TransactionReceiptFailure")]
+public class TransactionReceiptFailure
+{
+    [Key]
+    public long TransactionId { get; set; }   // PK이자 FK
+
+    public DateTime CreatedAt { get; set; }
+
+    public int? HttpStatusCode { get; set; }
+
+    [MaxLength(64)]
+    public string? ErrorCode { get; set; }
+
+    [MaxLength(1024)]
+    public string? ErrorMessage { get; set; }
+
+    public byte[]? ReceiptHash { get; set; }       // 32 bytes
+
+    public byte[]? ReceiptRawGzip { get; set; }    // gzipped receipt
+    public byte[]? ResponseRawGzip { get; set; }   // gzipped store response
+
+    public Transaction Transaction { get; set; } = null!;
 }
 
 [Table("BattleSetting")]

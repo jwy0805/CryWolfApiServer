@@ -604,6 +604,39 @@ namespace ApiServer.Migrations
                     b.ToTable("Transaction");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.TransactionReceiptFailure", b =>
+                {
+                    b.Property<long>("TransactionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ErrorCode")
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasMaxLength(1024)
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<int?>("HttpStatusCode")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("ReceiptHash")
+                        .HasColumnType("BINARY(32)");
+
+                    b.Property<byte[]>("ReceiptRawGzip")
+                        .HasColumnType("LONGBLOB");
+
+                    b.Property<byte[]>("ResponseRawGzip")
+                        .HasColumnType("LONGBLOB");
+
+                    b.HasKey("TransactionId");
+
+                    b.ToTable("TransactionReceiptFailure");
+                });
+
             modelBuilder.Entity("ApiServer.DB.Unit", b =>
                 {
                     b.Property<int>("UnitId")
@@ -1150,6 +1183,17 @@ namespace ApiServer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ApiServer.DB.TransactionReceiptFailure", b =>
+                {
+                    b.HasOne("ApiServer.DB.Transaction", "Transaction")
+                        .WithOne("Failure")
+                        .HasForeignKey("ApiServer.DB.TransactionReceiptFailure", "TransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Transaction");
+                });
+
             modelBuilder.Entity("ApiServer.DB.UserAuth", b =>
                 {
                     b.HasOne("ApiServer.DB.User", "User")
@@ -1318,6 +1362,11 @@ namespace ApiServer.Migrations
 
                     b.Navigation("DailyProduct")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ApiServer.DB.Transaction", b =>
+                {
+                    b.Navigation("Failure");
                 });
 
             modelBuilder.Entity("ApiServer.DB.User", b =>

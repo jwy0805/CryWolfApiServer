@@ -28,6 +28,7 @@ public class AppDbContext : DbContext
     public DbSet<DailyFreeProduct> DailyFreeProduct { get; set; }
     public DbSet<UserDailyProduct> UserDailyProduct { get; set; }
     public DbSet<Transaction> Transaction { get; set; }
+    public DbSet<TransactionReceiptFailure> TransactionReceiptFailure { get; set; }
     public DbSet<ProductComposition> ProductComposition { get; set; }
     public DbSet<CompositionProbability> CompositionProbability { get; set; }
     public DbSet<Stage> Stage { get; set; }
@@ -211,11 +212,24 @@ public class AppDbContext : DbContext
                 .HasConversion(v => (int)v, v => (StoreType)v);
             entity.HasIndex(t => new { t.StoreType, t.StoreTransactionId });
         });
+        
         builder.Entity<Transaction>()
-            .HasOne(t => t.User)
-            .WithMany(u => u.Transactions)
-            .HasForeignKey(t => t.UserId)
+            .HasOne(t => t.Failure)
+            .WithOne(f => f.Transaction)
+            .HasForeignKey<TransactionReceiptFailure>(f => f.TransactionId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<TransactionReceiptFailure>()
+            .Property(x => x.ReceiptHash)
+            .HasColumnType("BINARY(32)");
+
+        builder.Entity<TransactionReceiptFailure>()
+            .Property(x => x.ReceiptRawGzip)
+            .HasColumnType("LONGBLOB");
+
+        builder.Entity<TransactionReceiptFailure>()
+            .Property(x => x.ResponseRawGzip)
+            .HasColumnType("LONGBLOB");
 
         builder.Entity<DailyProduct>().HasKey(dp => dp.ProductId);
         builder.Entity<DailyProduct>().Property(dp => dp.Class)

@@ -202,15 +202,24 @@ public class AppDbContext : DbContext
         
         builder.Entity<Transaction>(entity =>
         {
-            entity.Property(t => t.Currency)
-                .HasConversion(v => (int)v, v => (CurrencyType)v);
-            entity.Property(t => t.Status)
-                .HasConversion(v => (int)v, v => (TransactionStatus)v);
-            entity.Property(t => t.CashCurrency)
-                .HasConversion(v => (int)v, v => (CashCurrencyType)v);
-            entity.Property(t => t.StoreType)
-                .HasConversion(v => (int)v, v => (StoreType)v);
-            entity.HasIndex(t => new { t.StoreType, t.StoreTransactionId });
+            entity.HasKey(t => t.TransactionId);
+
+            entity.Property(t => t.TransactionId)
+                .ValueGeneratedOnAdd();
+
+            entity.Property(t => t.StoreTransactionId)
+                .HasMaxLength(256)
+                .IsRequired();
+
+            entity.HasIndex(t => new { t.StoreType, t.StoreTransactionId })
+                .IsUnique();
+
+            entity.HasIndex(t => new { t.UserId, t.PurchaseAt });
+
+            entity.Property(t => t.Currency).HasConversion<int>();
+            entity.Property(t => t.Status).HasConversion<int>();
+            entity.Property(t => t.CashCurrency).HasConversion<int>();
+            entity.Property(t => t.StoreType).HasConversion<int>();
         });
         
         builder.Entity<Transaction>()

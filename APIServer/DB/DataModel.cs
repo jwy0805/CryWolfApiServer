@@ -500,6 +500,7 @@ public class UserMaterial
 [Table("Transaction")]
 public class Transaction
 {
+    // StoreTransactionId는 절대 null이 되면 안됨
     public long TransactionId { get; set; } 
     public int UserId { get; set; }
     public int ProductId { get; set; }
@@ -509,11 +510,45 @@ public class Transaction
     public TransactionStatus Status { get; set; }
     public CashCurrencyType CashCurrency { get; set; }
     public StoreType StoreType { get; set; }
-    [MaxLength(256)] public string StoreTransactionId { get; set; } = string.Empty;
+    [MaxLength(256)] public string StoreTransactionId { get; private set; } = null!;
     
     // Navigation properties
     public User User { get; set; }
     public TransactionReceiptFailure? Failure { get; set; }
+
+    // EF Core Materialization 용
+    private Transaction() { }
+
+    public Transaction(
+        int userId,
+        int productId,
+        int count,
+        CurrencyType currency,
+        CashCurrencyType cashCurrency,
+        StoreType storeType,
+        string storeTransactionId)
+    {
+        if (userId <= 0) throw new ArgumentOutOfRangeException(nameof(userId));
+        if (productId <= 0) throw new ArgumentOutOfRangeException(nameof(productId));
+        if (count <= 0) throw new ArgumentOutOfRangeException(nameof(count));
+        if (storeType == StoreType.None) throw new ArgumentException("StoreType must not be None.", nameof(storeType));
+        if (string.IsNullOrWhiteSpace(storeTransactionId))
+            throw new ArgumentException("StoreTransactionId is required.", nameof(storeTransactionId));
+
+        UserId = userId;
+        ProductId = productId;
+        Count = count;
+        Currency = currency;
+        CashCurrency = cashCurrency;
+        StoreType = storeType;
+        StoreTransactionId = storeTransactionId.Trim();
+
+        PurchaseAt = DateTime.UtcNow;
+        Status = TransactionStatus.Pending;
+    }
+
+    public void MarkCompleted() => Status = TransactionStatus.Completed;
+    public void MarkFailed() => Status = TransactionStatus.Failed;
 }
 
 [Table("TransactionReceiptFailure")]

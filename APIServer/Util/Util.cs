@@ -6,6 +6,12 @@ namespace ApiServer.Util;
 public class Util
 {
     private static readonly Random Random = new();
+
+    public static string? Truncate(string? s, int max)
+    {
+        if (string.IsNullOrEmpty(s)) return s;
+        return s.Length <= max ? s : s[..max];
+    }
     
     public static T[] ShuffleArray<T>(T[] array)
     {
@@ -45,5 +51,20 @@ public class Util
         if (hashIndex < 0 || hashIndex == username.Length - 1) return string.Empty;
         
         return username[(hashIndex + 1)..].Trim();
+    }
+
+    public static byte[] GzipUtf8(string s)
+    {
+        var input = System.Text.Encoding.UTF8.GetBytes(s);
+        using var ms = new MemoryStream();
+        using (var gz = new System.IO.Compression.GZipStream(ms, System.IO.Compression.CompressionLevel.Optimal, leaveOpen: true))
+            gz.Write(input, 0, input.Length);
+        return ms.ToArray();
+    }
+
+    public static byte[] Sha256Utf8(string s)
+    {
+        using var sha = System.Security.Cryptography.SHA256.Create();
+        return sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s));
     }
 }

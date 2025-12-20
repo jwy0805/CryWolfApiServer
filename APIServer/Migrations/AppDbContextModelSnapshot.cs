@@ -597,9 +597,10 @@ namespace ApiServer.Migrations
 
                     b.HasKey("TransactionId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("StoreType", "StoreTransactionId")
+                        .IsUnique();
 
-                    b.HasIndex("StoreType", "StoreTransactionId");
+                    b.HasIndex("UserId", "PurchaseAt");
 
                     b.ToTable("Transaction");
                 });

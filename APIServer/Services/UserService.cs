@@ -273,50 +273,58 @@ public class UserService
         var wolfKnightUnitIdsAll = new [] { UnitId.PoisonBomb, UnitId.CactusBoss, UnitId.SnakeNaga };
         var sheepNobleKnightUnitIdsAll = new [] { UnitId.SunfloraPixie, UnitId.MothCelestial };
         var wolfNobleKnightUnitIdsAll = new [] { UnitId.Werewolf, UnitId.Horror };
+
         var sheepKnightUnitIds = Util.Util.ShuffleArray(sheepKnightUnitIdsAll).Take(2).ToArray();
-        var wolfKnightUnitIds = Util.Util.ShuffleArray(wolfKnightUnitIdsAll).Take(2).ToArray();
+        var wolfKnightUnitIds  = Util.Util.ShuffleArray(wolfKnightUnitIdsAll).Take(2).ToArray();
         var sheepNobleKnightUnitIds = Util.Util.ShuffleArray(sheepNobleKnightUnitIdsAll).Take(1).ToArray();
-        var wolfNobleKnightUnitIds = Util.Util.ShuffleArray(wolfNobleKnightUnitIdsAll).Take(1).ToArray();
-        var sheepUnits = sheepUnitIds.Concat(sheepNobleKnightUnitIds.Concat(sheepKnightUnitIds)).ToArray();
-        var wolfUnits = wolfUnitIds.Concat(wolfNobleKnightUnitIds.Concat(wolfKnightUnitIds)).ToArray();
+        var wolfNobleKnightUnitIds  = Util.Util.ShuffleArray(wolfNobleKnightUnitIdsAll).Take(1).ToArray();
 
-        foreach (var sheepUnit in sheepUnits)
-        {
-            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = sheepUnit, Count = 1});
-        }
-        
-        foreach (var wolfUnit in wolfUnits)
-        {
-            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = wolfUnit, Count = 1});
-        }
-        
+        var sheepUnits = sheepUnitIds.Concat(sheepNobleKnightUnitIds).Concat(sheepKnightUnitIds).ToArray();
+        var wolfUnits  = wolfUnitIds.Concat(wolfNobleKnightUnitIds).Concat(wolfKnightUnitIds).ToArray();
+
+        // 컬렉션(유저 보유 유닛)
+        foreach (var unit in sheepUnits)
+            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = unit, Count = 1 });
+
+        foreach (var unit in wolfUnits)
+            _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = unit, Count = 1 });
+
+        // Sheep decks
         for (int i = 0; i < 5; i++)
         {
-            var deck = new Deck { UserId = userId, Faction = Faction.Sheep, DeckNumber = i + 1, LastPicked = i == 0};
-            _context.Deck.Add(deck);
-
-            foreach (var sheepUnit in sheepUnits)
+            var deck = new Deck
             {
-                _context.DeckUnit.Add(new DeckUnit { DeckId = deck.DeckId, UnitId = sheepUnit });
-            }
+                UserId = userId,
+                Faction = Faction.Sheep,
+                DeckNumber = i + 1,
+                LastPicked = i == 0,
+                DeckUnits = new List<DeckUnit>()
+            };
+
+            foreach (var unit in sheepUnits)
+                deck.DeckUnits.Add(new DeckUnit { UnitId = unit });
+
+            _context.Deck.Add(deck);
         }
-        
+
+        // Wolf decks
         for (int i = 0; i < 5; i++)
         {
-            var deck = new Deck { UserId = userId, Faction = Faction.Wolf, DeckNumber = i + 1, LastPicked = i == 0};
-            if (i == 0)
+            var deck = new Deck
             {
-                deck.LastPicked = true;
-            }
-            
+                UserId = userId,
+                Faction = Faction.Wolf,
+                DeckNumber = i + 1,
+                LastPicked = i == 0,
+                DeckUnits = new List<DeckUnit>()
+            };
+
+            foreach (var unit in wolfUnits)
+                deck.DeckUnits.Add(new DeckUnit { UnitId = unit });
+
             _context.Deck.Add(deck);
-            
-            foreach (var wolfUnit in wolfUnits)
-            {
-                _context.DeckUnit.Add(new DeckUnit { DeckId = deck.DeckId, UnitId = wolfUnit });
-            }
         }
-        
+
         _context.SaveChangesExtended();
     }
     

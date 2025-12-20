@@ -147,6 +147,9 @@ public class AppDbContext : DbContext
         
         builder.Entity<Deck>().HasIndex(d => new { d.UserId, d.Faction, d.DeckNumber }).IsUnique();
         builder.Entity<Deck>()
+            .Property(d => d.DeckId)
+            .ValueGeneratedOnAdd();
+        builder.Entity<Deck>()
             .HasOne(d => d.User)
             .WithMany(u => u.Decks)
             .HasForeignKey(d => d.UserId)

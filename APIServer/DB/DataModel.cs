@@ -256,7 +256,7 @@ public class Deck
     
     // Navigation properties
     public User User { get; set; }
-    public ICollection<DeckUnit> DeckUnits { get; set; }
+    public ICollection<DeckUnit> DeckUnits { get; set; } = new List<DeckUnit>();
 }
 
 [Table("Deck_Unit")]

@@ -307,11 +307,10 @@ public class PaymentController : ControllerBase
                 .Select(p => p.ProductId)
                 .FirstOrDefault();
             var count = 1;
-            var transaction = new Transaction(userId, productId, count)
+            var transaction = new Transaction()
             {
                 StoreType = storeType,
                 StoreTransactionId = storeTxId,
-                ReceiptRaw = required.Receipt,
                 Currency = CurrencyType.Cash,
                 // TODO: region에 맞게
                 CashCurrency = CashCurrencyType.KRW,

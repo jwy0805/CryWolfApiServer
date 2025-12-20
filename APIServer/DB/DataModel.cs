@@ -500,9 +500,7 @@ public class UserMaterial
 [Table("Transaction")]
 public class Transaction
 {
-    [Key]
-    public long TransactionTimestamp { get; set; }
-    [Key]
+    public long TransactionId { get; set; } 
     public int UserId { get; set; }
     public int ProductId { get; set; }
     public int Count { get; set; }
@@ -512,24 +510,6 @@ public class Transaction
     public CashCurrencyType CashCurrency { get; set; }
     public StoreType StoreType { get; set; }
     [MaxLength(256)] public string StoreTransactionId { get; set; } = string.Empty;
-    [MaxLength(1000)] public string ReceiptRaw { get; set; } = string.Empty;
-
-    public Transaction() { }
-    
-    public Transaction(int userId, int productId, int count)
-    {
-        UserId = userId;
-        ProductId = productId;
-        Count = count;
-        PurchaseAt = DateTime.UtcNow;
-        SetTimestamp();
-    }
-
-    private void SetTimestamp()
-    {
-        var timestampString = $"{PurchaseAt:yyyyMMddHHmmssfff}";
-        TransactionTimestamp = long.Parse(timestampString);
-    }
     
     // Navigation properties
     public User User { get; set; }

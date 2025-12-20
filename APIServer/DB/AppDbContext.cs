@@ -199,7 +199,6 @@ public class AppDbContext : DbContext
             .HasForeignKey(m => m.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.Entity<Transaction>().HasKey(t => new { t.TransactionTimestamp, t.UserId });
         builder.Entity<Transaction>(entity =>
         {
             entity.Property(t => t.Currency)

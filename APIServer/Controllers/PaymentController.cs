@@ -1020,9 +1020,7 @@ public class PaymentController : ControllerBase
         };
 
         var handler = new JsonWebTokenHandler();
-        var token = handler.CreateToken(descriptor);
-        LogJwtSanity(token);
-        return token;
+        return handler.CreateToken(descriptor);
     }
 
     private ECDsa LoadAppleEcdsaFromConfig(string raw)
@@ -1142,41 +1140,6 @@ public class PaymentController : ControllerBase
         {
             err = e.GetType().Name;
             return false;
-        }
-    }
-    
-    private void LogJwtSanity(string jwt)
-    {
-        try
-        {
-            var parts = jwt.Split('.');
-            if (parts.Length != 3)
-            {
-                _logger.LogWarning("[AppleIAP] JWT format invalid parts={Parts}", parts.Length);
-                return;
-            }
-
-            string Decode(string b64)
-            {
-                b64 = b64.Replace('-', '+').Replace('_', '/');
-                switch (b64.Length % 4)
-                {
-                    case 2: b64 += "=="; break;
-                    case 3: b64 += "="; break;
-                }
-                return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(b64));
-            }
-
-            var headerJson = Decode(parts[0]);
-            var payloadJson = Decode(parts[1]);
-
-            // 전체 출력 금지: 필요한 키만 추출해서 로깅
-            _logger.LogInformation("[AppleIAP] JWT header={Header}", headerJson);
-            _logger.LogInformation("[AppleIAP] JWT payload={Payload}", payloadJson);
-        }
-        catch (Exception e)
-        {
-            _logger.LogWarning(e, "[AppleIAP] Failed to decode JWT for sanity check");
         }
     }
 }

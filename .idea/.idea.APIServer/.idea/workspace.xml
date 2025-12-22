@@ -12,21 +12,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="iap">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="iap2">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/DataModel_enum.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/IapService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/IapService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +50,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map" root0="FORCE_HIGHLIGHTING" />
@@ -630,15 +620,7 @@
       <workItem from="1765593195861" duration="2593000" />
       <workItem from="1765611619477" duration="2426000" />
       <workItem from="1765716081503" duration="73526000" />
-      <workItem from="1766374338075" duration="8122000" />
-    </task>
-    <task id="LOCAL-00098" summary="feat version 1.0.0 for android">
-      <option name="closed" value="true" />
-      <created>1749637719834</created>
-      <option name="number" value="00098" />
-      <option name="presentableId" value="LOCAL-00098" />
-      <option name="project" value="LOCAL" />
-      <updated>1749637719835</updated>
+      <workItem from="1766374338075" duration="9804000" />
     </task>
     <task id="LOCAL-00099" summary="d">
       <option name="closed" value="true" />
@@ -1024,7 +1006,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766379261448</updated>
     </task>
-    <option name="localTasksCounter" value="147" />
+    <task id="LOCAL-00147" summary="iap2">
+      <option name="closed" value="true" />
+      <created>1766382678293</created>
+      <option name="number" value="00147" />
+      <option name="presentableId" value="LOCAL-00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1766382678293</updated>
+    </task>
+    <option name="localTasksCounter" value="148" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1034,7 +1024,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="alter 'NoticeType' int to NoticeType" />
     <MESSAGE value="[FEAT] Database new table EventNoticeLocalization" />
     <MESSAGE value="database" />
     <MESSAGE value="migrations" />
@@ -1059,7 +1048,8 @@
     <MESSAGE value="loggin2" />
     <MESSAGE value="loggin3" />
     <MESSAGE value="iap" />
-    <option name="LAST_COMMIT_MESSAGE" value="iap" />
+    <MESSAGE value="iap2" />
+    <option name="LAST_COMMIT_MESSAGE" value="iap2" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

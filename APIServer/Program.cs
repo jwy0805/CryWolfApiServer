@@ -133,7 +133,11 @@ app.UseRouting();
 app.UseCors(app.Environment.IsDevelopment() ? "DevCors" : "ProdCors");
 app.MapRazorPages();
 
-app.UseHttpsRedirection();
+if (builder.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

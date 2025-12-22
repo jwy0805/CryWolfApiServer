@@ -306,6 +306,8 @@ public class IapService
         var keyId = _config["Apple:KeyId"];
         var bundleId = _config["BundleId"];
         var privateKeyRaw = _config["Apple:PrivateKey"];
+        
+        _logger.LogInformation($"[AppleIAP] {privateKeyRaw}");
 
         LogApplePrivateKeyDiagnostics(privateKeyRaw ?? string.Empty);
         

@@ -73,6 +73,7 @@ builder.Services.AddScoped<RewardService>();
 builder.Services.AddScoped<ProductClaimService>();
 builder.Services.AddScoped<MailService>();
 builder.Services.AddScoped<IDailyProductService, DailyProductService>();
+builder.Services.AddScoped<IapService>();
 builder.Services.AddTransient<UserService>();
 
 builder.Services.AddDbContextFactory<AppDbContext>(options =>

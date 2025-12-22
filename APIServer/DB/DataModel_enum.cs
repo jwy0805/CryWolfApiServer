@@ -389,6 +389,7 @@ public enum CashPaymentErrorCode
     Unauthorized = 2,       // 토큰 만료/권한 오류 - 재로그인
     AlreadyProcessed = 3,   // 이미 처리된 영수증 - 멱등성 처리용
     InternalError = 4,      // 서버 내부 오류 - 재시도
+    Processing = 5          // 처리중 - 재시도
 }
 
 public enum VirtualPaymentCode

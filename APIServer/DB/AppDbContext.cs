@@ -228,17 +228,16 @@ public class AppDbContext : DbContext
             .HasForeignKey<TransactionReceiptFailure>(f => f.TransactionId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<TransactionReceiptFailure>()
-            .Property(x => x.ReceiptHash)
-            .HasColumnType("BINARY(32)");
+        builder.Entity<TransactionReceiptFailure>(entity =>
+        {
+            entity.HasKey(f => f.TransactionId);
 
-        builder.Entity<TransactionReceiptFailure>()
-            .Property(x => x.ReceiptRawGzip)
-            .HasColumnType("LONGBLOB");
-
-        builder.Entity<TransactionReceiptFailure>()
-            .Property(x => x.ResponseRawGzip)
-            .HasColumnType("LONGBLOB");
+            // 핵심: Failure의 TransactionId는 절대 자동 생성되면 안 됨 (principal 값을 그대로 씀)
+            entity.Property(f => f.TransactionId).ValueGeneratedNever();
+            entity.Property(x => x.ReceiptHash).HasColumnType("BINARY(32)");
+            entity.Property(x => x.ReceiptRawGzip).HasColumnType("LONGBLOB");
+            entity.Property(x => x.ResponseRawGzip).HasColumnType("LONGBLOB");
+        });
 
         builder.Entity<DailyProduct>().HasKey(dp => dp.ProductId);
         builder.Entity<DailyProduct>().Property(dp => dp.Class)

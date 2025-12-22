@@ -307,8 +307,6 @@ public class IapService
         var bundleId = _config["BundleId"];
         var privateKeyRaw = _config["Apple:PrivateKey"];
         
-        _logger.LogInformation($"[AppleIAP] {privateKeyRaw}");
-
         LogApplePrivateKeyDiagnostics(privateKeyRaw ?? string.Empty);
         
         if (string.IsNullOrWhiteSpace(issuerId) ||
@@ -343,19 +341,31 @@ public class IapService
 
     private ECDsa LoadAppleEcdsaFromConfig(string raw)
     {
-        // 1) 흔한 케이스: 환경변수/JSON에서 \n 이스케이프
-        raw = raw.Trim().Trim('"').Replace("\\n", "\n").Replace("\\r", "\r");
+        raw = raw.Trim().Trim('"')
+            .Replace("\\r", "\r")
+            .Replace("\\n", "\n");
 
-        // 2) PEM이 그대로 들어온 경우
+        // 2) PEM이 들어온 경우: ImportFromPem 대신 "한 줄 PEM"도 되는 방식으로 직접 파싱
         if (raw.Contains("BEGIN PRIVATE KEY", StringComparison.Ordinal) ||
             raw.Contains("BEGIN EC PRIVATE KEY", StringComparison.Ordinal))
         {
-            var ecdsaPem = ECDsa.Create();
-            ecdsaPem.ImportFromPem(raw);
-            return ecdsaPem;
+            var ecdsa = ECDsa.Create();
+
+            // PKCS#8 (Apple .p8는 보통 이 케이스)
+            if (raw.Contains("BEGIN PRIVATE KEY", StringComparison.Ordinal))
+            {
+                var der = ExtractDerFromPem(raw, "PRIVATE KEY");
+                ecdsa.ImportPkcs8PrivateKey(der, out _);
+                return ecdsa;
+            }
+
+            // (혹시라도) SEC1 EC PRIVATE KEY 케이스
+            var ecDer = ExtractDerFromPem(raw, "EC PRIVATE KEY");
+            ecdsa.ImportECPrivateKey(ecDer, out _);
+            return ecdsa;
         }
 
-        // 3) base64로 들어온 경우: (a) DER일 수도 있고 (b) PEM 텍스트를 base64로 감싼 것일 수도 있음
+        // 3) base64로 들어온 경우(기존 로직 유지)
         byte[] bytes;
         try
         {
@@ -366,19 +376,34 @@ public class IapService
             throw new InvalidOperationException("Apple:PrivateKey is neither PEM nor valid base64.", ex);
         }
 
-        // 3-b) base64를 풀었더니 PEM 텍스트인 케이스
-        // (p8 파일 내용을 그대로 base64 인코딩해서 넣은 경우가 여기에 해당)
         if (LooksLikePemText(bytes, out var pemText))
         {
-            var ecdsaPem2 = ECDsa.Create();
-            ecdsaPem2.ImportFromPem(pemText);
-            return ecdsaPem2;
+            // base64로 감싼 PEM 텍스트인 경우도 위 PEM 분기로 다시 태움
+            return LoadAppleEcdsaFromConfig(pemText);
         }
 
-        // 3-a) 정상 DER(PKCS#8)로 판단되면 그대로 Import
         var ecdsaDer = ECDsa.Create();
         ecdsaDer.ImportPkcs8PrivateKey(bytes, out _);
         return ecdsaDer;
+    }
+
+    private static byte[] ExtractDerFromPem(string pem, string label)
+    {
+        var begin = $"-----BEGIN {label}-----";
+        var end   = $"-----END {label}-----";
+
+        var start = pem.IndexOf(begin, StringComparison.Ordinal);
+        var stop  = pem.IndexOf(end, StringComparison.Ordinal);
+        if (start < 0 || stop < 0 || stop <= start)
+            throw new InvalidOperationException($"PEM format invalid. Missing {begin}/{end}");
+
+        start += begin.Length;
+
+        // BEGIN/END 사이의 base64 본문만 추출 + 공백/개행 제거
+        var base64Body = pem.Substring(start, stop - start);
+        base64Body = new string(base64Body.Where(c => !char.IsWhiteSpace(c)).ToArray());
+
+        return Convert.FromBase64String(base64Body);
     }
 
     private bool LooksLikePemText(byte[] bytes, out string pem)

@@ -275,8 +275,7 @@ public class PaymentController : ControllerBase
                 res.ErrorCode = CashPaymentErrorCode.Unauthorized;
                 return Ok(res);
             }
-            
-            // Store/TransactionId 추출
+
             var (storeType, storeTxId) = ExtractStoreInfo(receiptRaw);
             if (storeType == StoreType.None || string.IsNullOrEmpty(storeTxId))
             {
@@ -294,17 +293,17 @@ public class PaymentController : ControllerBase
                 res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
                 return Ok(res);
             }
-            
+
             var strategy = _context.Database.CreateExecutionStrategy();
 
-            return await strategy.ExecuteAsync(async () =>
-            {
-                await using var dbTx = await _context.Database.BeginTransactionAsync();
+            // 1) DB에 "Pending" 예약만 먼저 만들어서 유니크(StoreType, StoreTransactionId)로 중복을 막는다.
+            long transactionId;
 
-                try
+            try
+            {
+                transactionId = await strategy.ExecuteAsync(async () =>
                 {
-                    // Transaction 만들어서 TransactionId 확보
-                    var transaction = new Transaction(
+                    var tx = new Transaction(
                         userId: userId,
                         productId: product.ProductId,
                         count: 1,
@@ -314,77 +313,115 @@ public class PaymentController : ControllerBase
                         storeTransactionId: storeTxId
                     );
 
-                    _context.Transaction.Add(transaction);
+                    tx.Status = TransactionStatus.Pending;
 
-                    try
+                    _context.Transaction.Add(tx);
+                    await _context.SaveChangesExtendedAsync();
+                    return tx.TransactionId;
+                });
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is MySqlConnector.MySqlException { Number: 1062 })
+            {
+                // 이미 같은 StoreTxId가 들어온 상태: 현재 상태를 보고 즉시 응답
+                var existing = await _context.Transaction
+                    .AsNoTracking()
+                    .Where(t => t.StoreType == storeType && t.StoreTransactionId == storeTxId)
+                    .Select(t => new { t.TransactionId, t.Status })
+                    .FirstOrDefaultAsync();
+
+                if (existing == null)
+                {
+                    res.PaymentOk = false;
+                    res.ErrorCode = CashPaymentErrorCode.InternalError;
+                    return Ok(res);
+                }
+
+                if (existing.Status == TransactionStatus.Completed)
+                {
+                    res.PaymentOk = true;
+                    res.ErrorCode = CashPaymentErrorCode.AlreadyProcessed;
+                    return Ok(res);
+                }
+
+                if (existing.Status is TransactionStatus.Pending or TransactionStatus.Processing)
+                {
+                    res.PaymentOk = false;
+                    res.ErrorCode = CashPaymentErrorCode.Processing;
+                    return Ok(res);
+                }
+
+                // Failed
+                res.PaymentOk = false;
+                res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
+                return Ok(res);
+            }
+
+            // 2) 영수증 검증은 "트랜잭션 밖"에서 수행 (DB 락 안 잡음)
+            var validationResult =
+                storeType switch
+                {
+                    StoreType.GooglePlay => await _iapService.ValidateGoogleReceiptAsync(required.ProductCode, receiptRaw),
+                    StoreType.AppStore => await _iapService.ValidateAppleReceiptAsync(required.ProductCode, receiptRaw),
+                    _ => (false, "Unsupported store type", null, null)
+                };
+
+            // 3) 이제 "지급 + 상태 업데이트"만 DB 트랜잭션으로 원자 처리
+            return await strategy.ExecuteAsync(async () =>
+            {
+                await using var dbTx = await _context.Database.BeginTransactionAsync();
+
+                try
+                {
+                    // 트랜잭션 엔티티를 추적 로딩
+                    var txRow = await _context.Transaction
+                        .Include(t => t.Failure)
+                        .FirstOrDefaultAsync(t => t.TransactionId == transactionId);
+
+                    if (txRow == null)
                     {
-                        await _context.SaveChangesExtendedAsync();
-                    }
-                    catch (DbUpdateException)
-                    {
-                        // 유니크 충돌 케이스는 여기서 즉시 종료하므로, 명시 롤백 후 return
                         await dbTx.RollbackAsync();
+                        res.PaymentOk = false;
+                        res.ErrorCode = CashPaymentErrorCode.InternalError;
+                        return Ok(res);
+                    }
 
-                        var existing = await _context.Transaction
-                            .AsNoTracking()
-                            .Where(t => t.StoreType == storeType && t.StoreTransactionId == storeTxId)
-                            .Select(t => new { t.TransactionId, t.Status })
-                            .FirstOrDefaultAsync();
+                    // 이미 처리된 케이스(재시도/경합 방어)
+                    if (txRow.Status == TransactionStatus.Completed)
+                    {
+                        await dbTx.CommitAsync();
+                        res.PaymentOk = true;
+                        res.ErrorCode = CashPaymentErrorCode.AlreadyProcessed;
+                        return Ok(res);
+                    }
 
-                        if (existing == null)
-                        {
-                            res.PaymentOk = false;
-                            res.ErrorCode = CashPaymentErrorCode.InternalError;
-                            return Ok(res);
-                        }
-
-                        if (existing.Status == TransactionStatus.Completed)
-                        {
-                            res.PaymentOk = true;
-                            res.ErrorCode = CashPaymentErrorCode.AlreadyProcessed;
-                            return Ok(res);
-                        }
-
-                        if (existing.Status == TransactionStatus.Pending)
-                        {
-                            res.PaymentOk = false;
-                            res.ErrorCode = CashPaymentErrorCode.Processing; // 없으면 다른 코드로 매핑
-                            return Ok(res);
-                        }
-
+                    if (txRow.Status == TransactionStatus.Failed)
+                    {
+                        await dbTx.CommitAsync();
                         res.PaymentOk = false;
                         res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
                         return Ok(res);
                     }
 
-                    var validationResult =
-                        storeType switch
-                        {
-                            StoreType.GooglePlay => await _iapService.ValidateGoogleReceiptAsync(required.ProductCode, receiptRaw),
-                            StoreType.AppStore => await _iapService.ValidateAppleReceiptAsync(required.ProductCode, receiptRaw),
-                            _ => (false, "Unsupported store type", null, null)
-                        };
-
+                    // 검증 실패면: Failed + Failure 저장을 원자적으로
                     if (!validationResult.IsValid)
                     {
-                        transaction.Status = TransactionStatus.Failed;
+                        txRow.Status = TransactionStatus.Failed;
 
-                        var failure = new TransactionReceiptFailure
+                        if (txRow.Failure == null)
                         {
-                            TransactionId = transaction.TransactionId,
-                            Transaction = transaction,
-                            CreatedAt = DateTime.UtcNow,
-                            HttpStatusCode = validationResult.HttpStatusCode,
-                            ErrorMessage = Util.Util.Truncate(validationResult.Message, 1024),
-                            ReceiptRawGzip = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.GzipUtf8(receiptRaw),
-                            ReceiptHash = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.Sha256Utf8(receiptRaw),
-                            ResponseRawGzip = string.IsNullOrEmpty(validationResult.RawResponse)
-                                ? null
-                                : Util.Util.GzipUtf8(validationResult.RawResponse),
-                        };
-
-                        transaction.Failure = failure;
-                        _context.TransactionReceiptFailure.Add(failure);
+                            txRow.Failure = new TransactionReceiptFailure
+                            {
+                                TransactionId = txRow.TransactionId,
+                                CreatedAt = DateTime.UtcNow,
+                                HttpStatusCode = validationResult.HttpStatusCode,
+                                ErrorMessage = Util.Util.Truncate(validationResult.Message, 1024),
+                                ReceiptRawGzip = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.GzipUtf8(receiptRaw),
+                                ReceiptHash = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.Sha256Utf8(receiptRaw),
+                                ResponseRawGzip = string.IsNullOrEmpty(validationResult.RawResponse)
+                                    ? null
+                                    : Util.Util.GzipUtf8(validationResult.RawResponse),
+                            };
+                        }
 
                         await _context.SaveChangesExtendedAsync();
                         await dbTx.CommitAsync();
@@ -394,9 +431,23 @@ public class PaymentController : ControllerBase
                         return Ok(res);
                     }
 
+                    // 검증 성공: CAS 느낌으로 Processing 선점 (동시 지급 방지)
+                    if (txRow.Status != TransactionStatus.Pending)
+                    {
+                        // Pending이 아니면 누군가 이미 처리 중/완료
+                        await dbTx.CommitAsync();
+                        res.PaymentOk = false;
+                        res.ErrorCode = CashPaymentErrorCode.Processing;
+                        return Ok(res);
+                    }
+
+                    txRow.Status = TransactionStatus.Processing;
+                    await _context.SaveChangesExtendedAsync();
+
+                    // 지급 처리(동일 DbContext, 동일 트랜잭션 범위 내에서 수행)
                     await PurchaseComplete(userId, required.ProductCode);
 
-                    transaction.Status = TransactionStatus.Completed;
+                    txRow.Status = TransactionStatus.Completed;
                     await _context.SaveChangesExtendedAsync();
 
                     await dbTx.CommitAsync();
@@ -407,7 +458,6 @@ public class PaymentController : ControllerBase
                 }
                 catch
                 {
-                    // 어떤 예외든 트랜잭션 남기지 않게 보장
                     await dbTx.RollbackAsync();
                     throw;
                 }
@@ -448,8 +498,7 @@ public class PaymentController : ControllerBase
 
     public async Task PurchaseComplete(int userId, string productCode)
     {
-        var product = await _context.Product.AsNoTracking().
-            FirstOrDefaultAsync(p => p.ProductCode == productCode);
+        var product = _cachedDataProvider.GetProducts().FirstOrDefault(p => p.ProductCode == productCode);
         if (product == null) return;
 
         if (product.ProductType is

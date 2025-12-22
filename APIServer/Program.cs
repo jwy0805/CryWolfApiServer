@@ -6,6 +6,7 @@ using ApiServer.Providers;
 using ApiServer.SignalRHub;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,20 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSignalR();
 
+builder.Services.AddDbContext<AppDbContext>(
+    options => options.UseMySql(
+        defaultConnectionString,
+        new MariaDbServerVersion(new Version(11, 3, 2)),
+        mysqlOptions => mysqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(5), null)),
+    contextLifetime: ServiceLifetime.Scoped,
+    optionsLifetime: ServiceLifetime.Singleton);
+
+builder.Services.AddDbContextFactory<AppDbContext>(options =>
+    options.UseMySql(defaultConnectionString,
+        new MariaDbServerVersion(new Version(11, 3, 2)),
+        mysqlOptions =>
+            mysqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(5), null)));
+
 builder.Services.AddScoped<TokenService>(provider => new TokenService(jwtSecret, 
     provider.GetRequiredService<AppDbContext>()));
 
@@ -64,7 +79,7 @@ builder.Services.AddHostedService<ExpiredTokenCleanupService>();
 builder.Services.AddHostedService<UserManagementService>();
 builder.Services.AddHostedService<DailyJob>();
 builder.Services.AddHttpClient<ApiService>();
-builder.Services.AddSingleton<ApiService>();
+// builder.Services.AddSingleton<ApiService>();
 builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<TaskQueueService>();
 builder.Services.AddScoped<WebSocketService>();
@@ -75,12 +90,6 @@ builder.Services.AddScoped<MailService>();
 builder.Services.AddScoped<IDailyProductService, DailyProductService>();
 builder.Services.AddScoped<IapService>();
 builder.Services.AddTransient<UserService>();
-
-builder.Services.AddDbContextFactory<AppDbContext>(options =>
-        options.UseMySql(defaultConnectionString,
-            new MariaDbServerVersion(new Version(11, 3, 2)),
-            mysqlOptions => mysqlOptions
-                .EnableRetryOnFailure(5, TimeSpan.FromSeconds(5), null)));
 
 builder.Services.AddSingleton<CachedDataProvider>();
 

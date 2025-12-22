@@ -365,12 +365,12 @@ public enum CashCurrencyType
 
 public enum TransactionStatus
 {
-    None,
+    Pending,
+    Processing,
     Completed,
     Refunded,
     Cancelled,
     Failed,
-    Pending,
     Expired,
     PartiallyRefunded,
 }

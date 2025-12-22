@@ -989,24 +989,21 @@ public class PaymentController : ControllerBase
         var issuerId = _config["Apple:IssuerId"];
         var keyId = _config["Apple:KeyId"];
         var bundleId = _config["BundleId"];
-        var privateKeyBase64 = _config["Apple:PrivateKey"];
+        var privateKeyRaw = _config["Apple:PrivateKey"];
 
+        LogApplePrivateKeyDiagnostics(privateKeyRaw ?? string.Empty);
+        
         if (string.IsNullOrWhiteSpace(issuerId) ||
             string.IsNullOrWhiteSpace(keyId) ||
             string.IsNullOrWhiteSpace(bundleId) ||
-            string.IsNullOrWhiteSpace(privateKeyBase64))
+            string.IsNullOrWhiteSpace(privateKeyRaw))
         {
             throw new InvalidOperationException("Apple App Store Server API config is not complete.");
         }
 
-        var keyBytes = ParseApplePrivateKey(privateKeyBase64);
-        var ecdsa = ECDsa.Create();
-        ecdsa.ImportPkcs8PrivateKey(keyBytes, out _);
+        using var ecdsa = LoadAppleEcdsaFromConfig(privateKeyRaw);
 
-        var securityKey = new ECDsaSecurityKey(ecdsa)
-        {
-            KeyId = keyId
-        };
+        var securityKey = new ECDsaSecurityKey(ecdsa) { KeyId = keyId };
 
         var now = DateTimeOffset.UtcNow;
         var descriptor = new SecurityTokenDescriptor
@@ -1019,31 +1016,130 @@ public class PaymentController : ControllerBase
             {
                 ["bid"] = bundleId
             },
-            SigningCredentials = new SigningCredentials(
-                securityKey,
-                SecurityAlgorithms.EcdsaSha256)
+            SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.EcdsaSha256)
         };
 
         var handler = new JsonWebTokenHandler();
         return handler.CreateToken(descriptor);
     }
 
-    private byte[] ParseApplePrivateKey(string raw)
+    private ECDsa LoadAppleEcdsaFromConfig(string raw)
     {
-        raw = raw.Trim();
-        
-        if (raw.Contains("BEGIN PRIVATE KEY"))
+        // 1) 흔한 케이스: 환경변수/JSON에서 \n 이스케이프
+        raw = raw.Trim().Trim('"').Replace("\\n", "\n").Replace("\\r", "\r");
+
+        // 2) PEM이 그대로 들어온 경우
+        if (raw.Contains("BEGIN PRIVATE KEY", StringComparison.Ordinal) ||
+            raw.Contains("BEGIN EC PRIVATE KEY", StringComparison.Ordinal))
         {
-            // PEM -> base64 추출
-            var lines = raw
-                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(l => !l.StartsWith("-----"))
-                .ToArray();
-            var base64 = string.Join("", lines);
-            return Convert.FromBase64String(base64);
+            var ecdsaPem = ECDsa.Create();
+            ecdsaPem.ImportFromPem(raw);
+            return ecdsaPem;
         }
 
-        // 이미 base64만 들어온 경우
-        return Convert.FromBase64String(raw);
+        // 3) base64로 들어온 경우: (a) DER일 수도 있고 (b) PEM 텍스트를 base64로 감싼 것일 수도 있음
+        byte[] bytes;
+        try
+        {
+            bytes = Convert.FromBase64String(raw);
+        }
+        catch (FormatException ex)
+        {
+            throw new InvalidOperationException("Apple:PrivateKey is neither PEM nor valid base64.", ex);
+        }
+
+        // 3-b) base64를 풀었더니 PEM 텍스트인 케이스
+        // (p8 파일 내용을 그대로 base64 인코딩해서 넣은 경우가 여기에 해당)
+        if (LooksLikePemText(bytes, out var pemText))
+        {
+            var ecdsaPem2 = ECDsa.Create();
+            ecdsaPem2.ImportFromPem(pemText);
+            return ecdsaPem2;
+        }
+
+        // 3-a) 정상 DER(PKCS#8)로 판단되면 그대로 Import
+        var ecdsaDer = ECDsa.Create();
+        ecdsaDer.ImportPkcs8PrivateKey(bytes, out _);
+        return ecdsaDer;
+    }
+
+    private bool LooksLikePemText(byte[] bytes, out string pem)
+    {
+        try
+        {
+            pem = System.Text.Encoding.UTF8.GetString(bytes);
+            return pem.Contains("BEGIN PRIVATE KEY", StringComparison.Ordinal) ||
+                   pem.Contains("BEGIN EC PRIVATE KEY", StringComparison.Ordinal);
+        }
+        catch
+        {
+            pem = string.Empty;
+            return false;
+        }
+    }
+    
+    private void LogApplePrivateKeyDiagnostics(string raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            _logger.LogWarning("[AppleIAP] Apple:PrivateKey is NULL/empty");
+            return;
+        }
+
+        var originalLen = raw.Length;
+
+        // 흔한 케이스: JSON/env에서 \n 이스케이프
+        var normalized = raw.Trim().Trim('"').Replace("\\n", "\n").Replace("\\r", "\r");
+
+        var containsPemHeader =
+            normalized.Contains("BEGIN PRIVATE KEY", StringComparison.Ordinal) ||
+            normalized.Contains("BEGIN EC PRIVATE KEY", StringComparison.Ordinal);
+
+        // base64 여부 체크 (완전 엄격할 필요 없음)
+        bool looksBase64 = LooksLikeBase64(normalized, out var decodedBytes, out var decodeErr);
+
+        string decodedType = "N/A";
+        int decodedLen = 0;
+
+        if (looksBase64 && decodedBytes != null)
+        {
+            decodedLen = decodedBytes.Length;
+
+            // base64 decode 결과가 PEM 텍스트인지(= PEM을 base64로 감싼 실수) 확인
+            if (LooksLikePemText(decodedBytes, out var pemText))
+                decodedType = "Base64OfPemText";
+            else
+                decodedType = "Base64Binary(DER?)";
+        }
+
+        _logger.LogInformation(
+            "[AppleIAP] Apple:PrivateKey diagnostics: originalLen={OriginalLen}, normalizedLen={NormalizedLen}, containsPemHeader={ContainsPemHeader}, looksBase64={LooksBase64}, base64DecodedType={DecodedType}, decodedBytesLen={DecodedLen}, base64DecodeErr={DecodeErr}",
+            originalLen,
+            normalized.Length,
+            containsPemHeader,
+            looksBase64,
+            decodedType,
+            decodedLen,
+            decodeErr);
+    }
+
+    private static bool LooksLikeBase64(string s, out byte[]? decoded, out string? err)
+    {
+        decoded = null;
+        err = null;
+
+        // PEM이면 base64 취급할 필요 없음
+        if (s.Contains("BEGIN ", StringComparison.Ordinal)) return false;
+
+        try
+        {
+            decoded = Convert.FromBase64String(s);
+            return true;
+        }
+        catch (Exception e)
+        {
+            err = e.GetType().Name;
+            return false;
+        }
     }
 }

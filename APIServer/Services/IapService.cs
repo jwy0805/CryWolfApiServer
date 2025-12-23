@@ -281,7 +281,7 @@ public class IapService
             try
             {
                 var error = JsonConvert.DeserializeObject<AppleErrorResponse>(body);
-                if (error != null && error.ErrorCode == 4040010) // TransactionIdNotFoundError
+                if (error is { ErrorCode: 4040010 or 401 }) // TransactionIdNotFoundError
                 {
                     // sandbox로 재시도
                     return (false, true, null, status, body);

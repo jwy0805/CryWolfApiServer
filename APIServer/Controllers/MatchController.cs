@@ -566,8 +566,10 @@ public class MatchController : ControllerBase
         var cancelPacket = new MatchCancelPacketRequired { UserId = user.UserId };
         await _apiService
             .SendRequestAsync<MatchCancelPacketResponse>("MatchMaking/CancelMatch", cancelPacket, HttpMethod.Post);
-        
-        res.CancelOk = await _context.SaveChangesExtendedAsync();
+
+        await _context.SaveChangesExtendedAsync();
+
+        res.CancelOk = true;
         _logger.LogInformation("Cancel match making for user {UserId}", user.UserId);
         return Ok(res);
     }
@@ -614,8 +616,9 @@ public class MatchController : ControllerBase
         
         await _apiService.SendRequestToSocketAsync<GameResultPacketResponse>("surrender", resultPacket, HttpMethod.Post);
         user.Act = UserAct.InLobby;
+        await _context.SaveChangesExtendedAsync();
         
-        var res = new SurrenderPacketResponse { SurrenderOk = await _context.SaveChangesExtendedAsync() };
+        var res = new SurrenderPacketResponse { SurrenderOk =  true};
         _logger.LogInformation("Surrender game {UserId}", user.UserId);
         return Ok(res);
     }

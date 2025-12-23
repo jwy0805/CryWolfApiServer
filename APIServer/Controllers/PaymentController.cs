@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using MySqlConnector;
 using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 
@@ -303,6 +304,8 @@ public class PaymentController : ControllerBase
             {
                 transactionId = await strategy.ExecuteAsync(async () =>
                 {
+                    _context.ChangeTracker.Clear();
+
                     var tx = new Transaction(
                         userId: userId,
                         productId: product.ProductId,
@@ -311,24 +314,27 @@ public class PaymentController : ControllerBase
                         cashCurrency: CashCurrencyType.KRW,
                         storeType: storeType,
                         storeTransactionId: storeTxId
-                    );
-
-                    tx.Status = TransactionStatus.Pending;
+                    )
+                    {
+                        Status = TransactionStatus.Pending
+                    };
 
                     _context.Transaction.Add(tx);
-                    await _context.SaveChangesExtendedAsync();
+                    await _context.SaveChangesAsync();
                     return tx.TransactionId;
                 });
             }
-            catch (DbUpdateException ex) when (ex.InnerException is MySqlConnector.MySqlException { Number: 1062 })
+            catch (DbUpdateException ex) when (IsMySqlDuplicateKey(ex))
             {
+                // 중복은 “정상” (재시도/중복 클릭/네트워크 재전송)
+                _context.ChangeTracker.Clear();
+                
                 // 이미 같은 StoreTxId가 들어온 상태: 현재 상태를 보고 즉시 응답
-                var existing = await _context.Transaction
-                    .AsNoTracking()
+                var existing = await _context.Transaction.AsNoTracking()
                     .Where(t => t.StoreType == storeType && t.StoreTransactionId == storeTxId)
                     .Select(t => new { t.TransactionId, t.Status })
                     .FirstOrDefaultAsync();
-
+                
                 if (existing == null)
                 {
                     res.PaymentOk = false;
@@ -343,20 +349,24 @@ public class PaymentController : ControllerBase
                     return Ok(res);
                 }
 
-                if (existing.Status is TransactionStatus.Pending or TransactionStatus.Processing)
+                if (existing.Status is TransactionStatus.Processing)
                 {
                     res.PaymentOk = false;
                     res.ErrorCode = CashPaymentErrorCode.Processing;
                     return Ok(res);
                 }
 
-                // Failed
-                res.PaymentOk = false;
-                res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
-                return Ok(res);
+                if (existing.Status == TransactionStatus.Failed)
+                {
+                    res.PaymentOk = false;
+                    res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
+                    return Ok(res);
+                }
+
+                // Pending이면 이어서 처리(이 요청이 처리해도 되고, 동시성은 아래 row lock/상태머신이 막음)
+                transactionId = existing.TransactionId;
             }
 
-            // 2) 영수증 검증은 "트랜잭션 밖"에서 수행 (DB 락 안 잡음)
             var validationResult =
                 storeType switch
                 {
@@ -365,13 +375,20 @@ public class PaymentController : ControllerBase
                     _ => (false, "Unsupported store type", null, null)
                 };
 
-            // 3) 이제 "지급 + 상태 업데이트"만 DB 트랜잭션으로 원자 처리
+            // 지급 + 상태 업데이트 DB 트랜잭션으로 원자 처리
             return await strategy.ExecuteAsync(async () =>
             {
+                _context.ChangeTracker.Clear();
+                
                 await using var dbTx = await _context.Database.BeginTransactionAsync();
 
                 try
                 {
+                    // 동시 처리 방지: row lock
+                    // (SELECT 자체는 결과 사용 안 해도 됨. 잠금 목적)
+                    await _context.Database.ExecuteSqlInterpolatedAsync(
+                        $"SELECT `TransactionId` FROM `Transaction` WHERE `TransactionId` = {transactionId} FOR UPDATE");
+
                     // 트랜잭션 엔티티를 추적 로딩
                     var txRow = await _context.Transaction
                         .Include(t => t.Failure)
@@ -402,6 +419,14 @@ public class PaymentController : ControllerBase
                         return Ok(res);
                     }
 
+                    if (txRow.Status == TransactionStatus.Processing)
+                    {
+                        await dbTx.CommitAsync();
+                        res.PaymentOk = false;
+                        res.ErrorCode = CashPaymentErrorCode.Processing;
+                        return Ok(res);
+                    }
+
                     // 검증 실패면: Failed + Failure 저장을 원자적으로
                     if (!validationResult.IsValid)
                     {
@@ -423,7 +448,7 @@ public class PaymentController : ControllerBase
                             };
                         }
 
-                        await _context.SaveChangesExtendedAsync();
+                        await _context.SaveChangesAsync();
                         await dbTx.CommitAsync();
 
                         res.PaymentOk = false;
@@ -442,13 +467,13 @@ public class PaymentController : ControllerBase
                     }
 
                     txRow.Status = TransactionStatus.Processing;
-                    await _context.SaveChangesExtendedAsync();
+                    await _context.SaveChangesAsync();
 
                     // 지급 처리(동일 DbContext, 동일 트랜잭션 범위 내에서 수행)
-                    await PurchaseComplete(userId, required.ProductCode);
+                    await PurchaseComplete(txRow.UserId, required.ProductCode);
 
                     txRow.Status = TransactionStatus.Completed;
-                    await _context.SaveChangesExtendedAsync();
+                    await _context.SaveChangesAsync();
 
                     await dbTx.CommitAsync();
 
@@ -472,6 +497,16 @@ public class PaymentController : ControllerBase
         }
     }
 
+    private bool IsMySqlDuplicateKey(Exception ex)
+    {
+        for (var e = ex; e != null; e = e.InnerException)
+        {
+            if (e is MySqlException mysql && mysql.Number == 1062)
+                return true;
+        }
+        return false;
+    }
+    
     private (StoreType storeType, string storeTransactionId) ExtractStoreInfo(string receiptJson)
     {
         if (string.IsNullOrWhiteSpace(receiptJson)) return (StoreType.None, string.Empty);

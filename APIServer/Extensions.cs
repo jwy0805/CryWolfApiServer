@@ -18,17 +18,16 @@ public static class Extensions
         }
     }
     
-    public static async Task<bool> SaveChangesExtendedAsync(this AppDbContext dbContext)
+    public static async Task SaveChangesExtendedAsync(this AppDbContext dbContext)
     {
         try
         {
             await dbContext.SaveChangesAsync();
-            return true;
         }
         catch (Exception e)
         {
             Console.WriteLine($"SaveChangesExtendedError: {e.Message}");
-            return false;
+            throw;
         }
     }
     

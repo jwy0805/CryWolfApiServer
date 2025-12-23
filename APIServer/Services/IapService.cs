@@ -319,24 +319,35 @@ public class IapService
 
         using var ecdsa = LoadAppleEcdsaFromConfig(privateKeyRaw);
 
-        var securityKey = new ECDsaSecurityKey(ecdsa) { KeyId = keyId };
+        var securityKey = new ECDsaSecurityKey(ecdsa)
+        {
+            KeyId = keyId,
+            CryptoProviderFactory = new CryptoProviderFactory
+            {
+                CacheSignatureProviders = false
+            }
+        };
 
-        var now = DateTimeOffset.UtcNow;
+        // SigningCredentials에도 캐시 비활성화를 한 번 더 걸어두면(라이브러리 버전 차이) 더 안전
+        var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.EcdsaSha256)
+        {
+            CryptoProviderFactory = new CryptoProviderFactory
+            {
+                CacheSignatureProviders = false
+            }
+        };
+        
         var descriptor = new SecurityTokenDescriptor
         {
             Issuer = issuerId,
-            IssuedAt = now.UtcDateTime,
-            Expires = now.AddMinutes(5).UtcDateTime,
+            IssuedAt = DateTimeOffset.UtcNow.UtcDateTime,
+            Expires = DateTimeOffset.UtcNow.AddMinutes(5).UtcDateTime,
             Audience = "appstoreconnect-v1",
-            Claims = new Dictionary<string, object>
-            {
-                ["bid"] = bundleId
-            },
-            SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.EcdsaSha256)
+            Claims = new Dictionary<string, object> { ["bid"] = bundleId },
+            SigningCredentials = signingCredentials,
         };
 
-        var handler = new JsonWebTokenHandler();
-        return handler.CreateToken(descriptor);
+        return new JsonWebTokenHandler().CreateToken(descriptor);
     }
 
     private ECDsa LoadAppleEcdsaFromConfig(string raw)

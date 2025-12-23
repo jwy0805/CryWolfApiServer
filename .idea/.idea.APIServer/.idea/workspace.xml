@@ -12,7 +12,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="iap4">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="iap5">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Services/IapService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/IapService.cs" afterDir="false" />
     </list>
@@ -619,15 +619,7 @@
       <workItem from="1765593195861" duration="2593000" />
       <workItem from="1765611619477" duration="2426000" />
       <workItem from="1765716081503" duration="73526000" />
-      <workItem from="1766374338075" duration="11258000" />
-    </task>
-    <task id="LOCAL-00100" summary="feat mail controller">
-      <option name="closed" value="true" />
-      <created>1750300047079</created>
-      <option name="number" value="00100" />
-      <option name="presentableId" value="LOCAL-00100" />
-      <option name="project" value="LOCAL" />
-      <updated>1750300047079</updated>
+      <workItem from="1766374338075" duration="14487000" />
     </task>
     <task id="LOCAL-00101" summary="feat - logging system">
       <option name="closed" value="true" />
@@ -1013,7 +1005,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766384300964</updated>
     </task>
-    <option name="localTasksCounter" value="149" />
+    <task id="LOCAL-00149" summary="iap5">
+      <option name="closed" value="true" />
+      <created>1766386056830</created>
+      <option name="number" value="00149" />
+      <option name="presentableId" value="LOCAL-00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1766386056830</updated>
+    </task>
+    <option name="localTasksCounter" value="150" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1023,7 +1023,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="database" />
     <MESSAGE value="migrations" />
     <MESSAGE value="RDS" />
     <MESSAGE value="[Feat] ready to CI/CD" />
@@ -1048,7 +1047,8 @@
     <MESSAGE value="iap" />
     <MESSAGE value="iap2" />
     <MESSAGE value="iap4" />
-    <option name="LAST_COMMIT_MESSAGE" value="iap4" />
+    <MESSAGE value="iap5" />
+    <option name="LAST_COMMIT_MESSAGE" value="iap5" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -260,285 +260,133 @@ public class PaymentController : ControllerBase
     [Route("PurchaseSpinel")]
     public async Task<IActionResult> PurchaseSpinel([FromBody] CashPaymentPacketRequired required)
     {
-        var res = new CashPaymentPacketResponse
-        {
-            PaymentOk = false,
-            ErrorCode = CashPaymentErrorCode.InternalError,
-        };
-
         var receiptRaw = required.Receipt ?? string.Empty;
 
         try
         {
             var userId = _tokenValidator.Authorize(required.AccessToken);
-            if (userId == -1)
-            {
-                res.ErrorCode = CashPaymentErrorCode.Unauthorized;
-                return Ok(res);
-            }
+            if (userId == -1) return Ok(_iapService.MakeResponse(false, CashPaymentErrorCode.Unauthorized));
+            
+            if (!_iapService.TryGetStoreInfo(receiptRaw, out var storeType, out var storeTxId))
+                return Ok(_iapService.MakeResponse(false, CashPaymentErrorCode.InvalidReceipt));
 
-            var (storeType, storeTxId) = ExtractStoreInfo(receiptRaw);
-            if (storeType == StoreType.None || string.IsNullOrEmpty(storeTxId))
-            {
-                res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
-                return Ok(res);
-            }
+            if (!_iapService.TryGetProductId(required.ProductCode, out var productId))
+                return Ok(_iapService.MakeResponse(false, CashPaymentErrorCode.InvalidReceipt));
+            
+            // 1) 멱등 Seed 확보 + 현재 상태 조회 (예외 없이)
+            var seed = await _iapService.EnsureSeedAndGetStatusAsync(userId, productId, storeType, storeTxId);
+            
+            // 2) 이미 처리된 상태면 즉시 응답
+            var early = _iapService.MapStateToResponse(seed.Status, seed.FailureCode);
+            if (early != null) return Ok(early);
 
-            var product = _cachedDataProvider.GetProducts()
-                .Where(p => p.ProductCode == required.ProductCode)
-                .Select(p => new { p.ProductId })
-                .FirstOrDefault();
+            // 검증 후 지급
+            var validation = await _iapService.ValidateReceiptAsync(storeType, required.ProductCode, receiptRaw);
+            var final = await FinalizeAsync(
+                seed.TransactionId, userId, required.ProductCode, receiptRaw, validation);
 
-            if (product == null)
-            {
-                res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
-                return Ok(res);
-            }
-
-            var strategy = _context.Database.CreateExecutionStrategy();
-
-            // 1) DB에 "Pending" 예약만 먼저 만들어서 유니크(StoreType, StoreTransactionId)로 중복을 막는다.
-            long transactionId;
-
-            try
-            {
-                transactionId = await strategy.ExecuteAsync(async () =>
-                {
-                    _context.ChangeTracker.Clear();
-
-                    var tx = new Transaction(
-                        userId: userId,
-                        productId: product.ProductId,
-                        count: 1,
-                        currency: CurrencyType.Cash,
-                        cashCurrency: CashCurrencyType.KRW,
-                        storeType: storeType,
-                        storeTransactionId: storeTxId
-                    )
-                    {
-                        Status = TransactionStatus.Pending
-                    };
-
-                    _context.Transaction.Add(tx);
-                    await _context.SaveChangesAsync();
-                    return tx.TransactionId;
-                });
-            }
-            catch (DbUpdateException ex) when (IsMySqlDuplicateKey(ex))
-            {
-                // 중복은 “정상” (재시도/중복 클릭/네트워크 재전송)
-                _context.ChangeTracker.Clear();
-                
-                // 이미 같은 StoreTxId가 들어온 상태: 현재 상태를 보고 즉시 응답
-                var existing = await _context.Transaction.AsNoTracking()
-                    .Where(t => t.StoreType == storeType && t.StoreTransactionId == storeTxId)
-                    .Select(t => new { t.TransactionId, t.Status, FailureCode = t.Failure != null ? t.Failure.HttpStatusCode : null })
-                    .FirstOrDefaultAsync();
-                
-                if (existing == null)
-                {
-                    res.PaymentOk = false;
-                    res.ErrorCode = CashPaymentErrorCode.InternalError;
-                    return Ok(res);
-                }
-
-                if (existing.Status == TransactionStatus.Completed)
-                {
-                    res.PaymentOk = true;
-                    res.ErrorCode = CashPaymentErrorCode.AlreadyProcessed;
-                    return Ok(res);
-                }
-
-                if (existing.Status is TransactionStatus.Processing)
-                {
-                    res.PaymentOk = false;
-                    res.ErrorCode = CashPaymentErrorCode.Processing;
-                    return Ok(res);
-                }
-
-                if (existing.Status == TransactionStatus.Failed)
-                {
-                    var retryable = existing.FailureCode is null or 401 or >= 500 and <= 599;
-                    res.ErrorCode = retryable ? CashPaymentErrorCode.InternalError : CashPaymentErrorCode.InvalidReceipt;
-                    return Ok(res);
-                }
-
-                // Pending이면 이어서 처리(이 요청이 처리해도 되고, 동시성은 아래 row lock/상태머신이 막음)
-                transactionId = existing.TransactionId;
-            }
-
-            var validationResult =
-                storeType switch
-                {
-                    StoreType.GooglePlay => await _iapService.ValidateGoogleReceiptAsync(required.ProductCode, receiptRaw),
-                    StoreType.AppStore => await _iapService.ValidateAppleReceiptAsync(required.ProductCode, receiptRaw),
-                    _ => (false, "Unsupported store type", null, null)
-                };
-
-            // 지급 + 상태 업데이트 DB 트랜잭션으로 원자 처리
-            return await strategy.ExecuteAsync(async () =>
-            {
-                _context.ChangeTracker.Clear();
-                
-                await using var dbTx = await _context.Database.BeginTransactionAsync();
-
-                try
-                {
-                    // 동시 처리 방지: row lock
-                    // (SELECT 자체는 결과 사용 안 해도 됨. 잠금 목적)
-                    await _context.Database.ExecuteSqlInterpolatedAsync(
-                        $"SELECT `TransactionId` FROM `Transaction` WHERE `TransactionId` = {transactionId} FOR UPDATE");
-
-                    // 트랜잭션 엔티티를 추적 로딩
-                    var txRow = await _context.Transaction
-                        .Include(t => t.Failure)
-                        .FirstOrDefaultAsync(t => t.TransactionId == transactionId);
-
-                    if (txRow == null)
-                    {
-                        await dbTx.RollbackAsync();
-                        res.PaymentOk = false;
-                        res.ErrorCode = CashPaymentErrorCode.InternalError;
-                        return Ok(res);
-                    }
-
-                    // 이미 처리된 케이스(재시도/경합 방어)
-                    if (txRow.Status == TransactionStatus.Completed)
-                    {
-                        await dbTx.CommitAsync();
-                        res.PaymentOk = true;
-                        res.ErrorCode = CashPaymentErrorCode.AlreadyProcessed;
-                        return Ok(res);
-                    }
-
-                    if (txRow.Status == TransactionStatus.Failed)
-                    {
-                        await dbTx.CommitAsync();
-                        res.PaymentOk = false;
-                        res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
-                        return Ok(res);
-                    }
-
-                    if (txRow.Status == TransactionStatus.Processing)
-                    {
-                        await dbTx.CommitAsync();
-                        res.PaymentOk = false;
-                        res.ErrorCode = CashPaymentErrorCode.Processing;
-                        return Ok(res);
-                    }
-
-                    // 검증 실패면: Failed + Failure 저장을 원자적으로
-                    if (!validationResult.IsValid)
-                    {
-                        // 401/5xx/네트워크(null) 등은 ‘영수증 위조’가 아니라 ‘검증 호출 실패’일 수 있음
-                        var code = validationResult.HttpStatusCode;
-
-                        var retryable =
-                            code == null ||               // 네트워크/예외 등
-                            code == 401 ||                
-                            (code >= 500 && code <= 599); // 서버 오류
-
-                        if (retryable)
-                        {
-                            if (txRow.Failure == null)
-                            {
-                                txRow.Failure = new TransactionReceiptFailure
-                                {
-                                    TransactionId = txRow.TransactionId,
-                                    CreatedAt = DateTime.UtcNow,
-                                    HttpStatusCode = validationResult.HttpStatusCode,
-                                    ErrorMessage = Util.Util.Truncate(validationResult.Message, 1024),
-                                    ReceiptRawGzip = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.GzipUtf8(receiptRaw),
-                                    ReceiptHash = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.Sha256Utf8(receiptRaw),
-                                    ResponseRawGzip = string.IsNullOrEmpty(validationResult.RawResponse)
-                                        ? null
-                                        : Util.Util.GzipUtf8(validationResult.RawResponse),
-                                };
-                            }
-                        }
-                        txRow.Status = TransactionStatus.Failed;
-
-                        await _context.SaveChangesAsync();
-                        await dbTx.CommitAsync();
-
-                        res.PaymentOk = false;
-                        res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
-                        return Ok(res);
-                    }
-
-                    // 검증 성공: CAS 느낌으로 Processing 선점 (동시 지급 방지)
-                    if (txRow.Status != TransactionStatus.Pending)
-                    {
-                        // Pending이 아니면 누군가 이미 처리 중/완료
-                        await dbTx.CommitAsync();
-                        res.PaymentOk = false;
-                        res.ErrorCode = CashPaymentErrorCode.Processing;
-                        return Ok(res);
-                    }
-
-                    txRow.Status = TransactionStatus.Processing;
-                    await _context.SaveChangesAsync();
-
-                    // 지급 처리(동일 DbContext, 동일 트랜잭션 범위 내에서 수행)
-                    await PurchaseComplete(txRow.UserId, required.ProductCode);
-
-                    txRow.Status = TransactionStatus.Completed;
-                    await _context.SaveChangesAsync();
-
-                    await dbTx.CommitAsync();
-
-                    res.PaymentOk = true;
-                    res.ErrorCode = CashPaymentErrorCode.None;
-                    return Ok(res);
-                }
-                catch
-                {
-                    await dbTx.RollbackAsync();
-                    throw;
-                }
-            });
+            return Ok(final);
         }
         catch (Exception e)
         {
             _logger.LogError(e, "PurchaseSpinel error");
-            res.PaymentOk = false;
-            res.ErrorCode = CashPaymentErrorCode.InternalError;
-            return Ok(res);
+            return Ok(_iapService.MakeResponse(false, CashPaymentErrorCode.InternalError));
         }
-    }
-
-    private bool IsMySqlDuplicateKey(Exception ex)
-    {
-        for (var e = ex; e != null; e = e.InnerException)
-        {
-            if (e is MySqlException mysql && mysql.Number == 1062)
-                return true;
-        }
-        return false;
     }
     
-    private (StoreType storeType, string storeTransactionId) ExtractStoreInfo(string receiptJson)
+    private async Task<CashPaymentPacketResponse> FinalizeAsync(
+        long transactionId, 
+        int requestUserId,
+        string productCode, 
+        string receiptRaw, 
+        IapService.ReceiptValidation validation)
     {
-        if (string.IsNullOrWhiteSpace(receiptJson)) return (StoreType.None, string.Empty);
-        
-        UnityIapReceiptWrapper? wrapper;
-        try
+        var strategy = _context.Database.CreateExecutionStrategy();
+
+        return await strategy.ExecuteAsync(async () =>
         {
-            wrapper = JsonConvert.DeserializeObject<UnityIapReceiptWrapper>(receiptJson);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Failed to deserialize receipt JSON");;
-            return (StoreType.None, string.Empty);
-        }
-        
-        if (wrapper == null) return (StoreType.None, string.Empty);
-        return wrapper.Store switch
-        {
-            "GooglePlay" => (StoreType.GooglePlay, wrapper.TransactionID),
-            "AppleAppStore" => (StoreType.AppStore, wrapper.TransactionID),
-            _ => (StoreType.None, string.Empty)
-        };
+            _context.ChangeTracker.Clear();
+            await using var dbTx = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                // row lock: 같은 TransactionId로 동시 지급 방지
+                await _context.Database.ExecuteSqlInterpolatedAsync(
+                    $"SELECT `TransactionId` FROM `Transaction` WHERE `TransactionId` = {transactionId} FOR UPDATE");
+
+                var txRow = await _context.Transaction
+                    .Include(t => t.Failure)
+                    .FirstOrDefaultAsync(t => t.TransactionId == transactionId);
+
+                if (txRow == null)
+                {
+                    await dbTx.RollbackAsync();
+                    return _iapService.MakeResponse(false, CashPaymentErrorCode.InternalError);
+                }
+
+                // 정합성/보안: 트랜잭션 소유자 체크
+                if (txRow.UserId != requestUserId)
+                {
+                    txRow.Status = TransactionStatus.Failed;
+                    _iapService.UpsertFailureIfNull(txRow, validation, receiptRaw);
+                    await _context.SaveChangesAsync();
+                    await dbTx.CommitAsync();
+                    return _iapService.MakeResponse(false, CashPaymentErrorCode.InvalidReceipt);
+                }
+
+                // 멱등 응답(이미 다른 요청이 처리했을 가능성)
+                var early = _iapService.MapStateToResponse(txRow.Status, txRow.Failure?.HttpStatusCode);
+                if (early != null)
+                {
+                    await dbTx.CommitAsync();
+                    return early;
+                }
+
+                // 검증 실패
+                if (!validation.IsValid)
+                {
+                    _iapService.UpsertFailureIfNull(txRow, validation, receiptRaw);
+
+                    if (validation.Retryable)
+                    {
+                        await _context.SaveChangesAsync();
+                        await dbTx.CommitAsync();
+                        return _iapService.MakeResponse(false, CashPaymentErrorCode.InternalError);
+                    }
+
+                    // Invalid -> Failed
+                    txRow.Status = TransactionStatus.Failed;
+                    await _context.SaveChangesAsync();
+                    await dbTx.CommitAsync();
+                    return _iapService.MakeResponse(false, CashPaymentErrorCode.InvalidReceipt);
+                }
+
+                // Pending -> Processing 선점
+                if (txRow.Status != TransactionStatus.Pending)
+                {
+                    await dbTx.CommitAsync();
+                    return _iapService.MakeResponse(false, CashPaymentErrorCode.Processing);
+                }
+                txRow.Status = TransactionStatus.Processing;
+                await _context.SaveChangesAsync();
+
+                // 지급
+                await PurchaseComplete(txRow.UserId, productCode);
+
+                // 완료
+                txRow.Status = TransactionStatus.Completed;
+                await _context.SaveChangesAsync();
+
+                await dbTx.CommitAsync();
+                return _iapService.MakeResponse(true, CashPaymentErrorCode.None);
+            }
+            catch (Exception e)
+            {
+                await dbTx.RollbackAsync();
+                _logger.LogError(e, "FinalizeAsync failed. TxId={TxId}", transactionId);
+                throw;
+            }
+        });
     }
 
     public async Task PurchaseComplete(int userId, string productCode)

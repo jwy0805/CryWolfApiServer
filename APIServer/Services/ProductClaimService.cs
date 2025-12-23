@@ -547,143 +547,143 @@ ON DUPLICATE KEY UPDATE
         return new ConsumeResult(openCount, pType);
     }
     
-public async Task StoreProductAsync(int userId, ProductComposition pc)
-{
-    switch (pc.ProductType)
+    public async Task StoreProductAsync(int userId, ProductComposition pc)
     {
-        case ProductType.Unit:
+        switch (pc.ProductType)
         {
-            var unitId = (UnitId)pc.CompositionId;
-            var row = await _context.UserUnit.FindAsync(userId, unitId);
-            if (row == null)
+            case ProductType.Unit:
             {
-                _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = unitId, Count = pc.Count });
-            }
-            else
-            {
-                row.Count += pc.Count;
-            }
-            break;
-        }
-
-        case ProductType.Material:
-        {
-            var materialId = (MaterialId)pc.CompositionId;
-            var row = await _context.UserMaterial.FindAsync(userId, materialId);
-            if (row == null)
-                _context.UserMaterial.Add(new UserMaterial { UserId = userId, MaterialId = materialId, Count = pc.Count });
-            else
-                row.Count += pc.Count;
-            break;
-        }
-
-        case ProductType.Enchant:
-        {
-            var enchantId = (EnchantId)pc.CompositionId;
-            var row = await _context.UserEnchant.FindAsync(userId, enchantId);
-            if (row == null)
-                _context.UserEnchant.Add(new UserEnchant { UserId = userId, EnchantId = enchantId, Count = pc.Count });
-            else
-                row.Count += pc.Count;
-            break;
-        }
-
-        case ProductType.Sheep:
-        {
-            var sheepId = (SheepId)pc.CompositionId;
-            var row = await _context.UserSheep.FindAsync(userId, sheepId);
-            if (row == null)
-                _context.UserSheep.Add(new UserSheep { UserId = userId, SheepId = sheepId, Count = pc.Count });
-            else
-                row.Count += pc.Count;
-            break;
-        }
-
-        case ProductType.Character:
-        {
-            var characterId = (CharacterId)pc.CompositionId;
-            var row = await _context.UserCharacter.FindAsync(userId, characterId);
-            if (row == null)
-                _context.UserCharacter.Add(new UserCharacter { UserId = userId, CharacterId = characterId, Count = pc.Count });
-            else
-                row.Count += pc.Count;
-            break;
-        }
-
-        case ProductType.Gold:
-        {
-            var stats = await _context.UserStats.FindAsync(userId);
-            if (stats != null) stats.Gold += pc.Count;
-            break;
-        }
-
-        case ProductType.Spinel:
-        {
-            var stats = await _context.UserStats.FindAsync(userId);
-            if (stats != null) stats.Spinel += pc.Count;
-            break;
-        }
-
-        case ProductType.Exp:
-        {
-            var stats = await _context.UserStats.FindAsync(userId);
-            if (stats != null)
-            {
-                var level = stats.UserLevel;
-                stats.Exp += pc.Count;
-                if (stats.Exp >= _cachedDataProvider.GetExpSnapshots()[level])
+                var unitId = (UnitId)pc.CompositionId;
+                var row = await _context.UserUnit.FindAsync(userId, unitId);
+                if (row == null)
                 {
-                    stats.UserLevel++;
-                    stats.Exp -= _cachedDataProvider.GetExpSnapshots()[level];
+                    _context.UserUnit.Add(new UserUnit { UserId = userId, UnitId = unitId, Count = pc.Count });
                 }
+                else
+                {
+                    row.Count += pc.Count;
+                }
+                break;
             }
-            break;
-        }
 
-        case ProductType.Subscription:
-        {
-            // 이 케이스는 “유일 키”가 (UserId, SubscriptionType) 같은 형태일 가능성이 높음.
-            // 해당 엔티티 PK/유니크 설정에 맞춰 FindAsync로 바꾸거나,
-            // 지금처럼 조건 조회를 하되 Async로 바꾸는 정도가 최소 수정.
-            var nowUtc = DateTime.UtcNow;
-            var lifetimeUtc = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Utc);
-            var subType = SubscriptionType.AdsRemover;
-
-            var existingActiveSub = await _context.UserSubscription
-                .FirstOrDefaultAsync(us =>
-                    us.UserId == userId &&
-                    us.SubscriptionType == subType &&
-                    us.IsCanceled == false &&
-                    us.ExpiresAtUtc > nowUtc);
-
-            if (existingActiveSub == null)
+            case ProductType.Material:
             {
-                _context.UserSubscription.Add(new UserSubscription
-                {
-                    UserId = userId,
-                    SubscriptionType = subType,
-                    CreatedAtUtc = nowUtc,
-                    ExpiresAtUtc = lifetimeUtc,
-                    IsCanceled = false,
-                    IsTrial = false,
-                });
-
-                _context.UserSubscriptionHistory.Add(new UserSubscriptionHistory
-                {
-                    UserId = userId,
-                    SubscriptionType = subType,
-                    FromUtc = nowUtc,
-                    ToUtc = lifetimeUtc,
-                    EventType = SubscriptionEvent.Started
-                });
+                var materialId = (MaterialId)pc.CompositionId;
+                var row = await _context.UserMaterial.FindAsync(userId, materialId);
+                if (row == null)
+                    _context.UserMaterial.Add(new UserMaterial { UserId = userId, MaterialId = materialId, Count = pc.Count });
+                else
+                    row.Count += pc.Count;
+                break;
             }
-            break;
-        }
 
-        case ProductType.Container:
-            break;
+            case ProductType.Enchant:
+            {
+                var enchantId = (EnchantId)pc.CompositionId;
+                var row = await _context.UserEnchant.FindAsync(userId, enchantId);
+                if (row == null)
+                    _context.UserEnchant.Add(new UserEnchant { UserId = userId, EnchantId = enchantId, Count = pc.Count });
+                else
+                    row.Count += pc.Count;
+                break;
+            }
+
+            case ProductType.Sheep:
+            {
+                var sheepId = (SheepId)pc.CompositionId;
+                var row = await _context.UserSheep.FindAsync(userId, sheepId);
+                if (row == null)
+                    _context.UserSheep.Add(new UserSheep { UserId = userId, SheepId = sheepId, Count = pc.Count });
+                else
+                    row.Count += pc.Count;
+                break;
+            }
+
+            case ProductType.Character:
+            {
+                var characterId = (CharacterId)pc.CompositionId;
+                var row = await _context.UserCharacter.FindAsync(userId, characterId);
+                if (row == null)
+                    _context.UserCharacter.Add(new UserCharacter { UserId = userId, CharacterId = characterId, Count = pc.Count });
+                else
+                    row.Count += pc.Count;
+                break;
+            }
+
+            case ProductType.Gold:
+            {
+                var stats = await _context.UserStats.FindAsync(userId);
+                if (stats != null) stats.Gold += pc.Count;
+                break;
+            }
+
+            case ProductType.Spinel:
+            {
+                var stats = await _context.UserStats.FindAsync(userId);
+                if (stats != null) stats.Spinel += pc.Count;
+                break;
+            }
+
+            case ProductType.Exp:
+            {
+                var stats = await _context.UserStats.FindAsync(userId);
+                if (stats != null)
+                {
+                    var level = stats.UserLevel;
+                    stats.Exp += pc.Count;
+                    if (stats.Exp >= _cachedDataProvider.GetExpSnapshots()[level])
+                    {
+                        stats.UserLevel++;
+                        stats.Exp -= _cachedDataProvider.GetExpSnapshots()[level];
+                    }
+                }
+                break;
+            }
+
+            case ProductType.Subscription:
+            {
+                // 이 케이스는 “유일 키”가 (UserId, SubscriptionType) 같은 형태일 가능성이 높음.
+                // 해당 엔티티 PK/유니크 설정에 맞춰 FindAsync로 바꾸거나,
+                // 지금처럼 조건 조회를 하되 Async로 바꾸는 정도가 최소 수정.
+                var nowUtc = DateTime.UtcNow;
+                var lifetimeUtc = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Utc);
+                var subType = SubscriptionType.AdsRemover;
+
+                var existingActiveSub = await _context.UserSubscription
+                    .FirstOrDefaultAsync(us =>
+                        us.UserId == userId &&
+                        us.SubscriptionType == subType &&
+                        us.IsCanceled == false &&
+                        us.ExpiresAtUtc > nowUtc);
+
+                if (existingActiveSub == null)
+                {
+                    _context.UserSubscription.Add(new UserSubscription
+                    {
+                        UserId = userId,
+                        SubscriptionType = subType,
+                        CreatedAtUtc = nowUtc,
+                        ExpiresAtUtc = lifetimeUtc,
+                        IsCanceled = false,
+                        IsTrial = false,
+                    });
+
+                    _context.UserSubscriptionHistory.Add(new UserSubscriptionHistory
+                    {
+                        UserId = userId,
+                        SubscriptionType = subType,
+                        FromUtc = nowUtc,
+                        ToUtc = lifetimeUtc,
+                        EventType = SubscriptionEvent.Started
+                    });
+                }
+                break;
+            }
+
+            case ProductType.Container:
+                break;
+        }
     }
-}
     
     public ProductInfo MapProductInfo(UserProduct userProduct)
     {

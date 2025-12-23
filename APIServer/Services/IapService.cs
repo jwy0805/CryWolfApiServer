@@ -2,7 +2,9 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using ApiServer.DB;
 using ApiServer.Models;
+using ApiServer.Providers;
 using Google.Apis.Auth.OAuth2;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -11,18 +13,144 @@ namespace ApiServer.Services;
 
 public class IapService
 {
+    public sealed record ReceiptValidation(bool IsValid, bool Retryable, int? HttpStatusCode, string? RawResponse, string Message);
+    public sealed record TxSeed(long TransactionId, TransactionStatus Status, int? FailureCode);
+    
+    private readonly CachedDataProvider _cachedDataProvider;
     private readonly IConfiguration _config;
     private readonly AppDbContext _context;
     private readonly ILogger<IapService> _logger;
     
-    public IapService(IConfiguration config, AppDbContext context, ILogger<IapService> logger)
+    public IapService(CachedDataProvider cachedDataProvider, IConfiguration config, AppDbContext context, ILogger<IapService> logger)
     {
+        _cachedDataProvider = cachedDataProvider;
         _config = config;
         _context = context;
         _logger = logger;
     }
+
+    private bool IsRetryableHttp(int? httpCode) => httpCode is null or 401 or >= 500 and <= 599;
     
-    public async Task<(bool IsValid, string Message, int? HttpStatusCode, string? RawResponse)>
+    public CashPaymentPacketResponse MakeResponse(bool ok, CashPaymentErrorCode code) =>
+        new() { PaymentOk = ok, ErrorCode = code };
+    
+    public bool TryGetStoreInfo(string receiptRaw, out StoreType storeType, out string storeTxId)
+    {
+        (storeType, storeTxId) = ExtractStoreInfo(receiptRaw);
+        return storeType != StoreType.None && !string.IsNullOrEmpty(storeTxId);
+    }
+
+    public bool TryGetProductId(string productCode, out int productId)
+    {
+        productId = _cachedDataProvider.GetProducts()
+            .Where(p => p.ProductCode == productCode)
+            .Select(p => p.ProductId)
+            .FirstOrDefault();
+        
+        return productId != 0;
+    }
+
+    public async Task<ReceiptValidation> ValidateReceiptAsync(StoreType storeType, string productCode,
+        string receiptRaw)
+    {
+        (bool IsValid, string Message, int? HttpStatusCode, string? RawResponse) record = storeType switch
+        {
+            StoreType.GooglePlay => await ValidateGoogleReceiptAsync(productCode, receiptRaw),
+            StoreType.AppStore => await ValidateAppleReceiptAsync(productCode, receiptRaw),
+            _ => (false, "Unsupported store type", null, null)
+        };
+
+        if (record.IsValid)
+            return new ReceiptValidation(true, false, 200, null, record.Message);
+
+        var retryable = IsRetryableHttp(record.HttpStatusCode);
+        return new ReceiptValidation(false, retryable, record.HttpStatusCode, record.RawResponse, record.Message);
+    }
+    
+    public async Task<TxSeed> EnsureSeedAndGetStatusAsync(int userId, int productId, StoreType storeType,
+        string storeTxId)
+    {
+        _context.ChangeTracker.Clear();
+        
+        await _context.Database.ExecuteSqlInterpolatedAsync($@"
+INSERT INTO `Transaction`
+(`UserId`,`ProductId`,`Count`,`Currency`,`CashCurrency`,`StoreType`,`StoreTransactionId`,`Status`,`PurchaseAt`)
+VALUES
+({userId},{productId},1,{CurrencyType.Cash},{CashCurrencyType.KRW},{storeType},{storeTxId},{TransactionStatus.Pending},{DateTime.UtcNow})
+ON DUPLICATE KEY UPDATE
+`TransactionId` = `TransactionId`;
+");    
+        
+        // 상태 조회
+        var row = await _context.Transaction.AsNoTracking()
+            .Where(t => t.StoreType == storeType && t.StoreTransactionId == storeTxId)
+            .Select(t => new
+            {
+                t.TransactionId,
+                t.Status,
+                FailureCode = t.Failure != null ? t.Failure.HttpStatusCode : null
+            })
+            .FirstAsync();
+        
+        return new TxSeed(row.TransactionId, row.Status, row.FailureCode);
+    }
+    
+    public CashPaymentPacketResponse? MapStateToResponse(TransactionStatus status, int? failureCode)
+    {
+        return status switch
+        {
+            TransactionStatus.Completed => MakeResponse(true, CashPaymentErrorCode.AlreadyProcessed),
+            TransactionStatus.Processing => MakeResponse(false, CashPaymentErrorCode.Processing),
+            TransactionStatus.Failed => IsRetryableHttp(failureCode)
+                ? MakeResponse(false, CashPaymentErrorCode.InternalError)
+                : MakeResponse(false, CashPaymentErrorCode.InvalidReceipt),
+            _ => null
+        };
+    }
+    
+    private (StoreType storeType, string storeTransactionId) ExtractStoreInfo(string receiptJson)
+    {
+        if (string.IsNullOrWhiteSpace(receiptJson)) return (StoreType.None, string.Empty);
+        
+        UnityIapReceiptWrapper? wrapper;
+        try
+        {
+            wrapper = JsonConvert.DeserializeObject<UnityIapReceiptWrapper>(receiptJson);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to deserialize receipt JSON");;
+            return (StoreType.None, string.Empty);
+        }
+        
+        if (wrapper == null) return (StoreType.None, string.Empty);
+        return wrapper.Store switch
+        {
+            "GooglePlay" => (StoreType.GooglePlay, wrapper.TransactionID),
+            "AppleAppStore" => (StoreType.AppStore, wrapper.TransactionID),
+            _ => (StoreType.None, string.Empty)
+        };
+    }
+    
+    public void UpsertFailureIfNull(Transaction txRow, ReceiptValidation v, string receiptRaw)
+    {
+        if (txRow.Failure != null) return;
+
+        txRow.Failure = new TransactionReceiptFailure
+        {
+            TransactionId = txRow.TransactionId,
+            CreatedAt = DateTime.UtcNow,
+            HttpStatusCode = v.HttpStatusCode,
+            ErrorMessage = Util.Util.Truncate(v.Message, 1024),
+            ReceiptRawGzip = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.GzipUtf8(receiptRaw),
+            ReceiptHash = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.Sha256Utf8(receiptRaw),
+            ResponseRawGzip = string.IsNullOrEmpty(v.RawResponse) ? null : Util.Util.GzipUtf8(v.RawResponse),
+        };
+    }
+    
+    #region Google Receipt Validation
+    
+    private async Task<(bool IsValid, string Message, int? HttpStatusCode, string? RawResponse)>
         ValidateGoogleReceiptAsync(string productCode, string receipt)
     {
         UnityIapReceiptWrapper? wrapper;
@@ -234,6 +362,10 @@ public class IapService
         return (true, $"Valid Apple receipt ({env})", 200, null);
     }
 
+    #endregion
+
+    #region Apple Receipt Validation
+
     private async Task<(bool IsSuccess, bool ShouldRetrySandbox, AppleTransactionResponse? Payload, int? HttpStatusCode, string Raw)>
         CallAppStoreTransactionEndpointAsync(string transactionId, string jwt, bool sandbox)
     {
@@ -276,21 +408,35 @@ public class IapService
             }
         }
 
-        if (!sandbox && response.StatusCode == System.Net.HttpStatusCode.NotFound || 
-            response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        // ----------------------------
+        // prod 우선 정책 유지
+        // 1) prod에서 401이면 sandbox로 1회 폴백 허용
+        // ----------------------------
+        if (!sandbox && response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            _logger.LogWarning(
+                "App Store Server API prod returned 401; will retry sandbox once. StatusCode={Status}, Body={Body}",
+                response.StatusCode, body);
+
+            return (false, true, null, status, body);
+        }
+        
+        // ----------------------------
+        // 2) prod에서 NotFound(404) + 4040010(TransactionIdNotFoundError)면 sandbox 폴백
+        // ----------------------------
+        if (!sandbox && response.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
             try
             {
                 var error = JsonConvert.DeserializeObject<AppleErrorResponse>(body);
-                if (error is { ErrorCode: 4040010 or 401 }) // TransactionIdNotFoundError
+                if (error != null && error.ErrorCode == 4040010)
                 {
-                    // sandbox로 재시도
                     return (false, true, null, status, body);
                 }
             }
-            catch (Exception e)
+            catch
             {
-                // ignored
+                // ignore
             }
         }
         
@@ -497,4 +643,6 @@ public class IapService
             return false;
         }
     }
+    
+    #endregion
 }

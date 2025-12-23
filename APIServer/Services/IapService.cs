@@ -276,7 +276,8 @@ public class IapService
             }
         }
 
-        if (!sandbox && response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        if (!sandbox && response.StatusCode == System.Net.HttpStatusCode.NotFound || 
+            response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             try
             {

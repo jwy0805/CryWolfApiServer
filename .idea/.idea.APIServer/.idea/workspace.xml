@@ -12,8 +12,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="iap2">
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="iap3">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/PaymentController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Services/IapService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/IapService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -619,15 +620,7 @@
       <workItem from="1765593195861" duration="2593000" />
       <workItem from="1765611619477" duration="2426000" />
       <workItem from="1765716081503" duration="73526000" />
-      <workItem from="1766374338075" duration="19190000" />
-    </task>
-    <task id="LOCAL-00103" summary="feat - Deck Creating">
-      <option name="closed" value="true" />
-      <created>1750419439147</created>
-      <option name="number" value="00103" />
-      <option name="presentableId" value="LOCAL-00103" />
-      <option name="project" value="LOCAL" />
-      <updated>1750419439147</updated>
+      <workItem from="1766374338075" duration="21930000" />
     </task>
     <task id="LOCAL-00104" summary="feat">
       <option name="closed" value="true" />
@@ -1013,7 +1006,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766465969830</updated>
     </task>
-    <option name="localTasksCounter" value="152" />
+    <task id="LOCAL-00152" summary="iap3">
+      <option name="closed" value="true" />
+      <created>1766468691918</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1766468691918</updated>
+    </task>
+    <option name="localTasksCounter" value="153" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1023,7 +1024,6 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="migrations" />
     <MESSAGE value="RDS" />
     <MESSAGE value="[Feat] ready to CI/CD" />
     <MESSAGE value="test build images" />
@@ -1048,7 +1048,8 @@
     <MESSAGE value="iap5" />
     <MESSAGE value="iap" />
     <MESSAGE value="iap2" />
-    <option name="LAST_COMMIT_MESSAGE" value="iap2" />
+    <MESSAGE value="iap3" />
+    <option name="LAST_COMMIT_MESSAGE" value="iap3" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -332,7 +332,7 @@ public class PaymentController : ControllerBase
                 // 이미 같은 StoreTxId가 들어온 상태: 현재 상태를 보고 즉시 응답
                 var existing = await _context.Transaction.AsNoTracking()
                     .Where(t => t.StoreType == storeType && t.StoreTransactionId == storeTxId)
-                    .Select(t => new { t.TransactionId, t.Status })
+                    .Select(t => new { t.TransactionId, t.Status, FailureCode = t.Failure != null ? t.Failure.HttpStatusCode : null })
                     .FirstOrDefaultAsync();
                 
                 if (existing == null)
@@ -358,8 +358,8 @@ public class PaymentController : ControllerBase
 
                 if (existing.Status == TransactionStatus.Failed)
                 {
-                    res.PaymentOk = false;
-                    res.ErrorCode = CashPaymentErrorCode.InvalidReceipt;
+                    var retryable = existing.FailureCode is null or 401 or >= 500 and <= 599;
+                    res.ErrorCode = retryable ? CashPaymentErrorCode.InternalError : CashPaymentErrorCode.InvalidReceipt;
                     return Ok(res);
                 }
 
@@ -430,23 +430,33 @@ public class PaymentController : ControllerBase
                     // 검증 실패면: Failed + Failure 저장을 원자적으로
                     if (!validationResult.IsValid)
                     {
-                        txRow.Status = TransactionStatus.Failed;
+                        // 401/5xx/네트워크(null) 등은 ‘영수증 위조’가 아니라 ‘검증 호출 실패’일 수 있음
+                        var code = validationResult.HttpStatusCode;
 
-                        if (txRow.Failure == null)
+                        var retryable =
+                            code == null ||               // 네트워크/예외 등
+                            code == 401 ||                
+                            (code >= 500 && code <= 599); // 서버 오류
+
+                        if (retryable)
                         {
-                            txRow.Failure = new TransactionReceiptFailure
+                            if (txRow.Failure == null)
                             {
-                                TransactionId = txRow.TransactionId,
-                                CreatedAt = DateTime.UtcNow,
-                                HttpStatusCode = validationResult.HttpStatusCode,
-                                ErrorMessage = Util.Util.Truncate(validationResult.Message, 1024),
-                                ReceiptRawGzip = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.GzipUtf8(receiptRaw),
-                                ReceiptHash = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.Sha256Utf8(receiptRaw),
-                                ResponseRawGzip = string.IsNullOrEmpty(validationResult.RawResponse)
-                                    ? null
-                                    : Util.Util.GzipUtf8(validationResult.RawResponse),
-                            };
+                                txRow.Failure = new TransactionReceiptFailure
+                                {
+                                    TransactionId = txRow.TransactionId,
+                                    CreatedAt = DateTime.UtcNow,
+                                    HttpStatusCode = validationResult.HttpStatusCode,
+                                    ErrorMessage = Util.Util.Truncate(validationResult.Message, 1024),
+                                    ReceiptRawGzip = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.GzipUtf8(receiptRaw),
+                                    ReceiptHash = string.IsNullOrEmpty(receiptRaw) ? null : Util.Util.Sha256Utf8(receiptRaw),
+                                    ResponseRawGzip = string.IsNullOrEmpty(validationResult.RawResponse)
+                                        ? null
+                                        : Util.Util.GzipUtf8(validationResult.RawResponse),
+                                };
+                            }
                         }
+                        txRow.Status = TransactionStatus.Failed;
 
                         await _context.SaveChangesAsync();
                         await dbTx.CommitAsync();

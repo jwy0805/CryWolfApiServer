@@ -261,8 +261,12 @@ ON DUPLICATE KEY UPDATE
         return await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
     }
     
-    public async Task<(bool IsValid, string Message, int? HttpStatusCode, string? RawResponse)>
-        ValidateAppleReceiptAsync(string productCode, string receipt)
+    #endregion
+
+    #region Apple Receipt Validation
+    
+    private async Task<(bool IsValid, string Message, int? HttpStatusCode, string? RawResponse)> ValidateAppleReceiptAsync(
+        string productCode, string receipt)
     {
         // parse Unity IAP Receipt Wrapper
         UnityIapReceiptWrapper? wrapper;
@@ -335,12 +339,18 @@ ON DUPLICATE KEY UPDATE
         }
         
         var expectedBundleId = _config["BundleId"];
+        
+        if (string.IsNullOrWhiteSpace(tx.BundleId) || string.IsNullOrWhiteSpace(tx.ProductId))
+        {
+            return (false, "Apple transaction parse failed", prod.HttpStatusCode, prod.Raw);
+        }       
+        
         if (!string.Equals(tx.BundleId, expectedBundleId, StringComparison.Ordinal))
         {
             _logger.LogWarning("Apple receipt bundle ID mismatch. Expected: {Expected}, Actual: {Actual}",
                 expectedBundleId, tx.BundleId);
 
-            return (false, "Apple receipt bundle ID mismatch", 200, null);
+            return (false, "Apple receipt bundle ID mismatch", 200, prod.Raw);
         }
         
         if (!string.Equals(tx.ProductId, productCode, StringComparison.Ordinal))
@@ -361,11 +371,46 @@ ON DUPLICATE KEY UPDATE
 
         return (true, $"Valid Apple receipt ({env})", 200, null);
     }
+    
+    private static AppleTransactionResponse DecodeSignedTransactionInfoToTx(string signedTransactionInfo)
+    {
+        // JWS == header.payload.signature (JWT와 동일 포맷)
+        var handler = new JsonWebTokenHandler();
+        var jwt = handler.ReadJsonWebToken(signedTransactionInfo);
 
-    #endregion
+        string GetStr(string name)
+            => jwt.TryGetPayloadValue(name, out object? v) && v != null ? v.ToString()! : string.Empty;
 
-    #region Apple Receipt Validation
+        int? GetIntNullable(string name)
+        {
+            if (!jwt.TryGetPayloadValue(name, out object? v) || v == null) return null;
+            if (v is int i) return i;
+            if (v is long l) return (int)l;
+            if (int.TryParse(v.ToString(), out var parsed)) return parsed;
+            return null;
+        }
 
+        long? GetLongNullable(string name)
+        {
+            if (!jwt.TryGetPayloadValue(name, out object? v) || v == null) return null;
+            if (v is long l) return l;
+            if (v is int i) return i;
+            if (long.TryParse(v.ToString(), out var parsed)) return parsed;
+            return null;
+        }
+
+        return new AppleTransactionResponse
+        {
+            BundleId = GetStr("bundleId"),
+            ProductId = GetStr("productId"),
+            TransactionId = GetStr("transactionId"),
+            OriginalTransactionId = GetStr("originalTransactionId"),
+            Environment = GetStr("environment"),
+            RevocationReason = GetIntNullable("revocationReason"),
+            RevocationDate = GetLongNullable("revocationDate"),
+        };
+    }
+    
     private async Task<(bool IsSuccess, bool ShouldRetrySandbox, AppleTransactionResponse? Payload, int? HttpStatusCode, string Raw)>
         CallAppStoreTransactionEndpointAsync(string transactionId, string jwt, bool sandbox)
     {
@@ -398,12 +443,29 @@ ON DUPLICATE KEY UPDATE
         {
             try
             {
-                var tx = JsonConvert.DeserializeObject<AppleTransactionResponse>(body);
-                return tx == null ? (false, false, null, status, body) : (true, false, tx, status, body);
+                // Transaction Lookup 응답은 tx 필드가 평문으로 오지 않고 signedTransactionInfo(JWS)로 오는 경우가 일반적
+                var lookup = JsonConvert.DeserializeObject<AppleTransactionLookupResponse>(body);
+
+                if (lookup?.SignedTransactionInfo is null || lookup.SignedTransactionInfo.Length < 20)
+                {
+                    _logger.LogWarning("Apple lookup response missing signedTransactionInfo. Body={Body}", body);
+                    return (false, false, null, status, body);
+                }
+
+                var tx = DecodeSignedTransactionInfoToTx(lookup.SignedTransactionInfo);
+
+                // 파싱 결과가 비어있으면 모델/응답 구조 불일치 가능성이므로 Raw를 남기고 실패 처리
+                if (string.IsNullOrWhiteSpace(tx.BundleId) || string.IsNullOrWhiteSpace(tx.ProductId))
+                {
+                    _logger.LogWarning("Apple signedTransactionInfo decoded but bundleId/productId empty. Body={Body}", body);
+                    return (false, false, null, status, body);
+                }
+
+                return (true, false, tx, status, body);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Failed to deserialize AppleTransactionResponse. Body: {Body}", body);
+                _logger.LogError(e, "Failed to parse Apple transaction lookup response. Body={Body}", body);
                 return (false, false, null, status, body);
             }
         }

@@ -63,6 +63,12 @@ public class AppleTransactionResponse
     public long? RevocationDate { get; set; }
 }
 
+public sealed class AppleTransactionLookupResponse
+{
+    [JsonProperty("signedTransactionInfo")]
+    public string? SignedTransactionInfo { get; set; }
+}
+
 public class AppleErrorResponse
 {
     [JsonProperty("errorCode")]

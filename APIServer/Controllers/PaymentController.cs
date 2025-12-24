@@ -176,7 +176,7 @@ public class PaymentController : ControllerBase
             await using var transaction = await _context.Database.BeginTransactionAsync();
 
             var userStat = _context.UserStats.FirstOrDefault(u => u.UserId == userId);
-            var product = _context.Product.AsNoTracking().FirstOrDefault(p => p.ProductCode == required.ProductCode);
+            var product = _cachedDataProvider.GetProducts().FirstOrDefault(p => p.ProductCode == required.ProductCode);
             if (product == null || userStat == null) return;
         
             var balance = product.Currency switch
@@ -189,6 +189,7 @@ public class PaymentController : ControllerBase
             if (balance < product.Price)
             {
                 response.PaymentOk = false;
+                return;
             }
 
             switch (product.Currency)

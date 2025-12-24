@@ -916,6 +916,7 @@ public class VirtualPaymentPacketResponse
 {
     public bool PaymentOk { get; set; }
     public VirtualPaymentCode PaymentCode { get; set; }
+    public CurrencyType CurrencyType { get; set; }
 }
 
 public class DailyPaymentPacketRequired

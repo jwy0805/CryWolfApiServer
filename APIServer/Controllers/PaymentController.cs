@@ -189,6 +189,7 @@ public class PaymentController : ControllerBase
             if (balance < product.Price)
             {
                 response.PaymentOk = false;
+                response.CurrencyType = product.Currency;
                 return;
             }
 
@@ -238,7 +239,11 @@ public class PaymentController : ControllerBase
     
             var balanceGold = userStat.Gold;
             var price = dailyProducts.First(dp => dp.ProductId == product.ProductId).Price;
-            if (balanceGold < price) response.PaymentOk = false;
+            if (balanceGold < price)
+            {
+                response.PaymentOk = false;
+                return;
+            }
     
             var userDaily = _context.UserDailyProduct.FirstOrDefault(udp =>
                 udp.UserId == userId && udp.ProductId == product.ProductId);

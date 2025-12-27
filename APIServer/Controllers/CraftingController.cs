@@ -184,6 +184,7 @@ public class CraftingController : ControllerBase
                 res.ReinforceResultOk = false;
                 res.IsSuccess = false;
                 res.Error = errorCode;
+                _logger.LogError("[ReinforceCard] ReinforceCard failed with error code: {ErrorCode}", errorCode);
                 await tx.RollbackAsync();
             }
 
@@ -258,7 +259,7 @@ public class CraftingController : ControllerBase
                         var row = userMaterials.FirstOrDefault(x => x.MaterialId == reqMat.MaterialId);
                         if (row == null || row.Count < reqMat.Count)
                         {
-                            await FailAndReturn(errorCode: 1); // 재료 부족
+                            await FailAndReturn(errorCode: 11); // 재료 부족
                             return;
                         }
 
@@ -275,7 +276,7 @@ public class CraftingController : ControllerBase
 
                 if (baseUserUnit == null || baseUserUnit.Count <= 0)
                 {
-                    await FailAndReturn(errorCode: 1); // 원본 유닛 부족
+                    await FailAndReturn(errorCode: 12); // 원본 유닛 부족
                     return;
                 }
 
@@ -297,7 +298,7 @@ public class CraftingController : ControllerBase
                         var row = userUnits.FirstOrDefault(uu => uu.UnitId == g.UnitId);
                         if (row == null || row.Count < g.Count)
                         {
-                            await FailAndReturn(errorCode: 1); // 희생 유닛 부족
+                            await FailAndReturn(errorCode: 13); // 희생 유닛 부족
                             return;
                         }
 
@@ -370,6 +371,7 @@ public class CraftingController : ControllerBase
                 res.ReinforceResultOk = false;
                 res.IsSuccess = false;
                 res.Error = 999; // 서버 내부 예외
+                _logger.LogError("[ReinforceCard] Reinforce card internal Error");
             }
         });
 

@@ -195,13 +195,14 @@ public class CraftingController : ControllerBase
                 var baseUnitLevel = required.UnitInfo.Level;
 
                 // 서버 기준 목표 레벨(다음 레벨)
-                int targetLevel = baseUnitLevel + 1;
+                var targetUnitId = (UnitId)(required.UnitInfo.Id + 1);
+                var targetLevel = baseUnitLevel + 1;
 
                 // -----------------------------
                 // 1) 강화 재료(머티리얼) 요구량 로드
                 // -----------------------------
                 var materialsToConsume = await _context.UnitMaterial.AsNoTracking()
-                    .Where(um => um.UnitId == baseUnitId)
+                    .Where(um => um.UnitId == targetUnitId)
                     .Select(um => new
                     {
                         MaterialId = um.MaterialId,

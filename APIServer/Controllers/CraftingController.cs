@@ -198,9 +198,7 @@ public class CraftingController : ControllerBase
                 var targetUnitId = (UnitId)(required.UnitInfo.Id + 1);
                 var targetLevel = baseUnitLevel + 1;
 
-                // -----------------------------
                 // 1) 강화 재료(머티리얼) 요구량 로드
-                // -----------------------------
                 var materialsToConsume = await _context.UnitMaterial.AsNoTracking()
                     .Where(um => um.UnitId == targetUnitId)
                     .Select(um => new
@@ -210,10 +208,8 @@ public class CraftingController : ControllerBase
                     })
                     .ToListAsync();
 
-                // -----------------------------
                 // 2) 희생 유닛 리스트 (required.UnitList)
                 //    - 여기엔 "재료 유닛들"만 들어온다고 가정
-                // -----------------------------
                 var unitsToConsume = required.UnitList ?? new List<UnitInfo>();
                 // (Class, Level)별 개수 집계 (중복카드가 있으면 개수만큼 반영)
                 var unitConsumeGroups = unitsToConsume
@@ -221,9 +217,7 @@ public class CraftingController : ControllerBase
                     .Select(g => new { g.Key.Class, g.Key.Level, UnitId = (UnitId)g.Key.Id, Count = g.Count() })
                     .ToList();
 
-                // -----------------------------
-                // 3) ReinforcePoint 로드 (번역 실패 방지 버전)
-                // -----------------------------
+                // 3) ReinforcePoint
                 var reinforcePoints = _cachedDataProvider.GetReinforcePoints();
                 // 목표 ReinforcePoint(분모) 상수
                 if (!reinforcePoints.TryGetValue((baseUnitClass, targetLevel), out var targetConstant)) return;
@@ -242,10 +236,7 @@ public class CraftingController : ControllerBase
                     rpDict[key] = constant;
                 }
 
-                // -----------------------------
                 // 4) 유저 보유 검증 + 차감 (동일 트랜잭션)
-                // -----------------------------
-
                 // 4-A) 머티리얼 차감
                 if (materialsToConsume.Count > 0)
                 {
@@ -271,7 +262,6 @@ public class CraftingController : ControllerBase
                 }
 
                 // 4-B) 강화 원본 유닛 1장 차감 (성공 시 상위 유닛 1장 지급)
-                //     -> "원본을 소모하지 않는 강화"면 여기 블록을 제거하면 됨.
                 var baseUserUnit = await _context.UserUnit
                     .FirstOrDefaultAsync(uu => uu.UserId == userId && uu.UnitId == baseUnitId);
 
@@ -309,9 +299,7 @@ public class CraftingController : ControllerBase
                     }
                 }
 
-                // -----------------------------
                 // 5) 강화 확률 계산
-                // -----------------------------
                 // numerator = Σ(희생카드 constant * 개수)
                 int numerator = 0;
                 foreach (var g in unitsToConsume.GroupBy(u => (u.Class, u.Level)))
@@ -329,9 +317,7 @@ public class CraftingController : ControllerBase
                 var rng = new Random();
                 bool success = rng.NextDouble() < p;
 
-                // -----------------------------
                 // 6) 성공 시 상위 유닛 1장 지급
-                // -----------------------------
                 if (success)
                 {
                     var newUnitId = (UnitId)(required.UnitInfo.Id + 1);

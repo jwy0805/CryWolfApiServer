@@ -36,6 +36,7 @@ public class MatchMakingPacketResponse
 public class MatchCancelPacketRequired
 {
     public int UserId { get; set; }
+    public int SessionId { get; set; }
 }
     
 public class MatchCancelPacketResponse

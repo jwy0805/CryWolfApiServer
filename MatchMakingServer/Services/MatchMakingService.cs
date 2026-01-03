@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Net;
+using System.Text.RegularExpressions;
 using MatchMakingServer.DB;
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable once CollectionNeverUpdated.Local
@@ -13,8 +14,11 @@ public class MatchMakingService : BackgroundService
     private readonly ApiService _apiService;
     private readonly Dictionary<int, PriorityQueue<MatchMakingPacketRequired, int>> _sheepUserQueues = new();
     private readonly Dictionary<int, PriorityQueue<MatchMakingPacketRequired, int>> _wolfUserQueues = new();
-    private readonly HashSet<int> _cancelUserList = new();
-    private readonly object _lock = new();
+    private readonly Dictionary<int, int> _latestSessionByUser = new();
+    private readonly Dictionary<int, int> _canceledSessionByUser = new();
+    private readonly Dictionary<(int UserId, int SessionId), int> _retryCount = new();
+    
+    private const int MaxRetryCount = 3;
     
     public MatchMakingService(ILogger<MatchMakingService> logger, JobService jobService, ApiService apiService)
     {
@@ -25,284 +29,344 @@ public class MatchMakingService : BackgroundService
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Matchmaking Service is starting.");
-
-        _ = Task.Run(async () =>
-        {
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
-            await ReportQueueCountsAsync(stoppingToken);
-        }, stoppingToken);
-
         while (stoppingToken.IsCancellationRequested == false)
         {
-            ProcessMatchMaking();
+            _jobService.Push(() =>
+            {
+                var pairs = ProcessMatchMaking();
+                foreach (var (sheep, wolf) in pairs)
+                {
+                    _ = ProcessMatchRequestAsync(sheep, wolf);
+                }
+            });
+            
             await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
         }
-        
-        _logger.LogInformation("Matchmaking Service has stopped.");
     }
-    
-    private void ProcessMatchMaking()
+
+    private void EnsureQueues(int mapId)
     {
-        lock (_lock)
+        if (!_sheepUserQueues.ContainsKey(mapId))
         {
-            foreach (var mapId in _sheepUserQueues.Keys)
-            {
-                var sheepUserQueue = _sheepUserQueues[mapId];
-                var wolfUserQueue = _wolfUserQueues[mapId];
-                
-                while (sheepUserQueue.Count > 0 && wolfUserQueue.Count > 0)
-                {
-                    Console.WriteLine($"Processing Matchmaking... {sheepUserQueue.Count}, {wolfUserQueue.Count}");
-                    var matchResult = FindMatch(mapId);
-                    if (matchResult == null) break;
-                    _ = ProcessMatchRequest(matchResult.Value.Item1, matchResult.Value.Item2);
-                }
-            }
+            _sheepUserQueues[mapId] = new PriorityQueue<MatchMakingPacketRequired, int>();
+        }
+
+        if (!_wolfUserQueues.ContainsKey(mapId))
+        {
+            _wolfUserQueues[mapId] = new PriorityQueue<MatchMakingPacketRequired, int>();
         }
     }
 
-    private async Task ReportQueueCountsAsync(CancellationToken token)
+    private bool IsStaleOrCanceled(MatchMakingPacketRequired required)
     {
-        while (!token.IsCancellationRequested)
+        // 최신 세션 아니면 폐기
+        if (_latestSessionByUser.TryGetValue(required.UserId, out var latest) && latest != required.SessionId) 
+            return true;
+        
+        // 취소된 세션 폐기
+        if (_canceledSessionByUser.TryGetValue(required.UserId, out var canceled) && canceled == required.SessionId)
+            return true;
+
+        return false;
+    }
+
+    private List<(MatchMakingPacketRequired Sheep, MatchMakingPacketRequired Wolf)> ProcessMatchMaking()
+    {
+        var results = new List<(MatchMakingPacketRequired, MatchMakingPacketRequired)>();
+
+        foreach (var mapId in _sheepUserQueues.Keys.ToArray())
         {
-            try
-            {
-                int sheepCount = 0;
-                int wolfCount = 0;
-                
-                if (_sheepUserQueues.TryGetValue(1, out var queue))
-                {
-                    sheepCount = queue.Count;
-                }
-                
-                if (_wolfUserQueues.TryGetValue(1, out var wolfQueue))
-                {
-                    wolfCount = wolfQueue.Count;
-                }
-                
-                var packet = new ReportQueueCountsRequired
-                {
-                    QueueCountsSheep = sheepCount,
-                    QueueCountsWolf = wolfCount
-                };
-                
-                var res = await _apiService.SendRequestToApiAsync<ReportQueueCountsResponse>(
-                    "Match/ReportQueueCounts", packet, HttpMethod.Post);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Failed to report queue counts.");
-            }
+            if (!_wolfUserQueues.ContainsKey(mapId)) continue;
             
-            await Task.Delay(TimeSpan.FromSeconds(10), token);
+            var sheepQ = _sheepUserQueues[mapId];
+            var wolfQ = _wolfUserQueues[mapId];
+
+            while (sheepQ.Count > 0 && wolfQ.Count > 0)
+            {
+                var match = FindMatch(mapId);
+                if (match == null) break;
+                results.Add(match.Value);
+            }
         }
+
+        return results;
     }
 
-    private (MatchMakingPacketRequired, MatchMakingPacketRequired)? FindMatch(int mapId)
+    private (MatchMakingPacketRequired Sheep, MatchMakingPacketRequired Wolf)? FindMatch(int mapId)
     {
-        var sheepUserQueue = _sheepUserQueues[mapId];
-        var wolfUserQueue = _wolfUserQueues[mapId];
-        
+        var sheepQ = _sheepUserQueues[mapId];
+        var wolfQ = _wolfUserQueues[mapId];
+
         while (true)
         {
-            if (sheepUserQueue.Count == 0 || wolfUserQueue.Count == 0) return null; 
-
-            var sheepRequired = sheepUserQueue.Peek();
-            var wolfRequired = wolfUserQueue.Peek();
-
-            if (_cancelUserList.Contains(sheepRequired.UserId))
-            {
-                sheepUserQueue.Dequeue();
-                _cancelUserList.Remove(sheepRequired.UserId);
-            }
-            else if (_cancelUserList.Contains(wolfRequired.UserId))
-            {
-                wolfUserQueue.Dequeue();
-                _cancelUserList.Remove(wolfRequired.UserId);
-            }
-            else
-            {
-                sheepRequired = sheepUserQueue.Dequeue();
-                wolfRequired = wolfUserQueue.Dequeue();
-                return (sheepRequired, wolfRequired);
-            }
-        }
-    }
-    
-    private async Task ProcessMatchRequest(MatchMakingPacketRequired sheepRequired, MatchMakingPacketRequired wolfRequired)
-    {   
-        _logger.LogInformation(
-            $"Matched User {sheepRequired.UserId} (Faction {sheepRequired.Faction}, RankPoint {sheepRequired.RankPoint}) " +
-            $"with User {wolfRequired.UserId} (Faction {wolfRequired.Faction}, RankPoint {wolfRequired.RankPoint})");
-        
-        var getRankPointPacket = new GetRankPointPacketRequired
-        {
-            SheepUserId = sheepRequired.UserId,
-            WolfUserId = wolfRequired.UserId
-        };
-        
-        var rankPointResponse = await _apiService
-            .SendRequestToApiAsync<GetRankPointPacketResponse>("Match/GetRankPoint", getRankPointPacket, HttpMethod.Post);
-       
-        if (rankPointResponse == null)
-        {
-            _logger.LogError("Failed to get rank point.");
-            return;
-        }
+            if (sheepQ.Count == 0 || wolfQ.Count == 0) return null;
             
-        // Http Transfer of Socket Server
-        var matchSuccessPacket = new MatchSuccessPacketRequired
-        {
-            SheepUserId = sheepRequired.UserId,
-            SheepSessionId = sheepRequired.SessionId,
-            SheepUserName = sheepRequired.UserName,
-            WolfUserId = wolfRequired.UserId,
-            WolfSessionId = wolfRequired.SessionId,
-            WolfUserName = wolfRequired.UserName,
-            MapId = sheepRequired.MapId,
-            SheepRankPoint = sheepRequired.RankPoint,
-            WolfRankPoint = wolfRequired.RankPoint,
-            WinPointSheep = rankPointResponse.WinPointSheep,
-            WinPointWolf = rankPointResponse.WinPointWolf,
-            LosePointSheep = rankPointResponse.LosePointSheep,
-            LosePointWolf = rankPointResponse.LosePointWolf,
-            SheepCharacterId = (CharacterId)sheepRequired.CharacterId,
-            WolfCharacterId = (CharacterId)wolfRequired.CharacterId,
-            SheepId = (SheepId)sheepRequired.AssetId,
-            EnchantId = (EnchantId)wolfRequired.AssetId,
-            SheepUnitIds = sheepRequired.UnitIds,
-            WolfUnitIds = wolfRequired.UnitIds,
-            SheepAchievements = sheepRequired.Achievements,
-            WolfAchievements = wolfRequired.Achievements
-        };
-
-        await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
+            var sheepPeek = sheepQ.Peek();
+            if (IsStaleOrCanceled(sheepPeek))
+            {
+                sheepQ.Dequeue();
+                if (_canceledSessionByUser.TryGetValue(sheepPeek.UserId, out var canceled) &&
+                    canceled == sheepPeek.SessionId)
+                {
+                    _canceledSessionByUser.Remove(sheepPeek.UserId);
+                }
+                continue;
+            }
+            
+            var wolfPeek = wolfQ.Peek();
+            if (IsStaleOrCanceled(wolfPeek))
+            {
+                wolfQ.Dequeue();
+                if (_canceledSessionByUser.TryGetValue(wolfPeek.UserId, out var canceled) &&
+                    canceled == wolfPeek.SessionId)
+                {
+                    _canceledSessionByUser.Remove(wolfPeek.UserId);
+                }
+                continue;
+            }
+            
+            return (sheepQ.Dequeue(), wolfQ.Dequeue());
+        }
     }
 
-    private async Task ProcessTestMatchRequest(MatchMakingPacketRequired required)
+    private bool TryIncreaseRetry(MatchMakingPacketRequired required)
     {
-        _logger.LogInformation($"Test Match Requested User {required.UserId} (Faction {required.Faction}, RankPoint {required.RankPoint})");
-        
-        var getRankPointPacket = new GetRankPointPacketRequired
-        {
-            SheepUserId = required.UserId,
-            WolfUserId = required.UserId
-        };
-        
-        var rankPointResponse = await _apiService
-            .SendRequestToApiAsync<GetRankPointPacketResponse>("Match/GetRankPoint", getRankPointPacket, HttpMethod.Post);
-               
-        if (rankPointResponse == null)
-        {
-            _logger.LogError("Failed to get rank point.");
-            return;
-        }
+        var key = (required.UserId, required.SessionId);
+        _retryCount.TryGetValue(key, out var count);
+        if (count >= MaxRetryCount) return false;
+        _retryCount[key] = count + 1;
+        return true;
+    }
 
-        MatchMakingPacketRequired userPacket;
-        MatchSuccessPacketRequired matchSuccessPacket;
-        if (required.Faction == Faction.Wolf)
+    private void RequeueIfStillValid(MatchMakingPacketRequired required)
+    {
+        // 최신 세션이 아니면 재큐잉x (이미 재진입 / 새 요청)
+        if (_latestSessionByUser.TryGetValue(required.UserId, out var latest) && latest != required.SessionId) 
+            return;
+            
+        // 취소된 세션 재큐잉x
+        if (_canceledSessionByUser.TryGetValue(required.UserId, out var canceled) && canceled == required.SessionId)
+            return;
+            
+        EnsureQueues(required.MapId);
+
+        if (required.Faction == Faction.Sheep)
         {
-            userPacket = _sheepUserQueues[required.MapId].Dequeue();
-            matchSuccessPacket = new MatchSuccessPacketRequired
-            {
-                IsTestGame = true,
-                SheepUserId = userPacket.UserId,
-                SheepSessionId = userPacket.SessionId,
-                SheepUserName = userPacket.UserName,
-                WolfUserId = required.UserId,
-                WolfSessionId = required.SessionId,
-                WolfUserName = "Test",
-                MapId = required.MapId,
-                SheepRankPoint = userPacket.RankPoint,
-                WolfRankPoint = required.RankPoint,
-                WinPointSheep = rankPointResponse.WinPointSheep,
-                WinPointWolf = rankPointResponse.WinPointWolf,
-                LosePointSheep = rankPointResponse.LosePointSheep,
-                LosePointWolf = rankPointResponse.LosePointWolf,
-                SheepCharacterId = (CharacterId)userPacket.CharacterId,
-                WolfCharacterId = (CharacterId)required.CharacterId,
-                SheepId = (SheepId)userPacket.AssetId,
-                EnchantId = (EnchantId)required.AssetId,
-                SheepUnitIds = userPacket.UnitIds,
-                WolfUnitIds = required.UnitIds,
-                SheepAchievements = userPacket.Achievements,
-                WolfAchievements = required.Achievements
-            };
+            _sheepUserQueues[required.MapId].Enqueue(required, required.RankPoint);
         }
         else
         {
-            userPacket = _wolfUserQueues[required.MapId].Dequeue();
-            matchSuccessPacket = new MatchSuccessPacketRequired
+            _wolfUserQueues[required.MapId].Enqueue(required, required.RankPoint);
+        }
+    }
+    
+    private async Task ProcessMatchRequestAsync(MatchMakingPacketRequired sheepRequired, MatchMakingPacketRequired wolfRequired)
+    {
+        try
+        {
+            _logger.LogInformation(
+                "Matched: Sheep {SheepUserId}({SheepRP}) vs Wolf {WolfUserId}({WolfRP}) map={MapId}",
+                sheepRequired.UserId, sheepRequired.RankPoint,
+                wolfRequired.UserId, wolfRequired.RankPoint,
+                sheepRequired.MapId);
+            
+            var getRankPointPacket = new GetRankPointPacketRequired
             {
-                IsTestGame = true,
-                SheepUserId = required.UserId,
-                SheepSessionId = required.SessionId,
-                SheepUserName = "Test",
-                WolfUserId = userPacket.UserId,
-                WolfSessionId = userPacket.SessionId,
-                WolfUserName = userPacket.UserName,
-                MapId = required.MapId,
-                SheepRankPoint = required.RankPoint,
-                WolfRankPoint = userPacket.RankPoint,
+                SheepUserId = sheepRequired.UserId,
+                WolfUserId = wolfRequired.UserId
+            };
+            
+            var rankPointResponse = await _apiService
+                .SendRequestToApiAsync<GetRankPointPacketResponse>(
+                    "Match/GetRankPoint", getRankPointPacket, HttpMethod.Post);
+           
+            if (rankPointResponse == null)
+            {
+                _logger.LogError("GetRankPoint failed. Requeue attempt.");
+                _jobService.Push(() =>
+                {
+                    if (TryIncreaseRetry(sheepRequired) && TryIncreaseRetry(wolfRequired))
+                    {
+                        RequeueIfStillValid(sheepRequired);
+                        RequeueIfStillValid(wolfRequired);
+                    }
+                });
+                return;
+            }
+                
+            // Http Transfer of Socket Server
+            var matchSuccessPacket = new MatchSuccessPacketRequired
+            {
+                SheepUserId = sheepRequired.UserId,
+                SheepSessionId = sheepRequired.SessionId,
+                SheepUserName = sheepRequired.UserName,
+                WolfUserId = wolfRequired.UserId,
+                WolfSessionId = wolfRequired.SessionId,
+                WolfUserName = wolfRequired.UserName,
+                MapId = sheepRequired.MapId,
+                SheepRankPoint = sheepRequired.RankPoint,
+                WolfRankPoint = wolfRequired.RankPoint,
                 WinPointSheep = rankPointResponse.WinPointSheep,
                 WinPointWolf = rankPointResponse.WinPointWolf,
                 LosePointSheep = rankPointResponse.LosePointSheep,
                 LosePointWolf = rankPointResponse.LosePointWolf,
-                SheepCharacterId = (CharacterId)required.CharacterId,
-                WolfCharacterId = (CharacterId)userPacket.CharacterId,
-                SheepId = (SheepId)required.AssetId,
-                EnchantId = (EnchantId)userPacket.AssetId,
-                SheepUnitIds = required.UnitIds,
-                WolfUnitIds = userPacket.UnitIds,
-                SheepAchievements = required.Achievements,
-                WolfAchievements = userPacket.Achievements
+                SheepCharacterId = (CharacterId)sheepRequired.CharacterId,
+                WolfCharacterId = (CharacterId)wolfRequired.CharacterId,
+                SheepId = (SheepId)sheepRequired.AssetId,
+                EnchantId = (EnchantId)wolfRequired.AssetId,
+                SheepUnitIds = sheepRequired.UnitIds,
+                WolfUnitIds = wolfRequired.UnitIds,
+                SheepAchievements = sheepRequired.Achievements,
+                WolfAchievements = wolfRequired.Achievements
             };
+
+            await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
         }
-        
-        await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
+        catch (Exception e)
+        {
+            _logger.LogError(e, "ProcessMatchRequest failed. Requeue attempt.");
+
+            _jobService.Push(() =>
+            {
+                if (TryIncreaseRetry(sheepRequired) && TryIncreaseRetry(wolfRequired))
+                {
+                    RequeueIfStillValid(sheepRequired);
+                    RequeueIfStillValid(wolfRequired);
+                }
+            });
+        }
     }
-    
+
     public void AddMatchRequest(MatchMakingPacketRequired packet, bool test = false)
     {
         if (test)
         {
             Console.WriteLine($"user {packet.UserId} {packet.Faction} : session {packet.SessionId} test match");
             _ = ProcessTestMatchRequest(packet);
+            return;
         }
-        else
+
+        _jobService.Push(() =>
         {
-            _jobService.Push(() => 
+            _latestSessionByUser[packet.UserId] = packet.SessionId;
+
+            if (_canceledSessionByUser.TryGetValue(packet.UserId, out var canceled) && canceled != packet.SessionId)
             {
-                if (_cancelUserList.Contains(packet.UserId)) _cancelUserList.Remove(packet.UserId);
-                
-                if (_sheepUserQueues.ContainsKey(packet.MapId) == false)
-                {
-                    _sheepUserQueues[packet.MapId] = new PriorityQueue<MatchMakingPacketRequired, int>();
-                }
-                
-                if (_wolfUserQueues.ContainsKey(packet.MapId) == false)
-                {
-                    _wolfUserQueues[packet.MapId] = new PriorityQueue<MatchMakingPacketRequired, int>();
-                }
-                
-                if (packet.Faction == Faction.Sheep)
-                {
-                    _sheepUserQueues[packet.MapId].Enqueue(packet, packet.RankPoint);
-                }
-                else if (packet.Faction == Faction.Wolf)
-                {
-                    _wolfUserQueues[packet.MapId].Enqueue(packet, packet.RankPoint);
-                }
-                
-                Console.WriteLine($"user {packet.UserId} : session {packet.SessionId}, {_sheepUserQueues[packet.MapId].Count}, {_wolfUserQueues[packet.MapId].Count}");
-            });
-        }
+                _canceledSessionByUser.Remove(packet.UserId);
+            }
+            
+            EnsureQueues(packet.MapId);
+            
+            if (packet.Faction == Faction.Sheep)
+            {
+                _sheepUserQueues[packet.MapId].Enqueue(packet, packet.RankPoint);
+            }
+            else
+            {
+                _wolfUserQueues[packet.MapId].Enqueue(packet, packet.RankPoint);
+            }
+        });
     }
     
     public int CancelMatchRequest(MatchCancelPacketRequired packet)
     {
-        _jobService.Push(() => _cancelUserList.Add(packet.UserId));
+        _jobService.Push(() =>
+        {
+            _canceledSessionByUser[packet.UserId] = packet.SessionId;
+            _retryCount.Remove((packet.UserId, packet.SessionId));
+        });
+
         return packet.UserId;
+    }
+    
+    private async Task ProcessTestMatchRequest(MatchMakingPacketRequired required)
+    {
+        try
+        {
+            _logger.LogInformation("Test Match Requested User {UserId} (Faction {Faction}, RankPoint {RankPoint})",
+                required.UserId, required.Faction, required.RankPoint);
+
+            var getRankPointPacket = new GetRankPointPacketRequired
+            {
+                SheepUserId = required.UserId,
+                WolfUserId = required.UserId
+            };
+
+            var rankPointResponse = await _apiService
+                .SendRequestToApiAsync<GetRankPointPacketResponse>("Match/GetRankPoint", getRankPointPacket, HttpMethod.Post);
+
+            if (rankPointResponse == null)
+            {
+                _logger.LogError("Failed to get rank point (test match).");
+                return;
+            }
+            
+            MatchMakingPacketRequired userPacket;
+            MatchSuccessPacketRequired matchSuccessPacket;
+            if (required.Faction == Faction.Wolf)
+            {
+                userPacket = _sheepUserQueues[required.MapId].Dequeue();
+                matchSuccessPacket = new MatchSuccessPacketRequired
+                {
+                    IsTestGame = true,
+                    SheepUserId = userPacket.UserId,
+                    SheepSessionId = userPacket.SessionId,
+                    SheepUserName = userPacket.UserName,
+                    WolfUserId = required.UserId,
+                    WolfSessionId = required.SessionId,
+                    WolfUserName = "Test",
+                    MapId = required.MapId,
+                    SheepRankPoint = userPacket.RankPoint,
+                    WolfRankPoint = required.RankPoint,
+                    WinPointSheep = rankPointResponse.WinPointSheep,
+                    WinPointWolf = rankPointResponse.WinPointWolf,
+                    LosePointSheep = rankPointResponse.LosePointSheep,
+                    LosePointWolf = rankPointResponse.LosePointWolf,
+                    SheepCharacterId = (CharacterId)userPacket.CharacterId,
+                    WolfCharacterId = (CharacterId)required.CharacterId,
+                    SheepId = (SheepId)userPacket.AssetId,
+                    EnchantId = (EnchantId)required.AssetId,
+                    SheepUnitIds = userPacket.UnitIds,
+                    WolfUnitIds = required.UnitIds,
+                    SheepAchievements = userPacket.Achievements,
+                    WolfAchievements = required.Achievements
+                };
+            }
+            else
+            {
+                userPacket = _wolfUserQueues[required.MapId].Dequeue();
+                matchSuccessPacket = new MatchSuccessPacketRequired
+                {
+                    IsTestGame = true,
+                    SheepUserId = required.UserId,
+                    SheepSessionId = required.SessionId,
+                    SheepUserName = "Test",
+                    WolfUserId = userPacket.UserId,
+                    WolfSessionId = userPacket.SessionId,
+                    WolfUserName = userPacket.UserName,
+                    MapId = required.MapId,
+                    SheepRankPoint = required.RankPoint,
+                    WolfRankPoint = userPacket.RankPoint,
+                    WinPointSheep = rankPointResponse.WinPointSheep,
+                    WinPointWolf = rankPointResponse.WinPointWolf,
+                    LosePointSheep = rankPointResponse.LosePointSheep,
+                    LosePointWolf = rankPointResponse.LosePointWolf,
+                    SheepCharacterId = (CharacterId)required.CharacterId,
+                    WolfCharacterId = (CharacterId)userPacket.CharacterId,
+                    SheepId = (SheepId)required.AssetId,
+                    EnchantId = (EnchantId)userPacket.AssetId,
+                    SheepUnitIds = required.UnitIds,
+                    WolfUnitIds = userPacket.UnitIds,
+                    SheepAchievements = required.Achievements,
+                    WolfAchievements = userPacket.Achievements
+                };
+            }
+
+            await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Test match failed.");
+        }
     }
 }

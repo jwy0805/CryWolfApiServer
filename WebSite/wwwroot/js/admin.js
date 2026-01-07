@@ -13,6 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const startAtInput = document.querySelector("[data-start-at]");
     const endAtInput = document.querySelector("[data-end-at]");
     const noticeSchedule = document.querySelector("[data-notice-schedule]");
+    const rewardSection = document.querySelector("[data-reward-section]");
+    const rewardToggle = document.querySelector("[data-reward-toggle]");
+    const rewardBlock = document.querySelector("[data-reward-block]");
+    const rewardProductIdInput = document.querySelector("[data-reward-product-id]");
+    const rewardProductTypeSelect = document.querySelector("[data-reward-product-type]");
+    const rewardCountInput = document.querySelector("[data-reward-count]");
     const sendBtn = document.querySelector("[data-send]");
     const sendStatus = document.querySelector("[data-send-status]");
 
@@ -55,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let messageType = "message";
     let targetType = "all";
+    let rewardMode = "off";
     const ranges = [];
     const supportedLangs = [
         {code: "ko", label: "한국어"},
@@ -95,6 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggleNoticeSchedule = () => {
         if (!noticeSchedule) return;
         noticeSchedule.hidden = messageType !== "notice";
+    };
+
+    const toggleRewardSection = () => {
+        if (!rewardSection || !rewardBlock) return;
+        const isNotice = messageType === "notice";
+        rewardSection.hidden = !isNotice;
+        rewardBlock.hidden = !isNotice || rewardMode !== "on";
     };
 
     const createLangToggleButtons = () => {
@@ -169,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messageType = type;
         setActiveButton(messageToggle, "data-message-type", type);
         toggleNoticeSchedule();
+        toggleRewardSection();
     });
 
     targetToggle.addEventListener("click", (event) => {
@@ -189,6 +204,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const lang = supportedLangs.find((l) => l.code === code);
         if (!lang) return;
         toggleLang(lang.code, lang.label);
+    });
+
+    rewardToggle?.addEventListener("click", (event) => {
+        const btn = event.target.closest("[data-reward-mode]");
+        if (!btn) return;
+        const mode = btn.getAttribute("data-reward-mode");
+        if (!mode) return;
+        rewardMode = mode;
+        setActiveButton(rewardToggle, "data-reward-mode", mode);
+        toggleRewardSection();
     });
 
     addRangeBtn?.addEventListener("click", () => {
@@ -257,6 +282,35 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        let reward = null;
+        if (messageType === "notice" && rewardMode === "on") {
+            const productId = parseInt(rewardProductIdInput?.value, 10);
+            const productType = parseInt(rewardProductTypeSelect?.value, 10);
+            const count = parseInt(rewardCountInput?.value, 10);
+            if (Number.isNaN(productId) || productId <= 0) {
+                sendStatus.textContent = "보상 Product ID를 입력하세요.";
+                rewardProductIdInput?.focus();
+                return;
+            }
+            if (Number.isNaN(productType)) {
+                sendStatus.textContent = "보상 타입을 선택하세요.";
+                rewardProductTypeSelect?.focus();
+                return;
+            }
+            if (Number.isNaN(count) || count <= 0) {
+                sendStatus.textContent = "보상 수량을 입력하세요.";
+                rewardCountInput?.focus();
+                return;
+            }
+            reward = {
+                ProductInfo: {
+                    ProductId: productId,
+                    ProductType: productType
+                },
+                Count: count
+            };
+        }
+
         try {
             sendBtn.disabled = true;
             if (sendStatus) {
@@ -276,12 +330,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 }));
                 
                 payload = {
-                    NoticeType: NoticeType.Notice,
+                    NoticeType: reward ? NoticeType.Event : NoticeType.Notice,
                     IsPinned: false,
                     StartAt: schedule.startAt,
                     EndAt: schedule.endAt,
-                    Localizations: localizations,
+                    Localizations: localizations
                 };
+                if (reward) payload.Rewards = [reward];
             } else {
                 url = `${API_BASE_URL}/api/Admin/SendMail`;
                 payload = {
@@ -331,6 +386,12 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             if (startAtInput) startAtInput.value = "";
             if (endAtInput) endAtInput.value = "";
+            if (rewardProductIdInput) rewardProductIdInput.value = "";
+            if (rewardProductTypeSelect) rewardProductTypeSelect.value = "";
+            if (rewardCountInput) rewardCountInput.value = "";
+            rewardMode = "off";
+            setActiveButton(rewardToggle, "data-reward-mode", rewardMode);
+            toggleRewardSection();
             ranges.length = 0;
             renderSummary();
         } catch (error) {
@@ -346,6 +407,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderSummary();
     toggleRangeBlock();
     toggleNoticeSchedule();
+    toggleRewardSection();
     createLangToggleButtons();
     const defaultLang = supportedLangs.find((l) => l.code === "ko");
     if (defaultLang) toggleLang(defaultLang.code, defaultLang.label);

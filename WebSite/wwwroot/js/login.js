@@ -79,6 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } finally {
             if (logoutButton) logoutButton.disabled = false;
             setLoggedOutUi();
+            if (window.location.pathname.toLowerCase() === "/admin") {
+                window.location.href = "/";
+            }
         }
     };
 
@@ -104,6 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         openModal(email);
+    });
+    
+    emailInput.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        loginButton.click();
     });
 
     const performLogin = async () => {

@@ -674,7 +674,7 @@ public class PaymentController : ControllerBase
             RewardPopupType = RewardPopupType.OpenResult,
             CompositionInfos = openResultInfos,
             ProductInfos = new List<ProductInfo>(),
-            RandomProductInfos = new List<RandomProductInfo>
+            RandomProductInfos = new List<TotalProductInfo>
             {
                 new() { ProductInfo = new ProductInfo { ProductId = required.ProductId, }, Count = resCount, }
             }

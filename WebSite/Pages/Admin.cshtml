@@ -70,6 +70,41 @@
             </div>
         </div>
 
+        <div class="field-row notice-reward" data-reward-section hidden>
+            <span class="field-label">이벤트 보상</span>
+            <div class="toggle-group" data-reward-toggle>
+                <button type="button" class="toggle-btn is-active" data-reward-mode="off">없음</button>
+                <button type="button" class="toggle-btn" data-reward-mode="on">보상 입력</button>
+            </div>
+            <div class="reward-grid" data-reward-block hidden>
+                <label class="reward-field">
+                    <span>Product ID</span>
+                    <input type="number" class="admin-input" placeholder="예: 12001" min="1" data-reward-product-id />
+                </label>
+                <label class="reward-field">
+                    <span>타입</span>
+                    <select class="admin-input" data-reward-product-type>
+                        <option value="">선택</option>
+                        <option value="0">Container</option>
+                        <option value="1">Unit</option>
+                        <option value="2">Material</option>
+                        <option value="3">Enchant</option>
+                        <option value="4">Sheep</option>
+                        <option value="5">Character</option>
+                        <option value="6">Gold</option>
+                        <option value="7">Spinel</option>
+                        <option value="8">Exp</option>
+                        <option value="9">Subscription</option>
+                    </select>
+                </label>
+                <label class="reward-field">
+                    <span>수량</span>
+                    <input type="number" class="admin-input" placeholder="예: 1" min="1" data-reward-count />
+                </label>
+            </div>
+            <p class="muted reward-hint">보상이 있으면 이벤트 타입으로 저장됩니다.</p>
+        </div>
+
         <div class="actions-row">
             <button type="button" class="btn-send" data-send>전송</button>
             <span class="send-status muted" data-send-status></span>

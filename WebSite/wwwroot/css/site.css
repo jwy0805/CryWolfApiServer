@@ -800,6 +800,22 @@ a {
   color: #f6f8ff;
 }
 
+.reward-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.reward-field {
+  display: grid;
+  gap: 6px;
+  color: #f6f8ff;
+}
+
+.reward-hint {
+  margin: 6px 0 0;
+}
+
 .admin-datetime {
   background: #f4f7ff;
 }

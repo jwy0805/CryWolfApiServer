@@ -7,8 +7,8 @@
 
     const API_BASE_URL = IS_LOCAL
         ? "https://localhost:7270"
-        : "";
-
+        : "https://www.hamonstudio.net";
+    
     async function callApiWithRefresh(url, options = {}) {
         const opts = {
             ...options,
@@ -16,7 +16,6 @@
         };
 
         let response = await fetch(url, opts);
-
 
         if (response.status === 401) {
             // access_token 만료 가능성 → refresh 시도

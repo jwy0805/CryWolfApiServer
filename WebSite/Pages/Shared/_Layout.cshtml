@@ -1,103 +1,110 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Cry Wolf</title>
-    <meta name="description" content="Hamon Studio creates unapologetically bold games for players who crave unforgettable worlds."/>
+    <meta name="description"
+        content="Hamon Studio creates unapologetically bold games for players who crave unforgettable worlds." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/WebSite.styles.css" asp-append-version="true"/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebSite.styles.css" asp-append-version="true" />
+    <link rel="icon" type="image/png" href="~/images/favicon.png" asp-append-version="true" />
+
 </head>
+
 <body class="app-shell @(ViewData["UseFullBg"] as bool? == true ? "home-fullbg" : "")">
-<header class="site-header">
-    <div class="nav-shell">
-        <a class="brand" asp-area="" asp-page="/Index">
-            <span class="brand-mark">
-                <img src="~/images/AppLogo.png"
-                     asp-append-version="true"
-                     alt="Cry Wolf"
-                     class="brand-mark-img"/>
-            </span>
-            <span class="brand-word">Cry Wolf</span>
-        </a>
-        <div class="login-ui" data-login-ui>
-            <div class="login-panel" data-login-panel>
-                <input class="login-input" type="email" placeholder="Email"/>
-                <button class="btn-login" type="button">Log in</button>
-                <div class="social-login" aria-label="Social login options">
-                    <button class="social-btn google" type="button" aria-label="Continue with Google">
-                        <img src="~/images/Google.png" asp-append-version="true" alt="Google" class="social-icon-img"/>
-                    </button>
-                    <button class="social-btn apple" type="button" aria-label="Continue with Apple">
-                        <img src="~/images/Apple.png" asp-append-version="true" alt="Apple" class="social-icon-img"/>
-                    </button>
+    <header class="site-header">
+        <div class="nav-shell">
+            <a class="brand" asp-area="" asp-page="/Index">
+                <span class="brand-mark">
+                    <img src="~/images/AppLogo.png" asp-append-version="true" alt="Cry Wolf" class="brand-mark-img" />
+                </span>
+                <span class="brand-word">Cry Wolf</span>
+            </a>
+            <div class="login-ui" data-login-ui>
+                <div class="login-panel" data-login-panel>
+                    <input class="login-input" type="email" placeholder="Email" />
+                    <button class="btn-login" type="button">Log in</button>
+                    <div class="social-login" aria-label="Social login options">
+                        <button class="social-btn google" type="button" aria-label="Continue with Google">
+                            <img src="~/images/Google.png" asp-append-version="true" alt="Google"
+                                class="social-icon-img" />
+                        </button>
+                        <button class="social-btn apple" type="button" aria-label="Continue with Apple">
+                            <img src="~/images/Apple.png" asp-append-version="true" alt="Apple"
+                                class="social-icon-img" />
+                        </button>
+                    </div>
+                </div>
+                <div class="user-panel" data-user-panel hidden>
+                    <a class="admin-link" asp-area="" asp-page="/admin" data-admin-link hidden>Admin</a>
+                    <span class="user-greeting">Hi, <span data-user-nickname>Player</span></span>
+                    <button class="btn-logout" type="button" data-logout-button>Log out</button>
                 </div>
             </div>
-            <div class="user-panel" data-user-panel hidden>
-                <a class="admin-link" asp-area="" asp-page="/admin" data-admin-link hidden>Admin</a>
-                <span class="user-greeting">Hi, <span data-user-nickname>Player</span></span>
-                <button class="btn-logout" type="button" data-logout-button>Log out</button>
+        </div>
+    </header>
+
+    <div class="login-modal" id="loginModal" aria-hidden="true">
+        <div class="login-modal__backdrop" data-close-login-modal></div>
+        <div class="login-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+            <div class="login-modal__header">
+                <h3 id="loginModalTitle">Enter your password</h3>
+                <button class="login-modal__close" type="button" data-close-login-modal
+                    aria-label="Close password popup">×</button>
+            </div>
+            <p class="login-modal__subtitle">Continue as <span id="loginModalEmail"></span></p>
+            <form class="login-modal__form">
+                <input type="password" class="login-input modal-password" placeholder="Password"
+                    autocomplete="current-password" />
+                <button class="btn-login modal-submit" type="submit">Continue</button>
+            </form>
+        </div>
+        <div class="sr-only" aria-live="polite" id="loginModalStatus"></div>
+    </div>
+
+    <main role="main" class="main-area">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span class="brand-mark">
+                    <img src="~/images/CompanyLogo.png" asp-append-version="true" alt="Cry Wolf"
+                        class="brand-mark-img" />
+                </span>
+                <span class="brand-word">Hamon Studio</span>
+            </div>
+            <div class="footer-meta">
+                <div class="company-info">
+                    <p>© 해몬 · 대표 정우영 · 인천광역시 연수구 컨벤시아대로 81, 5층 509-J295호</p>
+                    <p>전화 010-9639-6689 · E-mail hamonstd@gmail.com · 사업자등록번호 : 367-56-00856</p>
+                    <p class="copyright">© Hamon Korea All Rights Reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a asp-area="" asp-page="/privacy" class="footer-link">Privacy</a>
+                    <span aria-hidden="true">·</span>
+                    <a asp-area="" asp-page="/credits" class="footer-link">Credits</a>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </footer>
 
-<div class="login-modal" id="loginModal" aria-hidden="true">
-    <div class="login-modal__backdrop" data-close-login-modal></div>
-    <div class="login-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
-        <div class="login-modal__header">
-            <h3 id="loginModalTitle">Enter your password</h3>
-            <button class="login-modal__close" type="button" data-close-login-modal aria-label="Close password popup">×</button>
-        </div>
-        <p class="login-modal__subtitle">Continue as <span id="loginModalEmail"></span></p>
-        <form class="login-modal__form">
-            <input type="password" class="login-input modal-password" placeholder="Password" autocomplete="current-password"/>
-            <button class="btn-login modal-submit" type="submit">Continue</button>
-        </form>
-    </div>
-    <div class="sr-only" aria-live="polite" id="loginModalStatus"></div>
-</div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/config.js" asp-append-version="true"></script>
+    <script src="~/js/login-modal.js" asp-append-version="true"></script>
+    <script src="~/js/login.js" asp-append-version="true"></script>
 
-<main role="main" class="main-area">
-    @RenderBody()
-</main>
-
-<footer class="site-footer">
-    <div class="footer-inner">
-        <div class="footer-brand">
-            <span class="brand-mark">
-                <img src="~/images/CompanyLogo.png"
-                     asp-append-version="true"
-                     alt="Cry Wolf"
-                     class="brand-mark-img" />
-            </span>
-            <span class="brand-word">Hamon Studio</span>
-        </div>
-        <div class="footer-meta">
-            <div class="company-info">
-                <p>© 해몬 · 대표 정우영 · 인천광역시 연수구 컨벤시아대로 81, 5층 509-J295호</p>
-                <p>전화 010-9639-6689 · E-mail hamonstd@gmail.com · 사업자등록번호 : 367-56-00856</p>
-                <p class="copyright">© Hamon Korea All Rights Reserved.</p>
-            </div>
-            <div class="footer-links">
-                <a asp-area="" asp-page="/privacy" class="footer-link">Privacy</a>
-                <span aria-hidden="true">·</span>
-                <a asp-area="" asp-page="/credits" class="footer-link">Credits</a>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/config.js" asp-append-version="true"></script>
-<script src="~/js/login-modal.js" asp-append-version="true"></script>
-<script src="~/js/login.js" asp-append-version="true"></script>
-
-@await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

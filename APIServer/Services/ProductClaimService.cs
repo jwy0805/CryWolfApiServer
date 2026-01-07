@@ -197,7 +197,7 @@ ON DUPLICATE KEY UPDATE
         if (randomUp != null)
         {
             data.RewardPopupType = RewardPopupType.Open;
-            data.RandomProductInfos.Add(new RandomProductInfo
+            data.RandomProductInfos.Add(new TotalProductInfo
             {
                 ProductInfo = MapProductInfo(new UserProduct
                 {

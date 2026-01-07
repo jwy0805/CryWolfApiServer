@@ -9,10 +9,6 @@
       "PackagePath": "staticwebassets/css/site.css"
     },
     {
-      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/favicon.ico",
-      "PackagePath": "staticwebassets/favicon.ico"
-    },
-    {
       "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/AppLogo.png",
       "PackagePath": "staticwebassets/images/AppLogo.png"
     },
@@ -31,6 +27,10 @@
     {
       "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/Google.png",
       "PackagePath": "staticwebassets/images/Google.png"
+    },
+    {
+      "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/favicon.png",
+      "PackagePath": "staticwebassets/images/favicon.png"
     },
     {
       "Id": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/admin.js",

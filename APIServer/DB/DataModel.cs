@@ -205,10 +205,11 @@ public class ExpReward
 public class EventNotice
 {
     public int EventNoticeId { get; set; }
+    public int? EventId { get; set; } // FK to EventDefinition.EventId (nullable)
     public NoticeType NoticeType { get; set; }
 
     public bool IsPinned { get; set; }
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; set; } = true; 
     public DateTime? StartAt { get; set; } // null = 항상 노출
     public DateTime? EndAt { get; set; } // null = 무기한
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -229,6 +230,81 @@ public class EventNoticeLocalization
     public string Content { get; set; } = string.Empty;
 
     public EventNotice? EventNotice { get; set; }
+}
+
+[Table("EventDefinition")]
+public class EventDefinition
+{
+    public int EventId { get; set; }
+
+    [MaxLength(64)]
+    public string EventKey { get; set; } = ""; // unique: "first_purchase_2026_01"
+
+    public bool IsActive { get; set; } = true;
+
+    public DateTime? StartAt { get; set; } // UTC, null=상시
+    public DateTime? EndAt { get; set; }   // UTC, null=무기한
+
+    public EventRepeatType RepeatType { get; set; } = EventRepeatType.None; // None/Daily/Weekly/Monthly
+
+    [MaxLength(32)]
+    public string RepeatTimezone { get; set; } = "UTC"; // 초기엔 UTC 고정 추천
+
+    public int Version { get; set; } = 1;
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public int? CreatedBy { get; set; } // admin userId (선택)
+}
+
+[Table("EventRewardTier")]
+public class EventRewardTier
+{
+    public int EventRewardTierId { get; set; }
+    public int EventId { get; set; }
+    public int Tier { get; set; } = 1; // 1..N
+
+    public string ConditionJson { get; set; } = "{}";
+    public string RewardJson { get; set; } = "{}";
+
+    public bool IsActive { get; set; } = true;
+
+    // 운영 중 EventDefinition.Version이 올라가도 과거 티어 유지/교체 가능
+    public int MinEventVersion { get; set; } = 1;
+    public int? MaxEventVersion { get; set; } // null=무기한 유효 (선택)
+}
+
+[Table("UserEventProgress")]
+public class UserEventProgress
+{
+    public long UserId { get; set; }
+    public int EventId { get; set; }
+
+    [MaxLength(32)]
+    public string CycleKey { get; set; } = "default"; // None=default, Daily=yyyy-MM-dd ...
+
+    public int ProgressValue { get; set; } = 0;
+
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+}
+
+[Table("UserEventClaim")]
+public class UserEventClaim
+{
+    public long UserId { get; set; }
+    public int EventId { get; set; }
+    public int Tier { get; set; }
+
+    [MaxLength(32)]
+    public string CycleKey { get; set; } = "default";
+
+    [MaxLength(64)]
+    public string ClaimTxId { get; set; } = ""; // 멱등키(클라 UUID 권장)
+
+    public DateTime ClaimedAt { get; set; } = DateTime.UtcNow;
+
+    public int EventVersionAtClaim { get; set; } = 1;
+
+    public string RewardSnapshotJson { get; set; } = "{}"; // 수령 당시 보상 스냅샷
 }
 
 [Table("Unit")]

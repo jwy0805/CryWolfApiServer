@@ -98,7 +98,7 @@ public class DailyProductInfo
     public bool NeedAds { get; set; }
 }
 
-public class RandomProductInfo
+public class TotalProductInfo
 {
     public ProductInfo ProductInfo { get; set; }
     public int Count { get; set; }
@@ -793,7 +793,7 @@ public class SearchUsernamePacketResponse
 {
     public bool SearchUsernameOk { get; set; }
     public List<FriendUserInfo> FriendUserInfos { get; set; }
-}
+} 
 
 public class FriendRequestPacketRequired
 {
@@ -967,7 +967,7 @@ public class ClaimProductPacketResponse
 {
     public bool ClaimOk { get; set; }
     public List<ProductInfo> ProductInfos { get; set; }
-    public List<RandomProductInfo> RandomProductInfos { get; set; }
+    public List<TotalProductInfo> RandomProductInfos { get; set; }
     public List<CompositionInfo> CompositionInfos { get; set; }
     public RewardPopupType RewardPopupType { get; set; }
 }
@@ -1232,6 +1232,7 @@ public class CreateEventNoticeRequired
     public DateTime? EndAt { get; set; }
     
     public List<EventNoticeLocalizationInfo> Localizations { get; set; } = new();
+    public List<TotalProductInfo> Rewards { get; set; } = new();
 }
 
 #endregion

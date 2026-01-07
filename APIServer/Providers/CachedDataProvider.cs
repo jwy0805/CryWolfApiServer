@@ -273,7 +273,7 @@ public class DisplayingCompositions
 public class ClaimData
 {
     public List<ProductInfo> ProductInfos { get; set; } = new();
-    public List<RandomProductInfo> RandomProductInfos { get; set; } = new();
+    public List<TotalProductInfo> RandomProductInfos { get; set; } = new();
     public List<CompositionInfo> CompositionInfos { get; set; } = new();
     public RewardPopupType RewardPopupType { get; set; }
 }

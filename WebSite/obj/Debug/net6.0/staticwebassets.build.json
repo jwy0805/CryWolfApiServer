@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bT12rB+T9yOrjqVL10sx6Dz5IIG5EP1idllxFOkXrqY=",
+  "Hash": "uP43cp9RFfijunkfOR4+jbDCwb7wNd/zXBVPUW4yovg=",
   "Source": "WebSite",
   "BasePath": "_content/WebSite",
   "Mode": "Default",
@@ -72,25 +72,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/css/site.css"
-    },
-    {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/favicon.ico",
-      "SourceId": "WebSite",
-      "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
-      "BasePath": "_content/WebSite",
-      "RelativePath": "favicon.ico",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/favicon.ico"
     },
     {
       "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/Apple.png",
@@ -167,6 +148,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/CryWolfMobile.png"
+    },
+    {
+      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/favicon.png",
+      "SourceId": "WebSite",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "BasePath": "_content/WebSite",
+      "RelativePath": "images/favicon.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/favicon.png"
     },
     {
       "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/Google.png",

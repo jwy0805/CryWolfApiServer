@@ -407,4 +407,12 @@ public enum NoticeType
     Emergency
 }
 
+public enum EventRepeatType
+{
+    None,
+    Daily,
+    Weekly,
+    Monthly,
+}
+
 #endregion

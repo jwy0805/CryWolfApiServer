@@ -112,22 +112,127 @@ public class AppDbContext : DbContext
         builder.Entity<EventNotice>(entity =>
         {
             entity.HasKey(e => e.EventNoticeId);
+
             entity.Property(e => e.IsActive).IsRequired();
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
-            entity.HasIndex(e => new { e.IsActive, e.NoticeType, e.CreatedAt });
+            entity.Property(e => e.IsPinned).IsRequired();
+
+            // MariaDB datetime(6) 권장 (UTC 저장 가정)
+            entity.Property(e => e.StartAt).HasColumnType("datetime(6)");
+            entity.Property(e => e.EndAt).HasColumnType("datetime(6)");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("datetime(6)")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+
+            entity.HasIndex(e => new { e.IsActive, e.NoticeType, e.IsPinned, e.CreatedAt });
+
+            // Localizations
             entity.HasMany(e => e.Localizations)
                 .WithOne(l => l.EventNotice)
                 .HasForeignKey(l => l.EventNoticeId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // (선택) EventId FK 연결을 할 경우
+            entity.HasIndex(e => e.EventId); // EventId nullable index OK
+
+            entity.HasOne<EventDefinition>()
+                .WithMany()
+                .HasForeignKey(e => e.EventId)
+                .OnDelete(DeleteBehavior.SetNull);
         });
 
         builder.Entity<EventNoticeLocalization>(entity =>
         {
             entity.HasKey(enl => enl.EventNoticeLocalizationId);
+
             entity.Property(enl => enl.LanguageCode).HasMaxLength(5).IsRequired();
             entity.Property(enl => enl.Title).HasMaxLength(100).IsRequired();
             entity.Property(enl => enl.Content).HasMaxLength(2000).IsRequired();
-            entity.HasIndex(enl => new { enl.EventNoticeId, enl.LanguageCode });
+
+            entity.HasIndex(enl => new { enl.EventNoticeId, enl.LanguageCode }).IsUnique();
+        });
+
+        builder.Entity<EventDefinition>(entity =>
+        {
+            entity.HasKey(e => e.EventId);
+            entity.Property(e => e.EventKey).HasMaxLength(64).IsRequired();
+            entity.HasIndex(e => e.EventKey).IsUnique();
+            entity.Property(e => e.IsActive).IsRequired();
+            entity.Property(e => e.StartAt).HasColumnType("datetime(6)");
+            entity.Property(e => e.EndAt).HasColumnType("datetime(6)");
+            entity.Property(e => e.RepeatTimezone).HasMaxLength(32).IsRequired();
+            entity.Property(e => e.Version).IsRequired();
+
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("datetime(6)")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+
+            entity.HasIndex(e => new { e.IsActive, e.StartAt, e.EndAt });
+        });
+
+        builder.Entity<EventRewardTier>(entity =>
+        {
+            entity.HasKey(e => e.EventRewardTierId);
+
+            entity.Property(e => e.EventId).IsRequired();
+            entity.Property(e => e.Tier).IsRequired();
+            entity.Property(e => e.IsActive).IsRequired();
+
+            // JSON 문자열 컬럼 (MariaDB JSON 타입 쓸지 LONGTEXT 쓸지는 선택)
+            // MariaDB 10.2+ JSON은 alias/검증이 약해서 실무에선 LONGTEXT로 두는 경우도 많습니다.
+            entity.Property(e => e.ConditionJson).IsRequired().HasColumnType("longtext");
+            entity.Property(e => e.RewardJson).IsRequired().HasColumnType("longtext");
+
+            entity.Property(e => e.MinEventVersion).IsRequired();
+            entity.Property(e => e.MaxEventVersion);
+
+            // 특정 이벤트에서 tier 유니크
+            entity.HasIndex(e => new { e.EventId, e.Tier }).IsUnique();
+
+            // 이벤트별 활성 티어 조회 최적화
+            entity.HasIndex(e => new { e.EventId, e.IsActive });
+
+            entity.HasOne<EventDefinition>()
+                .WithMany()
+                .HasForeignKey(e => e.EventId)
+                .OnDelete(DeleteBehavior.Cascade); // 이벤트 삭제 시 티어는 삭제되는 게 자연스러움
+        });
+
+        builder.Entity<UserEventProgress>(entity =>
+        {
+            // 복합 PK: 유저/이벤트/회차 1행
+            entity.HasKey(e => new { e.UserId, e.EventId, e.CycleKey });
+            entity.Property(e => e.CycleKey).HasMaxLength(32).IsRequired();
+            entity.Property(e => e.ProgressValue).IsRequired();
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnType("datetime(6)")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+
+            entity.HasOne<EventDefinition>()
+                .WithMany()
+                .HasForeignKey(e => e.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        builder.Entity<UserEventClaim>(entity =>
+        {
+            // 중복 수령 방지: 이 키가 최종 방어선
+            entity.HasKey(e => new { e.UserId, e.EventId, e.Tier, e.CycleKey });
+            entity.Property(e => e.CycleKey).HasMaxLength(32).IsRequired();
+            entity.Property(e => e.ClaimTxId).HasMaxLength(64).IsRequired();
+            entity.Property(e => e.ClaimedAt)
+                .HasColumnType("datetime(6)")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+
+            entity.Property(e => e.EventVersionAtClaim).IsRequired();
+            entity.Property(e => e.RewardSnapshotJson).IsRequired().HasColumnType("longtext");
+
+            // 멱등성(클라 재시도/중복 클릭 방지)
+            entity.HasIndex(e => new { e.UserId, e.ClaimTxId }).IsUnique();
+
+            entity.HasOne<EventDefinition>()
+                .WithMany()
+                .HasForeignKey(e => e.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
         
         builder.Entity<Unit>(entity =>

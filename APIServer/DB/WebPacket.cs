@@ -553,16 +553,27 @@ public class UpdateTutorialResponse
     public bool UpdateTutorialOk { get; set; }
 }
 
-public class ListEventNoticeRequired
+public class GetNoticeRequired
 {
     public string AccessToken { get; set; }
     public string LanguageCode { get; set; }
 }
 
-public class ListEventNoticeResponse
+public class GetNoticeResponse
 {
-    public bool ListNoticeOk { get; set; }
+    public bool GetNoticeOk { get; set; }
     public List<NoticeInfo> NoticeInfos { get; set; }
+}
+
+public class GetEventRequired
+{
+    public string AccessToken { get; set; }
+    public string LanguageCode { get; set; }
+}
+
+public class GetEventResponse
+{
+    public bool GetEventOk { get; set; }
     public List<EventInfo> EventInfos { get; set; }
 }
 
@@ -1228,11 +1239,11 @@ public class CreateEventNoticeRequired
 {
     public NoticeType NoticeType { get; set; }
     public bool IsPinned { get; set; }
-    public DateTime? StartAt { get; set; }
-    public DateTime? EndAt { get; set; }
+    public DateTimeOffset? StartAt { get; set; }
+    public DateTimeOffset? EndAt { get; set; }
     
     public List<EventNoticeLocalizationInfo> Localizations { get; set; } = new();
-    public List<TotalProductInfo> Rewards { get; set; } = new();
+    public List<RewardInfo>? Rewards { get; set; }
 }
 
 #endregion

@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const rewardSection = document.querySelector("[data-reward-section]");
     const rewardToggle = document.querySelector("[data-reward-toggle]");
     const rewardBlock = document.querySelector("[data-reward-block]");
-    const rewardProductIdInput = document.querySelector("[data-reward-product-id]");
-    const rewardProductTypeSelect = document.querySelector("[data-reward-product-type]");
-    const rewardCountInput = document.querySelector("[data-reward-count]");
+    const addRewardBtn = document.querySelector("[data-add-reward]");
     const sendBtn = document.querySelector("[data-send]");
     const sendStatus = document.querySelector("[data-send-status]");
 
@@ -34,6 +32,28 @@ document.addEventListener("DOMContentLoaded", () => {
         Emergency: 3
     });
 
+    function toUtcIsoOrNull(datetimeLocalValue) {
+        const v = (datetimeLocalValue || "").trim();
+        if (!v) return null;
+
+        // "YYYY-MM-DDTHH:mm" 또는 "YYYY-MM-DDTHH:mm:ss"
+        const m = v.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/);
+        if (!m) return null;
+
+        const year = Number(m[1]);
+        const month = Number(m[2]); // 1~12
+        const day = Number(m[3]);
+        const hour = Number(m[4]);
+        const minute = Number(m[5]);
+        const second = m[6] ? Number(m[6]) : 0;
+
+        // 로컬 타임존 기준 Date 생성
+        const d = new Date(year, month - 1, day, hour, minute, second, 0);
+        if (Number.isNaN(d.getTime())) return null;
+
+        return d.toISOString();
+    }
+    
     const ensureAdmin = async () => {
         if (!callApiWithRefresh || !API_BASE_URL) {
             window.location.href = "/";
@@ -109,6 +129,47 @@ document.addEventListener("DOMContentLoaded", () => {
         const isNotice = messageType === "notice";
         rewardSection.hidden = !isNotice;
         rewardBlock.hidden = !isNotice || rewardMode !== "on";
+    };
+
+    const createRewardRow = () => {
+        const row = document.createElement("div");
+        row.className = "reward-row";
+        row.setAttribute("data-reward-row", "true");
+        row.innerHTML = `
+            <label class="reward-field">
+                <span>Product ID</span>
+                <input type="number" class="admin-input" placeholder="예: 12001" min="1" data-reward-product-id />
+            </label>
+            <label class="reward-field">
+                <span>타입</span>
+                <select class="admin-input" data-reward-product-type>
+                    <option value="">선택</option>
+                    <option value="0">Container</option>
+                    <option value="1">Unit</option>
+                    <option value="2">Material</option>
+                    <option value="3">Enchant</option>
+                    <option value="4">Sheep</option>
+                    <option value="5">Character</option>
+                    <option value="6">Gold</option>
+                    <option value="7">Spinel</option>
+                    <option value="8">Exp</option>
+                    <option value="9">Subscription</option>
+                </select>
+            </label>
+            <label class="reward-field">
+                <span>수량</span>
+                <input type="number" class="admin-input" placeholder="예: 1" min="1" data-reward-count />
+            </label>
+            <button type="button" class="btn-remove-reward" data-remove-reward>삭제</button>
+        `;
+        return row;
+    };
+
+    const resetRewardRows = () => {
+        if (!rewardBlock) return;
+        rewardBlock.querySelectorAll("[data-reward-row]").forEach((row) => row.remove());
+        const row = createRewardRow();
+        rewardBlock.insertBefore(row, addRewardBtn || null);
     };
 
     const createLangToggleButtons = () => {
@@ -216,6 +277,26 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleRewardSection();
     });
 
+    rewardBlock?.addEventListener("click", (event) => {
+        const removeBtn = event.target.closest("[data-remove-reward]");
+        if (!removeBtn) return;
+        const row = removeBtn.closest("[data-reward-row]");
+        const rows = rewardBlock.querySelectorAll("[data-reward-row]");
+        if (rows.length <= 1) {
+            row?.querySelectorAll("input, select").forEach((el) => {
+                if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement) el.value = "";
+            });
+            return;
+        }
+        row?.remove();
+    });
+
+    addRewardBtn?.addEventListener("click", () => {
+        if (!rewardBlock) return;
+        const row = createRewardRow();
+        rewardBlock.insertBefore(row, addRewardBtn);
+    });
+
     addRangeBtn?.addEventListener("click", () => {
         const startVal = parseInt(rangeStart?.value, 10);
         const endVal = parseInt(rangeEnd?.value, 10);
@@ -272,8 +353,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const label = messageType === "notice" ? "notice" : "message";
         const schedule = {
-            startAt: startAtInput?.value?.trim() || null,
-            endAt: endAtInput?.value?.trim() || null
+            startAt: toUtcIsoOrNull(startAtInput?.value),
+            endAt: toUtcIsoOrNull(endAtInput?.value)
         };
         if (messageType === "notice" && (!schedule.startAt || !schedule.endAt)) {
             sendStatus.textContent = "공지 기간을 설정하세요 (Start At / End At).";
@@ -282,33 +363,38 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        let reward = null;
+        let rewards = [];
         if (messageType === "notice" && rewardMode === "on") {
-            const productId = parseInt(rewardProductIdInput?.value, 10);
-            const productType = parseInt(rewardProductTypeSelect?.value, 10);
-            const count = parseInt(rewardCountInput?.value, 10);
-            if (Number.isNaN(productId) || productId <= 0) {
-                sendStatus.textContent = "보상 Product ID를 입력하세요.";
-                rewardProductIdInput?.focus();
-                return;
+            const rows = rewardBlock?.querySelectorAll("[data-reward-row]") || [];
+            for (const row of rows) {
+                const productIdInput = row.querySelector("[data-reward-product-id]");
+                const productTypeSelect = row.querySelector("[data-reward-product-type]");
+                const countInput = row.querySelector("[data-reward-count]");
+                const productId = parseInt(productIdInput?.value, 10);
+                const productType = parseInt(productTypeSelect?.value, 10);
+                const count = parseInt(countInput?.value, 10);
+                if (Number.isNaN(productId) || productId <= 0) {
+                    sendStatus.textContent = "보상 Product ID를 입력하세요.";
+                    productIdInput?.focus();
+                    return;
+                }
+                if (Number.isNaN(productType)) {
+                    sendStatus.textContent = "보상 타입을 선택하세요.";
+                    productTypeSelect?.focus();
+                    return;
+                }
+                if (Number.isNaN(count) || count <= 0) {
+                    sendStatus.textContent = "보상 수량을 입력하세요.";
+                    countInput?.focus();
+                    return;
+                }
+                rewards.push({
+                    ItemId: productId,
+                    ProductType: productType,
+                    Count: count
+                });
             }
-            if (Number.isNaN(productType)) {
-                sendStatus.textContent = "보상 타입을 선택하세요.";
-                rewardProductTypeSelect?.focus();
-                return;
-            }
-            if (Number.isNaN(count) || count <= 0) {
-                sendStatus.textContent = "보상 수량을 입력하세요.";
-                rewardCountInput?.focus();
-                return;
-            }
-            reward = {
-                ProductInfo: {
-                    ProductId: productId,
-                    ProductType: productType
-                },
-                Count: count
-            };
+            if (rewards.length === 0) rewards = [];
         }
 
         try {
@@ -330,13 +416,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 }));
                 
                 payload = {
-                    NoticeType: reward ? NoticeType.Event : NoticeType.Notice,
+                    NoticeType: rewards.length ? NoticeType.Event : NoticeType.Notice,
                     IsPinned: false,
                     StartAt: schedule.startAt,
                     EndAt: schedule.endAt,
                     Localizations: localizations
                 };
-                if (reward) payload.Rewards = [reward];
+                if (rewards.length) payload.Rewards = rewards;
             } else {
                 url = `${API_BASE_URL}/api/Admin/SendMail`;
                 payload = {
@@ -386,11 +472,9 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             if (startAtInput) startAtInput.value = "";
             if (endAtInput) endAtInput.value = "";
-            if (rewardProductIdInput) rewardProductIdInput.value = "";
-            if (rewardProductTypeSelect) rewardProductTypeSelect.value = "";
-            if (rewardCountInput) rewardCountInput.value = "";
             rewardMode = "off";
             setActiveButton(rewardToggle, "data-reward-mode", rewardMode);
+            resetRewardRows();
             toggleRewardSection();
             ranges.length = 0;
             renderSummary();
@@ -408,6 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleRangeBlock();
     toggleNoticeSchedule();
     toggleRewardSection();
+    resetRewardRows();
     createLangToggleButtons();
     const defaultLang = supportedLangs.find((l) => l.code === "ko");
     if (defaultLang) toggleLang(defaultLang.code, defaultLang.label);

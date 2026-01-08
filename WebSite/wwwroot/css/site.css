@@ -800,16 +800,36 @@ a {
   color: #f6f8ff;
 }
 
-.reward-grid {
+.reward-list {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.reward-row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  align-items: end;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .reward-field {
   display: grid;
   gap: 6px;
   color: #f6f8ff;
+}
+
+.btn-add-reward,
+.btn-remove-reward {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #dfe5f5;
+  background: #0b0d17;
+  color: #f6f8ff;
+  cursor: pointer;
 }
 
 .reward-hint {

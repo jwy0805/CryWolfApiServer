@@ -15,6 +15,11 @@ public class AppDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<EventNotice> EventNotice { get; set; }
     public DbSet<EventNoticeLocalization> EventNoticeLocalization { get; set; }
+    public DbSet<EventNoticeReward> EventNoticeRewards { get; set; }
+    public DbSet<EventDefinition> EventDefinition { get; set; }
+    public DbSet<EventRewardTier> EventRewardTier { get; set; }
+    public DbSet<UserEventProgress> UserEventProgress { get; set; }
+    public DbSet<UserEventClaim> UserEventClaim { get; set; }
     public DbSet<Unit> Unit { get; set; }
     public DbSet<UserUnit> UserUnit { get; set; }
     public DbSet<Deck> Deck { get;set; }
@@ -151,6 +156,21 @@ public class AppDbContext : DbContext
             entity.HasIndex(enl => new { enl.EventNoticeId, enl.LanguageCode }).IsUnique();
         });
 
+        builder.Entity<EventNoticeReward>(entity =>
+        {
+            entity.HasKey(x => x.EventNoticeRewardId);
+            entity.Property(x => x.ItemId).IsRequired();
+            entity.Property(x => x.ProductType).IsRequired();
+            entity.Property(x => x.Count).IsRequired();
+            entity.Property(x => x.ProductType).HasConversion(type => (int)type, x => (ProductType)x);
+            entity.HasIndex(x => x.EventNoticeId);
+
+            entity.HasOne(x => x.EventNotice)
+                .WithMany(en => en.Rewards)          // 아래 EventNotice에 컬렉션 추가
+                .HasForeignKey(x => x.EventNoticeId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+        
         builder.Entity<EventDefinition>(entity =>
         {
             entity.HasKey(e => e.EventId);
@@ -309,16 +329,10 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(t => t.TransactionId);
 
-            entity.Property(t => t.TransactionId)
-                .ValueGeneratedOnAdd();
+            entity.Property(t => t.TransactionId).ValueGeneratedOnAdd();
+            entity.Property(t => t.StoreTransactionId).HasMaxLength(256).IsRequired();
 
-            entity.Property(t => t.StoreTransactionId)
-                .HasMaxLength(256)
-                .IsRequired();
-
-            entity.HasIndex(t => new { t.StoreType, t.StoreTransactionId })
-                .IsUnique();
-
+            entity.HasIndex(t => new { t.StoreType, t.StoreTransactionId }).IsUnique();
             entity.HasIndex(t => new { t.UserId, t.PurchaseAt });
 
             entity.Property(t => t.Currency).HasConversion<int>();

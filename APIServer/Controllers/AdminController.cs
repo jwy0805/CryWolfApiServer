@@ -92,29 +92,69 @@ public class AdminController : ControllerBase
     [HttpPost("CreateNotice")]
     public async Task<IActionResult> CreateNotice([FromBody] CreateEventNoticeRequired required)
     {
-        var eventNotice = new EventNotice
+        if (required.StartAt == null || required.EndAt == null)
         {
-            NoticeType = required.NoticeType,
-            IsPinned = required.IsPinned,
-            IsActive = true,
-            StartAt = required.StartAt,
-            EndAt = required.EndAt,
-            CreatedAt = DateTime.UtcNow,
-        };
-
-        foreach (var loc in required.Localizations)
-        {
-            eventNotice.Localizations.Add(new EventNoticeLocalization
-            {
-                LanguageCode = loc.LanguageCode,
-                Title = loc.Title,
-                Content = loc.Content
-            });
+            return BadRequest(new { success = false, message = "StartAt/EndAt is required." });
         }
-
-        _context.EventNotice.Add(eventNotice);
-        await _context.SaveChangesExtendedAsync();
         
-        return Ok(new { Message = "Event notice created successfully.", id = eventNotice.EventNoticeId });
+        var startAtUtc = required.StartAt.Value.UtcDateTime;
+        var endAtUtc = required.EndAt.Value.UtcDateTime;
+        if (endAtUtc <= startAtUtc)
+        {
+            return BadRequest(new { success = false, message = "EndAt must be greater than StartAt." });
+        }
+        
+        var rewards = required.Rewards ?? new List<RewardInfo>();
+        if (rewards.Any(reward => reward.Count <= 0))
+        {
+            return BadRequest(new { success = false, message = "Reward count must be greater than 0." });
+        }
+        
+        var noticeType = rewards.Count > 0 ? NoticeType.Event : NoticeType.Notice;
+
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            var eventNotice = new EventNotice
+            {
+                NoticeType = noticeType,
+                IsPinned = required.IsPinned,
+                IsActive = true,
+                StartAt = startAtUtc,
+                EndAt = endAtUtc,
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            foreach (var loc in required.Localizations)
+            {
+                eventNotice.Localizations.Add(new EventNoticeLocalization
+                {
+                    LanguageCode = loc.LanguageCode.ToLowerInvariant(),
+                    Title = loc.Title,
+                    Content = loc.Content
+                });
+            }  
+
+            foreach (var reward in rewards)
+            {
+                eventNotice.Rewards.Add(new EventNoticeReward
+                {
+                    ItemId = reward.ItemId,
+                    ProductType = reward.ProductType,
+                    Count = reward.Count
+                });
+            }
+            
+            _context.EventNotice.Add(eventNotice);
+            await _context.SaveChangesExtendedAsync();
+            await transaction.CommitAsync();
+            
+            return Ok(new { success = true, id = eventNotice.EventNoticeId });
+        }
+        catch (Exception e)
+        {
+            await transaction.RollbackAsync();
+            return StatusCode(500, new { success = false, message = "CreateNotice failed.", detail = e.Message });
+        }
     }
 }

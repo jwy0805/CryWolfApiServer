@@ -140,7 +140,7 @@ public class AppDbContext : DbContext
             entity.HasIndex(e => e.EventId); // EventId nullable index OK
             
             entity.HasOne(e => e.Event)
-                .WithMany()
+                .WithMany(ed => ed.Notices)
                 .HasForeignKey(e => e.EventId)
                 .OnDelete(DeleteBehavior.SetNull);
         });
@@ -197,10 +197,10 @@ public class AppDbContext : DbContext
             // 이벤트별 활성 티어 조회 최적화
             entity.HasIndex(e => new { e.EventId, e.IsActive });
 
-            entity.HasOne<EventDefinition>()
-                .WithMany()
-                .HasForeignKey(e => e.EventId)
-                .OnDelete(DeleteBehavior.Cascade); // 이벤트 삭제 시 티어는 삭제되는 게 자연스러움
+            entity.HasOne(t => t.Event)
+                .WithMany(ed => ed.RewardTiers)
+                .HasForeignKey(t => t.EventId)
+                .OnDelete(DeleteBehavior.Cascade);// 이벤트 삭제 시 티어는 삭제
         });
 
         builder.Entity<UserEventProgress>(entity =>

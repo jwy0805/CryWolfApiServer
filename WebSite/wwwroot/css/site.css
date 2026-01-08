@@ -832,10 +832,6 @@ a {
   cursor: pointer;
 }
 
-.reward-hint {
-  margin: 6px 0 0;
-}
-
 .event-card .event-header {
   display: grid;
   gap: 6px;

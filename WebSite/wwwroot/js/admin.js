@@ -13,31 +13,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const startAtInput = document.querySelector("[data-start-at]");
     const endAtInput = document.querySelector("[data-end-at]");
     const noticeSchedule = document.querySelector("[data-notice-schedule]");
-    const rewardSection = document.querySelector("[data-reward-section]");
-    const rewardToggle = document.querySelector("[data-reward-toggle]");
-    const rewardBlock = document.querySelector("[data-reward-block]");
-    const addRewardBtn = document.querySelector("[data-add-reward]");
     const sendBtn = document.querySelector("[data-send]");
     const sendStatus = document.querySelector("[data-send-status]");
     const eventCard = document.querySelector("[data-event-card]");
     const eventKeyInput = document.querySelector("[data-event-key]");
-    const eventStartInput = document.querySelector("[data-event-start-at]");
-    const eventEndInput = document.querySelector("[data-event-end-at]");
     const eventTierList = document.querySelector("[data-event-tier-list]");
     const addTierBtn = document.querySelector("[data-add-tier]");
-    const eventSaveBtn = document.querySelector("[data-event-save]");
-    const eventStatus = document.querySelector("[data-event-status]");
 
     const UserRole = Object.freeze({
         User: 0,
         Admin: 1
-    });
-
-    const NoticeType = Object.freeze({
-        None: 0,
-        Notice: 1,
-        Event: 2,
-        Emergency: 3
     });
 
     function toUtcIsoOrNull(datetimeLocalValue) {
@@ -89,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let messageType = "message";
     let targetType = "all";
-    let rewardMode = "off";
     const ranges = [];
     const supportedLangs = [
         {code: "ko", label: "한국어"},
@@ -98,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {code: "vi", label: "Tiếng Việt"}
     ];
     const activeLangs = new Set();
-    const counterKeys = ["friendly_match_win", "single_play_complete"];
+    const counterKeys = ["friendly_match_win", "single_play_win", "first_purchase"];
 
     const setActiveButton = (group, targetAttr, value) => {
         [...group.querySelectorAll(".toggle-btn")].forEach((btn) => {
@@ -130,14 +114,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const toggleNoticeSchedule = () => {
         if (!noticeSchedule) return;
-        noticeSchedule.hidden = messageType !== "notice";
+        noticeSchedule.hidden = messageType === "message";
     };
 
-    const toggleRewardSection = () => {
-        if (!rewardSection || !rewardBlock) return;
-        const isNotice = messageType === "notice";
-        rewardSection.hidden = !isNotice;
-        rewardBlock.hidden = !isNotice || rewardMode !== "on";
+    const toggleEventCard = () => {
+        if (!eventCard) return;
+        eventCard.hidden = messageType !== "event";
     };
 
     const createRewardRow = () => {
@@ -193,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <label class="reward-field">
                 <span>조건 종류</span>
                 <select class="admin-input" data-condition-type>
-                    <option value="counter_goal">카운터 목표</option>
+                    <option value="counter">카운터 목표</option>
                 </select>
             </label>
             <label class="reward-field">
@@ -235,13 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tier.appendChild(body);
         tier.appendChild(rewards);
         return tier;
-    };
-
-    const resetRewardRows = () => {
-        if (!rewardBlock) return;
-        rewardBlock.querySelectorAll("[data-reward-row]").forEach((row) => row.remove());
-        const row = createRewardRow();
-        rewardBlock.insertBefore(row, addRewardBtn || null);
     };
 
     const resetEventTiers = () => {
@@ -322,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messageType = type;
         setActiveButton(messageToggle, "data-message-type", type);
         toggleNoticeSchedule();
-        toggleRewardSection();
+        toggleEventCard();
     });
 
     targetToggle.addEventListener("click", (event) => {
@@ -343,36 +318,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const lang = supportedLangs.find((l) => l.code === code);
         if (!lang) return;
         toggleLang(lang.code, lang.label);
-    });
-
-    rewardToggle?.addEventListener("click", (event) => {
-        const btn = event.target.closest("[data-reward-mode]");
-        if (!btn) return;
-        const mode = btn.getAttribute("data-reward-mode");
-        if (!mode) return;
-        rewardMode = mode;
-        setActiveButton(rewardToggle, "data-reward-mode", mode);
-        toggleRewardSection();
-    });
-
-    rewardBlock?.addEventListener("click", (event) => {
-        const removeBtn = event.target.closest("[data-remove-reward]");
-        if (!removeBtn) return;
-        const row = removeBtn.closest("[data-reward-row]");
-        const rows = rewardBlock.querySelectorAll("[data-reward-row]");
-        if (rows.length <= 1) {
-            row?.querySelectorAll("input, select").forEach((el) => {
-                if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement) el.value = "";
-            });
-            return;
-        }
-        row?.remove();
-    });
-
-    addRewardBtn?.addEventListener("click", () => {
-        if (!rewardBlock) return;
-        const row = createRewardRow();
-        rewardBlock.insertBefore(row, addRewardBtn);
     });
 
     eventTierList?.addEventListener("click", (event) => {
@@ -447,7 +392,209 @@ document.addEventListener("DOMContentLoaded", () => {
         renderSummary();
     });
 
+    const saveEvent = async () => {
+        if (!eventKeyInput || !startAtInput || !endAtInput || !eventTierList) return;
+
+        const eventKey = eventKeyInput.value.trim();
+        if (!eventKey) {
+            if (sendStatus) sendStatus.textContent = "Event Key를 입력하세요.";
+            eventKeyInput.focus();
+            return;
+        }
+
+        // 이벤트 공지(Localizations)도 같이 발행하므로, 언어/텍스트 필수
+        if (activeLangs.size === 0) {
+            if (sendStatus) sendStatus.textContent = "언어를 선택하세요.";
+            return;
+        }
+
+        const localizations = [];
+        for (const code of activeLangs) {
+            const titleInput = langForms?.querySelector(`[data-lang-title="${code}"]`);
+            const bodyInput = langForms?.querySelector(`[data-lang-body="${code}"]`);
+            const title = titleInput?.value?.trim() || "";
+            const body = bodyInput?.value?.trim() || "";
+            if (!title) {
+                if (sendStatus) sendStatus.textContent = `${code} 제목을 입력하세요.`;
+                titleInput?.focus();
+                return;
+            }
+            if (!body) {
+                if (sendStatus) sendStatus.textContent = `${code} 내용을 입력하세요.`;
+                bodyInput?.focus();
+                return;
+            }
+            localizations.push({
+                LanguageCode: code,
+                Title: title,
+                Content: body
+            });
+        }
+
+        const startAt = toUtcIsoOrNull(startAtInput.value);
+        const endAt = toUtcIsoOrNull(endAtInput.value);
+        if (!startAt || !endAt) {
+            if (sendStatus) sendStatus.textContent = "기간(Start/End)을 입력하세요.";
+            if (!startAt) startAtInput.focus();
+            else endAtInput.focus();
+            return;
+        }
+        if (new Date(endAt).getTime() <= new Date(startAt).getTime()) {
+            if (sendStatus) sendStatus.textContent = "End At은 Start At 이후여야 합니다.";
+            endAtInput.focus();
+            return;
+        }
+
+        const tiers = [];
+        const tierNodes = eventTierList.querySelectorAll("[data-event-tier]");
+        for (const tier of tierNodes) {
+            const tierNumberInput = tier.querySelector("[data-tier-number]");
+            const conditionTypeSelect = tier.querySelector("[data-condition-type]");
+            const counterKeySelect = tier.querySelector("[data-counter-key]");
+            const counterKeyCustomInput = tier.querySelector("[data-counter-key-custom]");
+            const valueInput = tier.querySelector("[data-condition-value]");
+
+            const tierNumber = parseInt(tierNumberInput?.value, 10);
+            const conditionType = conditionTypeSelect?.value || "";
+            const selectedKey = counterKeySelect?.value || "";
+            const customKey = counterKeyCustomInput?.value?.trim() || "";
+            const counterKey = selectedKey === "__custom__" ? customKey : selectedKey;
+            const value = parseInt(valueInput?.value, 10);
+
+            if (Number.isNaN(tierNumber) || tierNumber <= 0) {
+                if (sendStatus) sendStatus.textContent = "Tier 번호를 입력하세요.";
+                tierNumberInput?.focus();
+                return;
+            }
+            if (!conditionType) {
+                if (sendStatus) sendStatus.textContent = "조건 종류를 선택하세요.";
+                conditionTypeSelect?.focus();
+                return;
+            }
+            if (!counterKey) {
+                if (sendStatus) sendStatus.textContent = "counterKey를 선택/입력하세요.";
+                if (selectedKey === "__custom__") counterKeyCustomInput?.focus();
+                else counterKeySelect?.focus();
+                return;
+            }
+            if (Number.isNaN(value) || value <= 0) {
+                if (sendStatus) sendStatus.textContent = "목표값(value)을 입력하세요.";
+                valueInput?.focus();
+                return;
+            }
+
+            const rewardRows = tier.querySelectorAll("[data-reward-row]");
+            const rewards = [];
+            for (const row of rewardRows) {
+                const productIdInput = row.querySelector("[data-reward-product-id]");
+                const productTypeSelect = row.querySelector("[data-reward-product-type]");
+                const countInput = row.querySelector("[data-reward-count]");
+                const productId = parseInt(productIdInput?.value, 10);
+                const productType = parseInt(productTypeSelect?.value, 10);
+                const count = parseInt(countInput?.value, 10);
+                if (Number.isNaN(productId) || productId <= 0) {
+                    if (sendStatus) sendStatus.textContent = "보상 Product ID를 입력하세요.";
+                    productIdInput?.focus();
+                    return;
+                }
+                if (Number.isNaN(productType)) {
+                    if (sendStatus) sendStatus.textContent = "보상 타입을 선택하세요.";
+                    productTypeSelect?.focus();
+                    return;
+                }
+                if (Number.isNaN(count) || count <= 0) {
+                    if (sendStatus) sendStatus.textContent = "보상 수량을 입력하세요.";
+                    countInput?.focus();
+                    return;
+                }
+                rewards.push({
+                    ItemId: productId,
+                    ProductType: productType,
+                    Count: count
+                });
+            }
+
+            const conditionJson = JSON.stringify({
+                type: conditionType,
+                counterKey,
+                value
+            });
+            const rewardJson = JSON.stringify(rewards);
+
+            tiers.push({
+                Tier: tierNumber,
+                ConditionJson: conditionJson,
+                RewardJson: rewardJson
+            });
+        }
+
+        if (!API_BASE_URL || !callApiWithRefresh) {
+            if (sendStatus) sendStatus.textContent = "API 설정이 올바르지 않습니다.";
+            return;
+        }
+
+        try {
+            if (sendBtn) sendBtn.disabled = true;
+            if (sendStatus) sendStatus.textContent = `[event] ${eventKey} 발행 중...`;
+
+            const res = await callApiWithRefresh(`${API_BASE_URL}/api/Admin/PublishEvent`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    EventKey: eventKey,
+                    StartAt: startAt,
+                    EndAt: endAt,
+                    RepeatType: 0,
+                    RepeatTimeZone: "UTC",
+                    Version: 1,
+                    Tiers: tiers,
+                    IsPinned: false,
+                    Localizations: localizations
+                })
+            });
+
+            if (!res.ok) {
+                const text = await res.text().catch(() => "");
+                console.error("Event publish failed:", res.status, text);
+                if (sendStatus) sendStatus.textContent = `[event] 발행 실패 (HTTP ${res.status})`;
+                return;
+            }
+
+            const result = await res.json().catch(() => ({}));
+            if (result.success === false) {
+                if (sendStatus) sendStatus.textContent = `[event] 발행 실패: ${result.message || "알 수 없는 오류"}`;
+                return;
+            }
+
+            if (sendStatus) sendStatus.textContent = `[event] ${eventKey} 발행 완료`;
+
+            // 성공 후 폼 초기화(이벤트도 동일)
+            for (const code of activeLangs) {
+                const titleInput = langForms?.querySelector(`[data-lang-title="${code}"]`);
+                const bodyInput = langForms?.querySelector(`[data-lang-body="${code}"]`);
+                if (titleInput) titleInput.value = "";
+                if (bodyInput) bodyInput.value = "";
+            }
+            eventKeyInput.value = "";
+            startAtInput.value = "";
+            endAtInput.value = "";
+            resetEventTiers();
+        } catch (error) {
+            console.error("Event publish error:", error);
+            if (sendStatus) sendStatus.textContent = "[event] 발행 중 오류 발생";
+        } finally {
+            if (sendBtn) sendBtn.disabled = false;
+        }
+    };
+
     sendBtn?.addEventListener("click", async () => {
+        if (messageType === "event") {
+            await saveEvent();
+            return;
+        }
+
         if (activeLangs.size === 0) {
             sendStatus.textContent = "언어를 선택하세요.";
             return;
@@ -497,40 +644,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        let rewards = [];
-        if (messageType === "notice" && rewardMode === "on") {
-            const rows = rewardBlock?.querySelectorAll("[data-reward-row]") || [];
-            for (const row of rows) {
-                const productIdInput = row.querySelector("[data-reward-product-id]");
-                const productTypeSelect = row.querySelector("[data-reward-product-type]");
-                const countInput = row.querySelector("[data-reward-count]");
-                const productId = parseInt(productIdInput?.value, 10);
-                const productType = parseInt(productTypeSelect?.value, 10);
-                const count = parseInt(countInput?.value, 10);
-                if (Number.isNaN(productId) || productId <= 0) {
-                    sendStatus.textContent = "보상 Product ID를 입력하세요.";
-                    productIdInput?.focus();
-                    return;
-                }
-                if (Number.isNaN(productType)) {
-                    sendStatus.textContent = "보상 타입을 선택하세요.";
-                    productTypeSelect?.focus();
-                    return;
-                }
-                if (Number.isNaN(count) || count <= 0) {
-                    sendStatus.textContent = "보상 수량을 입력하세요.";
-                    countInput?.focus();
-                    return;
-                }
-                rewards.push({
-                    ItemId: productId,
-                    ProductType: productType,
-                    Count: count
-                });
-            }
-            if (rewards.length === 0) rewards = [];
-        }
-
         try {
             sendBtn.disabled = true;
             if (sendStatus) {
@@ -542,25 +655,18 @@ document.addEventListener("DOMContentLoaded", () => {
             let payload;
 
             if (messageType === "notice") {
-                url = `${API_BASE_URL}/api/Admin/CreateNotice`;
+                url = `${API_BASE_URL}/api/Admin/PublishNotice`;
                 const localizations = contents.map(({ lang, title, body }) => ({
                     LanguageCode: lang,
                     Title: title,
                     Content: body
                 }));
-                
-                payload = {
-                    NoticeType: rewards.length ? NoticeType.Event : NoticeType.Notice,
-                    IsPinned: false,
-                    StartAt: schedule.startAt,
-                    EndAt: schedule.endAt,
-                    Localizations: localizations
-                };
-                if (rewards.length) payload.Rewards = rewards;
-            } else {
+                payload = { IsPinned: false, StartAt: schedule.startAt, EndAt: schedule.endAt, Localizations: localizations };
+            }
+            else {
                 url = `${API_BASE_URL}/api/Admin/SendMail`;
-                payload = {
-                    contents
+                payload = { 
+                    contents 
                 };
             }
 
@@ -606,10 +712,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             if (startAtInput) startAtInput.value = "";
             if (endAtInput) endAtInput.value = "";
-            rewardMode = "off";
-            setActiveButton(rewardToggle, "data-reward-mode", rewardMode);
-            resetRewardRows();
-            toggleRewardSection();
             ranges.length = 0;
             renderSummary();
         } catch (error) {
@@ -622,165 +724,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    eventSaveBtn?.addEventListener("click", async () => {
-        if (!eventKeyInput || !eventStartInput || !eventEndInput || !eventTierList) return;
-        const eventKey = eventKeyInput.value.trim();
-        if (!eventKey) {
-            if (eventStatus) eventStatus.textContent = "Event Key를 입력하세요.";
-            eventKeyInput.focus();
-            return;
-        }
-
-        const startAt = toUtcIsoOrNull(eventStartInput.value);
-        const endAt = toUtcIsoOrNull(eventEndInput.value);
-        if (!startAt || !endAt) {
-            if (eventStatus) eventStatus.textContent = "기간(Start/End)을 입력하세요.";
-            if (!startAt) eventStartInput.focus();
-            else eventEndInput.focus();
-            return;
-        }
-        if (new Date(endAt).getTime() <= new Date(startAt).getTime()) {
-            if (eventStatus) eventStatus.textContent = "End At은 Start At 이후여야 합니다.";
-            eventEndInput.focus();
-            return;
-        }
-
-        const tiers = [];
-        const tierNodes = eventTierList.querySelectorAll("[data-event-tier]");
-        for (const tier of tierNodes) {
-            const tierNumberInput = tier.querySelector("[data-tier-number]");
-            const conditionTypeSelect = tier.querySelector("[data-condition-type]");
-            const counterKeySelect = tier.querySelector("[data-counter-key]");
-            const counterKeyCustomInput = tier.querySelector("[data-counter-key-custom]");
-            const valueInput = tier.querySelector("[data-condition-value]");
-
-            const tierNumber = parseInt(tierNumberInput?.value, 10);
-            const conditionType = conditionTypeSelect?.value || "";
-            const selectedKey = counterKeySelect?.value || "";
-            const customKey = counterKeyCustomInput?.value?.trim() || "";
-            const counterKey = selectedKey === "__custom__" ? customKey : selectedKey;
-            const value = parseInt(valueInput?.value, 10);
-
-            if (Number.isNaN(tierNumber) || tierNumber <= 0) {
-                if (eventStatus) eventStatus.textContent = "Tier 번호를 입력하세요.";
-                tierNumberInput?.focus();
-                return;
-            }
-            if (!conditionType) {
-                if (eventStatus) eventStatus.textContent = "조건 종류를 선택하세요.";
-                conditionTypeSelect?.focus();
-                return;
-            }
-            if (!counterKey) {
-                if (eventStatus) eventStatus.textContent = "counterKey를 선택/입력하세요.";
-                if (selectedKey === "__custom__") counterKeyCustomInput?.focus();
-                else counterKeySelect?.focus();
-                return;
-            }
-            if (Number.isNaN(value) || value <= 0) {
-                if (eventStatus) eventStatus.textContent = "목표값(value)을 입력하세요.";
-                valueInput?.focus();
-                return;
-            }
-
-            const rewardRows = tier.querySelectorAll("[data-reward-row]");
-            const rewards = [];
-            for (const row of rewardRows) {
-                const productIdInput = row.querySelector("[data-reward-product-id]");
-                const productTypeSelect = row.querySelector("[data-reward-product-type]");
-                const countInput = row.querySelector("[data-reward-count]");
-                const productId = parseInt(productIdInput?.value, 10);
-                const productType = parseInt(productTypeSelect?.value, 10);
-                const count = parseInt(countInput?.value, 10);
-                if (Number.isNaN(productId) || productId <= 0) {
-                    if (eventStatus) eventStatus.textContent = "보상 Product ID를 입력하세요.";
-                    productIdInput?.focus();
-                    return;
-                }
-                if (Number.isNaN(productType)) {
-                    if (eventStatus) eventStatus.textContent = "보상 타입을 선택하세요.";
-                    productTypeSelect?.focus();
-                    return;
-                }
-                if (Number.isNaN(count) || count <= 0) {
-                    if (eventStatus) eventStatus.textContent = "보상 수량을 입력하세요.";
-                    countInput?.focus();
-                    return;
-                }
-                rewards.push({
-                    ItemId: productId,
-                    ProductType: productType,
-                    Count: count
-                });
-            }
-
-            const conditionJson = JSON.stringify({
-                type: conditionType,
-                counterKey,
-                value
-            });
-            const rewardJson = JSON.stringify(rewards);
-
-            tiers.push({
-                Tier: tierNumber,
-                ConditionJson: conditionJson,
-                RewardJson: rewardJson
-            });
-        }
-
-        if (!API_BASE_URL || !callApiWithRefresh) {
-            if (eventStatus) eventStatus.textContent = "API 설정이 올바르지 않습니다.";
-            return;
-        }
-
-        try {
-            if (eventSaveBtn) eventSaveBtn.disabled = true;
-            if (eventStatus) eventStatus.textContent = `[event] ${eventKey} 저장 중...`;
-
-            const res = await callApiWithRefresh(`${API_BASE_URL}/api/Admin/CreateEvent`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    EventKey: eventKey,
-                    StartAt: startAt,
-                    EndAt: endAt,
-                    Tiers: tiers
-                })
-            });
-
-            if (!res.ok) {
-                const text = await res.text().catch(() => "");
-                console.error("Event create failed:", res.status, text);
-                if (eventStatus) eventStatus.textContent = `[event] 저장 실패 (HTTP ${res.status})`;
-                return;
-            }
-
-            const result = await res.json().catch(() => ({}));
-            if (result.success === false) {
-                if (eventStatus) eventStatus.textContent = `[event] 저장 실패: ${result.message || "알 수 없는 오류"}`;
-                return;
-            }
-
-            if (eventStatus) eventStatus.textContent = `[event] ${eventKey} 저장 완료`;
-            eventKeyInput.value = "";
-            eventStartInput.value = "";
-            eventEndInput.value = "";
-            resetEventTiers();
-        } catch (error) {
-            console.error("Event create error:", error);
-            if (eventStatus) eventStatus.textContent = "[event] 저장 중 오류 발생";
-        } finally {
-            if (eventSaveBtn) eventSaveBtn.disabled = false;
-        }
-    });
-
     renderSummary();
     toggleRangeBlock();
     toggleNoticeSchedule();
-    toggleRewardSection();
-    resetRewardRows();
+    toggleEventCard();
     resetEventTiers();
     createLangToggleButtons();
     const defaultLang = supportedLangs.find((l) => l.code === "ko");

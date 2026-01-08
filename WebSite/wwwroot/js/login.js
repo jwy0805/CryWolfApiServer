@@ -35,9 +35,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const {modalForm, modalSubmit, shake, openModal, getEmail, getPassword, setStatus, closeModal} = modalApi;
 
     const parseUser = (raw) => {
-        const userName = raw.userName;
-        const userTag = raw.userTag;
-        const userRole = raw.userRole;
+        const source = raw?.data ?? raw ?? {};
+        const userName = source.userName ?? source.UserName ?? "";
+        const userTag = source.userTag ?? source.UserTag ?? "";
+        const rawRole = source.userRole ?? source.UserRole ?? source.role ?? source.Role;
+        let userRole = rawRole;
+        if (typeof rawRole === "string") {
+            userRole = rawRole.toLowerCase() === "admin" ? UserRole.Admin : Number(rawRole);
+        }
+        if (Number.isNaN(userRole) || userRole === undefined || userRole === null) {
+            userRole = UserRole.User;
+        }
 
         return {userName, userTag, userRole};
     };

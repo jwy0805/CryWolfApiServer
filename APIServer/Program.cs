@@ -1,4 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json.Serialization;
 using ApiServer.Services;
 using ApiServer;
 using ApiServer.DB;
@@ -52,6 +53,11 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSignalR();
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+    {
+        o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 builder.Services.AddDbContext<AppDbContext>(
     options => options.UseMySql(

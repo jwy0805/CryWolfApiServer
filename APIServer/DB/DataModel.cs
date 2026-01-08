@@ -255,6 +255,9 @@ public class EventDefinition
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public int? CreatedBy { get; set; } // admin userId (선택)
+    
+    public ICollection<EventRewardTier> RewardTiers { get; set; } = new List<EventRewardTier>();
+    public ICollection<EventNotice> Notices { get; set; } = new List<EventNotice>();
 }
 
 [Table("EventRewardTier")]
@@ -272,6 +275,8 @@ public class EventRewardTier
     // 운영 중 EventDefinition.Version이 올라가도 과거 티어 유지/교체 가능
     public int MinEventVersion { get; set; } = 1;
     public int? MaxEventVersion { get; set; } // null=무기한 유효 (선택)
+    
+    public EventDefinition? Event { get; set; }
 }
 
 [Table("UserEventProgress")]

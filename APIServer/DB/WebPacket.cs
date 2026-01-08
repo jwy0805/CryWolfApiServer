@@ -1235,15 +1235,36 @@ public class SessionDisconnectPacketResponse
 
 #region For Web
 
-public class CreateEventNoticeRequired
+public class PublishNoticeRequired
 {
-    public NoticeType NoticeType { get; set; }
-    public bool IsPinned { get; set; }
+    public bool IsPinned { get; set; } = false;
     public DateTimeOffset? StartAt { get; set; }
     public DateTimeOffset? EndAt { get; set; }
+    public List<EventNoticeLocalizationInfo> Localizations { get; set; } = new();
+}
+
+public class PublishEventRequired
+{
+    public string EventKey { get; set; } = "";
+    public int Version { get; set; } = 1;
+    public bool IsPinned { get; set; } = false;
+    public DateTimeOffset StartAt { get; set; }
+    public DateTimeOffset EndAt { get; set; }
+    public EventRepeatType RepeatType { get; set; } = EventRepeatType.None;
+    public string? RepeatTimeZone { get; set; } = "UTC";
     
     public List<EventNoticeLocalizationInfo> Localizations { get; set; } = new();
-    public List<RewardInfo>? Rewards { get; set; }
+    public List<EventTierRequired> Tiers { get; set; } = new();
+}
+
+public class EventTierRequired
+{
+    public int Tier { get; set; } = 1;
+    public string ConditionJson { get; set; } = "{}";
+    public string RewardJson { get; set; } = "[]";
+
+    public int MinEventVersion { get; set; } = 1;
+    public int? MaxEventVersion { get; set; }
 }
 
 #endregion

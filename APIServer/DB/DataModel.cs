@@ -214,7 +214,7 @@ public class EventNotice
     public DateTime? EndAt { get; set; } // null = 무기한
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public int? CreatedBy { get; set; } // Admin UserId
-    public ICollection<EventNoticeReward> Rewards { get; set; } = new List<EventNoticeReward>();
+    public EventDefinition? Event { get; set; }
     public ICollection<EventNoticeLocalization> Localizations { get; set; } = new List<EventNoticeLocalization>();
 }
 
@@ -229,19 +229,6 @@ public class EventNoticeLocalization
     public string Title { get; set; } = string.Empty;
     [MaxLength(2000)]
     public string Content { get; set; } = string.Empty;
-
-    public EventNotice? EventNotice { get; set; }
-}
-
-[Table("EventNoticeReward")]
-public class EventNoticeReward
-{
-    public int EventNoticeRewardId { get; set; }
-
-    public int EventNoticeId { get; set; }
-    public int ItemId { get; set; }
-    public ProductType ProductType { get; set; }
-    public int Count { get; set; }
 
     public EventNotice? EventNotice { get; set; }
 }

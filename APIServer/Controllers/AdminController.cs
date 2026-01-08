@@ -137,12 +137,7 @@ public class AdminController : ControllerBase
 
             foreach (var reward in rewards)
             {
-                eventNotice.Rewards.Add(new EventNoticeReward
-                {
-                    ItemId = reward.ItemId,
-                    ProductType = reward.ProductType,
-                    Count = reward.Count
-                });
+               
             }
             
             _context.EventNotice.Add(eventNotice);

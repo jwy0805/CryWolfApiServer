@@ -92,7 +92,7 @@ public class EventController : ControllerBase
                 en.NoticeType == NoticeType.Event && en.IsActive && 
                 (en.StartAt == null || en.StartAt <= now) && (en.EndAt   == null || en.EndAt   >= now))
             .Include(en => en.Localizations)
-            .Include(en => en.Rewards)
+            // .Include(en => en.Rewards)
             .OrderByDescending(en => en.IsPinned)
             .ThenByDescending(en => en.CreatedAt)
             .Take(20)
@@ -114,12 +114,12 @@ public class EventController : ControllerBase
                         CreatedAt = en.CreatedAt
                     },
                     
-                    Rewards = en.Rewards.Select(enr => new RewardInfo
-                    {
-                        ItemId = enr.ItemId,
-                        ProductType = enr.ProductType,
-                        Count = enr.Count
-                    }).ToList()
+                    // Rewards = en.Rewards.Select(enr => new RewardInfo
+                    // {
+                    //     ItemId = enr.ItemId,
+                    //     ProductType = enr.ProductType,
+                    //     Count = enr.Count
+                    // }).ToList()
                 };
             })
             .ToList();

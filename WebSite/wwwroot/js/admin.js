@@ -19,6 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const addRewardBtn = document.querySelector("[data-add-reward]");
     const sendBtn = document.querySelector("[data-send]");
     const sendStatus = document.querySelector("[data-send-status]");
+    const eventCard = document.querySelector("[data-event-card]");
+    const eventKeyInput = document.querySelector("[data-event-key]");
+    const eventStartInput = document.querySelector("[data-event-start-at]");
+    const eventEndInput = document.querySelector("[data-event-end-at]");
+    const eventTierList = document.querySelector("[data-event-tier-list]");
+    const addTierBtn = document.querySelector("[data-add-tier]");
+    const eventSaveBtn = document.querySelector("[data-event-save]");
+    const eventStatus = document.querySelector("[data-event-status]");
 
     const UserRole = Object.freeze({
         User: 0,
@@ -90,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {code: "vi", label: "Tiếng Việt"}
     ];
     const activeLangs = new Set();
+    const counterKeys = ["friendly_match_win", "single_play_complete"];
 
     const setActiveButton = (group, targetAttr, value) => {
         [...group.querySelectorAll(".toggle-btn")].forEach((btn) => {
@@ -165,11 +174,80 @@ document.addEventListener("DOMContentLoaded", () => {
         return row;
     };
 
+    const createEventTierRow = (tierNumber) => {
+        const tier = document.createElement("div");
+        tier.className = "event-tier";
+        tier.setAttribute("data-event-tier", "true");
+
+        const header = document.createElement("div");
+        header.className = "event-tier__header";
+        header.innerHTML = `
+            <span>Tier</span>
+            <input type="number" class="admin-input" min="1" value="${tierNumber}" data-tier-number />
+            <button type="button" class="btn-remove-tier" data-remove-tier>삭제</button>
+        `;
+
+        const body = document.createElement("div");
+        body.className = "event-tier__body";
+        body.innerHTML = `
+            <label class="reward-field">
+                <span>조건 종류</span>
+                <select class="admin-input" data-condition-type>
+                    <option value="counter_goal">카운터 목표</option>
+                </select>
+            </label>
+            <label class="reward-field">
+                <span>counterKey</span>
+                <select class="admin-input" data-counter-key>
+                    <option value="">선택</option>
+                    ${counterKeys.map((key) => `<option value="${key}">${key}</option>`).join("")}
+                    <option value="__custom__">직접 입력</option>
+                </select>
+            </label>
+            <label class="reward-field" data-counter-key-custom-wrap hidden>
+                <span>counterKey 직접 입력</span>
+                <input type="text" class="admin-input" placeholder="예: custom_counter_key" data-counter-key-custom />
+            </label>
+            <label class="reward-field">
+                <span>목표값 (value)</span>
+                <input type="number" class="admin-input" min="1" placeholder="예: 2" data-condition-value />
+            </label>
+        `;
+
+        const rewards = document.createElement("div");
+        rewards.className = "event-tier__rewards";
+
+        const list = document.createElement("div");
+        list.className = "reward-list";
+        list.setAttribute("data-tier-reward-list", "true");
+        list.appendChild(createRewardRow());
+
+        const addReward = document.createElement("button");
+        addReward.type = "button";
+        addReward.className = "btn-add-reward";
+        addReward.textContent = "보상 추가";
+        addReward.setAttribute("data-add-tier-reward", "true");
+
+        rewards.appendChild(list);
+        rewards.appendChild(addReward);
+
+        tier.appendChild(header);
+        tier.appendChild(body);
+        tier.appendChild(rewards);
+        return tier;
+    };
+
     const resetRewardRows = () => {
         if (!rewardBlock) return;
         rewardBlock.querySelectorAll("[data-reward-row]").forEach((row) => row.remove());
         const row = createRewardRow();
         rewardBlock.insertBefore(row, addRewardBtn || null);
+    };
+
+    const resetEventTiers = () => {
+        if (!eventTierList) return;
+        eventTierList.innerHTML = "";
+        eventTierList.appendChild(createEventTierRow(1));
     };
 
     const createLangToggleButtons = () => {
@@ -295,6 +373,62 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!rewardBlock) return;
         const row = createRewardRow();
         rewardBlock.insertBefore(row, addRewardBtn);
+    });
+
+    eventTierList?.addEventListener("click", (event) => {
+        const addTierRewardBtn = event.target.closest("[data-add-tier-reward]");
+        if (addTierRewardBtn) {
+            const tier = addTierRewardBtn.closest("[data-event-tier]");
+            const list = tier?.querySelector("[data-tier-reward-list]");
+            if (list) list.appendChild(createRewardRow());
+            return;
+        }
+
+        const removeRewardBtn = event.target.closest("[data-remove-reward]");
+        if (removeRewardBtn) {
+            const row = removeRewardBtn.closest("[data-reward-row]");
+            const list = removeRewardBtn.closest("[data-tier-reward-list]");
+            const rows = list?.querySelectorAll("[data-reward-row]") || [];
+            if (rows.length <= 1) {
+                row?.querySelectorAll("input, select").forEach((el) => {
+                    if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement) el.value = "";
+                });
+                return;
+            }
+            row?.remove();
+            return;
+        }
+
+        const removeTierBtn = event.target.closest("[data-remove-tier]");
+        if (removeTierBtn) {
+            const tiers = eventTierList.querySelectorAll("[data-event-tier]");
+            const tier = removeTierBtn.closest("[data-event-tier]");
+            if (tiers.length <= 1) {
+                resetEventTiers();
+                return;
+            }
+            tier?.remove();
+        }
+    });
+
+    eventTierList?.addEventListener("change", (event) => {
+        const select = event.target.closest("[data-counter-key]");
+        if (!select) return;
+        const tier = select.closest("[data-event-tier]");
+        const wrap = tier?.querySelector("[data-counter-key-custom-wrap]");
+        if (!wrap) return;
+        wrap.hidden = select.value !== "__custom__";
+        if (select.value !== "__custom__") {
+            const input = wrap.querySelector("[data-counter-key-custom]");
+            if (input instanceof HTMLInputElement) input.value = "";
+        }
+    });
+
+    addTierBtn?.addEventListener("click", () => {
+        if (!eventTierList) return;
+        const tiers = eventTierList.querySelectorAll("[data-event-tier]");
+        const nextTierNumber = tiers.length + 1;
+        eventTierList.appendChild(createEventTierRow(nextTierNumber));
     });
 
     addRangeBtn?.addEventListener("click", () => {
@@ -488,11 +622,166 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    eventSaveBtn?.addEventListener("click", async () => {
+        if (!eventKeyInput || !eventStartInput || !eventEndInput || !eventTierList) return;
+        const eventKey = eventKeyInput.value.trim();
+        if (!eventKey) {
+            if (eventStatus) eventStatus.textContent = "Event Key를 입력하세요.";
+            eventKeyInput.focus();
+            return;
+        }
+
+        const startAt = toUtcIsoOrNull(eventStartInput.value);
+        const endAt = toUtcIsoOrNull(eventEndInput.value);
+        if (!startAt || !endAt) {
+            if (eventStatus) eventStatus.textContent = "기간(Start/End)을 입력하세요.";
+            if (!startAt) eventStartInput.focus();
+            else eventEndInput.focus();
+            return;
+        }
+        if (new Date(endAt).getTime() <= new Date(startAt).getTime()) {
+            if (eventStatus) eventStatus.textContent = "End At은 Start At 이후여야 합니다.";
+            eventEndInput.focus();
+            return;
+        }
+
+        const tiers = [];
+        const tierNodes = eventTierList.querySelectorAll("[data-event-tier]");
+        for (const tier of tierNodes) {
+            const tierNumberInput = tier.querySelector("[data-tier-number]");
+            const conditionTypeSelect = tier.querySelector("[data-condition-type]");
+            const counterKeySelect = tier.querySelector("[data-counter-key]");
+            const counterKeyCustomInput = tier.querySelector("[data-counter-key-custom]");
+            const valueInput = tier.querySelector("[data-condition-value]");
+
+            const tierNumber = parseInt(tierNumberInput?.value, 10);
+            const conditionType = conditionTypeSelect?.value || "";
+            const selectedKey = counterKeySelect?.value || "";
+            const customKey = counterKeyCustomInput?.value?.trim() || "";
+            const counterKey = selectedKey === "__custom__" ? customKey : selectedKey;
+            const value = parseInt(valueInput?.value, 10);
+
+            if (Number.isNaN(tierNumber) || tierNumber <= 0) {
+                if (eventStatus) eventStatus.textContent = "Tier 번호를 입력하세요.";
+                tierNumberInput?.focus();
+                return;
+            }
+            if (!conditionType) {
+                if (eventStatus) eventStatus.textContent = "조건 종류를 선택하세요.";
+                conditionTypeSelect?.focus();
+                return;
+            }
+            if (!counterKey) {
+                if (eventStatus) eventStatus.textContent = "counterKey를 선택/입력하세요.";
+                if (selectedKey === "__custom__") counterKeyCustomInput?.focus();
+                else counterKeySelect?.focus();
+                return;
+            }
+            if (Number.isNaN(value) || value <= 0) {
+                if (eventStatus) eventStatus.textContent = "목표값(value)을 입력하세요.";
+                valueInput?.focus();
+                return;
+            }
+
+            const rewardRows = tier.querySelectorAll("[data-reward-row]");
+            const rewards = [];
+            for (const row of rewardRows) {
+                const productIdInput = row.querySelector("[data-reward-product-id]");
+                const productTypeSelect = row.querySelector("[data-reward-product-type]");
+                const countInput = row.querySelector("[data-reward-count]");
+                const productId = parseInt(productIdInput?.value, 10);
+                const productType = parseInt(productTypeSelect?.value, 10);
+                const count = parseInt(countInput?.value, 10);
+                if (Number.isNaN(productId) || productId <= 0) {
+                    if (eventStatus) eventStatus.textContent = "보상 Product ID를 입력하세요.";
+                    productIdInput?.focus();
+                    return;
+                }
+                if (Number.isNaN(productType)) {
+                    if (eventStatus) eventStatus.textContent = "보상 타입을 선택하세요.";
+                    productTypeSelect?.focus();
+                    return;
+                }
+                if (Number.isNaN(count) || count <= 0) {
+                    if (eventStatus) eventStatus.textContent = "보상 수량을 입력하세요.";
+                    countInput?.focus();
+                    return;
+                }
+                rewards.push({
+                    ItemId: productId,
+                    ProductType: productType,
+                    Count: count
+                });
+            }
+
+            const conditionJson = JSON.stringify({
+                type: conditionType,
+                counterKey,
+                value
+            });
+            const rewardJson = JSON.stringify(rewards);
+
+            tiers.push({
+                Tier: tierNumber,
+                ConditionJson: conditionJson,
+                RewardJson: rewardJson
+            });
+        }
+
+        if (!API_BASE_URL || !callApiWithRefresh) {
+            if (eventStatus) eventStatus.textContent = "API 설정이 올바르지 않습니다.";
+            return;
+        }
+
+        try {
+            if (eventSaveBtn) eventSaveBtn.disabled = true;
+            if (eventStatus) eventStatus.textContent = `[event] ${eventKey} 저장 중...`;
+
+            const res = await callApiWithRefresh(`${API_BASE_URL}/api/Admin/CreateEvent`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    EventKey: eventKey,
+                    StartAt: startAt,
+                    EndAt: endAt,
+                    Tiers: tiers
+                })
+            });
+
+            if (!res.ok) {
+                const text = await res.text().catch(() => "");
+                console.error("Event create failed:", res.status, text);
+                if (eventStatus) eventStatus.textContent = `[event] 저장 실패 (HTTP ${res.status})`;
+                return;
+            }
+
+            const result = await res.json().catch(() => ({}));
+            if (result.success === false) {
+                if (eventStatus) eventStatus.textContent = `[event] 저장 실패: ${result.message || "알 수 없는 오류"}`;
+                return;
+            }
+
+            if (eventStatus) eventStatus.textContent = `[event] ${eventKey} 저장 완료`;
+            eventKeyInput.value = "";
+            eventStartInput.value = "";
+            eventEndInput.value = "";
+            resetEventTiers();
+        } catch (error) {
+            console.error("Event create error:", error);
+            if (eventStatus) eventStatus.textContent = "[event] 저장 중 오류 발생";
+        } finally {
+            if (eventSaveBtn) eventSaveBtn.disabled = false;
+        }
+    });
+
     renderSummary();
     toggleRangeBlock();
     toggleNoticeSchedule();
     toggleRewardSection();
     resetRewardRows();
+    resetEventTiers();
     createLangToggleButtons();
     const defaultLang = supportedLangs.find((l) => l.code === "ko");
     if (defaultLang) toggleLang(defaultLang.code, defaultLang.label);

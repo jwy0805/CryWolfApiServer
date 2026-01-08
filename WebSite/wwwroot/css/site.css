@@ -836,6 +836,68 @@ a {
   margin: 6px 0 0;
 }
 
+.event-card .event-header {
+  display: grid;
+  gap: 6px;
+}
+
+.event-card .event-header h2 {
+  margin: 0;
+}
+
+.event-tier-list {
+  display: grid;
+  gap: 14px;
+}
+
+.event-tier {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  display: grid;
+  gap: 12px;
+}
+
+.event-tier__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: #f6f8ff;
+  font-weight: 700;
+}
+
+.event-tier__header .admin-input {
+  width: 120px;
+}
+
+.event-tier__body {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  align-items: end;
+}
+
+.event-tier__body .admin-input {
+  margin-top: 4px;
+}
+
+.event-tier__rewards {
+  display: grid;
+  gap: 10px;
+}
+
+.btn-add-tier,
+.btn-remove-tier {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #dfe5f5;
+  background: #0b0d17;
+  color: #f6f8ff;
+  cursor: pointer;
+}
+
 .admin-datetime {
   background: #f4f7ff;
 }

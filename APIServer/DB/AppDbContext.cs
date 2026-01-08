@@ -15,7 +15,6 @@ public class AppDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<EventNotice> EventNotice { get; set; }
     public DbSet<EventNoticeLocalization> EventNoticeLocalization { get; set; }
-    public DbSet<EventNoticeReward> EventNoticeRewards { get; set; }
     public DbSet<EventDefinition> EventDefinition { get; set; }
     public DbSet<EventRewardTier> EventRewardTier { get; set; }
     public DbSet<UserEventProgress> UserEventProgress { get; set; }
@@ -127,6 +126,7 @@ public class AppDbContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime(6)")
                 .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+            entity.Property(e => e.NoticeType).HasConversion<int>();
 
             entity.HasIndex(e => new { e.IsActive, e.NoticeType, e.IsPinned, e.CreatedAt });
 
@@ -138,8 +138,8 @@ public class AppDbContext : DbContext
 
             // (선택) EventId FK 연결을 할 경우
             entity.HasIndex(e => e.EventId); // EventId nullable index OK
-
-            entity.HasOne<EventDefinition>()
+            
+            entity.HasOne(e => e.Event)
                 .WithMany()
                 .HasForeignKey(e => e.EventId)
                 .OnDelete(DeleteBehavior.SetNull);
@@ -155,21 +155,6 @@ public class AppDbContext : DbContext
 
             entity.HasIndex(enl => new { enl.EventNoticeId, enl.LanguageCode }).IsUnique();
         });
-
-        builder.Entity<EventNoticeReward>(entity =>
-        {
-            entity.HasKey(x => x.EventNoticeRewardId);
-            entity.Property(x => x.ItemId).IsRequired();
-            entity.Property(x => x.ProductType).IsRequired();
-            entity.Property(x => x.Count).IsRequired();
-            entity.Property(x => x.ProductType).HasConversion(type => (int)type, x => (ProductType)x);
-            entity.HasIndex(x => x.EventNoticeId);
-
-            entity.HasOne(x => x.EventNotice)
-                .WithMany(en => en.Rewards)          // 아래 EventNotice에 컬렉션 추가
-                .HasForeignKey(x => x.EventNoticeId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
         
         builder.Entity<EventDefinition>(entity =>
         {
@@ -181,6 +166,7 @@ public class AppDbContext : DbContext
             entity.Property(e => e.EndAt).HasColumnType("datetime(6)");
             entity.Property(e => e.RepeatTimezone).HasMaxLength(32).IsRequired();
             entity.Property(e => e.Version).IsRequired();
+            entity.Property(e => e.RepeatType).HasConversion<int>();
 
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime(6)")

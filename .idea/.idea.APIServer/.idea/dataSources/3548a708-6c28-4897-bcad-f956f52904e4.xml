@@ -2,6 +2,7 @@
 <dataSource name="CryWolfDb_0v2@localhost">
   <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.54">
     <root id="1">
+      <DefaultAuthPlugin>mysql_native_password</DefaultAuthPlugin>
       <DefaultCasing>mixed/mixed</DefaultCasing>
       <DefaultEngine>InnoDB</DefaultEngine>
       <Grants>|root||jwy|localhost|ALTER|G
@@ -1460,8 +1461,10 @@ test\\_%|schema||&apos;&apos;||UPDATE|G</Grants>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </schema>
     <schema id="557" parent="1" name="CryWolfDb_0v2">
+      <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2025-12-23.04:53:43</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLevel>3</LastIntrospectionLevel>
+      <LastIntrospectionLocalTimestamp>2026-01-09.04:15:03</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </schema>
     <schema id="558" parent="1" name="EfCoreDb">
@@ -1506,237 +1509,308 @@ test\\_%|schema||&apos;&apos;||UPDATE|G</Grants>
     </user>
     <routine id="572" parent="557" name="POMELO_AFTER_ADD_PRIMARY_KEY">
       <Definer>jwy@localhost</Definer>
+      <DetailsLevel>3</DetailsLevel>
       <RoutineKind>procedure</RoutineKind>
       <SourceTextLength>1498</SourceTextLength>
     </routine>
     <routine id="573" parent="557" name="POMELO_BEFORE_DROP_PRIMARY_KEY">
       <Definer>jwy@localhost</Definer>
+      <DetailsLevel>3</DetailsLevel>
       <RoutineKind>procedure</RoutineKind>
       <SourceTextLength>1315</SourceTextLength>
     </routine>
     <table id="574" parent="557" name="BattleSetting">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
     <table id="575" parent="557" name="Character">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
     <table id="576" parent="557" name="CompositionProbability">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
     <table id="577" parent="557" name="DailyFreeProduct">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
     <table id="578" parent="557" name="DailyProduct">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
     <table id="579" parent="557" name="Deck">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
     <table id="580" parent="557" name="Deck_Unit">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
     <table id="581" parent="557" name="Enchant">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="582" parent="557" name="EventNotice">
+    <table id="582" parent="557" name="Event">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="583" parent="557" name="EventNoticeLocalization">
+    <table id="583" parent="557" name="EventLocalization">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="584" parent="557" name="ExpReward">
+    <table id="584" parent="557" name="EventRewardTier">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="585" parent="557" name="ExpTable">
+    <table id="585" parent="557" name="ExpReward">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="586" parent="557" name="Friends">
+    <table id="586" parent="557" name="ExpTable">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="587" parent="557" name="Mail">
+    <table id="587" parent="557" name="Friends">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="588" parent="557" name="Material">
+    <table id="588" parent="557" name="Mail">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="589" parent="557" name="Product">
+    <table id="589" parent="557" name="Material">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="590" parent="557" name="ProductComposition">
+    <table id="590" parent="557" name="Notice">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="591" parent="557" name="RefreshToken">
+    <table id="591" parent="557" name="NoticeLocalization">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="592" parent="557" name="ReinforcePoint">
+    <table id="592" parent="557" name="Product">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="593" parent="557" name="Sheep">
+    <table id="593" parent="557" name="ProductComposition">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="594" parent="557" name="Stage">
+    <table id="594" parent="557" name="RefreshToken">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="595" parent="557" name="Stage_Enemy">
+    <table id="595" parent="557" name="ReinforcePoint">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="596" parent="557" name="Stage_Reward">
+    <table id="596" parent="557" name="Sheep">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="597" parent="557" name="TempUser">
+    <table id="597" parent="557" name="Stage">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="598" parent="557" name="Transaction">
+    <table id="598" parent="557" name="Stage_Enemy">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="599" parent="557" name="TransactionReceiptFailure">
+    <table id="599" parent="557" name="Stage_Reward">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="600" parent="557" name="Unit">
+    <table id="600" parent="557" name="TempUser">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="601" parent="557" name="Unit_Material">
+    <table id="601" parent="557" name="Transaction">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="602" parent="557" name="User">
+    <table id="602" parent="557" name="TransactionReceiptFailure">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="603" parent="557" name="UserAuth">
+    <table id="603" parent="557" name="Unit">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="604" parent="557" name="UserDailyProduct">
+    <table id="604" parent="557" name="Unit_Material">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="605" parent="557" name="UserMatch">
+    <table id="605" parent="557" name="User">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="606" parent="557" name="UserStats">
+    <table id="606" parent="557" name="UserAuth">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="607" parent="557" name="UserSubscription">
+    <table id="607" parent="557" name="UserDailyProduct">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="608" parent="557" name="UserSubscriptionHistory">
+    <table id="608" parent="557" name="UserEventClaim">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="609" parent="557" name="UserTutorial">
+    <table id="609" parent="557" name="UserEventProgress">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="610" parent="557" name="User_Character">
+    <table id="610" parent="557" name="UserMatch">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="611" parent="557" name="User_Enchant">
+    <table id="611" parent="557" name="UserStats">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="612" parent="557" name="User_Material">
+    <table id="612" parent="557" name="UserSubscription">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="613" parent="557" name="User_Product">
+    <table id="613" parent="557" name="UserSubscriptionHistory">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="614" parent="557" name="User_Sheep">
+    <table id="614" parent="557" name="UserTutorial">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="615" parent="557" name="User_Stage">
+    <table id="615" parent="557" name="User_Character">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="616" parent="557" name="User_Unit">
+    <table id="616" parent="557" name="User_Enchant">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="617" parent="557" name="__EFMigrationsHistory">
+    <table id="617" parent="557" name="User_Material">
+      <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <argument id="618" parent="572" name="SCHEMA_NAME_ARGUMENT">
+    <table id="618" parent="557" name="User_Product">
+      <DetailsLevel>3</DetailsLevel>
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+    </table>
+    <table id="619" parent="557" name="User_Sheep">
+      <DetailsLevel>3</DetailsLevel>
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+    </table>
+    <table id="620" parent="557" name="User_Stage">
+      <DetailsLevel>3</DetailsLevel>
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+    </table>
+    <table id="621" parent="557" name="User_Unit">
+      <DetailsLevel>3</DetailsLevel>
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+    </table>
+    <table id="622" parent="557" name="__EFMigrationsHistory">
+      <DetailsLevel>3</DetailsLevel>
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
+    </table>
+    <argument id="623" parent="572" name="SCHEMA_NAME_ARGUMENT">
       <Position>1</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </argument>
-    <argument id="619" parent="572" name="TABLE_NAME_ARGUMENT">
+    <argument id="624" parent="572" name="TABLE_NAME_ARGUMENT">
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </argument>
-    <argument id="620" parent="572" name="COLUMN_NAME_ARGUMENT">
+    <argument id="625" parent="572" name="COLUMN_NAME_ARGUMENT">
       <Position>3</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </argument>
-    <argument id="621" parent="573" name="SCHEMA_NAME_ARGUMENT">
+    <argument id="626" parent="573" name="SCHEMA_NAME_ARGUMENT">
       <Position>1</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </argument>
-    <argument id="622" parent="573" name="TABLE_NAME_ARGUMENT">
+    <argument id="627" parent="573" name="TABLE_NAME_ARGUMENT">
       <Position>2</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </argument>
-    <column id="623" parent="574" name="UserId">
+    <column id="628" parent="574" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="624" parent="574" name="SheepId">
+    <column id="629" parent="574" name="SheepId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="625" parent="574" name="EnchantId">
+    <column id="630" parent="574" name="EnchantId">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="626" parent="574" name="CharacterId">
+    <column id="631" parent="574" name="CharacterId">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="627" parent="574" name="FK_BattleSetting_User_UserId">
+    <foreign-key id="632" parent="574" name="FK_BattleSetting_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="628" parent="574" name="PRIMARY">
+    <index id="633" parent="574" name="PRIMARY">
       <ColNames>UserId
 SheepId
 EnchantId
@@ -1744,1801 +1818,2122 @@ CharacterId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="629" parent="574" name="PRIMARY">
+    <key id="634" parent="574" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="630" parent="575" name="CharacterId">
+    <column id="635" parent="575" name="CharacterId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="631" parent="575" name="Class">
+    <column id="636" parent="575" name="Class">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="632" parent="575" name="PRIMARY">
+    <index id="637" parent="575" name="PRIMARY">
       <ColNames>CharacterId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="633" parent="575" name="PRIMARY">
+    <key id="638" parent="575" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="634" parent="576" name="ProductId">
+    <column id="639" parent="576" name="ProductId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="635" parent="576" name="CompositionId">
+    <column id="640" parent="576" name="CompositionId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="636" parent="576" name="Count">
+    <column id="641" parent="576" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="637" parent="576" name="GroupId">
+    <column id="642" parent="576" name="GroupId">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="638" parent="576" name="Probability">
+    <column id="643" parent="576" name="Probability">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>double|0s</StoredType>
     </column>
-    <index id="639" parent="576" name="PRIMARY">
+    <index id="644" parent="576" name="PRIMARY">
       <ColNames>ProductId
 CompositionId
 Count</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="640" parent="576" name="PRIMARY">
+    <key id="645" parent="576" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="641" parent="577" name="ProductId">
+    <column id="646" parent="577" name="ProductId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="642" parent="577" name="Weight">
+    <column id="647" parent="577" name="Weight">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="643" parent="577" name="Class">
+    <column id="648" parent="577" name="Class">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="644" parent="577" name="FK_DailyFreeProduct_Product_ProductId">
+    <foreign-key id="649" parent="577" name="FK_DailyFreeProduct_Product_ProductId">
       <ColNames>ProductId</ColNames>
       <RefColNames>ProductId</RefColNames>
       <RefTableName>Product</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="645" parent="577" name="PRIMARY">
+    <index id="650" parent="577" name="PRIMARY">
       <ColNames>ProductId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="646" parent="577" name="PRIMARY">
+    <key id="651" parent="577" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="647" parent="578" name="ProductId">
+    <column id="652" parent="578" name="ProductId">
       <AutoIncrement>169</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="648" parent="578" name="Weight">
+    <column id="653" parent="578" name="Weight">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="649" parent="578" name="Class">
+    <column id="654" parent="578" name="Class">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="650" parent="578" name="Price">
+    <column id="655" parent="578" name="Price">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="651" parent="578" name="FK_DailyProduct_Product_ProductId">
+    <foreign-key id="656" parent="578" name="FK_DailyProduct_Product_ProductId">
       <ColNames>ProductId</ColNames>
       <RefColNames>ProductId</RefColNames>
       <RefTableName>Product</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="652" parent="578" name="PRIMARY">
+    <index id="657" parent="578" name="PRIMARY">
       <ColNames>ProductId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="653" parent="578" name="PRIMARY">
+    <key id="658" parent="578" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="654" parent="579" name="DeckId">
+    <column id="659" parent="579" name="DeckId">
       <AutoIncrement>65</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="655" parent="579" name="UserId">
+    <column id="660" parent="579" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="656" parent="579" name="Faction">
+    <column id="661" parent="579" name="Faction">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="657" parent="579" name="DeckNumber">
+    <column id="662" parent="579" name="DeckNumber">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="658" parent="579" name="LastPicked">
+    <column id="663" parent="579" name="LastPicked">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <foreign-key id="659" parent="579" name="FK_Deck_User_UserId">
+    <foreign-key id="664" parent="579" name="FK_Deck_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="660" parent="579" name="PRIMARY">
+    <index id="665" parent="579" name="PRIMARY">
       <ColNames>DeckId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="661" parent="579" name="IX_Deck_UserId_Faction_DeckNumber">
+    <index id="666" parent="579" name="IX_Deck_UserId_Faction_DeckNumber">
       <ColNames>UserId
 Faction
 DeckNumber</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="662" parent="579" name="PRIMARY">
+    <key id="667" parent="579" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="663" parent="579" name="IX_Deck_UserId_Faction_DeckNumber">
+    <key id="668" parent="579" name="IX_Deck_UserId_Faction_DeckNumber">
       <UnderlyingIndexName>IX_Deck_UserId_Faction_DeckNumber</UnderlyingIndexName>
     </key>
-    <column id="664" parent="580" name="DeckId">
+    <column id="669" parent="580" name="DeckId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="665" parent="580" name="UnitId">
+    <column id="670" parent="580" name="UnitId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="666" parent="580" name="FK_Deck_Unit_Deck_DeckId">
+    <foreign-key id="671" parent="580" name="FK_Deck_Unit_Deck_DeckId">
       <ColNames>DeckId</ColNames>
       <RefColNames>DeckId</RefColNames>
       <RefTableName>Deck</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <foreign-key id="667" parent="580" name="FK_Deck_Unit_Unit_UnitId">
+    <foreign-key id="672" parent="580" name="FK_Deck_Unit_Unit_UnitId">
       <ColNames>UnitId</ColNames>
       <RefColNames>UnitId</RefColNames>
       <RefTableName>Unit</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="668" parent="580" name="PRIMARY">
+    <index id="673" parent="580" name="PRIMARY">
       <ColNames>DeckId
 UnitId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="669" parent="580" name="IX_Deck_Unit_UnitId">
+    <index id="674" parent="580" name="IX_Deck_Unit_UnitId">
       <ColNames>UnitId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="670" parent="580" name="PRIMARY">
+    <key id="675" parent="580" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="671" parent="581" name="EnchantId">
+    <column id="676" parent="581" name="EnchantId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="672" parent="581" name="Class">
+    <column id="677" parent="581" name="Class">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="673" parent="581" name="PRIMARY">
+    <index id="678" parent="581" name="PRIMARY">
       <ColNames>EnchantId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="674" parent="581" name="PRIMARY">
+    <key id="679" parent="581" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="675" parent="582" name="EventNoticeId">
-      <AutoIncrement>16</AutoIncrement>
+    <column id="680" parent="582" name="EventId">
+      <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="676" parent="582" name="NoticeType">
+    <column id="681" parent="582" name="EventKey">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StoredType>int(11)|0s</StoredType>
+      <StoredType>varchar(64)|0s</StoredType>
     </column>
-    <column id="677" parent="582" name="IsPinned">
+    <column id="682" parent="582" name="IsActive">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="678" parent="582" name="IsActive">
-      <NotNull>1</NotNull>
+    <column id="683" parent="582" name="StartAt">
       <Position>4</Position>
-      <StoredType>tinyint(1)|0s</StoredType>
+      <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="679" parent="582" name="StartAt">
+    <column id="684" parent="582" name="EndAt">
       <Position>5</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="680" parent="582" name="EndAt">
+    <column id="685" parent="582" name="RepeatType">
+      <NotNull>1</NotNull>
       <Position>6</Position>
-      <StoredType>datetime(6)|0s</StoredType>
+      <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="681" parent="582" name="CreatedAt">
-      <DefaultExpression>current_timestamp(6)</DefaultExpression>
+    <column id="686" parent="582" name="RepeatTimezone">
       <NotNull>1</NotNull>
       <Position>7</Position>
-      <StoredType>datetime(6)|0s</StoredType>
+      <StoredType>varchar(32)|0s</StoredType>
     </column>
-    <column id="682" parent="582" name="CreatedBy">
+    <column id="687" parent="582" name="Version">
+      <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="683" parent="582" name="PRIMARY">
-      <ColNames>EventNoticeId</ColNames>
+    <column id="688" parent="582" name="CreatedAt">
+      <DefaultExpression>current_timestamp(6)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>9</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="689" parent="582" name="CreatedBy">
+      <Position>10</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="690" parent="582" name="IsPinned">
+      <NotNull>1</NotNull>
+      <Position>11</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
+    </column>
+    <column id="691" parent="582" name="Priority">
+      <NotNull>1</NotNull>
+      <Position>12</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <index id="692" parent="582" name="PRIMARY">
+      <ColNames>EventId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="684" parent="582" name="IX_EventNotice_IsActive_NoticeType_CreatedAt">
+    <index id="693" parent="582" name="IX_Event_EventKey">
+      <ColNames>EventKey</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="694" parent="582" name="IX_Event_IsActive_StartAt_EndAt">
       <ColNames>IsActive
-NoticeType
+StartAt
+EndAt</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="695" parent="582" name="IX_Event_IsActive_IsPinned_Priority_CreatedAt">
+      <ColNames>IsActive
+IsPinned
+Priority
 CreatedAt</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="685" parent="582" name="PRIMARY">
+    <key id="696" parent="582" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="686" parent="583" name="EventNoticeLocalizationId">
-      <AutoIncrement>3</AutoIncrement>
+    <key id="697" parent="582" name="IX_Event_EventKey">
+      <UnderlyingIndexName>IX_Event_EventKey</UnderlyingIndexName>
+    </key>
+    <column id="698" parent="583" name="EventLocalizationId">
+      <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="687" parent="583" name="EventNoticeId">
+    <column id="699" parent="583" name="EventId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="688" parent="583" name="LanguageCode">
+    <column id="700" parent="583" name="LanguageCode">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StoredType>varchar(5)|0s</StoredType>
+      <StoredType>varchar(16)|0s</StoredType>
     </column>
-    <column id="689" parent="583" name="Title">
+    <column id="701" parent="583" name="Title">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>varchar(100)|0s</StoredType>
     </column>
-    <column id="690" parent="583" name="Content">
+    <column id="702" parent="583" name="Content">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>varchar(2000)|0s</StoredType>
     </column>
-    <foreign-key id="691" parent="583" name="FK_EventNoticeLocalization_EventNotice_EventNoticeId">
-      <ColNames>EventNoticeId</ColNames>
-      <RefColNames>EventNoticeId</RefColNames>
-      <RefTableName>EventNotice</RefTableName>
+    <foreign-key id="703" parent="583" name="FK_EventLocalization_Event_EventId">
+      <ColNames>EventId</ColNames>
+      <RefColNames>EventId</RefColNames>
+      <RefTableName>Event</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="692" parent="583" name="PRIMARY">
-      <ColNames>EventNoticeLocalizationId</ColNames>
+    <index id="704" parent="583" name="PRIMARY">
+      <ColNames>EventLocalizationId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="693" parent="583" name="IX_EventNoticeLocalization_EventNoticeId_LanguageCode">
-      <ColNames>EventNoticeId
+    <index id="705" parent="583" name="IX_EventLocalization_EventId_LanguageCode">
+      <ColNames>EventId
 LanguageCode</ColNames>
       <Type>btree</Type>
+      <Unique>1</Unique>
     </index>
-    <key id="694" parent="583" name="PRIMARY">
+    <key id="706" parent="583" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="695" parent="584" name="Level">
+    <key id="707" parent="583" name="IX_EventLocalization_EventId_LanguageCode">
+      <UnderlyingIndexName>IX_EventLocalization_EventId_LanguageCode</UnderlyingIndexName>
+    </key>
+    <column id="708" parent="584" name="EventRewardTierId">
+      <AutoIncrement>2</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="696" parent="584" name="ProductId">
+    <column id="709" parent="584" name="EventId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="697" parent="584" name="ProductType">
+    <column id="710" parent="584" name="Tier">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="698" parent="584" name="Count">
+    <column id="711" parent="584" name="ConditionJson">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>longtext|0s</StoredType>
+    </column>
+    <column id="712" parent="584" name="RewardJson">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>longtext|0s</StoredType>
+    </column>
+    <column id="713" parent="584" name="IsActive">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
+    </column>
+    <column id="714" parent="584" name="MinEventVersion">
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="715" parent="584" name="MaxEventVersion">
+      <Position>8</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <index id="716" parent="584" name="PRIMARY">
+      <ColNames>EventRewardTierId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="717" parent="584" name="IX_EventRewardTier_EventId_Tier">
+      <ColNames>EventId
+Tier</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="718" parent="584" name="IX_EventRewardTier_EventId_IsActive">
+      <ColNames>EventId
+IsActive</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="719" parent="584" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <key id="720" parent="584" name="IX_EventRewardTier_EventId_Tier">
+      <UnderlyingIndexName>IX_EventRewardTier_EventId_Tier</UnderlyingIndexName>
+    </key>
+    <column id="721" parent="585" name="Level">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="722" parent="585" name="ProductId">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="723" parent="585" name="ProductType">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="724" parent="585" name="Count">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="699" parent="584" name="PRIMARY">
+    <index id="725" parent="585" name="PRIMARY">
       <ColNames>Level
 ProductId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="700" parent="584" name="PRIMARY">
+    <key id="726" parent="585" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="701" parent="585" name="Level">
+    <column id="727" parent="586" name="Level">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="702" parent="585" name="Exp">
+    <column id="728" parent="586" name="Exp">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="703" parent="585" name="PRIMARY">
+    <index id="729" parent="586" name="PRIMARY">
       <ColNames>Level</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="704" parent="585" name="PRIMARY">
+    <key id="730" parent="586" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <check id="705" parent="586" name="CK_Friend_Order"/>
-    <column id="706" parent="586" name="UserId">
+    <check id="731" parent="587" name="CK_Friend_Order"/>
+    <column id="732" parent="587" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="707" parent="586" name="FriendId">
+    <column id="733" parent="587" name="FriendId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="708" parent="586" name="Status">
+    <column id="734" parent="587" name="Status">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="709" parent="586" name="CreatedAt">
+    <column id="735" parent="587" name="CreatedAt">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="710" parent="586" name="RequestReceiverId">
+    <column id="736" parent="587" name="RequestReceiverId">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="711" parent="586" name="FK_Friends_User_UserId">
+    <foreign-key id="737" parent="587" name="FK_Friends_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <foreign-key id="712" parent="586" name="FK_Friends_User_FriendId">
+    <foreign-key id="738" parent="587" name="FK_Friends_User_FriendId">
       <ColNames>FriendId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="713" parent="586" name="PRIMARY">
+    <index id="739" parent="587" name="PRIMARY">
       <ColNames>UserId
 FriendId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="714" parent="586" name="IX_Friends_FriendId">
+    <index id="740" parent="587" name="IX_Friends_FriendId">
       <ColNames>FriendId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="715" parent="586" name="PRIMARY">
+    <key id="741" parent="587" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="716" parent="587" name="MailId">
-      <AutoIncrement>574</AutoIncrement>
+    <column id="742" parent="588" name="MailId">
+      <AutoIncrement>597</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="717" parent="587" name="UserId">
+    <column id="743" parent="588" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="718" parent="587" name="Type">
+    <column id="744" parent="588" name="Type">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="719" parent="587" name="CreatedAt">
+    <column id="745" parent="588" name="CreatedAt">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="720" parent="587" name="ExpiresAt">
+    <column id="746" parent="588" name="ExpiresAt">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="721" parent="587" name="ProductId">
+    <column id="747" parent="588" name="ProductId">
       <Position>6</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="722" parent="587" name="ProductCode">
+    <column id="748" parent="588" name="ProductCode">
       <Position>7</Position>
       <StoredType>varchar(120)|0s</StoredType>
     </column>
-    <column id="723" parent="587" name="Claimed">
+    <column id="749" parent="588" name="Claimed">
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="724" parent="587" name="Message">
+    <column id="750" parent="588" name="Message">
       <Position>9</Position>
       <StoredType>varchar(120)|0s</StoredType>
     </column>
-    <column id="725" parent="587" name="Sender">
+    <column id="751" parent="588" name="Sender">
       <Position>10</Position>
       <StoredType>varchar(30)|0s</StoredType>
     </column>
-    <column id="726" parent="587" name="Expired">
+    <column id="752" parent="588" name="Expired">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>11</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <foreign-key id="727" parent="587" name="FK_Mail_User_UserId">
+    <foreign-key id="753" parent="588" name="FK_Mail_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="728" parent="587" name="PRIMARY">
+    <index id="754" parent="588" name="PRIMARY">
       <ColNames>MailId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="729" parent="587" name="IX_Mail_UserId">
+    <index id="755" parent="588" name="IX_Mail_UserId">
       <ColNames>UserId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="730" parent="587" name="PRIMARY">
+    <key id="756" parent="588" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="731" parent="588" name="MaterialId">
+    <column id="757" parent="589" name="MaterialId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="732" parent="588" name="MaterialName">
+    <column id="758" parent="589" name="MaterialName">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(50)|0s</StoredType>
     </column>
-    <column id="733" parent="588" name="Class">
+    <column id="759" parent="589" name="Class">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="734" parent="588" name="PRIMARY">
+    <index id="760" parent="589" name="PRIMARY">
       <ColNames>MaterialId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="735" parent="588" name="PRIMARY">
+    <key id="761" parent="589" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="736" parent="589" name="ProductId">
+    <column id="762" parent="590" name="NoticeId">
+      <AutoIncrement>1</AutoIncrement>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="763" parent="590" name="IsPinned">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
+    </column>
+    <column id="764" parent="590" name="IsActive">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
+    </column>
+    <column id="765" parent="590" name="StartAt">
+      <Position>4</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="766" parent="590" name="EndAt">
+      <Position>5</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="767" parent="590" name="CreatedAt">
+      <DefaultExpression>current_timestamp(6)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="768" parent="590" name="CreatedBy">
+      <Position>7</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <index id="769" parent="590" name="PRIMARY">
+      <ColNames>NoticeId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="770" parent="590" name="IX_Notice_IsActive_IsPinned_CreatedAt">
+      <ColNames>IsActive
+IsPinned
+CreatedAt</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="771" parent="590" name="IX_Notice_IsActive_StartAt_EndAt">
+      <ColNames>IsActive
+StartAt
+EndAt</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="772" parent="590" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="773" parent="591" name="NoticeLocalizationId">
+      <AutoIncrement>1</AutoIncrement>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="774" parent="591" name="NoticeId">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="775" parent="591" name="LanguageCode">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>varchar(16)|0s</StoredType>
+    </column>
+    <column id="776" parent="591" name="Title">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>varchar(100)|0s</StoredType>
+    </column>
+    <column id="777" parent="591" name="Content">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>varchar(2000)|0s</StoredType>
+    </column>
+    <foreign-key id="778" parent="591" name="FK_NoticeLocalization_Notice_NoticeId">
+      <ColNames>NoticeId</ColNames>
+      <RefColNames>NoticeId</RefColNames>
+      <RefTableName>Notice</RefTableName>
+      <RefTableParentName>crywolfdb_0v2</RefTableParentName>
+    </foreign-key>
+    <index id="779" parent="591" name="PRIMARY">
+      <ColNames>NoticeLocalizationId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="780" parent="591" name="IX_NoticeLocalization_NoticeId_LanguageCode">
+      <ColNames>NoticeId
+LanguageCode</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="781" parent="591" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <key id="782" parent="591" name="IX_NoticeLocalization_NoticeId_LanguageCode">
+      <UnderlyingIndexName>IX_NoticeLocalization_NoticeId_LanguageCode</UnderlyingIndexName>
+    </key>
+    <column id="783" parent="592" name="ProductId">
       <AutoIncrement>169</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="737" parent="589" name="ProductName">
+    <column id="784" parent="592" name="ProductName">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(60)|0s</StoredType>
     </column>
-    <column id="738" parent="589" name="ProductCode">
+    <column id="785" parent="592" name="ProductCode">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(120)|0s</StoredType>
     </column>
-    <column id="739" parent="589" name="Price">
+    <column id="786" parent="592" name="Price">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="740" parent="589" name="Currency">
+    <column id="787" parent="592" name="Currency">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="741" parent="589" name="Category">
+    <column id="788" parent="592" name="Category">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="742" parent="589" name="IsFixed">
+    <column id="789" parent="592" name="IsFixed">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="743" parent="589" name="ProductType">
+    <column id="790" parent="592" name="ProductType">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="744" parent="589" name="PRIMARY">
+    <index id="791" parent="592" name="PRIMARY">
       <ColNames>ProductId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="745" parent="589" name="PRIMARY">
+    <key id="792" parent="592" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="746" parent="590" name="ProductId">
+    <column id="793" parent="593" name="ProductId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="747" parent="590" name="CompositionId">
+    <column id="794" parent="593" name="CompositionId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="748" parent="590" name="ProductType">
+    <column id="795" parent="593" name="ProductType">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="749" parent="590" name="Count">
+    <column id="796" parent="593" name="Count">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="750" parent="590" name="Guaranteed">
+    <column id="797" parent="593" name="Guaranteed">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="751" parent="590" name="IsSelectable">
+    <column id="798" parent="593" name="IsSelectable">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <index id="752" parent="590" name="PRIMARY">
+    <index id="799" parent="593" name="PRIMARY">
       <ColNames>ProductId
 CompositionId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="753" parent="590" name="PRIMARY">
+    <key id="800" parent="593" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="754" parent="591" name="Id">
-      <AutoIncrement>1546</AutoIncrement>
+    <column id="801" parent="594" name="Id">
+      <AutoIncrement>1567</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="755" parent="591" name="UserId">
+    <column id="802" parent="594" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="756" parent="591" name="Token">
+    <column id="803" parent="594" name="Token">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(120)|0s</StoredType>
     </column>
-    <column id="757" parent="591" name="ExpiresAt">
+    <column id="804" parent="594" name="ExpiresAt">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="758" parent="591" name="CreatedAt">
+    <column id="805" parent="594" name="CreatedAt">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="759" parent="591" name="UpdateAt">
+    <column id="806" parent="594" name="UpdateAt">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <foreign-key id="760" parent="591" name="FK_RefreshToken_User_UserId">
+    <foreign-key id="807" parent="594" name="FK_RefreshToken_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="761" parent="591" name="PRIMARY">
+    <index id="808" parent="594" name="PRIMARY">
       <ColNames>Id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="762" parent="591" name="IX_RefreshToken_UserId">
+    <index id="809" parent="594" name="IX_RefreshToken_UserId">
       <ColNames>UserId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="763" parent="591" name="PRIMARY">
+    <key id="810" parent="594" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="764" parent="592" name="Class">
+    <column id="811" parent="595" name="Class">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="765" parent="592" name="Level">
+    <column id="812" parent="595" name="Level">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="766" parent="592" name="Constant">
+    <column id="813" parent="595" name="Constant">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="767" parent="592" name="PRIMARY">
+    <index id="814" parent="595" name="PRIMARY">
       <ColNames>Class
 Level</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="768" parent="592" name="PRIMARY">
+    <key id="815" parent="595" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="769" parent="593" name="SheepId">
+    <column id="816" parent="596" name="SheepId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="770" parent="593" name="Class">
+    <column id="817" parent="596" name="Class">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="771" parent="593" name="PRIMARY">
+    <index id="818" parent="596" name="PRIMARY">
       <ColNames>SheepId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="772" parent="593" name="PRIMARY">
+    <key id="819" parent="596" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="773" parent="594" name="StageId">
+    <column id="820" parent="597" name="StageId">
       <AutoIncrement>5010</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="774" parent="594" name="StageLevel">
+    <column id="821" parent="597" name="StageLevel">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="775" parent="594" name="UserFaction">
+    <column id="822" parent="597" name="UserFaction">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="776" parent="594" name="AssetId">
+    <column id="823" parent="597" name="AssetId">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="777" parent="594" name="CharacterId">
+    <column id="824" parent="597" name="CharacterId">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="778" parent="594" name="MapId">
+    <column id="825" parent="597" name="MapId">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="779" parent="594" name="PRIMARY">
+    <index id="826" parent="597" name="PRIMARY">
       <ColNames>StageId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="780" parent="594" name="PRIMARY">
+    <key id="827" parent="597" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="781" parent="595" name="StageId">
+    <column id="828" parent="598" name="StageId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="782" parent="595" name="UnitId">
+    <column id="829" parent="598" name="UnitId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="783" parent="595" name="PRIMARY">
+    <index id="830" parent="598" name="PRIMARY">
       <ColNames>StageId
 UnitId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="784" parent="595" name="PRIMARY">
+    <key id="831" parent="598" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="785" parent="596" name="StageId">
+    <column id="832" parent="599" name="StageId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="786" parent="596" name="ProductId">
+    <column id="833" parent="599" name="ProductId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="787" parent="596" name="ProductType">
+    <column id="834" parent="599" name="ProductType">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="788" parent="596" name="Count">
+    <column id="835" parent="599" name="Count">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="789" parent="596" name="Star">
+    <column id="836" parent="599" name="Star">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="790" parent="596" name="PRIMARY">
+    <index id="837" parent="599" name="PRIMARY">
       <ColNames>StageId
 ProductId
 ProductType</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="791" parent="596" name="PRIMARY">
+    <key id="838" parent="599" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="792" parent="597" name="TempUserAccount">
+    <column id="839" parent="600" name="TempUserAccount">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(60)|0s</StoredType>
     </column>
-    <column id="793" parent="597" name="CreatedAt">
+    <column id="840" parent="600" name="CreatedAt">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="794" parent="597" name="TempPassword">
+    <column id="841" parent="600" name="TempPassword">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar(120)|0s</StoredType>
     </column>
-    <column id="795" parent="597" name="IsVerified">
+    <column id="842" parent="600" name="IsVerified">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="796" parent="597" name="Act">
+    <column id="843" parent="600" name="Act">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="797" parent="597" name="PRIMARY">
+    <index id="844" parent="600" name="PRIMARY">
       <ColNames>TempUserAccount
 CreatedAt</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="798" parent="597" name="PRIMARY">
+    <key id="845" parent="600" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="799" parent="598" name="TransactionId">
+    <column id="846" parent="601" name="TransactionId">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>bigint(20)|0s</StoredType>
     </column>
-    <column id="800" parent="598" name="UserId">
+    <column id="847" parent="601" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="801" parent="598" name="ProductId">
+    <column id="848" parent="601" name="ProductId">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="802" parent="598" name="Count">
+    <column id="849" parent="601" name="Count">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="803" parent="598" name="PurchaseAt">
+    <column id="850" parent="601" name="PurchaseAt">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="804" parent="598" name="Currency">
+    <column id="851" parent="601" name="Currency">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="805" parent="598" name="Status">
+    <column id="852" parent="601" name="Status">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="806" parent="598" name="CashCurrency">
+    <column id="853" parent="601" name="CashCurrency">
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="807" parent="598" name="StoreTransactionId">
+    <column id="854" parent="601" name="StoreTransactionId">
       <DefaultExpression>&apos;&apos;</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>9</Position>
       <StoredType>varchar(256)|0s</StoredType>
     </column>
-    <column id="808" parent="598" name="StoreType">
+    <column id="855" parent="601" name="StoreType">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>10</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="809" parent="598" name="FK_Transaction_User_UserId">
+    <foreign-key id="856" parent="601" name="FK_Transaction_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="810" parent="598" name="PRIMARY">
+    <index id="857" parent="601" name="PRIMARY">
       <ColNames>TransactionId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="811" parent="598" name="IX_Transaction_StoreType_StoreTransactionId">
+    <index id="858" parent="601" name="IX_Transaction_StoreType_StoreTransactionId">
       <ColNames>StoreType
 StoreTransactionId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="812" parent="598" name="UX_Transaction_StoreType_StoreTransactionId">
+    <index id="859" parent="601" name="UX_Transaction_StoreType_StoreTransactionId">
       <ColNames>StoreType
 StoreTransactionId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="813" parent="598" name="IX_Transaction_UserId_PurchaseAt">
+    <index id="860" parent="601" name="IX_Transaction_UserId_PurchaseAt">
       <ColNames>UserId
 PurchaseAt</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="814" parent="598" name="PRIMARY">
+    <key id="861" parent="601" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="815" parent="598" name="IX_Transaction_StoreType_StoreTransactionId">
+    <key id="862" parent="601" name="IX_Transaction_StoreType_StoreTransactionId">
       <UnderlyingIndexName>IX_Transaction_StoreType_StoreTransactionId</UnderlyingIndexName>
     </key>
-    <key id="816" parent="598" name="UX_Transaction_StoreType_StoreTransactionId">
+    <key id="863" parent="601" name="UX_Transaction_StoreType_StoreTransactionId">
       <UnderlyingIndexName>UX_Transaction_StoreType_StoreTransactionId</UnderlyingIndexName>
     </key>
-    <column id="817" parent="599" name="TransactionId">
+    <column id="864" parent="602" name="TransactionId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>bigint(20)|0s</StoredType>
     </column>
-    <column id="818" parent="599" name="CreatedAt">
+    <column id="865" parent="602" name="CreatedAt">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="819" parent="599" name="HttpStatusCode">
+    <column id="866" parent="602" name="HttpStatusCode">
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="820" parent="599" name="ErrorCode">
+    <column id="867" parent="602" name="ErrorCode">
       <Position>4</Position>
       <StoredType>varchar(64)|0s</StoredType>
     </column>
-    <column id="821" parent="599" name="ErrorMessage">
+    <column id="868" parent="602" name="ErrorMessage">
       <Position>5</Position>
       <StoredType>varchar(1024)|0s</StoredType>
     </column>
-    <column id="822" parent="599" name="ReceiptHash">
+    <column id="869" parent="602" name="ReceiptHash">
       <Position>6</Position>
       <StoredType>binary(32)|0s</StoredType>
     </column>
-    <column id="823" parent="599" name="ReceiptRawGzip">
+    <column id="870" parent="602" name="ReceiptRawGzip">
       <Position>7</Position>
       <StoredType>longblob|0s</StoredType>
     </column>
-    <column id="824" parent="599" name="ResponseRawGzip">
+    <column id="871" parent="602" name="ResponseRawGzip">
       <Position>8</Position>
       <StoredType>longblob|0s</StoredType>
     </column>
-    <foreign-key id="825" parent="599" name="FK_TransactionReceiptFailure_Transaction_TransactionId">
+    <foreign-key id="872" parent="602" name="FK_TransactionReceiptFailure_Transaction_TransactionId">
       <ColNames>TransactionId</ColNames>
       <RefColNames>TransactionId</RefColNames>
       <RefTableName>Transaction</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="826" parent="599" name="PRIMARY">
+    <index id="873" parent="602" name="PRIMARY">
       <ColNames>TransactionId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="827" parent="599" name="PRIMARY">
+    <key id="874" parent="602" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="828" parent="600" name="UnitId">
+    <column id="875" parent="603" name="UnitId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="829" parent="600" name="UnitName">
+    <column id="876" parent="603" name="UnitName">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(30)|0s</StoredType>
     </column>
-    <column id="830" parent="600" name="Class">
+    <column id="877" parent="603" name="Class">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="831" parent="600" name="Level">
+    <column id="878" parent="603" name="Level">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="832" parent="600" name="Species">
+    <column id="879" parent="603" name="Species">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="833" parent="600" name="Role">
+    <column id="880" parent="603" name="Role">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="834" parent="600" name="Faction">
+    <column id="881" parent="603" name="Faction">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="835" parent="600" name="Region">
+    <column id="882" parent="603" name="Region">
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="836" parent="600" name="PRIMARY">
+    <index id="883" parent="603" name="PRIMARY">
       <ColNames>UnitId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="837" parent="600" name="PRIMARY">
+    <key id="884" parent="603" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="838" parent="601" name="UnitId">
+    <column id="885" parent="604" name="UnitId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="839" parent="601" name="MaterialId">
+    <column id="886" parent="604" name="MaterialId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="840" parent="601" name="Count">
+    <column id="887" parent="604" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <index id="841" parent="601" name="PRIMARY">
+    <index id="888" parent="604" name="PRIMARY">
       <ColNames>UnitId
 MaterialId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="842" parent="601" name="PRIMARY">
+    <key id="889" parent="604" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="843" parent="602" name="UserId">
+    <column id="890" parent="605" name="UserId">
       <AutoIncrement>9</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="844" parent="602" name="UserName">
+    <column id="891" parent="605" name="UserName">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(30)|0s</StoredType>
     </column>
-    <column id="845" parent="602" name="Role">
+    <column id="892" parent="605" name="Role">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="846" parent="602" name="Act">
+    <column id="893" parent="605" name="Act">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="847" parent="602" name="State">
+    <column id="894" parent="605" name="State">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="848" parent="602" name="LastPingTime">
+    <column id="895" parent="605" name="LastPingTime">
       <Position>6</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="849" parent="602" name="NameInitialized">
+    <column id="896" parent="605" name="NameInitialized">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="850" parent="602" name="UserTag">
+    <column id="897" parent="605" name="UserTag">
       <Position>8</Position>
       <StoredType>varchar(6)|0s</StoredType>
     </column>
-    <index id="851" parent="602" name="PRIMARY">
+    <index id="898" parent="605" name="PRIMARY">
       <ColNames>UserId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="852" parent="602" name="PRIMARY">
+    <key id="899" parent="605" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="853" parent="603" name="UserAuthId">
+    <column id="900" parent="606" name="UserAuthId">
       <AutoIncrement>9</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="854" parent="603" name="UserId">
+    <column id="901" parent="606" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="855" parent="603" name="Provider">
+    <column id="902" parent="606" name="Provider">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="856" parent="603" name="UserAccount">
+    <column id="903" parent="606" name="UserAccount">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>varchar(60)|0s</StoredType>
     </column>
-    <column id="857" parent="603" name="PasswordHash">
+    <column id="904" parent="606" name="PasswordHash">
       <Position>5</Position>
       <StoredType>varchar(120)|0s</StoredType>
     </column>
-    <column id="858" parent="603" name="LinkedAt">
+    <column id="905" parent="606" name="LinkedAt">
       <DefaultExpression>current_timestamp(6)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="859" parent="603" name="PolicyAgreed">
+    <column id="906" parent="606" name="PolicyAgreed">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <foreign-key id="860" parent="603" name="FK_UserAuth_User_UserId">
+    <foreign-key id="907" parent="606" name="FK_UserAuth_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="861" parent="603" name="PRIMARY">
+    <index id="908" parent="606" name="PRIMARY">
       <ColNames>UserAuthId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="862" parent="603" name="IX_UserAuth_Provider_UserAccount">
+    <index id="909" parent="606" name="IX_UserAuth_Provider_UserAccount">
       <ColNames>Provider
 UserAccount</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="863" parent="603" name="IX_UserAuth_UserId">
+    <index id="910" parent="606" name="IX_UserAuth_UserId">
       <ColNames>UserId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="864" parent="603" name="PRIMARY">
+    <key id="911" parent="606" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="865" parent="603" name="IX_UserAuth_Provider_UserAccount">
+    <key id="912" parent="606" name="IX_UserAuth_Provider_UserAccount">
       <UnderlyingIndexName>IX_UserAuth_Provider_UserAccount</UnderlyingIndexName>
     </key>
-    <column id="866" parent="604" name="UserId">
+    <column id="913" parent="607" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="867" parent="604" name="Slot">
+    <column id="914" parent="607" name="Slot">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>tinyint(3) unsigned|0s</StoredType>
     </column>
-    <column id="868" parent="604" name="ProductId">
+    <column id="915" parent="607" name="ProductId">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="869" parent="604" name="SeedDate">
+    <column id="916" parent="607" name="SeedDate">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>date|0s</StoredType>
     </column>
-    <column id="870" parent="604" name="RefreshIndex">
+    <column id="917" parent="607" name="RefreshIndex">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>tinyint(3) unsigned|0s</StoredType>
     </column>
-    <column id="871" parent="604" name="RefreshAt">
+    <column id="918" parent="607" name="RefreshAt">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="872" parent="604" name="AdsWatched">
+    <column id="919" parent="607" name="AdsWatched">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="873" parent="604" name="Bought">
+    <column id="920" parent="607" name="Bought">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="874" parent="604" name="NeedAds">
+    <column id="921" parent="607" name="NeedAds">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>9</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <foreign-key id="875" parent="604" name="FK_UserDailyProduct_User_UserId">
+    <foreign-key id="922" parent="607" name="FK_UserDailyProduct_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <foreign-key id="876" parent="604" name="FK_UserDailyProduct_Product_ProductId">
+    <foreign-key id="923" parent="607" name="FK_UserDailyProduct_Product_ProductId">
       <ColNames>ProductId</ColNames>
       <RefColNames>ProductId</RefColNames>
       <RefTableName>Product</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="877" parent="604" name="PRIMARY">
+    <index id="924" parent="607" name="PRIMARY">
       <ColNames>UserId
 Slot</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="878" parent="604" name="IX_UserDailyProduct_ProductId">
+    <index id="925" parent="607" name="IX_UserDailyProduct_ProductId">
       <ColNames>ProductId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="879" parent="604" name="PRIMARY">
+    <key id="926" parent="607" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="880" parent="605" name="UserId">
+    <column id="927" parent="608" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StoredType>int(11)|0s</StoredType>
+      <StoredType>bigint(20)|0s</StoredType>
     </column>
-    <column id="881" parent="605" name="WinRankMatch">
+    <column id="928" parent="608" name="EventId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="882" parent="605" name="LoseRankMatch">
+    <column id="929" parent="608" name="Tier">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="883" parent="605" name="WinFriendlyMatch">
+    <column id="930" parent="608" name="CycleKey">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StoredType>int(11)|0s</StoredType>
+      <StoredType>varchar(32)|0s</StoredType>
     </column>
-    <column id="884" parent="605" name="LoseFriendlyMatch">
+    <column id="931" parent="608" name="ClaimTxId">
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StoredType>int(11)|0s</StoredType>
+      <StoredType>varchar(64)|0s</StoredType>
     </column>
-    <foreign-key id="885" parent="605" name="FK_UserMatch_User_UserId">
-      <ColNames>UserId</ColNames>
-      <RefColNames>UserId</RefColNames>
-      <RefTableName>User</RefTableName>
-      <RefTableParentName>crywolfdb_0v2</RefTableParentName>
-    </foreign-key>
-    <index id="886" parent="605" name="PRIMARY">
-      <ColNames>UserId</ColNames>
-      <Type>btree</Type>
-      <Unique>1</Unique>
-    </index>
-    <key id="887" parent="605" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
-    <column id="888" parent="606" name="UserId">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="889" parent="606" name="UserLevel">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="890" parent="606" name="RankPoint">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="891" parent="606" name="HighestRankPoint">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="892" parent="606" name="Exp">
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StoredType>int(11)|0s</StoredType>
-    </column>
-    <column id="893" parent="606" name="Gold">
+    <column id="932" parent="608" name="ClaimedAt">
+      <DefaultExpression>current_timestamp(6)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>6</Position>
-      <StoredType>int(11)|0s</StoredType>
+      <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="894" parent="606" name="Spinel">
+    <column id="933" parent="608" name="EventVersionAtClaim">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="895" parent="606" name="FK_UserStats_User_UserId">
-      <ColNames>UserId</ColNames>
-      <RefColNames>UserId</RefColNames>
-      <RefTableName>User</RefTableName>
-      <RefTableParentName>crywolfdb_0v2</RefTableParentName>
-    </foreign-key>
-    <index id="896" parent="606" name="PRIMARY">
-      <ColNames>UserId</ColNames>
+    <column id="934" parent="608" name="RewardSnapshotJson">
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+      <StoredType>longtext|0s</StoredType>
+    </column>
+    <index id="935" parent="608" name="PRIMARY">
+      <ColNames>UserId
+EventId
+Tier
+CycleKey</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="897" parent="606" name="PRIMARY">
+    <index id="936" parent="608" name="IX_UserEventClaim_UserId_ClaimTxId">
+      <ColNames>UserId
+ClaimTxId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="937" parent="608" name="IX_UserEventClaim_EventId_CycleKey">
+      <ColNames>EventId
+CycleKey</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="938" parent="608" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="898" parent="607" name="UserId">
+    <key id="939" parent="608" name="IX_UserEventClaim_UserId_ClaimTxId">
+      <UnderlyingIndexName>IX_UserEventClaim_UserId_ClaimTxId</UnderlyingIndexName>
+    </key>
+    <column id="940" parent="609" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StoredType>int(11)|0s</StoredType>
+      <StoredType>bigint(20)|0s</StoredType>
     </column>
-    <column id="899" parent="607" name="SubscriptionType">
+    <column id="941" parent="609" name="EventId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="900" parent="607" name="CreatedAtUtc">
+    <column id="942" parent="609" name="CycleKey">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StoredType>datetime(6)|0s</StoredType>
+      <StoredType>varchar(32)|0s</StoredType>
     </column>
-    <column id="901" parent="607" name="ExpiresAtUtc">
+    <column id="943" parent="609" name="ProgressValue">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StoredType>datetime(6)|0s</StoredType>
+      <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="902" parent="607" name="CanceledAtUtc">
+    <column id="944" parent="609" name="UpdatedAt">
+      <DefaultExpression>current_timestamp(6)</DefaultExpression>
+      <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="903" parent="607" name="IsCanceled">
+    <index id="945" parent="609" name="PRIMARY">
+      <ColNames>UserId
+EventId
+CycleKey</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <index id="946" parent="609" name="IX_UserEventProgress_EventId_CycleKey">
+      <ColNames>EventId
+CycleKey</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="947" parent="609" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="948" parent="610" name="UserId">
       <NotNull>1</NotNull>
-      <Position>6</Position>
-      <StoredType>tinyint(1)|0s</StoredType>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="904" parent="607" name="IsTrial">
+    <column id="949" parent="610" name="WinRankMatch">
       <NotNull>1</NotNull>
-      <Position>7</Position>
-      <StoredType>tinyint(1)|0s</StoredType>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="905" parent="607" name="FK_UserSubscription_User_UserId">
+    <column id="950" parent="610" name="LoseRankMatch">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="951" parent="610" name="WinFriendlyMatch">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="952" parent="610" name="LoseFriendlyMatch">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <foreign-key id="953" parent="610" name="FK_UserMatch_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="906" parent="607" name="PRIMARY">
+    <index id="954" parent="610" name="PRIMARY">
+      <ColNames>UserId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="955" parent="610" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="956" parent="611" name="UserId">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="957" parent="611" name="UserLevel">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="958" parent="611" name="RankPoint">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="959" parent="611" name="HighestRankPoint">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="960" parent="611" name="Exp">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="961" parent="611" name="Gold">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="962" parent="611" name="Spinel">
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <foreign-key id="963" parent="611" name="FK_UserStats_User_UserId">
+      <ColNames>UserId</ColNames>
+      <RefColNames>UserId</RefColNames>
+      <RefTableName>User</RefTableName>
+      <RefTableParentName>crywolfdb_0v2</RefTableParentName>
+    </foreign-key>
+    <index id="964" parent="611" name="PRIMARY">
+      <ColNames>UserId</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="965" parent="611" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="966" parent="612" name="UserId">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="967" parent="612" name="SubscriptionType">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>int(11)|0s</StoredType>
+    </column>
+    <column id="968" parent="612" name="CreatedAtUtc">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="969" parent="612" name="ExpiresAtUtc">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="970" parent="612" name="CanceledAtUtc">
+      <Position>5</Position>
+      <StoredType>datetime(6)|0s</StoredType>
+    </column>
+    <column id="971" parent="612" name="IsCanceled">
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
+    </column>
+    <column id="972" parent="612" name="IsTrial">
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
+    </column>
+    <foreign-key id="973" parent="612" name="FK_UserSubscription_User_UserId">
+      <ColNames>UserId</ColNames>
+      <RefColNames>UserId</RefColNames>
+      <RefTableName>User</RefTableName>
+      <RefTableParentName>crywolfdb_0v2</RefTableParentName>
+    </foreign-key>
+    <index id="974" parent="612" name="PRIMARY">
       <ColNames>UserId
 SubscriptionType</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="907" parent="607" name="IX_UserSubscription_ExpiresAtUtc">
+    <index id="975" parent="612" name="IX_UserSubscription_ExpiresAtUtc">
       <ColNames>ExpiresAtUtc</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="908" parent="607" name="PRIMARY">
+    <key id="976" parent="612" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="909" parent="608" name="HistoryId">
+    <column id="977" parent="613" name="HistoryId">
       <AutoIncrement>2</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>bigint(20)|0s</StoredType>
     </column>
-    <column id="910" parent="608" name="UserId">
+    <column id="978" parent="613" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="911" parent="608" name="SubscriptionType">
+    <column id="979" parent="613" name="SubscriptionType">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>tinyint(3) unsigned|0s</StoredType>
     </column>
-    <column id="912" parent="608" name="FromUtc">
+    <column id="980" parent="613" name="FromUtc">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="913" parent="608" name="ToUtc">
+    <column id="981" parent="613" name="ToUtc">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>datetime(6)|0s</StoredType>
     </column>
-    <column id="914" parent="608" name="EventType">
+    <column id="982" parent="613" name="EventType">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>tinyint(3) unsigned|0s</StoredType>
     </column>
-    <index id="915" parent="608" name="PRIMARY">
+    <index id="983" parent="613" name="PRIMARY">
       <ColNames>HistoryId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="916" parent="608" name="IX_UserSubscriptionHistory_UserId">
+    <index id="984" parent="613" name="IX_UserSubscriptionHistory_UserId">
       <ColNames>UserId</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="917" parent="608" name="IX_UserSubscriptionHistory_EventType">
+    <index id="985" parent="613" name="IX_UserSubscriptionHistory_EventType">
       <ColNames>EventType</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="918" parent="608" name="PRIMARY">
+    <key id="986" parent="613" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="919" parent="609" name="UserTutorialId">
+    <column id="987" parent="614" name="UserTutorialId">
       <AutoIncrement>41</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="920" parent="609" name="UserId">
+    <column id="988" parent="614" name="UserId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="921" parent="609" name="TutorialType">
+    <column id="989" parent="614" name="TutorialType">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="922" parent="609" name="TutorialStep">
+    <column id="990" parent="614" name="TutorialStep">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="923" parent="609" name="Done">
+    <column id="991" parent="614" name="Done">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <foreign-key id="924" parent="609" name="FK_UserTutorial_User_UserId">
+    <foreign-key id="992" parent="614" name="FK_UserTutorial_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="925" parent="609" name="PRIMARY">
+    <index id="993" parent="614" name="PRIMARY">
       <ColNames>UserTutorialId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="926" parent="609" name="IX_UserTutorial_UserId_TutorialType">
+    <index id="994" parent="614" name="IX_UserTutorial_UserId_TutorialType">
       <ColNames>UserId
 TutorialType</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="927" parent="609" name="PRIMARY">
+    <key id="995" parent="614" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="928" parent="609" name="IX_UserTutorial_UserId_TutorialType">
+    <key id="996" parent="614" name="IX_UserTutorial_UserId_TutorialType">
       <UnderlyingIndexName>IX_UserTutorial_UserId_TutorialType</UnderlyingIndexName>
     </key>
-    <column id="929" parent="610" name="UserId">
+    <column id="997" parent="615" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="930" parent="610" name="CharacterId">
+    <column id="998" parent="615" name="CharacterId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="931" parent="610" name="Count">
+    <column id="999" parent="615" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="932" parent="610" name="FK_User_Character_User_UserId">
+    <foreign-key id="1000" parent="615" name="FK_User_Character_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="933" parent="610" name="PRIMARY">
+    <index id="1001" parent="615" name="PRIMARY">
       <ColNames>UserId
 CharacterId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="934" parent="610" name="PRIMARY">
+    <key id="1002" parent="615" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="935" parent="611" name="UserId">
+    <column id="1003" parent="616" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="936" parent="611" name="EnchantId">
+    <column id="1004" parent="616" name="EnchantId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="937" parent="611" name="Count">
+    <column id="1005" parent="616" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="938" parent="611" name="FK_User_Enchant_User_UserId">
+    <foreign-key id="1006" parent="616" name="FK_User_Enchant_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="939" parent="611" name="PRIMARY">
+    <index id="1007" parent="616" name="PRIMARY">
       <ColNames>UserId
 EnchantId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="940" parent="611" name="PRIMARY">
+    <key id="1008" parent="616" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="941" parent="612" name="UserId">
+    <column id="1009" parent="617" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="942" parent="612" name="MaterialId">
+    <column id="1010" parent="617" name="MaterialId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="943" parent="612" name="Count">
+    <column id="1011" parent="617" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="944" parent="612" name="FK_User_Material_User_UserId">
+    <foreign-key id="1012" parent="617" name="FK_User_Material_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="945" parent="612" name="PRIMARY">
+    <index id="1013" parent="617" name="PRIMARY">
       <ColNames>UserId
 MaterialId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="946" parent="612" name="PRIMARY">
+    <key id="1014" parent="617" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="947" parent="613" name="UserId">
+    <column id="1015" parent="618" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="948" parent="613" name="ProductId">
+    <column id="1016" parent="618" name="ProductId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="949" parent="613" name="Count">
+    <column id="1017" parent="618" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="950" parent="613" name="ProductType">
+    <column id="1018" parent="618" name="ProductType">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="951" parent="613" name="AcquisitionPath">
+    <column id="1019" parent="618" name="AcquisitionPath">
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="952" parent="613" name="FK_User_Product_User_UserId">
+    <foreign-key id="1020" parent="618" name="FK_User_Product_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="953" parent="613" name="PRIMARY">
+    <index id="1021" parent="618" name="PRIMARY">
       <ColNames>UserId
 ProductId
 AcquisitionPath</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="954" parent="613" name="PRIMARY">
+    <key id="1022" parent="618" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="955" parent="614" name="UserId">
+    <column id="1023" parent="619" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="956" parent="614" name="SheepId">
+    <column id="1024" parent="619" name="SheepId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="957" parent="614" name="Count">
+    <column id="1025" parent="619" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="958" parent="614" name="FK_User_Sheep_User_UserId">
+    <foreign-key id="1026" parent="619" name="FK_User_Sheep_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="959" parent="614" name="PRIMARY">
+    <index id="1027" parent="619" name="PRIMARY">
       <ColNames>UserId
 SheepId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="960" parent="614" name="PRIMARY">
+    <key id="1028" parent="619" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="961" parent="615" name="UserId">
+    <column id="1029" parent="620" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="962" parent="615" name="StageId">
+    <column id="1030" parent="620" name="StageId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="963" parent="615" name="StageLevel">
+    <column id="1031" parent="620" name="StageLevel">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="964" parent="615" name="StageStar">
+    <column id="1032" parent="620" name="StageStar">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="965" parent="615" name="IsCleared">
+    <column id="1033" parent="620" name="IsCleared">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <column id="966" parent="615" name="IsAvailable">
+    <column id="1034" parent="620" name="IsAvailable">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>tinyint(1)|0s</StoredType>
     </column>
-    <foreign-key id="967" parent="615" name="FK_User_Stage_User_UserId">
+    <foreign-key id="1035" parent="620" name="FK_User_Stage_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="968" parent="615" name="PRIMARY">
+    <index id="1036" parent="620" name="PRIMARY">
       <ColNames>UserId
 StageId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="969" parent="615" name="PRIMARY">
+    <key id="1037" parent="620" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="970" parent="616" name="UserId">
+    <column id="1038" parent="621" name="UserId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="971" parent="616" name="UnitId">
+    <column id="1039" parent="621" name="UnitId">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <column id="972" parent="616" name="Count">
+    <column id="1040" parent="621" name="Count">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int(11)|0s</StoredType>
     </column>
-    <foreign-key id="973" parent="616" name="FK_User_Unit_User_UserId">
+    <foreign-key id="1041" parent="621" name="FK_User_Unit_User_UserId">
       <ColNames>UserId</ColNames>
       <RefColNames>UserId</RefColNames>
       <RefTableName>User</RefTableName>
       <RefTableParentName>crywolfdb_0v2</RefTableParentName>
     </foreign-key>
-    <index id="974" parent="616" name="PRIMARY">
+    <index id="1042" parent="621" name="PRIMARY">
       <ColNames>UserId
 UnitId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="975" parent="616" name="PRIMARY">
+    <key id="1043" parent="621" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="976" parent="617" name="MigrationId">
+    <column id="1044" parent="622" name="MigrationId">
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>varchar(150)|0s</StoredType>
     </column>
-    <column id="977" parent="617" name="ProductVersion">
+    <column id="1045" parent="622" name="ProductVersion">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar(32)|0s</StoredType>
     </column>
-    <index id="978" parent="617" name="PRIMARY">
+    <index id="1046" parent="622" name="PRIMARY">
       <ColNames>MigrationId</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="979" parent="617" name="PRIMARY">
+    <key id="1047" parent="622" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

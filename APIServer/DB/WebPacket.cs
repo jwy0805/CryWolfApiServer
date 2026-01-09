@@ -270,12 +270,6 @@ public class EventNoticeLocalizationInfo
     public string Content { get; set; } = string.Empty;
 }
 
-public class EventInfo
-{
-    public NoticeInfo NoticeInfo { get; set; }
-    public List<RewardInfo> Rewards { get; set; }
-}
-
 #endregion
 
 #region External
@@ -571,10 +565,33 @@ public class GetEventRequired
     public string LanguageCode { get; set; }
 }
 
-public class GetEventResponse
+
+public class GetEventListResponse
 {
-    public bool GetEventOk { get; set; }
-    public List<EventInfo> EventInfos { get; set; }
+    public bool Ok { get; set; }
+    public DateTime ServerNowUtc { get; set; }
+    public List<EventList> Events { get; set; } = new();
+}
+
+public class EventList
+{
+    public int EventId { get; set; }
+    public string EventKey { get; set; } = "";
+    
+    public DateTime? StartAtUtc { get; set; }
+    public DateTime? EndAtUtc { get; set; }
+
+    public EventRepeatType RepeatType { get; set; }
+    public string RepeatTimezone { get; set; } = "UTC";
+    
+    public string Title { get; set; } = "";
+    public string Content { get; set; } = "";
+
+    // 목록용 보상 미리보기(서버가 RewardJson을 파싱해 표준화해서 내려줌)
+    public List<RewardInfo> PreviewRewards { get; set; } = new();
+
+    // (선택) 이벤트 정렬용. DB에 컬럼이 없으면 CreatedAt 기반 정렬로도 충분.
+    public int Priority { get; set; } = 0;
 }
 
 public class RefreshTokenRequired

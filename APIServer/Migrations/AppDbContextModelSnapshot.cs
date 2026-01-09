@@ -162,7 +162,7 @@ namespace ApiServer.Migrations
                     b.ToTable("Enchant");
                 });
 
-            modelBuilder.Entity("ApiServer.DB.EventDefinition", b =>
+            modelBuilder.Entity("ApiServer.DB.Event", b =>
                 {
                     b.Property<int>("EventId")
                         .ValueGeneratedOnAdd()
@@ -187,6 +187,12 @@ namespace ApiServer.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("IsPinned")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
                     b.Property<string>("RepeatTimezone")
                         .IsRequired()
                         .HasMaxLength(32)
@@ -208,53 +214,14 @@ namespace ApiServer.Migrations
 
                     b.HasIndex("IsActive", "StartAt", "EndAt");
 
-                    b.ToTable("EventDefinition");
+                    b.HasIndex("IsActive", "IsPinned", "Priority", "CreatedAt");
+
+                    b.ToTable("Event");
                 });
 
-            modelBuilder.Entity("ApiServer.DB.EventNotice", b =>
+            modelBuilder.Entity("ApiServer.DB.EventLocalization", b =>
                 {
-                    b.Property<int>("EventNoticeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
-
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EndAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsPinned")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("NoticeType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("StartAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("EventNoticeId");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("IsActive", "NoticeType", "IsPinned", "CreatedAt");
-
-                    b.ToTable("EventNotice");
-                });
-
-            modelBuilder.Entity("ApiServer.DB.EventNoticeLocalization", b =>
-                {
-                    b.Property<int>("EventNoticeLocalizationId")
+                    b.Property<int>("EventLocalizationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -263,25 +230,25 @@ namespace ApiServer.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("varchar(2000)");
 
-                    b.Property<int>("EventNoticeId")
+                    b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("varchar(5)");
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.HasKey("EventNoticeLocalizationId");
+                    b.HasKey("EventLocalizationId");
 
-                    b.HasIndex("EventNoticeId", "LanguageCode")
+                    b.HasIndex("EventId", "LanguageCode")
                         .IsUnique();
 
-                    b.ToTable("EventNoticeLocalization");
+                    b.ToTable("EventLocalization");
                 });
 
             modelBuilder.Entity("ApiServer.DB.EventRewardTier", b =>
@@ -444,6 +411,73 @@ namespace ApiServer.Migrations
                     b.HasKey("MaterialId");
 
                     b.ToTable("Material");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.Notice", b =>
+                {
+                    b.Property<int>("NoticeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP(6)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsPinned")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("StartAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("NoticeId");
+
+                    b.HasIndex("IsActive", "IsPinned", "CreatedAt");
+
+                    b.HasIndex("IsActive", "StartAt", "EndAt");
+
+                    b.ToTable("Notice");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.NoticeLocalization", b =>
+                {
+                    b.Property<int>("NoticeLocalizationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("varchar(16)");
+
+                    b.Property<int>("NoticeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("NoticeLocalizationId");
+
+                    b.HasIndex("NoticeId", "LanguageCode")
+                        .IsUnique();
+
+                    b.ToTable("NoticeLocalization");
                 });
 
             modelBuilder.Entity("ApiServer.DB.Product", b =>
@@ -961,7 +995,7 @@ namespace ApiServer.Migrations
 
                     b.HasKey("UserId", "EventId", "Tier", "CycleKey");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("EventId", "CycleKey");
 
                     b.HasIndex("UserId", "ClaimTxId")
                         .IsUnique();
@@ -991,7 +1025,7 @@ namespace ApiServer.Migrations
 
                     b.HasKey("UserId", "EventId", "CycleKey");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("EventId", "CycleKey");
 
                     b.ToTable("UserEventProgress");
                 });
@@ -1288,30 +1322,20 @@ namespace ApiServer.Migrations
                     b.Navigation("Deck");
                 });
 
-            modelBuilder.Entity("ApiServer.DB.EventNotice", b =>
+            modelBuilder.Entity("ApiServer.DB.EventLocalization", b =>
                 {
-                    b.HasOne("ApiServer.DB.EventDefinition", "Event")
-                        .WithMany("Notices")
+                    b.HasOne("ApiServer.DB.Event", "Event")
+                        .WithMany("Localizations")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("ApiServer.DB.EventNoticeLocalization", b =>
-                {
-                    b.HasOne("ApiServer.DB.EventNotice", "EventNotice")
-                        .WithMany("Localizations")
-                        .HasForeignKey("EventNoticeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EventNotice");
-                });
-
             modelBuilder.Entity("ApiServer.DB.EventRewardTier", b =>
                 {
-                    b.HasOne("ApiServer.DB.EventDefinition", "Event")
+                    b.HasOne("ApiServer.DB.Event", "Event")
                         .WithMany("RewardTiers")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1344,6 +1368,17 @@ namespace ApiServer.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ApiServer.DB.NoticeLocalization", b =>
+                {
+                    b.HasOne("ApiServer.DB.Notice", "Notice")
+                        .WithMany("Localizations")
+                        .HasForeignKey("NoticeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notice");
                 });
 
             modelBuilder.Entity("ApiServer.DB.RefreshToken", b =>
@@ -1433,20 +1468,24 @@ namespace ApiServer.Migrations
 
             modelBuilder.Entity("ApiServer.DB.UserEventClaim", b =>
                 {
-                    b.HasOne("ApiServer.DB.EventDefinition", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.Event", "Event")
+                        .WithMany("UserEventClaims")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserEventProgress", b =>
                 {
-                    b.HasOne("ApiServer.DB.EventDefinition", null)
-                        .WithMany()
+                    b.HasOne("ApiServer.DB.Event", "Event")
+                        .WithMany("UserEventProgresses")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("ApiServer.DB.UserMatch", b =>
@@ -1553,14 +1592,18 @@ namespace ApiServer.Migrations
                     b.Navigation("DeckUnits");
                 });
 
-            modelBuilder.Entity("ApiServer.DB.EventDefinition", b =>
+            modelBuilder.Entity("ApiServer.DB.Event", b =>
                 {
-                    b.Navigation("Notices");
+                    b.Navigation("Localizations");
 
                     b.Navigation("RewardTiers");
+
+                    b.Navigation("UserEventClaims");
+
+                    b.Navigation("UserEventProgresses");
                 });
 
-            modelBuilder.Entity("ApiServer.DB.EventNotice", b =>
+            modelBuilder.Entity("ApiServer.DB.Notice", b =>
                 {
                     b.Navigation("Localizations");
                 });

@@ -201,63 +201,88 @@ public class ExpReward
     public int Count { get; set; }
 }
 
-[Table("EventNotice")]
-public class EventNotice
+[Table("Notice")]
+public class Notice
 {
-    public int EventNoticeId { get; set; }
-    public int? EventId { get; set; } // FK to EventDefinition.EventId (nullable)
-    public NoticeType NoticeType { get; set; }
-
+    public int NoticeId { get; set; }
     public bool IsPinned { get; set; }
-    public bool IsActive { get; set; } = true; 
-    public DateTime? StartAt { get; set; } // null = 항상 노출
-    public DateTime? EndAt { get; set; } // null = 무기한
+    public bool IsActive { get; set; } = true;
+
+    public DateTime? StartAt { get; set; }
+    public DateTime? EndAt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public int? CreatedBy { get; set; } // Admin UserId
-    public EventDefinition? Event { get; set; }
-    public ICollection<EventNoticeLocalization> Localizations { get; set; } = new List<EventNoticeLocalization>();
+
+    public int? CreatedBy { get; set; }
+
+    public ICollection<NoticeLocalization> Localizations { get; set; } = new List<NoticeLocalization>();
 }
 
-[Table("EventNoticeLocalization")]
-public class EventNoticeLocalization
+[Table("NoticeLocalization")]
+public class NoticeLocalization
 {
-    public int EventNoticeLocalizationId { get; set; }
-    public int EventNoticeId { get; set; }
-    [MaxLength(5)] 
+    public int NoticeLocalizationId { get; set; }
+    public int NoticeId { get; set; }
+
+    [MaxLength(16)]
     public string LanguageCode { get; set; } = "en";
+
     [MaxLength(100)]
     public string Title { get; set; } = string.Empty;
+
     [MaxLength(2000)]
     public string Content { get; set; } = string.Empty;
 
-    public EventNotice? EventNotice { get; set; }
+    public Notice? Notice { get; set; }
 }
 
-[Table("EventDefinition")]
-public class EventDefinition
+[Table("Event")]
+public class Event
 {
     public int EventId { get; set; }
 
     [MaxLength(64)]
-    public string EventKey { get; set; } = ""; // unique: "first_purchase_2026_01"
+    public string EventKey { get; set; } = ""; // unique
 
     public bool IsActive { get; set; } = true;
 
-    public DateTime? StartAt { get; set; } // UTC, null=상시
-    public DateTime? EndAt { get; set; }   // UTC, null=무기한
+    public DateTime? StartAt { get; set; } // UTC
+    public DateTime? EndAt { get; set; }   // UTC
 
-    public EventRepeatType RepeatType { get; set; } = EventRepeatType.None; // None/Daily/Weekly/Monthly
+    public EventRepeatType RepeatType { get; set; } = EventRepeatType.None;
 
     [MaxLength(32)]
-    public string RepeatTimezone { get; set; } = "UTC"; // 초기엔 UTC 고정 추천
+    public string RepeatTimezone { get; set; } = "UTC";
 
     public int Version { get; set; } = 1;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public int? CreatedBy { get; set; } // admin userId (선택)
+    public int? CreatedBy { get; set; }
+
+    public bool IsPinned { get; set; } = false;
+    public int Priority { get; set; } = 0;
     
+    public ICollection<EventLocalization> Localizations { get; set; } = new List<EventLocalization>();
     public ICollection<EventRewardTier> RewardTiers { get; set; } = new List<EventRewardTier>();
-    public ICollection<EventNotice> Notices { get; set; } = new List<EventNotice>();
+    public ICollection<UserEventProgress> UserEventProgresses { get; set; } = new List<UserEventProgress>();
+    public ICollection<UserEventClaim> UserEventClaims { get; set; } = new List<UserEventClaim>();
+}
+
+[Table("EventLocalization")]
+public class EventLocalization
+{
+    public int EventLocalizationId { get; set; }
+    public int EventId { get; set; }
+
+    [MaxLength(16)]
+    public string LanguageCode { get; set; } = "en";
+
+    [MaxLength(100)]
+    public string Title { get; set; } = string.Empty;
+
+    [MaxLength(2000)]
+    public string Content { get; set; } = string.Empty;
+
+    public Event Event { get; set; } = null!;
 }
 
 [Table("EventRewardTier")]
@@ -276,7 +301,7 @@ public class EventRewardTier
     public int MinEventVersion { get; set; } = 1;
     public int? MaxEventVersion { get; set; } // null=무기한 유효 (선택)
     
-    public EventDefinition? Event { get; set; }
+    public Event Event { get; set; } = null!;
 }
 
 [Table("UserEventProgress")]
@@ -287,10 +312,10 @@ public class UserEventProgress
 
     [MaxLength(32)]
     public string CycleKey { get; set; } = "default"; // None=default, Daily=yyyy-MM-dd ...
-
     public int ProgressValue { get; set; } = 0;
-
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    
+    public Event Event { get; set; } = null!;
 }
 
 [Table("UserEventClaim")]
@@ -305,12 +330,12 @@ public class UserEventClaim
 
     [MaxLength(64)]
     public string ClaimTxId { get; set; } = ""; // 멱등키(클라 UUID 권장)
-
     public DateTime ClaimedAt { get; set; } = DateTime.UtcNow;
 
     public int EventVersionAtClaim { get; set; } = 1;
-
     public string RewardSnapshotJson { get; set; } = "{}"; // 수령 당시 보상 스냅샷
+    
+    public Event Event { get; set; } = null!;
 }
 
 [Table("Unit")]

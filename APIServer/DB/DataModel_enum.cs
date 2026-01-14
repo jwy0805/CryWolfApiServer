@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace ApiServer.DB;
 
 #region Enum
@@ -85,7 +86,7 @@ public enum UnitClass
     Knight,
     NobleKnight,
     Baron,
-    Count,
+    Earl,
     Duke,
 }
 
@@ -399,14 +400,6 @@ public enum VirtualPaymentCode
     Subscription
 }
 
-public enum NoticeType
-{
-    None,
-    Notice,
-    Event,
-    Emergency
-}
-
 public enum EventRepeatType
 {
     None,
@@ -415,4 +408,16 @@ public enum EventRepeatType
     Monthly,
 }
 
+public enum EventConditionType
+{
+    None,
+    Counter,
+}
+
+public enum EventCounterKey
+{
+    friendly_match,
+    first_purchase,
+    single_play_win,
+}
 #endregion

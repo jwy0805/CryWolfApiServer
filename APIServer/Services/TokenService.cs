@@ -19,7 +19,7 @@ public class TokenService
     {
         _secret = secret;
         _accessTokenLifetime = TimeSpan.FromMinutes(60);
-        _refreshTokenLifetime = TimeSpan.FromHours(24);
+        _refreshTokenLifetime = TimeSpan.FromDays(90);
         _dbContext = dbContext;
     }
 
@@ -47,7 +47,6 @@ public class TokenService
         
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
         var token = new JwtSecurityToken(
             issuer: "CryWolf",
             audience: "CryWolf",
@@ -90,7 +89,7 @@ public class TokenService
     private void SaveRefreshToken(int userId, string refreshToken)
     {
         var hashedToken = HashToken(refreshToken);
-        var refreshTokenEntity = new RefreshToken()
+        var refreshTokenEntity = new RefreshToken
         {
             UserId = userId,
             Token = hashedToken,

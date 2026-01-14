@@ -25,6 +25,26 @@ document.addEventListener("DOMContentLoaded", () => {
         Admin: 1
     });
 
+    const setAdminUiEnabled = (enabled) => {
+        const disabled = !enabled;
+
+        // Buttons
+        if (sendBtn) sendBtn.disabled = disabled;
+        if (addTierBtn) addTierBtn.disabled = disabled;
+        if (addRangeBtn) addRangeBtn.disabled = disabled;
+
+        // Prevent interaction on the rest of the UI until admin check completes
+        if (messageToggle) messageToggle.style.pointerEvents = enabled ? "" : "none";
+        if (targetToggle) targetToggle.style.pointerEvents = enabled ? "" : "none";
+        if (langToggle) langToggle.style.pointerEvents = enabled ? "" : "none";
+        if (langForms) langForms.style.pointerEvents = enabled ? "" : "none";
+        if (rangeBlock) rangeBlock.style.pointerEvents = enabled ? "" : "none";
+        if (noticeSchedule) noticeSchedule.style.pointerEvents = enabled ? "" : "none";
+        if (eventCard) eventCard.style.pointerEvents = enabled ? "" : "none";
+
+        if (sendStatus && !enabled) sendStatus.textContent = "관리자 확인 중...";
+    };
+
     function toUtcIsoOrNull(datetimeLocalValue) {
         const v = (datetimeLocalValue || "").trim();
         if (!v) return null;
@@ -48,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     const ensureAdmin = async () => {
+        setAdminUiEnabled(false);
         if (!callApiWithRefresh || !API_BASE_URL) {
             window.location.href = "/";
             return;
@@ -63,6 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const isAdmin = role === UserRole.Admin || String(role).toLowerCase() === "admin";
             if (!isAdmin) {
                 window.location.href = "/";
+            } else {
+                setAdminUiEnabled(true);
             }
         } catch (error) {
             console.error("Admin check failed", error);
@@ -82,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {code: "vi", label: "Tiếng Việt"}
     ];
     const activeLangs = new Set();
-    const counterKeys = ["friendly_match_win", "single_play_win", "first_purchase"];
+    const counterKeys = ["friendly_match", "single_play_win", "first_purchase"];
 
     const setActiveButton = (group, targetAttr, value) => {
         [...group.querySelectorAll(".toggle-btn")].forEach((btn) => {
@@ -446,6 +469,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const tiers = [];
+        const seenTierNumbers = new Set();
         const tierNodes = eventTierList.querySelectorAll("[data-event-tier]");
         for (const tier of tierNodes) {
             const tierNumberInput = tier.querySelector("[data-tier-number]");
@@ -466,6 +490,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 tierNumberInput?.focus();
                 return;
             }
+            if (seenTierNumbers.has(tierNumber)) {
+                if (sendStatus) sendStatus.textContent = `Tier 번호가 중복되었습니다: ${tierNumber}`;
+                tierNumberInput?.focus();
+                return;
+            }
+            seenTierNumbers.add(tierNumber);
             if (!conditionType) {
                 if (sendStatus) sendStatus.textContent = "조건 종류를 선택하세요.";
                 conditionTypeSelect?.focus();
@@ -519,12 +549,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 counterKey,
                 value
             });
-            const rewardJson = JSON.stringify(rewards);
+            const rewardJson = JSON.stringify(rewards); // 문자열화
 
             tiers.push({
                 Tier: tierNumber,
                 ConditionJson: conditionJson,
-                RewardJson: rewardJson
+                RewardJson: rewardJson, // RewardJson 필드 사용
+                MinEventVersion: 1,
+                MaxEventVersion: null
             });
         }
 
@@ -732,5 +764,6 @@ document.addEventListener("DOMContentLoaded", () => {
     createLangToggleButtons();
     const defaultLang = supportedLangs.find((l) => l.code === "ko");
     if (defaultLang) toggleLang(defaultLang.code, defaultLang.label);
+    setAdminUiEnabled(false);
     void ensureAdmin();
 });

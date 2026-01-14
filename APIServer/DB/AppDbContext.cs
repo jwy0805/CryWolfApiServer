@@ -15,8 +15,8 @@ public class AppDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Notice> Notice { get; set; }
     public DbSet<NoticeLocalization> NoticeLocalization { get; set; }
-    public DbSet<Event> Events { get; set; }
-    public DbSet<EventLocalization> EventNoticeLocalization { get; set; }
+    public DbSet<Event> Event { get; set; }
+    public DbSet<EventLocalization> EventLocalization { get; set; }
     public DbSet<EventRewardTier> EventRewardTier { get; set; }
     public DbSet<UserEventProgress> UserEventProgress { get; set; }
     public DbSet<UserEventClaim> UserEventClaim { get; set; }

@@ -255,19 +255,43 @@ public class RewardInfo
 
 public class NoticeInfo
 {
-    public int EventNoticeId { get; set; }
-    public NoticeType NoticeType { get; set; }
+    public int NoticeId { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
     public bool IsPinned { get; set; }
     public DateTime CreatedAt { get; set; }
 }
 
-public class EventNoticeLocalizationInfo
+public class EventInfo
+{
+    public int EventId { get; set; }
+    public string EventKey { get; set; } = "";
+    public DateTime? StartAtUtc { get; set; }
+    public DateTime? EndAtUtc { get; set; }
+
+    public bool IsPinned { get; set; }
+    public int Priority { get; set; }
+
+    public string Title { get; set; } = "";
+    public string Content { get; set; } = ""; 
+}
+
+public class LocalizationInfo
 {
     public string LanguageCode { get; set; } = "en";
     public string Title { get; set; } = string.Empty;
     public string Content { get; set; } = string.Empty;
+}
+
+public class TierInfo
+{
+    public int Tier { get; set; }
+    public string ConditionJson { get; set; } = "{}";
+    public string RewardJson { get; set; } = "{}"; 
+    public int MinEventVersion { get; set; } = 1;
+    public int? MaxEventVersion { get; set; }
+    public bool IsClaimed { get; set; }
+    public bool IsClaimable { get; set; }   
 }
 
 #endregion
@@ -298,6 +322,28 @@ public class SendMailByAdminPacketRequired
 public class SendMailByAdminPacketResponse
 {
     public bool SendMailOk { get; set; }
+}
+
+public class DeleteNoticePacketRequired
+{
+    public int NoticeId { get; set; }
+    public string AdminPassword { get; set; }
+}
+
+public class DeleteEventPacketRequired 
+{
+    public int EventId { get; set; }
+    public string AdminPassword { get; set; }
+}
+
+public class ClearNoticesPacketRequired
+{
+    public string AdminPassword { get; set; }
+}
+
+public class ClearEventsPacketRequired
+{
+    public string AdminPassword { get; set; }
 }
 
 #endregion
@@ -565,33 +611,47 @@ public class GetEventRequired
     public string LanguageCode { get; set; }
 }
 
-
-public class GetEventListResponse
+public class GetEventResponse
 {
-    public bool Ok { get; set; }
+    public bool GetEventOk { get; set; }
     public DateTime ServerNowUtc { get; set; }
-    public List<EventList> Events { get; set; } = new();
+    public List<EventInfo> EventInfos { get; set; } = new();
 }
 
-public class EventList
+public class GetEventProgressRequired
 {
+    public string AccessToken { get; set; }
+    public string LanguageCode { get; set; }
+    public int EventId { get; set; }
+}
+
+public class GetEventProgressResponse
+{
+    public bool GetEventProgressOk { get; set; }
     public int EventId { get; set; }
     public string EventKey { get; set; } = "";
-    
-    public DateTime? StartAtUtc { get; set; }
-    public DateTime? EndAtUtc { get; set; }
-
-    public EventRepeatType RepeatType { get; set; }
-    public string RepeatTimezone { get; set; } = "UTC";
-    
+    public string CycleKey { get; set; } = "default";
+    public int ProgressValue { get; set; }
     public string Title { get; set; } = "";
     public string Content { get; set; } = "";
+    public List<TierInfo> TierInfos { get; set; } = new();
+}
 
-    // 목록용 보상 미리보기(서버가 RewardJson을 파싱해 표준화해서 내려줌)
-    public List<RewardInfo> PreviewRewards { get; set; } = new();
+public class ClaimEventRewardRequired
+{
+    public string AccessToken { get; set; }
+    public int EventId { get; set; }
+    public int Tier { get; set; }
+}
 
-    // (선택) 이벤트 정렬용. DB에 컬럼이 없으면 CreatedAt 기반 정렬로도 충분.
-    public int Priority { get; set; } = 0;
+public class ClaimEventRewardResponse
+{
+    public bool ClaimOk { get; set; }
+    public bool AlreadyClaimed { get; set; }
+    public int EventId { get; set; }
+    public int Tier { get; set; }
+    public string CycleKey { get; set; } = "default";
+    public string? Error { get; set; }
 }
 
 public class RefreshTokenRequired
@@ -1248,6 +1308,19 @@ public class SessionDisconnectPacketResponse
     public bool SessionDisconnectOk { get; set; }
 }
 
+public class SendEventProgressPacketRequired
+{
+    public List<int> UserIds { get; set; }
+    public int RoomId { get; set; }
+    public string EventKey { get; set; }
+    public EventCounterKey CounterKey { get; set; }
+}
+
+public class SendEventProgressPacketResponse
+{
+    public bool SendEventProgressOk { get; set; }
+}
+
 #endregion
 
 #region For Web
@@ -1257,7 +1330,7 @@ public class PublishNoticeRequired
     public bool IsPinned { get; set; } = false;
     public DateTimeOffset? StartAt { get; set; }
     public DateTimeOffset? EndAt { get; set; }
-    public List<EventNoticeLocalizationInfo> Localizations { get; set; } = new();
+    public List<LocalizationInfo> Localizations { get; set; } = new();
 }
 
 public class PublishEventRequired
@@ -1269,19 +1342,10 @@ public class PublishEventRequired
     public DateTimeOffset EndAt { get; set; }
     public EventRepeatType RepeatType { get; set; } = EventRepeatType.None;
     public string? RepeatTimeZone { get; set; } = "UTC";
+    public int Priority { get; set; } = 0;
     
-    public List<EventNoticeLocalizationInfo> Localizations { get; set; } = new();
-    public List<EventTierRequired> Tiers { get; set; } = new();
-}
-
-public class EventTierRequired
-{
-    public int Tier { get; set; } = 1;
-    public string ConditionJson { get; set; } = "{}";
-    public string RewardJson { get; set; } = "[]";
-
-    public int MinEventVersion { get; set; } = 1;
-    public int? MaxEventVersion { get; set; }
+    public List<LocalizationInfo> Localizations { get; set; } = new();
+    public List<TierInfo> Tiers { get; set; } = new();
 }
 
 #endregion

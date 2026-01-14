@@ -312,6 +312,7 @@ public class UserEventProgress
 
     [MaxLength(32)]
     public string CycleKey { get; set; } = "default"; // None=default, Daily=yyyy-MM-dd ...
+    [MaxLength(32)]
     public int ProgressValue { get; set; } = 0;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     

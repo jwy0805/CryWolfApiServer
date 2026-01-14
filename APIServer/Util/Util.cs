@@ -6,7 +6,7 @@ namespace ApiServer.Util;
 public class Util
 {
     private static readonly Random Random = new();
-
+    
     public static string? Truncate(string? s, int max)
     {
         if (string.IsNullOrEmpty(s)) return s;
@@ -26,6 +26,12 @@ public class Util
         return shuffled;
     }
 
+    public static string NormalizeLang(string? lang)
+    {
+        var v = (lang ?? "").Trim().ToLowerInvariant();
+        return string.IsNullOrWhiteSpace(v) ? "en" : v;
+    }
+    
     private static readonly Regex _engRx = new(@"^[A-Za-z0-9_]{3,20}$");
     private static readonly Regex _cjkrx = new(
         @"^[\uAC00-\uD7A3" +       // 한글 음절

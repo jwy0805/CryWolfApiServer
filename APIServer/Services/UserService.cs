@@ -114,11 +114,13 @@ public class UserService
         State = UserState.Deactivate,
     };
     
-    private UserAuth InitUserAuth(User user, string userAccount, AuthProvider provider, string? password = null) =>
+    private UserAuth InitUserAuth(
+        User user, string userAccount, AuthProvider provider, string? countryCode = "NONE",  string? password = null) =>
         new()
         {
             UserAccount = userAccount,
             PasswordHash = password ?? string.Empty,
+            CountryCode = countryCode,
             LinkedAt = DateTime.UtcNow,
             Provider = provider,
             User = user,

@@ -60,11 +60,13 @@ public class UserAuth
     
     // ID, sub, deviceId
     [MaxLength(60)]
-    public string       UserAccount  { get; set; } = null!;
+    public string UserAccount { get; set; } = null!;
     [MaxLength(120)]
-    public string?      PasswordHash    { get; set; }
+    public string? PasswordHash { get; set; }
+    [MaxLength(10)]
+    public string? CountryCode { get; set; } = "NONE";
     public bool PolicyAgreed { get; set; }
-    public DateTime     LinkedAt        { get; set; }      
+    public DateTime LinkedAt { get; set; }      
     
     // Navigation properties
     public User User { get; set; }
@@ -131,6 +133,7 @@ public class UserTutorial
     public int UserTutorialId { get; set; }
     public int UserId { get; set; }
     public TutorialType TutorialType { get; set; }
+    // -1 means leaving in the middle
     public int TutorialStep { get; set; }
     public bool Done { get; set; }
     

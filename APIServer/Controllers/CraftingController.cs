@@ -116,6 +116,7 @@ public class CraftingController : ControllerBase
                             res.CraftCardOk = false;
                             res.Error = 1;
                             await transaction.RollbackAsync();
+                            return;
                         }
                     }
 

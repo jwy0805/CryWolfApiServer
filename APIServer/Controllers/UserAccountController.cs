@@ -82,8 +82,7 @@ public class UserAccountController : ControllerBase
             var hashedPassword = _tokenService.HashPassword(required.Password);
             var verificationLink = Environment.GetEnvironmentVariable("ENVIRONMENT") switch
             {
-                "Dev" => $"https://hamonstudio.net/verify/{token}",
-                "Prod" => $"https://hamonstudio.net/verify/{token}",
+                "Dev" or "Prod" => $"https://hamonstudio.net/verify/{token}",
                 _ => $"https://localhost:7270/verify/{token}"
             };
             

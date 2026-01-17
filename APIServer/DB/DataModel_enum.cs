@@ -39,6 +39,13 @@ public enum AuthProvider
     Apple
 }
 
+public enum ClientType
+{
+    None,
+    Mobile,
+    Web
+}
+
 public enum TutorialType
 {
     None,

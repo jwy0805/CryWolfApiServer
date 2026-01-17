@@ -181,13 +181,14 @@ public class TokenValidator
     private int? ValidateRefreshToken(string refreshToken)
     {
         var hashedToken = _tokenService.HashToken(refreshToken);
-        var storedToken = _dbContext.RefreshTokens.SingleOrDefault(rt => rt.Token == hashedToken);
+        var storedToken = _dbContext.RefreshToken.SingleOrDefault(rt => rt.Token == hashedToken);
         if (storedToken == null || storedToken.ExpiresAt < DateTime.UtcNow) return null;
         
         return storedToken.UserId;
     }
     
-    public (string AccessToken, string RefreshToken) RefreshAccessToken(string refreshToken)
+    public async Task<(string AccessToken, string RefreshToken)> RefreshAccessToken(
+        string refreshToken, ClientType clientType)
     {
         var userId = ValidateRefreshToken(refreshToken);
         if (userId == null)
@@ -195,7 +196,7 @@ public class TokenValidator
             throw new SecurityTokenException("Invalid refresh token");
         }
 
-        return _tokenService.GenerateTokens(userId.Value);
+        return await _tokenService.GenerateTokensAsync(userId.Value, clientType);
     }
     
     public bool VerifyPassword(string password, string hashedPassword)

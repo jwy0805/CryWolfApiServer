@@ -105,7 +105,7 @@ public class UserAccountController : ControllerBase
     
     [HttpPost]
     [Route("Login")]
-    public LoginUserAccountPacketResponse Login([FromBody] LoginUserAccountPacketRequired required)
+    public async Task<LoginUserAccountPacketResponse> Login([FromBody] LoginUserAccountPacketRequired required)
     {
         var res = new LoginUserAccountPacketResponse();
         var userAuth = _context.UserAuth
@@ -137,7 +137,7 @@ public class UserAccountController : ControllerBase
                     return res;
                 }
             
-                var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+                var tokens = await _tokenService.GenerateTokensAsync(user.UserId, ClientType.Mobile);
                 res.AccessToken = tokens.AccessToken;
                 res.RefreshToken = tokens.RefreshToken;
                 res.LoginOk = true;
@@ -184,7 +184,7 @@ public class UserAccountController : ControllerBase
             }
         }
         
-        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+        var tokens = await _tokenService.GenerateTokensAsync(userAuth.UserId, ClientType.Mobile);
         res.LoginOk = true;
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
@@ -240,7 +240,7 @@ public class UserAccountController : ControllerBase
             }
         }
 
-        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+        var tokens = await _tokenService.GenerateTokensAsync(userAuth.UserId, ClientType.Mobile);
         res.LoginOk = true;
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
@@ -278,7 +278,7 @@ public class UserAccountController : ControllerBase
             }
         }
         
-        var tokens = _tokenService.GenerateTokens(user.UserId);
+        var tokens = await _tokenService.GenerateTokensAsync(user.UserId, ClientType.Mobile);
         res.LoginOk = true;
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
@@ -287,8 +287,55 @@ public class UserAccountController : ControllerBase
     }
 
     [HttpPost]
+    [Route("LoginToken")]
+    public async Task<IActionResult> LoginToken([FromBody] LoginTokenPacketRequired required)
+    {
+        var res = new LoginTokenPacketResponse();
+        if (string.IsNullOrWhiteSpace(required.RefreshToken))
+        {
+            res.LoginOk = false;
+            res.ErrorCode = 1;
+            return Ok(res);
+        }
+        
+        var nowUtc = DateTime.UtcNow;
+        var hashed = _tokenService.HashToken(required.RefreshToken);
+        var refreshTokenEntity = await _context.RefreshToken.AsNoTracking()
+            .FirstOrDefaultAsync(rt => rt.Token == hashed && rt.ClientType == ClientType.Mobile && rt.RevokedAt == null);
+        if (refreshTokenEntity == null)
+        {
+            res.LoginOk = false;
+            res.ErrorCode = 1;
+            return Ok(res);
+        }
+
+        if (refreshTokenEntity.ExpiresAt <= nowUtc)
+        {
+            var expired = await _context.RefreshToken
+                .FirstOrDefaultAsync(rt => rt.Id == refreshTokenEntity.Id);
+            if (expired != null)
+            {
+                _context.RefreshToken.Remove(expired);
+                await _context.SaveChangesAsync();
+            }
+            
+            res.LoginOk = false;
+            res.ErrorCode = 2;
+            return Ok(res);
+        }
+        
+        var tokens = await _tokenService.GenerateTokensAsync(refreshTokenEntity.UserId, ClientType.Mobile);
+        res.LoginOk = true;
+        res.ErrorCode = 0;
+        res.AccessToken = tokens.AccessToken;
+        res.RefreshToken = tokens.RefreshToken;
+
+        return Ok(res);
+    }
+    
+    [HttpPost]
     [Route("LoginFromWeb")]
-    public IActionResult LoginFromWeb([FromBody] LoginUserAccountPacketRequired required)
+    public async Task<IActionResult> LoginFromWeb([FromBody] LoginUserAccountPacketRequired required)
     {
         var userAuth = _context.UserAuth
             .AsNoTracking()
@@ -310,7 +357,7 @@ public class UserAccountController : ControllerBase
         if (_tokenValidator.VerifyPassword(required.Password, userAuth.PasswordHash) == false)
             return Unauthorized(new { message = "Invalid email or password" });
 
-        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+        var tokens = await _tokenService.GenerateTokensAsync(userAuth.UserId, ClientType.Web);
 
         SetAuthCookies(tokens.AccessToken, tokens.RefreshToken);
         
@@ -351,7 +398,7 @@ public class UserAccountController : ControllerBase
         if (user == null)
             return Unauthorized(new { message = "Invalid email or password" });
         
-        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+        var tokens = await _tokenService.GenerateTokensAsync(user.UserId, ClientType.Web);
 
         var cookieOptions = new CookieOptions
         {
@@ -401,7 +448,7 @@ public class UserAccountController : ControllerBase
         if (user == null)
             return Unauthorized(new { message = "Invalid email or password" });
 
-        var tokens = _tokenService.GenerateTokens(userAuth.UserId);
+        var tokens = await _tokenService.GenerateTokensAsync(userAuth.UserId, ClientType.Web);
 
         var cookieOptions = new CookieOptions
         {
@@ -522,11 +569,12 @@ public class UserAccountController : ControllerBase
     
     [HttpPost]
     [Route("RefreshToken")]
-    public IActionResult RefreshToken([FromBody] RefreshTokenRequired request)
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequired request)
     {
         try
         {
-            var tokens = _tokenValidator.RefreshAccessToken(request.RefreshToken);
+            var tokens = 
+                await _tokenValidator.RefreshAccessToken(request.RefreshToken, ClientType.Mobile);
             var response = new RefreshTokenResponse
             {
                 AccessToken = tokens.AccessToken,
@@ -542,7 +590,7 @@ public class UserAccountController : ControllerBase
 
     [HttpPost]
     [Route("RefreshTokenFromWeb")]
-    public IActionResult RefreshTokenFromWeb()
+    public async Task<IActionResult> RefreshTokenFromWeb()
     {
         if (!Request.Cookies.TryGetValue("refresh_token", out var refreshToken) ||
             string.IsNullOrEmpty(refreshToken))
@@ -554,7 +602,7 @@ public class UserAccountController : ControllerBase
 
         try
         {
-            var tokens = _tokenValidator.RefreshAccessToken(refreshToken);
+            var tokens = await _tokenValidator.RefreshAccessToken(refreshToken, ClientType.Web);
             SetAuthCookies(tokens.AccessToken, tokens.RefreshToken);
             return Ok(new { success = true });
         }
@@ -690,7 +738,7 @@ public class UserAccountController : ControllerBase
     
     [HttpPost]
     [Route("LoadTestUser")]
-    public IActionResult LoadTestUser([FromBody] LoadTestUserPacketRequired required)
+    public async Task<IActionResult> LoadTestUser([FromBody] LoadTestUserPacketRequired required)
     {
         var res = new LoadTestUserPacketResponse();
         var userId = required.UserId;
@@ -764,7 +812,7 @@ public class UserAccountController : ControllerBase
             ReinforceTutorialDone = userTutorial.First(ut => ut.TutorialType == TutorialType.Reinforce).Done,
         };
         
-        var tokens = _tokenService.GenerateTokens(user.UserId);
+        var tokens = await _tokenService.GenerateTokensAsync(user.UserId, ClientType.Mobile);
         res.AccessToken = tokens.AccessToken;
         res.RefreshToken = tokens.RefreshToken;
         res.ExpTable = _cachedDataProvider.GetExpSnapshots();
@@ -919,9 +967,9 @@ public class UserAccountController : ControllerBase
         var user = _context.User.FirstOrDefault(u => u.UserId == userId);
         if (user == null) return NotFound();
 
-        var refreshTokens = _context.RefreshTokens.Where(rt => rt.UserId == userId);
+        var refreshTokens = _context.RefreshToken.Where(rt => rt.UserId == userId);
         
-        _context.RefreshTokens.RemoveRange(refreshTokens);
+        _context.RefreshToken.RemoveRange(refreshTokens);
         user.Act = UserAct.Offline;
         
         await _context.SaveChangesExtendedAsync();
@@ -963,7 +1011,7 @@ public class UserAccountController : ControllerBase
         if (!string.IsNullOrWhiteSpace(refreshToken))
         {
             var hashed = _tokenService.HashToken(refreshToken);
-            var query = _context.RefreshTokens.Where(rtEntity => rtEntity.Token == hashed);
+            var query = _context.RefreshToken.Where(rtEntity => rtEntity.Token == hashed);
 
             if (userId.HasValue)
             {
@@ -973,7 +1021,7 @@ public class UserAccountController : ControllerBase
             var tokens = await query.ToListAsync();
             if (tokens.Count > 0)
             {
-                _context.RefreshTokens.RemoveRange(tokens);
+                _context.RefreshToken.RemoveRange(tokens);
             }
         }
         

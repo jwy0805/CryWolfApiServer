@@ -3,35 +3,58 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using ApiServer.DB;
-using ApiServer.DB;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiServer.Services;
 
+/// <summary>
+/// Refresh Tokens are stored in DB per user and client type. - web, mobile
+/// </summary>
 public class TokenService
 {
     private readonly string _secret;
     private readonly TimeSpan _accessTokenLifetime;
     private readonly TimeSpan _refreshTokenLifetime;
-    private readonly AppDbContext _dbContext;
+    private readonly AppDbContext _context;
 
     public TokenService(string secret, AppDbContext dbContext)
     {
         _secret = secret;
         _accessTokenLifetime = TimeSpan.FromMinutes(60);
         _refreshTokenLifetime = TimeSpan.FromDays(90);
-        _dbContext = dbContext;
+        _context = dbContext;
     }
 
-    public (string AccessToken, string RefreshToken) GenerateTokens(int userId)
+    public async Task<(string AccessToken, string RefreshToken)> GenerateTokensAsync(int userId, ClientType clientType)
     {
         var accessToken = GenerateAccessToken(userId);
         var refreshToken = GenerateRefreshToken();
-        SaveRefreshToken(userId, refreshToken);
-        
+
+        await SaveRefreshTokenByClientTypeAsync(userId, clientType, refreshToken);
+
         return (accessToken, refreshToken);
     }
 
+    private async Task SaveRefreshTokenByClientTypeAsync(int userId, ClientType clientType, string refreshToken)
+    {
+        var nowUtc = DateTime.UtcNow;
+        var hashedToken = HashToken(refreshToken);
+        var expiresAt = nowUtc.Add(_refreshTokenLifetime);
+
+        // This UPSERT relies on a UNIQUE KEY on (UserId, ClientType).
+        await _context.Database.ExecuteSqlInterpolatedAsync($@"
+INSERT INTO RefreshToken
+    (UserId, ClientType, Token, ExpiresAt, CreatedAt, UpdateAt, RevokedAt)
+VALUES
+    ({userId}, {(byte)clientType}, {hashedToken}, {expiresAt}, {nowUtc}, {nowUtc}, NULL)
+ON DUPLICATE KEY UPDATE
+    Token = VALUES(Token),
+    ExpiresAt = VALUES(ExpiresAt),
+    UpdateAt = VALUES(UpdateAt),
+    RevokedAt = NULL;");
+    }
+    
     private string GenerateAccessToken(int userId)
     {
         var claims = new[]
@@ -74,7 +97,7 @@ public class TokenService
             claims: claims,
             expires: DateTime.UtcNow.Add(_accessTokenLifetime),
             signingCredentials: credentials);
-        
+
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
     
@@ -84,22 +107,6 @@ public class TokenService
         using var randomNumberGenerator = RandomNumberGenerator.Create();
         randomNumberGenerator.GetBytes(randomBytes);
         return Convert.ToBase64String(randomBytes);
-    }
-
-    private void SaveRefreshToken(int userId, string refreshToken)
-    {
-        var hashedToken = HashToken(refreshToken);
-        var refreshTokenEntity = new RefreshToken
-        {
-            UserId = userId,
-            Token = hashedToken,
-            ExpiresAt = DateTime.UtcNow.Add(_refreshTokenLifetime),
-            CreatedAt = DateTime.UtcNow,
-            UpdateAt = DateTime.UtcNow
-        };
-
-        _dbContext.RefreshTokens.Add(refreshTokenEntity);
-        _dbContext.SaveChanges();
     }
 
     public string HashToken(string token)

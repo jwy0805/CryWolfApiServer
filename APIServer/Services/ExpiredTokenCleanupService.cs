@@ -8,6 +8,11 @@ public class ExpiredTokenCleanupService : BackgroundService
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<ExpiredTokenCleanupService> _logger;
 
+    private readonly TimeSpan _loopInterval = TimeSpan.FromMinutes(10);
+    private readonly TimeSpan _tokenCleanupInterval = TimeSpan.FromHours(2);
+    // User before email verification
+    private readonly TimeSpan _tempUserCleanupInterval = TimeSpan.FromMinutes(10);
+
     public ExpiredTokenCleanupService(IServiceScopeFactory scopeFactory, ILogger<ExpiredTokenCleanupService> logger)
     {
         _scopeFactory = scopeFactory;
@@ -18,78 +23,70 @@ public class ExpiredTokenCleanupService : BackgroundService
     {
         _logger.LogInformation("ExpiredTokenCleanupService is starting.");
 
-        DateTime lastTokenCleanup = DateTime.MinValue;
-
-        while (!stoppingToken.IsCancellationRequested)
+        var nextTokenCleanupUtc = DateTime.UtcNow;
+        try
         {
-            try
+            using var timer = new PeriodicTimer(_loopInterval);
+            while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                // 1. 임시 사용자 정리 (5분마다)
+                // Clean up expired temp users every 10 minutes
                 await CleanUpExpiredTempUsersAsync(stoppingToken);
-
-                // 2. 만료된 토큰 정리 (2시간마다)
-                if (DateTime.UtcNow - lastTokenCleanup >= TimeSpan.FromHours(2))
+                
+                var nowUtc = DateTime.UtcNow;
+                if (nowUtc >= nextTokenCleanupUtc)
                 {
+                    // Clean up expired tokens every 2 hours
                     await CleanUpExpiredTokensAsync(stoppingToken);
-                    lastTokenCleanup = DateTime.UtcNow;
+                    nextTokenCleanupUtc = nowUtc.Add(_tokenCleanupInterval);
                 }
             }
-            catch (OperationCanceledException)
-            {
-                // 서비스 중지 시 발생하는 정상적인 상황
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred during expired token/user cleanup.");
-            }
-
-            try
-            {
-                await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
-            }
-            catch (OperationCanceledException)
-            {
-                // 서비스 중지 시 루프 종료
-            }
         }
-
-        _logger.LogInformation("ExpiredTokenCleanupService is stopping.");
+        catch (OperationCanceledException)
+        {
+            // 정상 종료
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "ExpiredTokenCleanupService crashed unexpectedly.");
+        }
+        finally
+        {
+            _logger.LogInformation("ExpiredTokenCleanupService is stopping.");
+        }
     }
 
     private async Task CleanUpExpiredTokensAsync(CancellationToken stoppingToken)
     {
-        using var scope = _scopeFactory.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await using var scope = _scopeFactory.CreateAsyncScope();
         
-        var now = DateTime.UtcNow;
-        var expiredTokens = await dbContext.RefreshTokens
-            .Where(token => token.ExpiresAt < now)
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var nowUtc = DateTime.UtcNow;
+        var expiredTokens = await context.RefreshToken
+            .Where(token => token.ExpiresAt < nowUtc)
             .ToListAsync(stoppingToken);
 
-        if (expiredTokens.Any())
-        {
-            _logger.LogInformation("Removing {Count} expired refresh tokens.", expiredTokens.Count);
-            dbContext.RefreshTokens.RemoveRange(expiredTokens);
-            await dbContext.SaveChangesAsync(stoppingToken);
-        }
+        if (expiredTokens.Count == 0) return;
+        
+        context.RefreshToken.RemoveRange(expiredTokens);
+        var affected = await context.SaveChangesAsync(stoppingToken);
+        _logger.LogInformation("Removing {Count} expired refresh tokens.", affected);
     }
 
     private async Task CleanUpExpiredTempUsersAsync(CancellationToken stoppingToken)
     {
-        using var scope = _scopeFactory.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await using var scope = _scopeFactory.CreateAsyncScope();
         
-        // 10분이 지난 임시 사용자 또는 이미 인증 완료된 사용자 삭제
-        var cutoff = DateTime.UtcNow - TimeSpan.FromMinutes(10);
-        var expiredUsers = await dbContext.TempUser
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        // 60분이 지난 임시 사용자 또는 이미 인증 완료된 사용자 삭제
+        var cutoff = DateTime.UtcNow - TimeSpan.FromMinutes(60);
+        var expiredUsers = await context.TempUser
             .Where(user => user.CreatedAt < cutoff || user.IsVerified)
             .ToListAsync(stoppingToken);
 
-        if (expiredUsers.Any())
-        {
-            _logger.LogInformation("Removing {Count} expired or verified temp users.", expiredUsers.Count);
-            dbContext.TempUser.RemoveRange(expiredUsers);
-            await dbContext.SaveChangesAsync(stoppingToken);
-        }
+        if (expiredUsers.Count == 0) return;
+        
+        context.TempUser.RemoveRange(expiredUsers);
+        var affected = await context.SaveChangesAsync(stoppingToken);
+        _logger.LogInformation("Removing {Count} expired or verified temp users.", affected);
     }
 }

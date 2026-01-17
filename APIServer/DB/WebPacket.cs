@@ -411,6 +411,19 @@ public class LoginGuestPacketResponse
     public string RefreshToken { get; set; }
 }
 
+public class LoginTokenPacketRequired
+{
+    public string RefreshToken { get; set; }
+}
+
+public class LoginTokenPacketResponse
+{
+    public bool LoginOk { get; set; }
+    public string AccessToken { get; set; }
+    public string RefreshToken { get; set; }
+    public int ErrorCode { get; set; } // 0 - Success, 1 - Invalid Token, 2 - Token Expired, 3 - Network
+}
+
 public class LogoutPacketRequired
 {
     public string AccessToken { get; set; }

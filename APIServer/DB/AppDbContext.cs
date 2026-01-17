@@ -12,7 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<UserTutorial> UserTutorial { get; set; }
     public DbSet<Friend> Friend { get; set; }
     public DbSet<Mail> Mail { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<RefreshToken> RefreshToken { get; set; }
     public DbSet<Notice> Notice { get; set; }
     public DbSet<NoticeLocalization> NoticeLocalization { get; set; }
     public DbSet<Event> Event { get; set; }
@@ -94,6 +94,10 @@ public class AppDbContext : DbContext
             .HasForeignKey(ut => ut.UserId)
             .OnDelete(DeleteBehavior.Cascade);
         
+        
+        builder.Entity<RefreshToken>().HasKey(rt => rt.Id);
+        builder.Entity<RefreshToken>().HasIndex(rt => rt.Token).IsUnique();
+        builder.Entity<RefreshToken>().HasIndex(rt => new { rt.UserId, rt.ClientType }).IsUnique();
         builder.Entity<RefreshToken>()
             .HasOne(rt => rt.User)
             .WithMany(u => u.RefreshTokens)

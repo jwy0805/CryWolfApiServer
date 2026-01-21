@@ -935,6 +935,7 @@ public class UserAccountController : ControllerBase
                     if (tutorial != null)
                     {
                         tutorial.Done = required.Done;
+                        tutorial.TutorialStep = required.TutorialStep;
                     }
                 }
                 

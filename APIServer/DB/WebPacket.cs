@@ -599,6 +599,7 @@ public class UpdateTutorialRequired
     public string AccessToken { get; set; }
     public TutorialType[] TutorialTypes { get; set; }
     public bool Done { get; set; }
+    public int TutorialStep { get; set; }
 }
 
 public class UpdateTutorialResponse

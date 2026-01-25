@@ -175,7 +175,7 @@ public class UserAccountController : ControllerBase
         // Check if the user exists in the database
         if (userAuth == null)
         {
-            await _userService.CreateAccount(sub, AuthProvider.Apple);
+            await _userService.CreateAccount(sub, required.CountryCode, AuthProvider.Apple);
             userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
             if (userAuth == null)
             {
@@ -229,7 +229,7 @@ public class UserAccountController : ControllerBase
         // Check if the user exists in the database
         if (userAuth == null)
         {
-            await _userService.CreateAccount(sub, AuthProvider.Google);
+            await _userService.CreateAccount(sub, required.CountryCode, AuthProvider.Google);
             Console.WriteLine("Create Account");
             userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
             
@@ -269,7 +269,7 @@ public class UserAccountController : ControllerBase
         
         if (user == null)
         {
-            await _userService.CreateAccount(required.GuestId, AuthProvider.Guest);
+            await _userService.CreateAccount(required.GuestId, required.CountryCode, AuthProvider.Guest);
             user = _context.UserAuth.AsNoTracking().FirstOrDefault(u => u.UserAccount == required.GuestId);
             if (user == null)
             {
@@ -385,7 +385,7 @@ public class UserAccountController : ControllerBase
         var userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
         if (userAuth == null)
         {
-            await _userService.CreateAccount(sub, AuthProvider.Google);
+            await _userService.CreateAccount(sub, "None", AuthProvider.Google);
             userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
             if (userAuth == null)
                 return Ok(new { success = false });
@@ -435,7 +435,7 @@ public class UserAccountController : ControllerBase
         var userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
         if (userAuth == null)
         {
-            await _userService.CreateAccount(sub, AuthProvider.Google);
+            await _userService.CreateAccount(sub, "None", AuthProvider.Google);
             userAuth = _context.UserAuth.FirstOrDefault(u => u.UserAccount == sub);
             if (userAuth == null)
                 return Ok(new { success = false });

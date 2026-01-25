@@ -66,7 +66,7 @@ public class UserService
         }
     }
     
-    public async Task<bool> CreateAccount(string userAccount, AuthProvider provider, string? password = null)
+    public async Task<bool> CreateAccount(string userAccount, string countryCode, AuthProvider provider, string? password = null)
     {
         var account = _context.UserAuth.AsNoTracking()
             .FirstOrDefault(u => u.UserAccount == userAccount);
@@ -76,7 +76,7 @@ public class UserService
         {
             var uniqueTag = await GenerateUniqueUserTag();
             var newUser = InitUser(uniqueTag);
-            var newUserAuth = InitUserAuth(newUser, userAccount, provider, password);
+            var newUserAuth = InitUserAuth(newUser, userAccount, provider, countryCode, password);
         
             _context.UserAuth.Add(newUserAuth);
 

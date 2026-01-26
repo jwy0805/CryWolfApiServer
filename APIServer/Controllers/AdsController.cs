@@ -68,8 +68,10 @@ public class AdsController : ControllerBase
         
         await _context.SaveChangesAsync();
         
+        var dailyProducts = await _dailyProductService.GetDailyProductInfos(userId.Value);
+        
         res.RevealDailyProductOk = true;
-        res.DailyProductInfos = await _dailyProductService.GetDailyProductInfos(userId.Value);
+        res.DailyProductInfo = dailyProducts.FirstOrDefault(dp => dp.Slot == required.Slot) ?? new DailyProductInfo();
         
         return Ok(res);
     }

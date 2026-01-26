@@ -104,7 +104,7 @@ public class DailyProductService : IDailyProductService
             }
         });
     }
-
+    
     public async Task<List<DailyProductInfo>> GetDailyProductInfos(int userId)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);

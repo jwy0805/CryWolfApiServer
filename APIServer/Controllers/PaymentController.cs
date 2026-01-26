@@ -247,7 +247,12 @@ public class PaymentController : ControllerBase
     
             var userDaily = _context.UserDailyProduct.FirstOrDefault(udp =>
                 udp.UserId == userId && udp.ProductId == product.ProductId);
-            if (userDaily == null) return;
+            if (userDaily == null || userDaily.Bought)
+            {
+                response.PaymentOk = false;
+                return;
+            }
+            
             userDaily.Bought = true;
             userStat.Gold -= price;
 

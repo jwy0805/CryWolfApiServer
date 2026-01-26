@@ -1111,7 +1111,7 @@ public class RevealDailyProductPacketRequired
 public class RevealDailyProductPacketResponse
 {
     public bool RevealDailyProductOk { get; set; }
-    public List<DailyProductInfo> DailyProductInfos { get; set; }
+    public DailyProductInfo DailyProductInfo { get; set; }
 }
 
 public class RefreshDailyProductPacketRequired

@@ -366,7 +366,7 @@ public class LoginUserAccountPacketRequired
 {
     public string UserAccount { get; set; }
     public string Password { get; set; }
-    public string CountryCode { get; set; }
+    public string? CountryCode { get; set; } = "None";
 }
 
 public class LoginUserAccountPacketResponse
@@ -379,7 +379,7 @@ public class LoginUserAccountPacketResponse
 public class LoginApplePacketRequired
 {
     public string IdToken { get; set; }
-    public string CountryCode { get; set; }
+    public string? CountryCode { get; set; } = "None";
 }
 
 public class LoginApplePacketResponse
@@ -392,7 +392,7 @@ public class LoginApplePacketResponse
 public class LoginGooglePacketRequired
 {
     public string IdToken { get; set; }
-    public string CountryCode { get; set; }
+    public string? CountryCode { get; set; } = "None";
 }
 
 public class LoginGooglePacketResponse
@@ -405,7 +405,7 @@ public class LoginGooglePacketResponse
 public class LoginGuestPacketRequired
 {
     public string GuestId { get; set; }
-    public string CountryCode { get; set; }
+    public string? CountryCode { get; set; } = "None";
 }
 
 public class LoginGuestPacketResponse

@@ -34,7 +34,7 @@ public class MatchMakingService : BackgroundService
         {
             _jobService.Push(() =>
             {
-                var pairs = ProcessMatchMaking();
+                var pairs = ConfirmMatch();
                 foreach (var (sheep, wolf) in pairs)
                 {
                     _ = ProcessMatchRequestAsync(sheep, wolf);
@@ -71,7 +71,7 @@ public class MatchMakingService : BackgroundService
         return false;
     }
 
-    private List<(MatchMakingPacketRequired Sheep, MatchMakingPacketRequired Wolf)> ProcessMatchMaking()
+    private List<(MatchMakingPacketRequired Sheep, MatchMakingPacketRequired Wolf)> ConfirmMatch()
     {
         var results = new List<(MatchMakingPacketRequired, MatchMakingPacketRequired)>();
 
@@ -233,20 +233,18 @@ public class MatchMakingService : BackgroundService
             };
 
             await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
-            _logger.LogInformation($"Matched: Sheep {sheepRequired.UserId}) vs Wolf {wolfRequired.UserId}, count in queue: {_sheepUserQueues[sheepRequired.MapId].Count} + {_wolfUserQueues[wolfRequired.MapId].Count}");
+            
+            _jobService.Push(() =>
+            {
+                var mapId = sheepRequired.MapId;
+                var sheepCount = _sheepUserQueues.TryGetValue(mapId, out var sq) ? sq.Count : 0;
+                var wolfCount  = _wolfUserQueues.TryGetValue(mapId, out var wq) ? wq.Count : 0;
+                // _logger.LogInformation($"Matched ... count in queue: {sheepCount} + {wolfCount}");
+            });
         }
         catch (Exception e)
         {
             _logger.LogError(e, "ProcessMatchRequest failed. Requeue attempt.");
-
-            _jobService.Push(() =>
-            {
-                if (TryIncreaseRetry(sheepRequired) && TryIncreaseRetry(wolfRequired))
-                {
-                    RequeueIfStillValid(sheepRequired);
-                    RequeueIfStillValid(wolfRequired);
-                }
-            });
         }
     }
 
@@ -258,7 +256,7 @@ public class MatchMakingService : BackgroundService
             _ = ProcessTestMatchRequest(packet);
             return;
         }
-
+        
         _jobService.Push(() =>
         {
             _latestSessionByUser[packet.UserId] = packet.SessionId;

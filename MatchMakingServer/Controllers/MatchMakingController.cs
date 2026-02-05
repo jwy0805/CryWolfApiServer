@@ -9,10 +9,12 @@ namespace MatchMakingServer.Controllers;
 public class MatchMakingController : ControllerBase
 {
     private readonly MatchMakingService _matchMakingService;
+    private readonly ILogger<MatchMakingController> _logger;
 
-    public MatchMakingController(MatchMakingService service)
+    public MatchMakingController(MatchMakingService service, ILogger<MatchMakingController> logger)
     {
         _matchMakingService = service;
+        _logger = logger;
     }
     
     [HttpPost]
@@ -29,7 +31,6 @@ public class MatchMakingController : ControllerBase
     public MatchMakingPacketResponse MatchMakingAi([FromBody] MatchMakingPacketRequired required)
     {
         _matchMakingService.AddMatchRequest(required);
-        Console.WriteLine($"AI Match Requested : {required.SessionId}");
         return new MatchMakingPacketResponse();
     }
     

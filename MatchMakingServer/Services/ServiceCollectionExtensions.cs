@@ -7,8 +7,7 @@ public static class ServiceCollectionExtensions
         where TService : class, IHostedService 
     {
         services.AddSingleton<TService>();
-        services.AddSingleton<IHostedService>(provider => 
-            provider.GetService<TService>() ?? throw new InvalidOperationException());
+        services.AddHostedService(provider => provider.GetRequiredService<TService>());
         return services;
     }
 }

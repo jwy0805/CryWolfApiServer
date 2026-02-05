@@ -6,9 +6,9 @@ namespace ApiServer.Services;
 
 public class RewardService
 {
-    private readonly AppDbContext _context;
     private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<RewardService> _logger;
+    private readonly List<StageInfo> _stageInfos;
     private readonly Random _random = new();
     
     private readonly Dictionary<(int Min, int Max), List<RewardInfo>> _rankRewardInfos = new()
@@ -29,32 +29,11 @@ public class RewardService
         
     };
     
-    public List<StageInfo> StageInfos { get; set; } = new();
-    
-    public RewardService(AppDbContext context, CachedDataProvider cachedDataProvider, ILogger<RewardService> logger)
+    public RewardService(CachedDataProvider cachedDataProvider, ILogger<RewardService> logger)
     {
-        _context = context;
         _cachedDataProvider = cachedDataProvider;
         _logger = logger;
-        
-        List<StageEnemy> stageEnemies = _context.StageEnemy.ToList();
-        List<StageReward> stageRewards = _context.StageReward.ToList();
-        
-        foreach (var stage in _context.Stage)
-        {
-            var stageInfo = new StageInfo
-            {
-                StageId = stage.StageId,
-                StageLevel = stage.StageLevel,
-                UserFaction = stage.UserFaction,
-                AssetId = stage.AssetId,
-                CharacterId = stage.CharacterId,
-                MapId = stage.MapId,
-                StageEnemy = stageEnemies.FindAll(se => se.StageId == stage.StageId),
-                StageReward = stageRewards.FindAll(sr => sr.StageId == stage.StageId)
-            };
-            StageInfos.Add(stageInfo);
-        }
+        _stageInfos = _cachedDataProvider.GetStageInfos();
     }
     
     public List<RewardInfo> GetRankRewards(int userId, int rankPoint, int rankPointValue, bool win)
@@ -91,7 +70,7 @@ public class RewardService
 
         var rewards = new List<SingleRewardInfo>();
 
-        rewards.AddRange(StageInfos
+        rewards.AddRange(_stageInfos
             .FirstOrDefault(si => si.StageId == stageId)?.StageReward
             .Where(sr => sr.Star <= star)
             .Select(sr => new SingleRewardInfo

@@ -13,25 +13,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/APIServer/Services/TestService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/MatchService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/MatchService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Job/JobSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Job/JobSerializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/JobService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/JobService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/ServiceCollectionExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
@@ -90,6 +91,8 @@
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ClientPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ServerPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/dd32254c7bee4d0b92aba39200e1aa01a000/b6/80afb714/02000008pdb10.il" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/134622bcf8ad016d3faf7776eb0457b76a5798c537458aa82651ab2cee6e1/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/334f6bfbaabaa53165b356a8545581c25d974b8183cde26719f1d32edab0/HttpClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/485da50d43321b81edc28153271bdedb84943a243743e2deaa67a981587968/IConfiguration.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file:///usr/local/share/dotnet/sdk/8.0.303/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_6_default.globalconfig" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -668,15 +671,9 @@
       <workItem from="1769515626910" duration="15995000" />
       <workItem from="1769762420028" duration="5158000" />
       <workItem from="1769865657923" duration="6197000" />
-      <workItem from="1770099061914" duration="14730000" />
-    </task>
-    <task id="LOCAL-00127" summary="[Update] Proxy Docker file settings">
-      <option name="closed" value="true" />
-      <created>1765434594821</created>
-      <option name="number" value="00127" />
-      <option name="presentableId" value="LOCAL-00127" />
-      <option name="project" value="LOCAL" />
-      <updated>1765434594821</updated>
+      <workItem from="1770099061914" duration="17601000" />
+      <workItem from="1770257886891" duration="6000" />
+      <workItem from="1770258222759" duration="27390000" />
     </task>
     <task id="LOCAL-00128" summary=".">
       <option name="closed" value="true" />
@@ -1062,7 +1059,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769591633903</updated>
     </task>
-    <option name="localTasksCounter" value="176" />
+    <task id="LOCAL-00176" summary="[FEAT]&#10;Ready for load test">
+      <option name="closed" value="true" />
+      <created>1770254908875</created>
+      <option name="number" value="00176" />
+      <option name="presentableId" value="LOCAL-00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1770254908875</updated>
+    </task>
+    <option name="localTasksCounter" value="177" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1083,7 +1088,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="loggin3" />
     <MESSAGE value="iap4" />
     <MESSAGE value="iap2" />
     <MESSAGE value="iap3" />
@@ -1108,7 +1112,8 @@
     <MESSAGE value="[FEAT] &#10;Get user device's country, input UserAuth table." />
     <MESSAGE value="[UPDATE]&#10;DTO update for client ads logic" />
     <MESSAGE value="[FIX]&#10;Landing page login error fixed." />
-    <option name="LAST_COMMIT_MESSAGE" value="[FIX]&#10;Landing page login error fixed." />
+    <MESSAGE value="[FEAT]&#10;Ready for load test" />
+    <option name="LAST_COMMIT_MESSAGE" value="[FEAT]&#10;Ready for load test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

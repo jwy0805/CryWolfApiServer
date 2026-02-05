@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ApiServer.DB;
 using ApiServer.Providers;
 using ApiServer.Services;
@@ -253,7 +254,7 @@ public class MatchController : ControllerBase
         
         await _apiService
             .SendRequestAsync<MatchMakingPacketResponse>("MatchMaking/MatchAi", matchPacket, HttpMethod.Post);
-
+        
         return Ok(new EnqueueAiMatchPacketResponse { EnqueueAiMatchOk = true });
     }
     
@@ -331,9 +332,9 @@ public class MatchController : ControllerBase
     [Route("SetMatchInfo")]
     public IActionResult SetMatchInfo([FromBody] SendMatchInfoPacketRequired required)
     {
-        _matchService
+        var result = _matchService
             .AddMatchInfo(required.SheepUserId, required.SheepSessionId, required.WolfUserId, required.WolfSessionId);
-        var res = new SendMatchInfoPacketResponse { SendMatchInfoOk = true };
+        var res = new SendMatchInfoPacketResponse { SendMatchInfoOk = result };
         return Ok(res);
     }
 

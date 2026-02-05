@@ -18,8 +18,9 @@ public class CachedDataProvider
     private readonly List<CompositionProbability> _probabilities;
     private readonly List<DailyProductSnapshot> _dailyProductSnapshots;
     private readonly List<FreeProductSnapshot> _freeProductSnapshots;
+    private readonly List<StageInfo> _stageInfos;
     private readonly Random _random = new();
-
+    
     private readonly Dictionary<int, UnitInfo> _unitInfoLookup;
     private readonly Dictionary<int, SheepInfo> _sheepInfoLookup;
     private readonly Dictionary<int, EnchantInfo> _enchantInfoLookup;
@@ -36,6 +37,7 @@ public class CachedDataProvider
     
     public Dictionary<int, int> GetExpSnapshots() => _expSnapshots;
     public Dictionary<(UnitClass, int), int> GetReinforcePoints() => _reinforcePoints;
+    public List<StageInfo> GetStageInfos() => _stageInfos;
     public List<Product> GetProducts() => _products;
     public List<ProductComposition> GetProductCompositions() => _productCompositions;
     public List<CompositionProbability> GetProbabilities() => _probabilities;
@@ -61,6 +63,21 @@ public class CachedDataProvider
 
         _reinforcePoints = context.ReinforcePoint.AsNoTracking()
             .ToDictionary(rp => (rp.Class, rp.Level), rp => rp.Constant);
+        
+        var enemyLookup = context.StageEnemy.AsNoTracking().ToLookup(se => se.StageId);
+        var rewardLookup = context.StageReward.AsNoTracking().ToLookup(sr => sr.StageId);   
+        _stageInfos = context.Stage.AsNoTracking()
+            .Select(stage => new StageInfo
+            {
+                StageId = stage.StageId,
+                StageLevel = stage.StageLevel,
+                UserFaction = stage.UserFaction,
+                AssetId = stage.AssetId,
+                CharacterId = stage.CharacterId,
+                MapId = stage.MapId,
+                StageEnemy = enemyLookup[stage.StageId].ToList(),
+                StageReward = rewardLookup[stage.StageId].ToList()
+            }).ToList();
         
         List<UnitInfo> unitInfos = context.Unit.AsNoTracking().Select(u => new UnitInfo
         {

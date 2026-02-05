@@ -232,31 +232,31 @@ public class MatchController : ControllerBase
         return Ok(res);
     }
 
-    [HttpPost]
-    [Route("EnqueueAiMatch")]
-    public async Task<IActionResult> EnqueueAiMatch([FromBody] EnqueueAiMatchPacketRequired required)
-    {
-        var matchPacket = new MatchMakingPacketRequired
-        {
-            IsAi = true,
-            UserId = required.SessionId + 100,
-            SessionId = required.SessionId,
-            UserName = "AI",
-            Faction = required.Faction,
-            RankPoint = _testService.GetRandomNumber(10, 1000),
-            RequestTime = DateTime.Now,
-            MapId = 1,
-            CharacterId = 1101,
-            AssetId = required.Faction == Faction.Sheep ? 901 : 1001,
-            UnitIds = _testService.SetAiUnits(required.Faction),
-            Achievements = new List<int>()
-        };
-        
-        await _apiService
-            .SendRequestAsync<MatchMakingPacketResponse>("MatchMaking/MatchAi", matchPacket, HttpMethod.Post);
-        
-        return Ok(new EnqueueAiMatchPacketResponse { EnqueueAiMatchOk = true });
-    }
+    // [HttpPost]
+    // [Route("EnqueueAiMatch")]
+    // public async Task<IActionResult> EnqueueAiMatch([FromBody] EnqueueAiMatchPacketRequired required)
+    // {
+    //     var matchPacket = new MatchMakingPacketRequired
+    //     {
+    //         IsAi = true,
+    //         UserId = required.SessionId + 100,
+    //         SessionId = required.SessionId,
+    //         UserName = "AI",
+    //         Faction = required.Faction,
+    //         RankPoint = _testService.GetRandomNumber(10, 1000),
+    //         RequestTime = DateTime.Now,
+    //         MapId = 1,
+    //         CharacterId = 1101,
+    //         AssetId = required.Faction == Faction.Sheep ? 901 : 1001,
+    //         UnitIds = _testService.SetAiUnits(required.Faction),
+    //         Achievements = new List<int>()
+    //     };
+    //     
+    //     await _apiService
+    //         .SendRequestAsync<MatchMakingPacketResponse>("MatchMaking/MatchAi", matchPacket, HttpMethod.Post);
+    //     
+    //     return Ok(new EnqueueAiMatchPacketResponse { EnqueueAiMatchOk = true });
+    // }
     
     [HttpPut]
     [Route("ChangeActByTutorial")]

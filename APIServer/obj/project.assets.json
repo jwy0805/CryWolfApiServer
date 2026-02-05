@@ -11250,11 +11250,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/APIServer.csproj",
+      "projectUniqueName": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/APIServer/APIServer.csproj",
       "projectName": "APIServer",
-      "projectPath": "/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/APIServer.csproj",
+      "projectPath": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/APIServer/APIServer.csproj",
       "packagesPath": "/Users/jwy/.nuget/packages/",
-      "outputPath": "/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/obj/",
+      "outputPath": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/APIServer/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/jwy/.nuget/NuGet/NuGet.Config"

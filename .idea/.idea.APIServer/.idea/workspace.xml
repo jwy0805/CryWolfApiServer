@@ -14,11 +14,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Providers/CachedDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/MatchService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/MatchService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Services/RewardService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/APIServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
@@ -28,11 +23,6 @@
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/ref/APIServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/refint/APIServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Controllers/MatchMakingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Job/JobSerializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Job/JobSerializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/JobService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/JobService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/MatchMakingService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/Services/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/Services/ServiceCollectionExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net6.0/MatchMakingServer.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
@@ -42,8 +32,6 @@
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/ref/MatchMakingServer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/refint/MatchMakingServer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -673,15 +661,7 @@
       <workItem from="1769865657923" duration="6197000" />
       <workItem from="1770099061914" duration="17601000" />
       <workItem from="1770257886891" duration="6000" />
-      <workItem from="1770258222759" duration="27390000" />
-    </task>
-    <task id="LOCAL-00128" summary=".">
-      <option name="closed" value="true" />
-      <created>1765439971773</created>
-      <option name="number" value="00128" />
-      <option name="presentableId" value="LOCAL-00128" />
-      <option name="project" value="LOCAL" />
-      <updated>1765439971773</updated>
+      <workItem from="1770258222759" duration="32920000" />
     </task>
     <task id="LOCAL-00129" summary="Fix Base Urls">
       <option name="closed" value="true" />
@@ -1067,7 +1047,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770254908875</updated>
     </task>
-    <option name="localTasksCounter" value="177" />
+    <task id="LOCAL-00177" summary="[REFACTOR] standardize JobSerializer and decouple RewardService from DbContext&#10;&#10;- Move StageInfo caching logic from RewardService to CahcedDataProvider for better responsibility separation.&#10;- Remove AppDbContext dependency from RewardService by utilizing memory-cached data.&#10;- Refactor MatchMakingServer's JobService to use SemaphoreSlim and Interlocked signaling for optimized worker thread management&#10;- Implement a unified JobSerializer pattern with JobTimer support across both API server and MatchMacking server&#10;- Ensure consistent thread-safety and efficient background task processing throughout the service architecture.">
+      <option name="closed" value="true" />
+      <created>1770295723299</created>
+      <option name="number" value="00177" />
+      <option name="presentableId" value="LOCAL-00177" />
+      <option name="project" value="LOCAL" />
+      <updated>1770295723299</updated>
+    </task>
+    <option name="localTasksCounter" value="178" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1088,7 +1076,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="iap4" />
     <MESSAGE value="iap2" />
     <MESSAGE value="iap3" />
     <MESSAGE value="iap" />
@@ -1113,7 +1100,8 @@
     <MESSAGE value="[UPDATE]&#10;DTO update for client ads logic" />
     <MESSAGE value="[FIX]&#10;Landing page login error fixed." />
     <MESSAGE value="[FEAT]&#10;Ready for load test" />
-    <option name="LAST_COMMIT_MESSAGE" value="[FEAT]&#10;Ready for load test" />
+    <MESSAGE value="[REFACTOR] standardize JobSerializer and decouple RewardService from DbContext&#10;&#10;- Move StageInfo caching logic from RewardService to CahcedDataProvider for better responsibility separation.&#10;- Remove AppDbContext dependency from RewardService by utilizing memory-cached data.&#10;- Refactor MatchMakingServer's JobService to use SemaphoreSlim and Interlocked signaling for optimized worker thread management&#10;- Implement a unified JobSerializer pattern with JobTimer support across both API server and MatchMacking server&#10;- Ensure consistent thread-safety and efficient background task processing throughout the service architecture." />
+    <option name="LAST_COMMIT_MESSAGE" value="[REFACTOR] standardize JobSerializer and decouple RewardService from DbContext&#10;&#10;- Move StageInfo caching logic from RewardService to CahcedDataProvider for better responsibility separation.&#10;- Remove AppDbContext dependency from RewardService by utilizing memory-cached data.&#10;- Refactor MatchMakingServer's JobService to use SemaphoreSlim and Interlocked signaling for optimized worker thread management&#10;- Implement a unified JobSerializer pattern with JobTimer support across both API server and MatchMacking server&#10;- Ensure consistent thread-safety and efficient background task processing throughout the service architecture." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -9,51 +9,51 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebSite
 build_property.RootNamespace = WebSite
-build_property.ProjectDir = /Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/
+build_property.ProjectDir = /Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite
+build_property.MSBuildProjectDirectory = /Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Admin.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/Admin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Credits.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/Credits.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ3JlZGl0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Error.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Index.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Privacy.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Terms.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/Terms.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVGVybXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/_ViewImports.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/_ViewStart.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/Pages/Shared/_Layout.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-6jwf6tp9xp

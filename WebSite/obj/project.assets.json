@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/WebSite.csproj",
+      "projectUniqueName": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/WebSite.csproj",
       "projectName": "WebSite",
-      "projectPath": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/WebSite.csproj",
+      "projectPath": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/WebSite.csproj",
       "packagesPath": "/Users/jwy/.nuget/packages/",
-      "outputPath": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/",
+      "outputPath": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/jwy/.nuget/NuGet/NuGet.Config"

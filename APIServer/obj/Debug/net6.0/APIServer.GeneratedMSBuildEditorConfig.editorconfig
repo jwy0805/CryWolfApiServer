@@ -9,15 +9,15 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ApiServer
 build_property.RootNamespace = ApiServer
-build_property.ProjectDir = /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/
+build_property.ProjectDir = /Users/jwy/Documents/Dev/00_CryWolf/APIServer/APIServer/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer
+build_property.MSBuildProjectDirectory = /Users/jwy/Documents/Dev/00_CryWolf/APIServer/APIServer
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/jwy/Documents/Dev/CryWolf/APIServer/APIServer/Pages/Verify.cshtml]
+[/Users/jwy/Documents/Dev/00_CryWolf/APIServer/APIServer/Pages/Verify.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmVyaWZ5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

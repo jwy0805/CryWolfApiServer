@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/MatchMakingServer.csproj": {}
+    "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/MatchMakingServer/MatchMakingServer.csproj": {}
   },
   "projects": {
-    "/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/MatchMakingServer.csproj": {
+    "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/MatchMakingServer/MatchMakingServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/MatchMakingServer.csproj",
+        "projectUniqueName": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/MatchMakingServer/MatchMakingServer.csproj",
         "projectName": "MatchMakingServer",
-        "projectPath": "/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/MatchMakingServer.csproj",
+        "projectPath": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/MatchMakingServer/MatchMakingServer.csproj",
         "packagesPath": "/Users/jwy/.nuget/packages/",
-        "outputPath": "/Users/jwy/Documents/Dev/CryWolf/APIServer/MatchMakingServer/obj/",
+        "outputPath": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/MatchMakingServer/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/jwy/.nuget/NuGet/NuGet.Config"

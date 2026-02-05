@@ -18,6 +18,7 @@ public class MatchController : ControllerBase
     private readonly RewardService _rewardService;
     private readonly ProductClaimService _claimService;
     private readonly CachedDataProvider _cachedDataProvider;
+    private readonly TestService _testService;
     private readonly ILogger<MatchController> _logger;
     
     public MatchController(
@@ -29,6 +30,7 @@ public class MatchController : ControllerBase
         RewardService rewardService,
         ProductClaimService claimService,
         CachedDataProvider cachedDataProvider,
+        TestService testService,
         ILogger<MatchController> logger)
     {
         _context = context;
@@ -39,6 +41,7 @@ public class MatchController : ControllerBase
         _rewardService = rewardService;
         _claimService = claimService;
         _cachedDataProvider = cachedDataProvider;
+        _testService = testService;
         _logger = logger;
     }
     
@@ -228,6 +231,32 @@ public class MatchController : ControllerBase
         return Ok(res);
     }
 
+    [HttpPost]
+    [Route("EnqueueAiMatch")]
+    public async Task<IActionResult> EnqueueAiMatch([FromBody] EnqueueAiMatchPacketRequired required)
+    {
+        var matchPacket = new MatchMakingPacketRequired
+        {
+            IsAi = true,
+            UserId = required.SessionId + 100,
+            SessionId = required.SessionId,
+            UserName = "AI",
+            Faction = required.Faction,
+            RankPoint = _testService.GetRandomNumber(10, 1000),
+            RequestTime = DateTime.Now,
+            MapId = 1,
+            CharacterId = 1101,
+            AssetId = required.Faction == Faction.Sheep ? 901 : 1001,
+            UnitIds = _testService.SetAiUnits(required.Faction),
+            Achievements = new List<int>()
+        };
+        
+        await _apiService
+            .SendRequestAsync<MatchMakingPacketResponse>("MatchMaking/MatchAi", matchPacket, HttpMethod.Post);
+
+        return Ok(new EnqueueAiMatchPacketResponse { EnqueueAiMatchOk = true });
+    }
+    
     [HttpPut]
     [Route("ChangeActByTutorial")]
     public async Task<IActionResult> ChangeActByTutorial([FromBody] ChangeActPacketRequired required)

@@ -17,6 +17,7 @@ public class MatchMakingService : BackgroundService
     private readonly Dictionary<int, int> _latestSessionByUser = new();
     private readonly Dictionary<int, int> _canceledSessionByUser = new();
     private readonly Dictionary<(int UserId, int SessionId), int> _retryCount = new();
+    private readonly HashSet<(int UserId, int SessionId)> _inQueueKeys = new();
     
     private const int MaxRetryCount = 3;
     
@@ -29,7 +30,7 @@ public class MatchMakingService : BackgroundService
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (stoppingToken.IsCancellationRequested == false)
+        while (!stoppingToken.IsCancellationRequested)
         {
             _jobService.Push(() =>
             {
@@ -105,6 +106,8 @@ public class MatchMakingService : BackgroundService
             if (IsStaleOrCanceled(sheepPeek))
             {
                 sheepQ.Dequeue();
+                _inQueueKeys.Remove((sheepPeek.UserId, sheepPeek.SessionId));
+                
                 if (_canceledSessionByUser.TryGetValue(sheepPeek.UserId, out var canceled) &&
                     canceled == sheepPeek.SessionId)
                 {
@@ -117,6 +120,8 @@ public class MatchMakingService : BackgroundService
             if (IsStaleOrCanceled(wolfPeek))
             {
                 wolfQ.Dequeue();
+                _inQueueKeys.Remove((wolfPeek.UserId, wolfPeek.SessionId));
+                
                 if (_canceledSessionByUser.TryGetValue(wolfPeek.UserId, out var canceled) &&
                     canceled == wolfPeek.SessionId)
                 {
@@ -125,7 +130,14 @@ public class MatchMakingService : BackgroundService
                 continue;
             }
             
-            return (sheepQ.Dequeue(), wolfQ.Dequeue());
+            var sheep = sheepQ.Dequeue();
+            var wolf = wolfQ.Dequeue();
+            _inQueueKeys.Remove((sheep.UserId, sheep.SessionId));
+            _inQueueKeys.Remove((wolf.UserId, wolf.SessionId));
+
+            Console.WriteLine($"Find Match: Sheep {sheep.UserId} vs Wolf {wolf.UserId}");
+            
+            return (sheep, wolf);
         }
     }
 
@@ -140,7 +152,7 @@ public class MatchMakingService : BackgroundService
 
     private void RequeueIfStillValid(MatchMakingPacketRequired required)
     {
-        // 최신 세션이 아니면 재큐잉x (이미 재진입 / 새 요청)
+        // 최신 세션이 아니면 재큐잉x (이미 재진입 or 새 요청)
         if (_latestSessionByUser.TryGetValue(required.UserId, out var latest) && latest != required.SessionId) 
             return;
             
@@ -148,6 +160,9 @@ public class MatchMakingService : BackgroundService
         if (_canceledSessionByUser.TryGetValue(required.UserId, out var canceled) && canceled == required.SessionId)
             return;
             
+        var key = (required.UserId, required.SessionId);
+        if (_inQueueKeys.Contains(key)) return;
+        
         EnsureQueues(required.MapId);
 
         if (required.Faction == Faction.Sheep)
@@ -158,18 +173,14 @@ public class MatchMakingService : BackgroundService
         {
             _wolfUserQueues[required.MapId].Enqueue(required, required.RankPoint);
         }
+        
+        _inQueueKeys.Add(key);
     }
     
     private async Task ProcessMatchRequestAsync(MatchMakingPacketRequired sheepRequired, MatchMakingPacketRequired wolfRequired)
     {
         try
         {
-            _logger.LogInformation(
-                "Matched: Sheep {SheepUserId}({SheepRP}) vs Wolf {WolfUserId}({WolfRP}) map={MapId}",
-                sheepRequired.UserId, sheepRequired.RankPoint,
-                wolfRequired.UserId, wolfRequired.RankPoint,
-                sheepRequired.MapId);
-            
             var getRankPointPacket = new GetRankPointPacketRequired
             {
                 SheepUserId = sheepRequired.UserId,
@@ -197,6 +208,7 @@ public class MatchMakingService : BackgroundService
             // Http Transfer of Socket Server
             var matchSuccessPacket = new MatchSuccessPacketRequired
             {
+                IsAiSimulation = sheepRequired.IsAi && wolfRequired.IsAi,
                 SheepUserId = sheepRequired.UserId,
                 SheepSessionId = sheepRequired.SessionId,
                 SheepUserName = sheepRequired.UserName,
@@ -221,6 +233,7 @@ public class MatchMakingService : BackgroundService
             };
 
             await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
+            _logger.LogInformation($"Matched: Sheep {sheepRequired.UserId}) vs Wolf {wolfRequired.UserId}, count in queue: {_sheepUserQueues[sheepRequired.MapId].Count} + {_wolfUserQueues[wolfRequired.MapId].Count}");
         }
         catch (Exception e)
         {
@@ -250,10 +263,18 @@ public class MatchMakingService : BackgroundService
         {
             _latestSessionByUser[packet.UserId] = packet.SessionId;
 
+            // 다른 세션 취소 정보 정리
             if (_canceledSessionByUser.TryGetValue(packet.UserId, out var canceled) && canceled != packet.SessionId)
             {
                 _canceledSessionByUser.Remove(packet.UserId);
             }
+            
+            // 취소된 세션 무시
+            if (_canceledSessionByUser.TryGetValue(packet.UserId, out canceled) && canceled == packet.SessionId) return;
+            
+            // 중복 처리
+            var key = (packet.UserId, packet.SessionId);
+            if (_inQueueKeys.Contains(key)) return;
             
             EnsureQueues(packet.MapId);
             
@@ -265,6 +286,9 @@ public class MatchMakingService : BackgroundService
             {
                 _wolfUserQueues[packet.MapId].Enqueue(packet, packet.RankPoint);
             }
+
+            _inQueueKeys.Add(key);
+            _logger.LogInformation($"user {packet.UserId} {packet.Faction} : session {packet.SessionId} Enqueued for match, count in queue: {_sheepUserQueues[packet.MapId].Count} + ${_wolfUserQueues[packet.MapId].Count}");
         });
     }
     
@@ -274,6 +298,8 @@ public class MatchMakingService : BackgroundService
         {
             _canceledSessionByUser[packet.UserId] = packet.SessionId;
             _retryCount.Remove((packet.UserId, packet.SessionId));
+            _inQueueKeys.Remove((packet.UserId, packet.SessionId));
+            _logger.LogInformation($"user {packet.UserId} : session {packet.SessionId} Canceled match request, count in queue");
         });
 
         return packet.UserId;

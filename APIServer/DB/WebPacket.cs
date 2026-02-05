@@ -1133,6 +1133,7 @@ public class RefreshDailyProductPacketResponse
 public class MatchMakingPacketRequired
 {
     public bool Test { get; set; } = false;
+    public bool IsAi { get; set; } = false;
     public int UserId { get; set; }
     public int SessionId { get; set; }
     public string UserName { get; set; }
@@ -1337,6 +1338,17 @@ public class SendEventProgressPacketRequired
 public class SendEventProgressPacketResponse
 {
     public bool SendEventProgressOk { get; set; }
+}
+
+public class EnqueueAiMatchPacketRequired
+{
+    public int SessionId { get; set; }
+    public Faction Faction { get; set; }
+}
+
+public class EnqueueAiMatchPacketResponse
+{
+    public bool EnqueueAiMatchOk { get; set; }
 }
 
 #endregion

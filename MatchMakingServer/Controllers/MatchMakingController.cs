@@ -25,6 +25,15 @@ public class MatchMakingController : ControllerBase
     }
     
     [HttpPost]
+    [Route("MatchAi")]
+    public MatchMakingPacketResponse MatchMakingAi([FromBody] MatchMakingPacketRequired required)
+    {
+        _matchMakingService.AddMatchRequest(required);
+        Console.WriteLine($"AI Match Requested : {required.SessionId}");
+        return new MatchMakingPacketResponse();
+    }
+    
+    [HttpPost]
     [Route("CancelMatch")]
     public MatchCancelPacketResponse CancelMatch([FromBody] MatchCancelPacketRequired required)
     {

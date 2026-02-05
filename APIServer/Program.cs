@@ -85,7 +85,6 @@ builder.Services.AddHostedService<ExpiredTokenCleanupService>();
 builder.Services.AddHostedService<UserManagementService>();
 builder.Services.AddHostedService<DailyJob>();
 builder.Services.AddHttpClient<ApiService>();
-// builder.Services.AddSingleton<ApiService>();
 builder.Services.AddSingleton<MatchService>();
 builder.Services.AddSingleton<TaskQueueService>();
 builder.Services.AddScoped<WebSocketService>();
@@ -96,6 +95,7 @@ builder.Services.AddScoped<MailService>();
 builder.Services.AddScoped<IDailyProductService, DailyProductService>();
 builder.Services.AddScoped<IapService>();
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<TestService>();
 
 builder.Services.AddSingleton<CachedDataProvider>();
 

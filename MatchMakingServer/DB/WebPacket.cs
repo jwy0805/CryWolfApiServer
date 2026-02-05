@@ -15,6 +15,7 @@ public class TestApiToMatchResponse
 public class MatchMakingPacketRequired
 {
     public bool Test { get; set; } = false;
+    public bool IsAi { get; set; } = false;
     public int UserId { get; set; }
     public int SessionId { get; set; }
     public string UserName { get; set; }
@@ -76,6 +77,7 @@ public class GetRankPointPacketResponse
 public class MatchSuccessPacketRequired
 {
     public bool IsTestGame { get; set; }
+    public bool IsAiSimulation { get; set; }
     public int SheepUserId { get; set; }
     public int SheepSessionId { get; set; }
     public string SheepUserName { get; set; }

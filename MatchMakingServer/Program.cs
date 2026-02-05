@@ -20,7 +20,6 @@ builder.Services.AddHttpClient<ApiService>();
 builder.Services.AddSingleton<ApiService>();
 
 builder.Services.AddHostedServiceWithImplementation<JobService>();
-
 builder.Services.AddHostedServiceWithImplementation<MatchMakingService>();
 
 // -- StartUp.cs - Configure

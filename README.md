@@ -17,7 +17,7 @@ Android (Google Play): https://play.google.com/store/apps/details?id=com.hamonst
 
 ## Review Guide (Start Here)
 - Economy mutation safety (transaction + idempotency): `APIServer/Controllers/PaymentController` - store receipt validation + retry-safe grant.
-- Matchmaking flow: `APIServer/ControllersMatchController`/`MatchMakingServer/`
+- Matchmaking flow: `APIServer/ControllersMatchController` + `MatchMakingServer/`
 - WebSocket(SignalR): `APIServer/SignalRHub/`
 
 ## Reliability Primitives

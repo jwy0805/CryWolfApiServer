@@ -15,7 +15,7 @@ Android (Google Play): https://play.google.com/store/apps/details?id=com.hamonst
 - `Website/` - https://hamonstudio.net landing page / admin console page
 
 ## Review Guide (Start Here)
-- Economy mutation safety (transaction + idempotency): `APIServer/Controllers/PaymentController`
+- Economy mutation safety (transaction + idempotency): `APIServer/Controllers/PaymentController` - store receipt validation + retry-safe grant.
 - Matchmaking flow: `APIServer/ControllersMatchController`/`MatchMakingServer/`
 - WebSocket(SignalR): `APIServer/SignalRHub/`
 

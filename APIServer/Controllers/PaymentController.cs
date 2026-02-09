@@ -49,21 +49,9 @@ public class PaymentController : ControllerBase
         _logger = logger;
     }
 
-    public record ValidationResult(
-        bool IsValid,
-        string? Message = null,
-        int? HttpStatusCode = null,
-        string? ErrorCode = null,
-        string? RawResponse = null)
-    {
-        public static ValidationResult Ok() => new(true);
-        public static ValidationResult Fail(string message, int? http = null, string? code = null, string? raw = null) 
-            => new(false, message, http, code, raw);
-    }
-
     public bool IsUniqueViolationOnStoreKey(DbUpdateException exception)
     {
-        if (exception.InnerException is MySqlConnector.MySqlException mysql)
+        if (exception.InnerException is MySqlException mysql)
         {
             return mysql.Number == 1062;
         }
@@ -284,12 +272,12 @@ public class PaymentController : ControllerBase
             if (!_iapService.TryGetProductId(required.ProductCode, out var productId))
                 return Ok(_iapService.MakeResponse(false, CashPaymentErrorCode.InvalidReceipt));
             
-            // 1) 멱등 Seed 확보 + 현재 상태 조회 (예외 없이)
+            // 멱등 Seed 확보 + 현재 상태 조회 (예외 없이)
             var seed = await _iapService.EnsureSeedAndGetStatusAsync(userId, productId, storeType, storeTxId);
             
-            // 2) 이미 처리된 상태면 즉시 응답
-            var early = _iapService.MapStateToResponse(seed.Status, seed.FailureCode);
-            if (early != null) return Ok(early);
+            // 이미 처리된 상태면 즉시 응답
+            var earlyResponse = _iapService.MapStateToResponse(seed.Status, seed.FailureCode);
+            if (earlyResponse != null) return Ok(earlyResponse);
 
             // 검증 후 지급
             var validation = await _iapService.ValidateReceiptAsync(storeType, required.ProductCode, receiptRaw);
@@ -335,7 +323,7 @@ public class PaymentController : ControllerBase
                     return _iapService.MakeResponse(false, CashPaymentErrorCode.InternalError);
                 }
 
-                // 정합성/보안: 트랜잭션 소유자 체크
+                // 트랜잭션 소유자 체크
                 if (txRow.UserId != requestUserId)
                 {
                     txRow.Status = TransactionStatus.Failed;
@@ -384,7 +372,6 @@ public class PaymentController : ControllerBase
                 // 지급
                 await PurchaseComplete(txRow.UserId, productCode);
 
-                // 완료
                 txRow.Status = TransactionStatus.Completed;
                 await _context.SaveChangesAsync();
 
@@ -440,7 +427,7 @@ public class PaymentController : ControllerBase
         var userId = _tokenValidator.Authorize(required.AccessToken);
         if (userId == -1) return Unauthorized();
 
-        // 0) 메일에서 아직 클레임 안 한 Product 메일들 읽기
+        // 메일에서 아직 클레임 안 한 Product 메일들 읽기
         List<Mail> mails;
         if (required.MailId != 0)
         {
@@ -467,11 +454,11 @@ public class PaymentController : ControllerBase
                 .ToListAsync();
         }
 
-        // 1) 있으면 언팩해서 User_Product(Open/None)에 스테이징
+        // 있으면 언팩해서 User_Product(Open/None)에 스테이징
         if (mails.Count > 0)
             await _claimService.UnpackPackages(userId, mails);
 
-        // 2) 다음 팝업 리턴
+        // 다음 팝업 리턴
         var data = await _claimService.GetNextPopupAsync(userId);
 
         return Ok(new ClaimProductPacketResponse
@@ -557,7 +544,7 @@ public class PaymentController : ControllerBase
 
         if (bad != null) return BadRequest(bad);
 
-        // 커밋 이후 “다음 팝업”은 재시도 단위 밖에서 1회만
+        // 커밋 이후 다음 팝업은 재시도 단위 밖에서 1회만
         var data = await _claimService.GetNextPopupAsync(userId);
 
         var res = new ClaimProductPacketResponse
@@ -598,7 +585,6 @@ public class PaymentController : ControllerBase
                 await using var tx = await _context.Database.BeginTransactionAsync();
                 var dbTx = tx.GetDbTransaction();
 
-                // 0) 상품 유효성(캐시)
                 var product = _cachedDataProvider.GetProducts().FirstOrDefault(p => p.ProductId == required.ProductId);
                 if (product == null)
                 {
@@ -606,7 +592,7 @@ public class PaymentController : ControllerBase
                     return;
                 }
 
-                // 1) 먼저 소비(원자) — 동시 클릭/중복 요청 방지
+                // 먼저 소비 — 동시 클릭/중복 요청 방지
                 var consume = await _claimService.ConsumeUserProductAsync(
                     userId,
                     required.ProductId,
@@ -620,7 +606,7 @@ public class PaymentController : ControllerBase
                     return;
                 }
                 
-                // 2) 1레벨 확정(재귀 금지)
+                // 1레벨 오픈 확정(재귀 x)
                 var resolved = _claimService.ResolveRandomOpenOneLevel(required.ProductId, consume.OpenCount);
 
                 foreach (var ((compId, type), cnt) in resolved.Resolved)

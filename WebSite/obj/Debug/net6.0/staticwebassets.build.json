@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "uP43cp9RFfijunkfOR4+jbDCwb7wNd/zXBVPUW4yovg=",
+  "Hash": "D5TeXAeFYf28lOFYl7xk12ZfW9soLT9BObiHTU7W048=",
   "Source": "WebSite",
   "BasePath": "_content/WebSite",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "WebSite/wwwroot",
       "Source": "WebSite",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/bundle/WebSite.styles.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/bundle/WebSite.styles.css",
       "SourceId": "WebSite",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/bundle/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/bundle/",
       "BasePath": "_content/WebSite",
       "RelativePath": "WebSite.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/bundle/WebSite.styles.css"
+      "OriginalItemSpec": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/bundle/WebSite.styles.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/WebSite.bundle.scp.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/WebSite.bundle.scp.css",
       "SourceId": "WebSite",
       "SourceType": "Computed",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/",
       "BasePath": "_content/WebSite",
       "RelativePath": "WebSite.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/WebSite.bundle.scp.css"
+      "OriginalItemSpec": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/obj/Debug/net6.0/scopedcss/projectbundle/WebSite.bundle.scp.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/css/site.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/css/site.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot/css/site.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/Apple.png",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/images/Apple.png",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "images/Apple.png",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot/images/Apple.png"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/AppLogo.png",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/images/AppLogo.png",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "images/AppLogo.png",
       "AssetKind": "All",
@@ -112,10 +112,29 @@
       "OriginalItemSpec": "wwwroot/images/AppLogo.png"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/CompanyLogo.png",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/images/AppStoreBadge.png",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
+      "BasePath": "_content/WebSite",
+      "RelativePath": "images/AppStoreBadge.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/AppStoreBadge.png"
+    },
+    {
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/images/CompanyLogo.png",
+      "SourceId": "WebSite",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "images/CompanyLogo.png",
       "AssetKind": "All",
@@ -131,10 +150,10 @@
       "OriginalItemSpec": "wwwroot/images/CompanyLogo.png"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/CryWolfMobile.png",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/images/CryWolfMobile.png",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "images/CryWolfMobile.png",
       "AssetKind": "All",
@@ -150,10 +169,10 @@
       "OriginalItemSpec": "wwwroot/images/CryWolfMobile.png"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/favicon.png",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/images/favicon.png",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "images/favicon.png",
       "AssetKind": "All",
@@ -169,10 +188,10 @@
       "OriginalItemSpec": "wwwroot/images/favicon.png"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/images/Google.png",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/images/Google.png",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "images/Google.png",
       "AssetKind": "All",
@@ -188,10 +207,29 @@
       "OriginalItemSpec": "wwwroot/images/Google.png"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/admin.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/images/GooglePlayBadge.png",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
+      "BasePath": "_content/WebSite",
+      "RelativePath": "images/GooglePlayBadge.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/GooglePlayBadge.png"
+    },
+    {
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/js/admin.js",
+      "SourceId": "WebSite",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "js/admin.js",
       "AssetKind": "All",
@@ -207,10 +245,10 @@
       "OriginalItemSpec": "wwwroot/js/admin.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/config.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/js/config.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "js/config.js",
       "AssetKind": "All",
@@ -226,10 +264,10 @@
       "OriginalItemSpec": "wwwroot/js/config.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/login-modal.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/js/login-modal.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "js/login-modal.js",
       "AssetKind": "All",
@@ -245,10 +283,10 @@
       "OriginalItemSpec": "wwwroot/js/login-modal.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/js/login.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/js/login.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "js/login.js",
       "AssetKind": "All",
@@ -264,10 +302,10 @@
       "OriginalItemSpec": "wwwroot/js/login.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css",
       "AssetKind": "All",
@@ -283,10 +321,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css.map",
       "AssetKind": "All",
@@ -302,10 +340,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css",
       "AssetKind": "All",
@@ -321,10 +359,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
       "AssetKind": "All",
@@ -340,10 +378,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
       "AssetKind": "All",
@@ -359,10 +397,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
       "AssetKind": "All",
@@ -378,10 +416,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
       "AssetKind": "All",
@@ -397,10 +435,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
       "AssetKind": "All",
@@ -416,10 +454,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css",
       "AssetKind": "All",
@@ -435,10 +473,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css.map",
       "AssetKind": "All",
@@ -454,10 +492,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css",
       "AssetKind": "All",
@@ -473,10 +511,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
       "AssetKind": "All",
@@ -492,10 +530,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
       "AssetKind": "All",
@@ -511,10 +549,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
       "AssetKind": "All",
@@ -530,10 +568,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
       "AssetKind": "All",
@@ -549,10 +587,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
       "AssetKind": "All",
@@ -568,10 +606,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css",
       "AssetKind": "All",
@@ -587,10 +625,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css.map",
       "AssetKind": "All",
@@ -606,10 +644,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css",
       "AssetKind": "All",
@@ -625,10 +663,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
       "AssetKind": "All",
@@ -644,10 +682,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
       "AssetKind": "All",
@@ -663,10 +701,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
       "AssetKind": "All",
@@ -682,10 +720,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
       "AssetKind": "All",
@@ -701,10 +739,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
       "AssetKind": "All",
@@ -720,10 +758,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css",
       "AssetKind": "All",
@@ -739,10 +777,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css.map",
       "AssetKind": "All",
@@ -758,10 +796,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css",
       "AssetKind": "All",
@@ -777,10 +815,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -796,10 +834,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css",
       "AssetKind": "All",
@@ -815,10 +853,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css.map",
       "AssetKind": "All",
@@ -834,10 +872,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css",
       "AssetKind": "All",
@@ -853,10 +891,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
       "AssetKind": "All",
@@ -872,10 +910,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js",
       "AssetKind": "All",
@@ -891,10 +929,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js.map",
       "AssetKind": "All",
@@ -910,10 +948,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js",
       "AssetKind": "All",
@@ -929,10 +967,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
       "AssetKind": "All",
@@ -948,10 +986,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js",
       "AssetKind": "All",
@@ -967,10 +1005,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js.map",
       "AssetKind": "All",
@@ -986,10 +1024,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js",
       "AssetKind": "All",
@@ -1005,10 +1043,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
       "AssetKind": "All",
@@ -1024,10 +1062,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.js",
       "AssetKind": "All",
@@ -1043,10 +1081,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.js.map",
       "AssetKind": "All",
@@ -1062,10 +1100,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.js.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js",
       "AssetKind": "All",
@@ -1081,10 +1119,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js.map",
       "AssetKind": "All",
@@ -1100,10 +1138,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/LICENSE",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/bootstrap/LICENSE",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/bootstrap/LICENSE",
       "AssetKind": "All",
@@ -1119,10 +1157,10 @@
       "OriginalItemSpec": "wwwroot/lib/bootstrap/LICENSE"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "AssetKind": "All",
@@ -1138,10 +1176,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "AssetKind": "All",
@@ -1157,10 +1195,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery-validation-unobtrusive/LICENSE.txt",
       "AssetKind": "All",
@@ -1176,10 +1214,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/dist/additional-methods.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/dist/additional-methods.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.js",
       "AssetKind": "All",
@@ -1195,10 +1233,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/dist/additional-methods.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.min.js",
       "AssetKind": "All",
@@ -1214,10 +1252,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/dist/additional-methods.min.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.js",
       "AssetKind": "All",
@@ -1233,10 +1271,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/dist/jquery.validate.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.min.js",
       "AssetKind": "All",
@@ -1252,10 +1290,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/LICENSE.md",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery-validation/LICENSE.md",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery-validation/LICENSE.md",
       "AssetKind": "All",
@@ -1271,10 +1309,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery-validation/LICENSE.md"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery/dist/jquery.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery/dist/jquery.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery/dist/jquery.js",
       "AssetKind": "All",
@@ -1290,10 +1328,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/dist/jquery.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery/dist/jquery.min.js",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery/dist/jquery.min.js",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery/dist/jquery.min.js",
       "AssetKind": "All",
@@ -1309,10 +1347,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/dist/jquery.min.js"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery/dist/jquery.min.map",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery/dist/jquery.min.map",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery/dist/jquery.min.map",
       "AssetKind": "All",
@@ -1328,10 +1366,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/dist/jquery.min.map"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/lib/jquery/LICENSE.txt",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/lib/jquery/LICENSE.txt",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "lib/jquery/LICENSE.txt",
       "AssetKind": "All",
@@ -1347,10 +1385,10 @@
       "OriginalItemSpec": "wwwroot/lib/jquery/LICENSE.txt"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_en.html",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_en.html",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "policy/privacy_20250510_en.html",
       "AssetKind": "All",
@@ -1366,10 +1404,10 @@
       "OriginalItemSpec": "wwwroot/policy/privacy_20250510_en.html"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_ja.html",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_ja.html",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "policy/privacy_20250510_ja.html",
       "AssetKind": "All",
@@ -1385,10 +1423,10 @@
       "OriginalItemSpec": "wwwroot/policy/privacy_20250510_ja.html"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_kr.html",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/policy/privacy_20250510_kr.html",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "policy/privacy_20250510_kr.html",
       "AssetKind": "All",
@@ -1404,10 +1442,10 @@
       "OriginalItemSpec": "wwwroot/policy/privacy_20250510_kr.html"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_en.html",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_en.html",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "policy/term_20250510_en.html",
       "AssetKind": "All",
@@ -1423,10 +1461,10 @@
       "OriginalItemSpec": "wwwroot/policy/term_20250510_en.html"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_ja.html",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_ja.html",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "policy/term_20250510_ja.html",
       "AssetKind": "All",
@@ -1442,10 +1480,10 @@
       "OriginalItemSpec": "wwwroot/policy/term_20250510_ja.html"
     },
     {
-      "Identity": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_kr.html",
+      "Identity": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/policy/term_20250510_kr.html",
       "SourceId": "WebSite",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/jwy/Documents/Dev/CryWolf/APIServer/WebSite/wwwroot/",
+      "ContentRoot": "/Users/jwy/Documents/Dev/00_CryWolf/APIServer/WebSite/wwwroot/",
       "BasePath": "_content/WebSite",
       "RelativePath": "policy/term_20250510_kr.html",
       "AssetKind": "All",

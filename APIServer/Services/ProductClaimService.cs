@@ -14,7 +14,6 @@ public class ProductClaimService
     private readonly AppDbContext _context;
     private readonly CachedDataProvider _cachedDataProvider;
     private readonly ILogger<RewardService> _logger;    
-    
     private readonly Random _random = new();
     
     public ProductClaimService(AppDbContext context, CachedDataProvider cachedDataProvider, ILogger<RewardService> logger)

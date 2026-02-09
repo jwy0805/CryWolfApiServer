@@ -252,7 +252,7 @@ ON DUPLICATE KEY UPDATE
         if (string.IsNullOrWhiteSpace(path) || !System.IO.File.Exists(path))
             throw new Exception("Google Service Account not found");
 
-        var json = await System.IO.File.ReadAllTextAsync(path);
+        var json = await File.ReadAllTextAsync(path);
 
         var credential = GoogleCredential
             .FromJson(json)
@@ -443,7 +443,7 @@ ON DUPLICATE KEY UPDATE
         {
             try
             {
-                // Transaction Lookup 응답은 tx 필드가 평문으로 오지 않고 signedTransactionInfo(JWS)로 오는 경우가 일반적
+                // Transaction Lookup 응답 -> tx 필드가 signedTransactionInfo(JWS)로 오는 경우가 일반적
                 var lookup = JsonConvert.DeserializeObject<AppleTransactionLookupResponse>(body);
 
                 if (lookup?.SignedTransactionInfo is null || lookup.SignedTransactionInfo.Length < 20)
@@ -454,7 +454,7 @@ ON DUPLICATE KEY UPDATE
 
                 var tx = DecodeSignedTransactionInfoToTx(lookup.SignedTransactionInfo);
 
-                // 파싱 결과가 비어있으면 모델/응답 구조 불일치 가능성이므로 Raw를 남기고 실패 처리
+                // 파싱 결과가 비어있으면 모델/응답 구조 불일치 가능성 -> Raw를 남기고 실패 처리
                 if (string.IsNullOrWhiteSpace(tx.BundleId) || string.IsNullOrWhiteSpace(tx.ProductId))
                 {
                     _logger.LogWarning("Apple signedTransactionInfo decoded but bundleId/productId empty. Body={Body}", body);
@@ -470,10 +470,7 @@ ON DUPLICATE KEY UPDATE
             }
         }
 
-        // ----------------------------
-        // prod 우선 정책 유지
-        // 1) prod에서 401이면 sandbox로 1회 폴백 허용
-        // ----------------------------
+        // prod에서 401이면 sandbox로 1회 폴백 허용
         if (!sandbox && response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             _logger.LogWarning(
@@ -483,9 +480,7 @@ ON DUPLICATE KEY UPDATE
             return (false, true, null, status, body);
         }
         
-        // ----------------------------
-        // 2) prod에서 NotFound(404) + 4040010(TransactionIdNotFoundError)면 sandbox 폴백
-        // ----------------------------
+        // prod에서 NotFound(404) + 4040010(TransactionIdNotFoundError)면 sandbox 폴백
         if (!sandbox && response.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
             try
@@ -565,13 +560,13 @@ ON DUPLICATE KEY UPDATE
             .Replace("\\r", "\r")
             .Replace("\\n", "\n");
 
-        // 2) PEM이 들어온 경우: ImportFromPem 대신 "한 줄 PEM"도 되는 방식으로 직접 파싱
+        // PEM이 들어온 경우: ImportFromPem 대신 한 줄 PEM도 되는 방식으로 직접 파싱
         if (raw.Contains("BEGIN PRIVATE KEY", StringComparison.Ordinal) ||
             raw.Contains("BEGIN EC PRIVATE KEY", StringComparison.Ordinal))
         {
             var ecdsa = ECDsa.Create();
 
-            // PKCS#8 (Apple .p8는 보통 이 케이스)
+            // PKCS#8 (Apple .p8)
             if (raw.Contains("BEGIN PRIVATE KEY", StringComparison.Ordinal))
             {
                 var der = ExtractDerFromPem(raw, "PRIVATE KEY");
@@ -579,13 +574,13 @@ ON DUPLICATE KEY UPDATE
                 return ecdsa;
             }
 
-            // (혹시라도) SEC1 EC PRIVATE KEY 케이스
+            // SEC1 EC PRIVATE KEY 형식 - 가능성 낮음
             var ecDer = ExtractDerFromPem(raw, "EC PRIVATE KEY");
             ecdsa.ImportECPrivateKey(ecDer, out _);
             return ecdsa;
         }
 
-        // 3) base64로 들어온 경우(기존 로직 유지)
+        // base64로 들어옴 - 기존 로직
         byte[] bytes;
         try
         {
@@ -598,7 +593,7 @@ ON DUPLICATE KEY UPDATE
 
         if (LooksLikePemText(bytes, out var pemText))
         {
-            // base64로 감싼 PEM 텍스트인 경우도 위 PEM 분기로 다시 태움
+            // base64로 감싼 PEM 텍스트인 경우
             return LoadAppleEcdsaFromConfig(pemText);
         }
 
@@ -668,7 +663,7 @@ ON DUPLICATE KEY UPDATE
         {
             decodedLen = decodedBytes.Length;
 
-            // base64 decode 결과가 PEM 텍스트인지(= PEM을 base64로 감싼 실수) 확인
+            // base64 decode 결과가 PEM 텍스트인지(PEM을 base64로 감싼 실수) 확인
             if (LooksLikePemText(decodedBytes, out var pemText))
                 decodedType = "Base64OfPemText";
             else

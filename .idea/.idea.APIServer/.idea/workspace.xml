@@ -18,16 +18,9 @@
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/Pages/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/Pages/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/bin/Debug/net6.0/WebSite.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proxy/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/Proxy/nginx.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/ref/WebSite.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/refint/WebSite.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -662,15 +655,8 @@
       <workItem from="1770258222759" duration="32920000" />
       <workItem from="1770314485618" duration="4724000" />
       <workItem from="1770596558247" duration="5679000" />
-      <workItem from="1770605324052" duration="1298000" />
-    </task>
-    <task id="LOCAL-00130" summary="[DB] Migrations">
-      <option name="closed" value="true" />
-      <created>1765520465317</created>
-      <option name="number" value="00130" />
-      <option name="presentableId" value="LOCAL-00130" />
-      <option name="project" value="LOCAL" />
-      <updated>1765520465317</updated>
+      <workItem from="1770605324052" duration="2556000" />
+      <workItem from="1771045833638" duration="2941000" />
     </task>
     <task id="LOCAL-00131" summary="[RELEASE] 1.0.0">
       <option name="closed" value="true" />
@@ -1056,7 +1042,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770314540924</updated>
     </task>
-    <option name="localTasksCounter" value="179" />
+    <task id="LOCAL-00179" summary="[FIX]&#10;Fix image address typo on landing page">
+      <option name="closed" value="true" />
+      <created>1770610975136</created>
+      <option name="number" value="00179" />
+      <option name="presentableId" value="LOCAL-00179" />
+      <option name="project" value="LOCAL" />
+      <updated>1770610975136</updated>
+    </task>
+    <option name="localTasksCounter" value="180" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1077,7 +1071,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="iap3" />
     <MESSAGE value="iap" />
     <MESSAGE value="iap5" />
     <MESSAGE value="[FIX] Balance Error Fixed" />
@@ -1102,7 +1095,8 @@
     <MESSAGE value="[FEAT]&#10;Ready for load test" />
     <MESSAGE value="[REFACTOR] standardize JobSerializer and decouple RewardService from DbContext&#10;&#10;- Move StageInfo caching logic from RewardService to CahcedDataProvider for better responsibility separation.&#10;- Remove AppDbContext dependency from RewardService by utilizing memory-cached data.&#10;- Refactor MatchMakingServer's JobService to use SemaphoreSlim and Interlocked signaling for optimized worker thread management&#10;- Implement a unified JobSerializer pattern with JobTimer support across both API server and MatchMacking server&#10;- Ensure consistent thread-safety and efficient background task processing throughout the service architecture." />
     <MESSAGE value="Closing test api because of security issue." />
-    <option name="LAST_COMMIT_MESSAGE" value="Closing test api because of security issue." />
+    <MESSAGE value="[FIX]&#10;Fix image address typo on landing page" />
+    <option name="LAST_COMMIT_MESSAGE" value="[FIX]&#10;Fix image address typo on landing page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

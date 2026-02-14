@@ -13,12 +13,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/AppController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Providers/AppVersionGateMiddleware.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/APIServer/Providers/AppVersionHeaderHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Models/paymentModels.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Models/PaymentModels.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Proxy/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/Proxy/nginx.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
@@ -59,6 +63,9 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/APIServer/Controllers/AppController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/APIServer/Providers/AppVersionGateMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/APIServer/Providers/AppVersionHeaderHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIServer/Services/TestService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map" root0="FORCE_HIGHLIGHTING" />
@@ -656,15 +663,9 @@
       <workItem from="1770314485618" duration="4724000" />
       <workItem from="1770596558247" duration="5679000" />
       <workItem from="1770605324052" duration="2556000" />
-      <workItem from="1771045833638" duration="2941000" />
-    </task>
-    <task id="LOCAL-00131" summary="[RELEASE] 1.0.0">
-      <option name="closed" value="true" />
-      <created>1765576318479</created>
-      <option name="number" value="00131" />
-      <option name="presentableId" value="LOCAL-00131" />
-      <option name="project" value="LOCAL" />
-      <updated>1765576318479</updated>
+      <workItem from="1771045833638" duration="3176000" />
+      <workItem from="1771050895824" duration="2851000" />
+      <workItem from="1771056822552" duration="5472000" />
     </task>
     <task id="LOCAL-00132" summary=".">
       <option name="closed" value="true" />
@@ -1050,7 +1051,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770610975136</updated>
     </task>
-    <option name="localTasksCounter" value="180" />
+    <task id="LOCAL-00180" summary="[UPDATE] Docker container script changed&#10;&#10;- Reverse proxy container settings has been changed.">
+      <option name="closed" value="true" />
+      <created>1771049084488</created>
+      <option name="number" value="00180" />
+      <option name="presentableId" value="LOCAL-00180" />
+      <option name="project" value="LOCAL" />
+      <updated>1771049084488</updated>
+    </task>
+    <option name="localTasksCounter" value="181" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1071,7 +1080,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="iap" />
     <MESSAGE value="iap5" />
     <MESSAGE value="[FIX] Balance Error Fixed" />
     <MESSAGE value="[FIX] Payment Service Error Fixed." />
@@ -1096,7 +1104,8 @@
     <MESSAGE value="[REFACTOR] standardize JobSerializer and decouple RewardService from DbContext&#10;&#10;- Move StageInfo caching logic from RewardService to CahcedDataProvider for better responsibility separation.&#10;- Remove AppDbContext dependency from RewardService by utilizing memory-cached data.&#10;- Refactor MatchMakingServer's JobService to use SemaphoreSlim and Interlocked signaling for optimized worker thread management&#10;- Implement a unified JobSerializer pattern with JobTimer support across both API server and MatchMacking server&#10;- Ensure consistent thread-safety and efficient background task processing throughout the service architecture." />
     <MESSAGE value="Closing test api because of security issue." />
     <MESSAGE value="[FIX]&#10;Fix image address typo on landing page" />
-    <option name="LAST_COMMIT_MESSAGE" value="[FIX]&#10;Fix image address typo on landing page" />
+    <MESSAGE value="[UPDATE] Docker container script changed&#10;&#10;- Reverse proxy container settings has been changed." />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] Docker container script changed&#10;&#10;- Reverse proxy container settings has been changed." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -350,6 +350,17 @@ public class ClearEventsPacketRequired
 
 #region For Client
 
+public class AppCheckResponse
+{
+    public string CurrentVersion { get; set; }
+    public string MinVersion { get; set; }
+    public string LatestVersion { get; set; }
+    public bool NeedUpdate { get; set; }
+    public bool Force { get; set; }
+    public string StoreUrl { get; set; }
+    public string Message { get; set; } // 서버에서 null이면 여기 null 들어옴
+}
+
 public class ValidateNewAccountPacketRequired
 {
     public string UserAccount { get; set; }

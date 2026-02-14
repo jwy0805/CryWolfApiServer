@@ -12,20 +12,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/APIServer/Controllers/AppController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIServer/Providers/AppVersionGateMiddleware.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/APIServer/Providers/AppVersionHeaderHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DB/WebPacket.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Models/paymentModels.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Models/PaymentModels.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net6.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net6.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net6.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
-    </list>
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -665,15 +652,7 @@
       <workItem from="1770605324052" duration="2556000" />
       <workItem from="1771045833638" duration="3176000" />
       <workItem from="1771050895824" duration="2851000" />
-      <workItem from="1771056822552" duration="5472000" />
-    </task>
-    <task id="LOCAL-00132" summary=".">
-      <option name="closed" value="true" />
-      <created>1765614955534</created>
-      <option name="number" value="00132" />
-      <option name="presentableId" value="LOCAL-00132" />
-      <option name="project" value="LOCAL" />
-      <updated>1765614955534</updated>
+      <workItem from="1771056822552" duration="5886000" />
     </task>
     <task id="LOCAL-00133" summary="[RELEASE]">
       <option name="closed" value="true" />
@@ -1059,7 +1038,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771049084488</updated>
     </task>
-    <option name="localTasksCounter" value="181" />
+    <task id="LOCAL-00181" summary="[UPDATE] Check app version by server&#10;&#10; - Check app version, can force update client.">
+      <option name="closed" value="true" />
+      <created>1771066286221</created>
+      <option name="number" value="00181" />
+      <option name="presentableId" value="LOCAL-00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1771066286221</updated>
+    </task>
+    <option name="localTasksCounter" value="182" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1080,7 +1067,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="iap5" />
     <MESSAGE value="[FIX] Balance Error Fixed" />
     <MESSAGE value="[FIX] Payment Service Error Fixed." />
     <MESSAGE value="jio" />
@@ -1105,7 +1091,8 @@
     <MESSAGE value="Closing test api because of security issue." />
     <MESSAGE value="[FIX]&#10;Fix image address typo on landing page" />
     <MESSAGE value="[UPDATE] Docker container script changed&#10;&#10;- Reverse proxy container settings has been changed." />
-    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] Docker container script changed&#10;&#10;- Reverse proxy container settings has been changed." />
+    <MESSAGE value="[UPDATE] Check app version by server&#10;&#10; - Check app version, can force update client." />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] Check app version by server&#10;&#10; - Check app version, can force update client." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

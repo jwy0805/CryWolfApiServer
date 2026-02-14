@@ -15,7 +15,7 @@ public class AppController : ControllerBase
     private const string AndroidStoreUrl = "https://play.google.com/store/apps/details?id=com.hamonstudio.crywolf";
     private const string IosStoreUrl = "https://apps.apple.com/app/id6745862935";
 
-    [HttpGet("check")]
+    [HttpGet("CheckVersion")]
     public IActionResult CheckUpdate([FromQuery] string platform, [FromQuery] string current)
     {
         platform = NormalizePlatform(platform);

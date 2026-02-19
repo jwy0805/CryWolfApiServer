@@ -697,8 +697,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             else {
                 url = `${API_BASE_URL}/api/Admin/SendMail`;
-                payload = { 
-                    contents 
+
+                payload = {
+                    UserIds: resolvedUserIds,     
+                    Type: "Notice",                
+                    ProductId: selectedProductId || null,
+                    Sender: "Admin",
+                    // TODO: Message 필드 구조 개선 필요 (현재는 Localizations 전체를 JSON 문자열로 넣는 형태)
+                    Message: JSON.stringify(contents)
                 };
             }
 

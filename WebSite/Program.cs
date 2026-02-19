@@ -13,7 +13,7 @@ builder.Services.AddRazorPages();
 
 // -- StartUp.cs - Configure
 if (!builder.Environment.IsDevelopment() && certPath != null && certPwd != null)
-{   
+{ 
     // Data Protection
 #pragma warning disable CA1416
     builder.Services.AddDataProtection()

@@ -12,7 +12,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="" />
+    <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/.db-integration.yml.swp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/db-integration.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/db-integration.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,7 +26,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="33" />
+    <option name="cachedIndexableFilesCount" value="16" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -42,12 +46,12 @@
     &quot;assignee&quot;: &quot;jwy0805&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/jwy0805/CryWolfApiServer.git&quot;,
-    &quot;accountId&quot;: &quot;abb13af4-7a1a-4af0-a885-236952773baa&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:jwy0805/CryWolfApiServer.git",
+    "accountId": "0f5cdbfb-8663-4dd7-a801-fff45aad9334"
   }
-}</component>
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/APIServer/Controllers/AppController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIServer/Providers/AppVersionGateMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
@@ -634,14 +638,7 @@
       <workItem from="1771080549022" duration="1623000" />
       <workItem from="1771464090731" duration="1183000" />
       <workItem from="1771480654233" duration="8323000" />
-    </task>
-    <task id="LOCAL-00137" summary="[FIX] Create User Error fixed.">
-      <option name="closed" value="true" />
-      <created>1766198384080</created>
-      <option name="number" value="00137" />
-      <option name="presentableId" value="LOCAL-00137" />
-      <option name="project" value="LOCAL" />
-      <updated>1766198384080</updated>
+      <workItem from="1771510188146" duration="2493000" />
     </task>
     <task id="LOCAL-00138" summary="[UPDATE] Transaction table updated.">
       <option name="closed" value="true" />
@@ -1027,7 +1024,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771508813645</updated>
     </task>
-    <option name="localTasksCounter" value="186" />
+    <task id="LOCAL-00186" summary="commit test">
+      <option name="closed" value="true" />
+      <created>1771510206424</created>
+      <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
+      <option name="project" value="LOCAL" />
+      <updated>1771510206424</updated>
+    </task>
+    <option name="localTasksCounter" value="187" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1048,7 +1053,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="jio" />
     <MESSAGE value="wkje" />
     <MESSAGE value="fix match making" />
     <MESSAGE value="new tables about event system." />
@@ -1073,7 +1077,8 @@
     <MESSAGE value="[FIX] fix typo" />
     <MESSAGE value="[UPDATE] .net sdk version update&#10;6.0 -&gt; 10.0" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="commit test" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

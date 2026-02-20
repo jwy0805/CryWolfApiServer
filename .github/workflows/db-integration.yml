@@ -1,37 +1,189 @@
-#Tag: GitHub Actions File
-name: DB Integration
+name: DB Integration (Private RDS via SSM)
 
 on:
   push:
     paths:
       - 'APIServer/Migrations/**'
-      
+
+concurrency:
+  group: db-migrate-prod
+  cancel-in-progress: false
+
 jobs:
   migrate:
     runs-on: ubuntu-latest
-    
+
+    permissions:
+      id-token: write   # OIDC
+      contents: read
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0'
+          dotnet-version: '10.0.x'
 
-      # dotnet-ef 전역 도구 설치
-      - name: Install dotnet-ef tool
-        run: dotnet tool install --global dotnet-ef --version 6.0.16
+      # EF Core 10 도구 설치(프로젝트 버전에 맞게)
+      - name: Install dotnet-ef (10.x)
+        run: dotnet tool install --global dotnet-ef --version 10.0.0
 
-      # 전역 도구 경로를 PATH에 추가합니다.
       - name: Add dotnet tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-        
-      - name: Build
-        run: dotnet build APIServer/APIServer.csproj --configuration Release
 
-      - name: EF Migrate
-        run: dotnet ef database update --project APIServer/APIServer.csproj
-        env:
-          # RDS DB 접속 정보는 GitHub Secrets에서 주입
-          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+      - name: Restore
+        run: dotnet restore APIServer/APIServer.csproj
+
+      # ✅ 마이그레이션 번들 생성 (Linux x64에서 실행할 self-contained 바이너리)
+      - name: Build EF migrations bundle
+        run: |
+          dotnet ef migrations bundle \
+            --project APIServer/APIServer.csproj \
+            --startup-project APIServer/APIServer.csproj \
+            --configuration Release \
+            --runtime linux-x64 \
+            --self-contained true \
+            --output ./artifacts/efbundle
+
+      - name: Zip bundle
+        run: |
+          cd artifacts
+          chmod +x efbundle
+          zip -9 efbundle.zip efbundle
+
+      # (권장) OIDC로 AWS Role Assume
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ap-northeast-2
+
+      - name: Upload bundle to S3
+        id: upload
+        run: |
+          set -euo pipefail
+          BUCKET="${{ secrets.MIGRATIONS_S3_BUCKET }}"
+          KEY="migrations/prod/${GITHUB_SHA}/efbundle.zip"
+          aws s3 cp "artifacts/efbundle.zip" "s3://${BUCKET}/${KEY}"
+          echo "s3_key=$KEY" >> $GITHUB_OUTPUT
+
+      - name: Run migration on EC2 via SSM
+        id: ssm
+        run: |
+          set -euo pipefail
+          REGION="ap-northeast-2"
+          INSTANCE_ID="${{ secrets.MIGRATION_INSTANCE_ID }}"
+          BUCKET="${{ secrets.MIGRATIONS_S3_BUCKET }}"
+          KEY="${{ steps.upload.outputs.s3_key }}"
+
+          # EC2에서 실행될 스크립트:
+          # - S3에서 번들 다운로드
+          # - 압축 해제
+          # - Secrets Manager(또는 SSM Parameter Store)에서 conn string 읽기
+          # - 번들 실행
+          #
+          # 아래는 Secrets Manager 사용 예시. (권장)
+          # secret id는 MIGRATIONS_DB_SECRET_ID 로 전달
+          SECRET_ID="${{ secrets.MIGRATIONS_DB_SECRET_ID }}"
+
+          COMMANDS=$(cat << EOF
+          set -euo pipefail
+          echo "[MIGRATE] start \$(date -Iseconds)"
+          echo "[MIGRATE] sha=${GITHUB_SHA}"
+
+          workdir="/tmp/efmigrate-${GITHUB_SHA}"
+          rm -rf "\$workdir"
+          mkdir -p "\$workdir"
+          cd "\$workdir"
+
+          echo "[MIGRATE] download s3://${BUCKET}/${KEY}"
+          aws s3 cp "s3://${BUCKET}/${KEY}" "./efbundle.zip"
+
+          unzip -o efbundle.zip
+          chmod +x ./efbundle
+
+          # ✅ DB 연결문자열은 EC2에서만 조회(Secrets Manager)
+          echo "[MIGRATE] fetch connection string from Secrets Manager: ${SECRET_ID}"
+          CONN=\$(aws secretsmanager get-secret-value --secret-id "${SECRET_ID}" --query SecretString --output text)
+
+          # SecretString이 JSON이라면 여기서 파싱 필요.
+          # (예: {"ConnectionString":"..."} 형태면 jq로 파싱)
+          # 지금은 SecretString이 "그 자체로 connection string"이라고 가정.
+          echo "[MIGRATE] run bundle..."
+          ./efbundle --connection "\$CONN"
+
+          echo "[MIGRATE] done \$(date -Iseconds)"
+          EOF
+          )
+
+          COMMAND_ID=$(aws ssm send-command \
+            --region "$REGION" \
+            --instance-ids "$INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Apply EF migrations bundle (${GITHUB_SHA})" \
+            --parameters commands="$COMMANDS" \
+            --query "Command.CommandId" \
+            --output text)
+
+          echo "command_id=$COMMAND_ID" >> $GITHUB_OUTPUT
+          echo "SSM CommandId: $COMMAND_ID"
+
+      - name: Wait and report result
+        run: |
+          set -euo pipefail
+          REGION="ap-northeast-2"
+          INSTANCE_ID="${{ secrets.MIGRATION_INSTANCE_ID }}"
+          COMMAND_ID="${{ steps.ssm.outputs.command_id }}"
+
+          echo "Waiting for SSM command..."
+          STATUS="Pending"
+          for i in $(seq 1 180); do
+            STATUS=$(aws ssm get-command-invocation \
+              --region "$REGION" \
+              --command-id "$COMMAND_ID" \
+              --instance-id "$INSTANCE_ID" \
+              --query "Status" \
+              --output text || true)
+
+            echo "Status: $STATUS"
+            if [[ "$STATUS" == "Success" || "$STATUS" == "Failed" || "$STATUS" == "TimedOut" || "$STATUS" == "Cancelled" ]]; then
+              break
+            fi
+            sleep 5
+          done
+
+          OUT=$(aws ssm get-command-invocation \
+            --region "$REGION" \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$INSTANCE_ID" \
+            --query "StandardOutputContent" \
+            --output text || true)
+
+          ERR=$(aws ssm get-command-invocation \
+            --region "$REGION" \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$INSTANCE_ID" \
+            --query "StandardErrorContent" \
+            --output text || true)
+
+          {
+            echo "## DB Migration Result"
+            echo "- SHA: \`${GITHUB_SHA}\`"
+            echo "- SSM CommandId: \`$COMMAND_ID\`"
+            echo "- Status: **$STATUS**"
+            echo ""
+            echo "### STDOUT"
+            echo '```'
+            echo "$OUT"
+            echo '```'
+            echo ""
+            echo "### STDERR"
+            echo '```'
+            echo "$ERR"
+            echo '```'
+          } >> $GITHUB_STEP_SUMMARY
+
+          if [[ "$STATUS" != "Success" ]]; then
+            exit 1
+          fi

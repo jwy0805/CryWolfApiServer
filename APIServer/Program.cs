@@ -15,10 +15,7 @@ var certPath = builder.Configuration["Cert:Path"];
 var certPwd = builder.Configuration["Cert:Password"];
 
 // Add services to the container. -- StartUp.cs
-var defaultConnectionString = 
-    (builder.Environment.IsDevelopment() 
-        ? Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
-        : builder.Configuration["DB:ConnectionString"])
+var defaultConnectionString = builder.Configuration["DB:ConnectionString"]
         ?? throw new InvalidOperationException("DB Connection String is not configured.");
 var jwtSecret =
     (builder.Environment.IsDevelopment()

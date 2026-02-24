@@ -14,7 +14,286 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/APIServer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/APIServer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/APIServer.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/APIServer.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/Microsoft.Build.Locator.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/Microsoft.IO.Redist.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/Newtonsoft.Json.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/System.Buffers.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/System.Collections.Immutable.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/System.CommandLine.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/System.Memory.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/System.Numerics.Vectors.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/System.Runtime.CompilerServices.Unsafe.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/System.Threading.Tasks.Extensions.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/cs/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/de/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/es/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/fr/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/it/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/ja/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/ko/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/pl/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/pt-BR/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/ru/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/tr/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/zh-Hans/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-net472/zh-Hant/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/Microsoft.Build.Locator.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.deps.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll.config" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.runtimeconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/Newtonsoft.Json.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/System.Collections.Immutable.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/System.CommandLine.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/cs/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/de/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/es/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/fr/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/it/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/ja/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/ko/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/pl/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/pt-BR/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/ru/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/tr/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/zh-Hans/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/BuildHost-netcore/zh-Hant/System.CommandLine.resources.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/MessagePack.Annotations.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/MessagePack.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.AspNetCore.Razor.Language.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.AspNetCore.Razor.Language.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Build.Framework.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Build.Framework.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Build.Tasks.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Build.Tasks.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Build.Utilities.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Build.Utilities.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Build.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Build.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.CSharp.Features.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.CSharp.Features.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.CSharp.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.CSharp.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Features.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Features.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Razor.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Razor.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Scripting.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Scripting.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Workspaces.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.Workspaces.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.CodeAnalysis.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.DiaSymReader.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.DiaSymReader.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.DotNet.Scaffolding.Shared.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.DotNet.Scaffolding.Shared.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Design.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Design.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Relational.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Relational.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Extensions.DependencyModel.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.Extensions.DependencyModel.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.NET.StringTools.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.NET.StringTools.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Debugger.Contracts.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGeneration.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Newtonsoft.Json.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/Newtonsoft.Json.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Common.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Common.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Configuration.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Configuration.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.DependencyResolver.Core.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.DependencyResolver.Core.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Frameworks.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Frameworks.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.LibraryModel.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.LibraryModel.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Packaging.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Packaging.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.ProjectModel.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.ProjectModel.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Protocol.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Protocol.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Versioning.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/NuGet.Versioning.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.CodeDom.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.CodeDom.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.AttributedModel.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.AttributedModel.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.Convention.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.Convention.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.Hosting.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.Hosting.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.Runtime.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.Runtime.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.TypedParts.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Composition.TypedParts.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Configuration.ConfigurationManager.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Configuration.ConfigurationManager.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Formats.Nrbf.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Reflection.MetadataLoadContext.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Reflection.MetadataLoadContext.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Resources.Extensions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Resources.Extensions.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Security.Cryptography.ProtectedData.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Security.Cryptography.ProtectedData.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Security.Permissions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Security.Permissions.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Windows.Extensions.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/System.Windows.Extensions.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/cs/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/de/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/dotnet-aspnet-codegenerator-design.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/dotnet-aspnet-codegenerator-design.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/es/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/fr/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/it/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ja/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ko/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pl/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/pt-BR/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/ru/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/runtimes/win/lib/net9.0/System.Windows.Extensions.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/tr/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Features.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Features.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Scripting.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Scripting.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net10.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/bin/Debug/net6.0/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/APIServer.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/APIServer.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/APIServer.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/APIServer.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/APIServer.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/APIServer.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/ref/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/ref/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/refint/APIServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/refint/APIServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/rpswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/rpswa.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/MatchMakingServer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/MatchMakingServer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/MatchMakingServer.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/MatchMakingServer.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/MatchMakingServer.runtimeconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/MatchMakingServer.runtimeconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/Newtonsoft.Json.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/bin/Debug/net10.0/Newtonsoft.Json.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/ref/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/ref/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/refint/MatchMakingServer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/refint/MatchMakingServer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/MatchMakingServer.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/MatchMakingServer.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/MatchMakingServer.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/MatchMakingServer.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/MatchMakingServer.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/MatchMakingServer.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/WebSite.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/WebSite.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/WebSite.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +309,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="16" />
+    <option name="cachedIndexableFilesCount" value="33" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -61,7 +340,9 @@
     <setting file="file://$PROJECT_DIR$/APIServer/Providers/AppVersionGateMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIServer/Providers/AppVersionHeaderHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIServer/Services/TestService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/APIServer/bin/Debug/net6.0/appsettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/jquery/dist/jquery.min.map" root0="FORCE_HIGHLIGHTING" />
@@ -69,7 +350,9 @@
     <setting file="file://$PROJECT_DIR$/../Common/LanguageData.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ClientPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Common/Packet/ServerPacketManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/65fd517760b6af8937080f9556679b3b29d5fe2cfc2aeed15e1c6e3d7a7e/WebApplicationBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bee4b1fc5b4db46d6538ab9aed599095589f1e21734355b8ce5a3953bd4443f9/MySqlDbContextOptionsBuilderExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e97eeac1454167a6e970ab48ab55f3e712d20bbe138b239e8679c6d456248a/ServiceProviderServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -96,8 +379,8 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET 실행 설정 프로파일.APIServer: AccountServer.executor&quot;: &quot;Run&quot;,
+    &quot;.NET 실행 설정 프로파일.MatchMakingServer.executor&quot;: &quot;Run&quot;,
     &quot;.NET 실행 설정 프로파일.WebSite.executor&quot;: &quot;Debug&quot;,
     &quot;.NET 프로젝트.PacketGenerator.executor&quot;: &quot;Debug&quot;,
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
@@ -117,7 +400,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -644,15 +927,8 @@
       <workItem from="1771480654233" duration="8323000" />
       <workItem from="1771510188146" duration="4520000" />
       <workItem from="1771903076033" duration="1032000" />
-      <workItem from="1771905651249" duration="2170000" />
-    </task>
-    <task id="LOCAL-00140" summary=".">
-      <option name="closed" value="true" />
-      <created>1766204434802</created>
-      <option name="number" value="00140" />
-      <option name="presentableId" value="LOCAL-00140" />
-      <option name="project" value="LOCAL" />
-      <updated>1766204434802</updated>
+      <workItem from="1771905651249" duration="4488000" />
+      <workItem from="1771910648164" duration="1992000" />
     </task>
     <task id="LOCAL-00141" summary="[Update] transaction table update">
       <option name="closed" value="true" />
@@ -1038,7 +1314,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771906204232</updated>
     </task>
-    <option name="localTasksCounter" value="189" />
+    <task id="LOCAL-00189" summary="[TEMP] Logging enqueuing ai sessions">
+      <option name="closed" value="true" />
+      <created>1771908398123</created>
+      <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
+      <option name="project" value="LOCAL" />
+      <updated>1771908398123</updated>
+    </task>
+    <option name="localTasksCounter" value="190" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1059,7 +1343,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="new tables about event system." />
     <MESSAGE value="before deleting reward from event table" />
     <MESSAGE value="database update" />
     <MESSAGE value="Event Notice System&#10; - Events including rewards can be sent to all users.&#10; - Event and Notice localization&#10; - Event Reward and Definition table devided." />
@@ -1084,7 +1367,8 @@
     <MESSAGE value="commit test" />
     <MESSAGE value="[UPDATE] github actions&#10; - Action db-integration.yml can migrate local migration files to private rds" />
     <MESSAGE value="[TEMP] Open Ai Test API" />
-    <option name="LAST_COMMIT_MESSAGE" value="[TEMP] Open Ai Test API" />
+    <MESSAGE value="[TEMP] Logging enqueuing ai sessions" />
+    <option name="LAST_COMMIT_MESSAGE" value="[TEMP] Logging enqueuing ai sessions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

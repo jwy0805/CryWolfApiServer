@@ -19,6 +19,6 @@ WORKDIR /app
 # 빌드 산출물만 런타임 이미지에 복사
 COPY --from=build /app/out .
 
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "APIServer.dll"]

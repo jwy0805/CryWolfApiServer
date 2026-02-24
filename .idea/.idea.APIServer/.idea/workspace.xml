@@ -13,14 +13,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/.db-integration.yml.swp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/db-integration.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/db-integration.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/Controllers/MatchController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/DockerfileAPI" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/DockerfileAPI" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/APIServer/obj/Debug/net10.0/APIServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/DockerfileMatchMaking" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/DockerfileMatchMaking" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MatchMakingServer/obj/Debug/net10.0/MatchMakingServer.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/DockerfileWeb" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/DockerfileWeb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebSite/obj/Debug/net10.0/WebSite.AssemblyInfoInputs.cache" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/jwy/Documents/00_Dev/00_CryWolf/APIServer" value="2j8uNAGmDUYLQSNBvb0DW5EFFt0" />
+    </persistenceIdMap>
   </component>
   <component name="DpaMonitoringSettings">
     <option name="firstShow" value="false" />
@@ -46,12 +59,12 @@
     &quot;assignee&quot;: &quot;jwy0805&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:jwy0805/CryWolfApiServer.git",
-    "accountId": "0f5cdbfb-8663-4dd7-a801-fff45aad9334"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:jwy0805/CryWolfApiServer.git&quot;,
+    &quot;accountId&quot;: &quot;0f5cdbfb-8663-4dd7-a801-fff45aad9334&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/APIServer/Controllers/AppController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIServer/Providers/AppVersionGateMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
@@ -638,15 +651,9 @@
       <workItem from="1771080549022" duration="1623000" />
       <workItem from="1771464090731" duration="1183000" />
       <workItem from="1771480654233" duration="8323000" />
-      <workItem from="1771510188146" duration="2493000" />
-    </task>
-    <task id="LOCAL-00138" summary="[UPDATE] Transaction table updated.">
-      <option name="closed" value="true" />
-      <created>1766203701937</created>
-      <option name="number" value="00138" />
-      <option name="presentableId" value="LOCAL-00138" />
-      <option name="project" value="LOCAL" />
-      <updated>1766203701937</updated>
+      <workItem from="1771510188146" duration="4520000" />
+      <workItem from="1771903076033" duration="1032000" />
+      <workItem from="1771905651249" duration="518000" />
     </task>
     <task id="LOCAL-00139" summary="[FEAT] Table TransactionReceiptFailure added">
       <option name="closed" value="true" />
@@ -1032,7 +1039,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771510206424</updated>
     </task>
-    <option name="localTasksCounter" value="187" />
+    <task id="LOCAL-00187" summary="[UPDATE] github actions&#10; - Action db-integration.yml can migrate local migration files to private rds">
+      <option name="closed" value="true" />
+      <created>1771553303213</created>
+      <option name="number" value="00187" />
+      <option name="presentableId" value="LOCAL-00187" />
+      <option name="project" value="LOCAL" />
+      <updated>1771553303213</updated>
+    </task>
+    <option name="localTasksCounter" value="188" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1053,7 +1068,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="wkje" />
     <MESSAGE value="fix match making" />
     <MESSAGE value="new tables about event system." />
     <MESSAGE value="before deleting reward from event table" />
@@ -1078,7 +1092,8 @@
     <MESSAGE value="[UPDATE] .net sdk version update&#10;6.0 -&gt; 10.0" />
     <MESSAGE value="." />
     <MESSAGE value="commit test" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit test" />
+    <MESSAGE value="[UPDATE] github actions&#10; - Action db-integration.yml can migrate local migration files to private rds" />
+    <option name="LAST_COMMIT_MESSAGE" value="[UPDATE] github actions&#10; - Action db-integration.yml can migrate local migration files to private rds" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

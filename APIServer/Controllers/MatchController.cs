@@ -252,6 +252,8 @@ public class MatchController : ControllerBase
             Achievements = new List<int>()
         };
         
+        _logger.LogInformation($"{matchPacket.UserId} enqueue for AI match at {DateTime.Now}");
+        
         await _apiService
             .SendRequestAsync<MatchMakingPacketResponse>("MatchMaking/MatchAi", matchPacket, HttpMethod.Post);
         

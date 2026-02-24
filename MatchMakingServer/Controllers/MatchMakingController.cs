@@ -31,6 +31,7 @@ public class MatchMakingController : ControllerBase
     public MatchMakingPacketResponse MatchMakingAi([FromBody] MatchMakingPacketRequired required)
     {
         _matchMakingService.AddMatchRequest(required);
+        _logger.LogInformation($"AI Match Requested : {required.SessionId}");
         return new MatchMakingPacketResponse();
     }
     

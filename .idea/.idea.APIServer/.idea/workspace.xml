@@ -14,7 +14,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2fabdc64-bcf4-456a-bcf5-2736d51943a7" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.APIServer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Proxy/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/Proxy/nginx.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +62,8 @@
     <setting file="file://$PROJECT_DIR$/APIServer/Services/TestService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/APIServer/bin/Debug/net6.0/appsettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebSite/obj/project.assets.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebSite/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map" root0="FORCE_HIGHLIGHTING" />
@@ -650,15 +651,7 @@
       <workItem from="1771903076033" duration="1032000" />
       <workItem from="1771905651249" duration="4488000" />
       <workItem from="1771910648164" duration="1992000" />
-      <workItem from="1771912721447" duration="2048000" />
-    </task>
-    <task id="LOCAL-00143" summary="Apple Receipt logging">
-      <option name="closed" value="true" />
-      <created>1766374919409</created>
-      <option name="number" value="00143" />
-      <option name="presentableId" value="LOCAL-00143" />
-      <option name="project" value="LOCAL" />
-      <updated>1766374919409</updated>
+      <workItem from="1771912721447" duration="3802000" />
     </task>
     <task id="LOCAL-00144" summary="loggin2">
       <option name="closed" value="true" />
@@ -1044,7 +1037,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771913037983</updated>
     </task>
-    <option name="localTasksCounter" value="192" />
+    <task id="LOCAL-00192" summary="[FIX] Port Update&#10;Port update depending on .NET SDK 8.0 upper">
+      <option name="closed" value="true" />
+      <created>1771915033234</created>
+      <option name="number" value="00192" />
+      <option name="presentableId" value="LOCAL-00192" />
+      <option name="project" value="LOCAL" />
+      <updated>1771915033234</updated>
+    </task>
+    <option name="localTasksCounter" value="193" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1065,7 +1066,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="database update" />
     <MESSAGE value="Event Notice System&#10; - Events including rewards can be sent to all users.&#10; - Event and Notice localization&#10; - Event Reward and Definition table devided." />
     <MESSAGE value="Reorganiztion Event Notice Tables" />
     <MESSAGE value="[FEAT]&#10;Event notice system updated.&#10;&#10;Event Management system&#10;&#10;Can claim event rewards&#10;&#10;Can display event progress" />
@@ -1090,7 +1090,8 @@
     <MESSAGE value="[TEMP] Logging enqueuing ai sessions" />
     <MESSAGE value="[FIX] Set Nuget package versions correctly" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="[FIX] Port Update&#10;Port update depending on .NET SDK 8.0 upper" />
+    <option name="LAST_COMMIT_MESSAGE" value="[FIX] Port Update&#10;Port update depending on .NET SDK 8.0 upper" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

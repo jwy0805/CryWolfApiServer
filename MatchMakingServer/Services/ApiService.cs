@@ -9,13 +9,14 @@ public class ApiService
     private readonly HttpClient _client;
     private readonly string _env = Environment.GetEnvironmentVariable("ENVIRONMENT") ?? "Local";
     private const string ApiPortLocal= "5281";
+    private const string ApiPort = "8080";
     private const string SocketPort = "8081";
     
     private string BaseUrl => _env switch
     {
         "Local" => $"http://localhost:{ApiPortLocal}/api",
-        "Dev" => $"http://crywolf-api/api",
-        "Prod" => $"http://crywolf-api/api",
+        "Dev" => $"http://crywolf-api:{ApiPort}/api",
+        "Prod" => $"http://crywolf-api:{ApiPort}/api",
         _ => throw new Exception("Invalid Environment")
     };
 

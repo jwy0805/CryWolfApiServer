@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using ApiServer.DB;
 using Newtonsoft.Json;
 
@@ -9,7 +10,7 @@ public class ApiService
 {
     private readonly HttpClient _client;
     private const string MatchMakingPortLocal= "5083";
-    private const string MatchMakingPortDev = "495";
+    private const string MatchMakingPort = "8080";
     private const string SocketPort = "8081";
     
     private Env Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT") switch
@@ -24,8 +25,8 @@ public class ApiService
     private string BaseUrlMatchMaking => Environment switch
     {
         Env.Local => $"http://localhost:{MatchMakingPortLocal}/match",
-        Env.Dev => $"http://crywolf-matchmaking/match",
-        Env.Prod => $"http://crywolf-matchmaking/match",
+        Env.Dev => $"http://crywolf-matchmaking:{MatchMakingPort}/match",
+        Env.Prod => $"http://crywolf-matchmaking:{MatchMakingPort}/match",
         _ => throw new Exception("Invalid Environment")
     };
     

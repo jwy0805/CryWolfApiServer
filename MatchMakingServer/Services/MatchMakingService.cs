@@ -387,6 +387,10 @@ public class MatchMakingService : BackgroundService
             }
 
             await _apiService.SendRequestToSocketAsync("match", matchSuccessPacket, HttpMethod.Post);
+            
+            _canceledSessionByUser[required.UserId] = required.SessionId;
+            _retryCount.Remove((required.UserId, required.SessionId));
+            _inQueueKeys.Remove((required.UserId, required.SessionId));
         }
         catch (Exception e)
         {

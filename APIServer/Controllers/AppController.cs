@@ -8,9 +8,9 @@ namespace ApiServer.Controllers;
 [ApiController]
 public class AppController : ControllerBase
 {
-    private const string LatestVersion = "1.0.2";
-    private const string MinSupportedAndroid = "1.0.2";
-    private const string MinSupportedIos = "1.0.2";
+    private const string LatestVersion = "1.0.5";
+    private const string MinSupportedAndroid = "1.0.5";
+    private const string MinSupportedIos = "1.0.5";
 
     private const string AndroidStoreUrl = "https://play.google.com/store/apps/details?id=com.hamonstudio.crywolf";
     private const string IosStoreUrl = "https://apps.apple.com/app/id6745862935";
